@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 @Entity
@@ -17,8 +18,8 @@ import java.time.LocalDateTime;
 public class TestimonyEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="evidence_id",nullable = false)
-    private int evidenceId;
+    @Column(name="testimony_id",nullable = false)
+    private int testimonyId;
 
     @ManyToOne
     @JoinColumn(name="challenge_id")
@@ -33,12 +34,14 @@ public class TestimonyEntity {
     @Column(name="created_by",nullable = false)
     private int createdBy;
 
+    @CreationTimestamp
     @Column(name="created_at",nullable = false)
     private LocalDateTime createdAt;
 
     @Column(name="updated_by",nullable = false)
     private Integer updatedBy;
 
+    @CreationTimestamp
     @Column(name="updated_at",nullable = false)
     private LocalDateTime updatedAt;
 }
