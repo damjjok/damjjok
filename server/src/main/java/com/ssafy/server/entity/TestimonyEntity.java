@@ -17,8 +17,8 @@ import java.time.LocalDateTime;
 public class TestimonyEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="evidence_id",nullable = false)
-    private int evidenceId;
+    @Column(name="testimony_id",nullable = false)
+    private int testimonyId;
 
     @ManyToOne
     @JoinColumn(name="challenge_id")
