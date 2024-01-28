@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="team")
+@Table(name="user_group")
 public class GroupEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
