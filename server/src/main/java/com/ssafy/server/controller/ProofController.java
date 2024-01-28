@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class ProofController {
 
     private final TestimonyService testimonyService;
-    @PostMapping("/testimony-create")
+    @PostMapping("/testimony")
     public ResponseEntity<? super TestimonyCreateResponseDto> createTestimony(@RequestBody TestimonyCreateRequestDto requestBody){
         ResponseEntity<? super TestimonyCreateResponseDto> response = testimonyService.create(requestBody);
         return response;
