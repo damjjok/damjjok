@@ -20,4 +20,9 @@ public class ProofController {
         ResponseEntity<? super TestimonyCreateResponseDto> response = testimonyService.create(requestBody);
         return response;
     }
+    @GetMapping("/test")
+    public String test(){
+        System.out.println("TEST SUCCESS");
+        return "GOOD";
+    }
 }
