@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 @Entity
@@ -33,6 +34,7 @@ public class NotificationEntity {
     @Column(name = "read_or_not", nullable = false, columnDefinition = "boolean default false")
     private Boolean readOrNot; // 기본값 설정
 
+    @CreationTimestamp
     @Column(name = "send_date", nullable = false)
     private LocalDateTime sendDate;
 }
