@@ -1,16 +1,9 @@
 package com.ssafy.server.controller;
 
 
-import com.ssafy.server.dto.request.TestimonyCreateRequestDto;
-import com.ssafy.server.dto.request.TestimonyDetailRequestDto;
-import com.ssafy.server.dto.request.TestimonyListRequestDto;
-import com.ssafy.server.dto.request.TestimonyModifyRequestDto;
-import com.ssafy.server.dto.response.TestimonyCreateResponseDto;
-import com.ssafy.server.dto.response.TestimonyDetailResponseDto;
-import com.ssafy.server.dto.response.TestimonyListResponseDto;
-import com.ssafy.server.dto.response.TestimonyModifyResponseDto;
+import com.ssafy.server.dto.request.proof.*;
+import com.ssafy.server.dto.response.proof.*;
 import com.ssafy.server.service.TestimonyService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -47,6 +40,15 @@ public class ProofController {
     @PutMapping("/testimony")
     public ResponseEntity<? super TestimonyModifyResponseDto> modifyTestimony(@RequestBody TestimonyModifyRequestDto requestBody){
         ResponseEntity<? super TestimonyModifyResponseDto>  response = testimonyService.modify(requestBody);
+        return response;
+    }
+
+
+    // Evidence
+
+    @PostMapping("/evidence")
+    public ResponseEntity<? super EvidenceCreateResponseDto> createEvidence(@ModelAttribute EvidenceCreateRequestDto requestBody){
+        ResponseEntity<? super EvidenceCreateResponseDto> response = testimonyService.createEvidence(requestBody);
         return response;
     }
 
