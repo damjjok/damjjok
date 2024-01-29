@@ -1,6 +1,7 @@
 package com.ssafy.server.service.implement;
 
 import com.ssafy.server.dto.request.ScheduleCreateRequestDto;
+import com.ssafy.server.dto.request.ScheduleDetailRequestDto;
 import com.ssafy.server.dto.response.ScheduleCreateResponseDto;
 import com.ssafy.server.dto.schedule.ScheduleDto;
 import com.ssafy.server.entity.ScheduleEntity;
@@ -20,9 +21,9 @@ public class ScheduleServiceImpl implements ScheduleService {
     private ScheduleRepository scheduleRepository;
 
     @Override
-    public ResponseEntity<? super Optional<ScheduleDto>> getSchedule(Integer ChallengeId) {
+    public ResponseEntity<? super Optional<ScheduleDto>> getSchedule(ScheduleDetailRequestDto dto) {
         try {
-            Optional<ScheduleEntity> optionalSchedule = scheduleRepository.findByChallengeIdAndEndDateFalse(ChallengeId);
+            Optional<ScheduleEntity> optionalSchedule = scheduleRepository.findByChallengeIdAndEndDateFalse(dto.getChallengeId());
 
             if (optionalSchedule.isPresent()) {
                 ScheduleEntity scheduleEntity = optionalSchedule.get();
