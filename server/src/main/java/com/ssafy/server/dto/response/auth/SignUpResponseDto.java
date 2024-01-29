@@ -6,7 +6,7 @@ import com.ssafy.server.dto.ResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-public class SignUpResponseDto {
+public class SignUpResponseDto extends ResponseDto{
 
     private SignUpResponseDto()  { super(); }
 
