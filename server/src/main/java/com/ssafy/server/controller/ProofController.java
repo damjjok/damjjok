@@ -2,8 +2,10 @@ package com.ssafy.server.controller;
 
 
 import com.ssafy.server.dto.request.TestimonyCreateRequestDto;
+import com.ssafy.server.dto.request.TestimonyDetailRequestDto;
 import com.ssafy.server.dto.request.TestimonyListRequestDto;
 import com.ssafy.server.dto.response.TestimonyCreateResponseDto;
+import com.ssafy.server.dto.response.TestimonyDetailResponseDto;
 import com.ssafy.server.dto.response.TestimonyListResponseDto;
 import com.ssafy.server.service.TestimonyService;
 import jakarta.validation.Valid;
@@ -26,17 +28,18 @@ public class ProofController {
 
     @GetMapping("/testimony/{challengeId}")
     public ResponseEntity<? super TestimonyListResponseDto> listTestimony(@PathVariable int challengeId){
-        TestimonyListRequestDto responseBody = new TestimonyListRequestDto();
-        responseBody.setChallengeId(challengeId);
-        ResponseEntity<? super TestimonyListResponseDto> response = testimonyService.list(responseBody);
+        TestimonyListRequestDto requestBody = new TestimonyListRequestDto();
+        requestBody.setChallengeId(challengeId);
+        ResponseEntity<? super TestimonyListResponseDto> response = testimonyService.list(requestBody);
         return response;
     }
 
-
-    @GetMapping("/test")
-    public String test(){
-        System.out.println("TEST SUCCESS");
-        return "GOOD";
+    @GetMapping("/testimony/detail/{testimonyId}")
+    public ResponseEntity<?> detailTestimony(@PathVariable int testimonyId){
+        TestimonyDetailRequestDto requestBody = new TestimonyDetailRequestDto();
+        requestBody.setTestimonyId(testimonyId);
+        ResponseEntity<? super TestimonyDetailResponseDto> response = testimonyService.detail(requestBody);
+        return response;
     }
 
 

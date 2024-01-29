@@ -2,15 +2,17 @@ package com.ssafy.server.dto.request;
 
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class TestimonyListRequestDto {
+@NoArgsConstructor
+@AllArgsConstructor
+public class TestimonyDetailRequestDto {
 
     @NotBlank
-    private int challengeId;
-
+    private int testimonyId;
 }
