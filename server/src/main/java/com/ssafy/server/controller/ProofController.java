@@ -43,11 +43,4 @@ public class ProofController {
     }
 
 
-    @GetMapping("/test")
-    public String test(){
-        System.out.println("TEST SUCCESS");
-        return "GOOD";
-    }
-
-
 }
