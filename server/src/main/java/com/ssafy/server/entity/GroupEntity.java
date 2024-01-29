@@ -3,6 +3,7 @@ package com.ssafy.server.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -21,6 +22,7 @@ public class GroupEntity {
     @Column(name="group_name",nullable = false,columnDefinition = "varchar(100)")
     private String groupName;
 
+    @CreationTimestamp
     @Column(name="created_at",nullable = false)
     private LocalDateTime createdAt;
 

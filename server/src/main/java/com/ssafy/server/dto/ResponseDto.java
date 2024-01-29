@@ -1,5 +1,7 @@
 package com.ssafy.server.dto;
 
+import com.ssafy.server.common.ResponseCode;
+import com.ssafy.server.common.ResponseMessage;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
@@ -13,8 +15,8 @@ public class ResponseDto {
     private String message;
 
     public ResponseDto(){
-        this.code = "tmp";
-        this.message = "tmp message";
+        this.code = ResponseCode.SUCCESS;
+        this.message = ResponseMessage.SUCCESS;
     }
 
     public static ResponseEntity<ResponseDto> databaseError(){
