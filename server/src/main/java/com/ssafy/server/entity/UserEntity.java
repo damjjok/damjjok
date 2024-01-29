@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -29,6 +30,7 @@ public class UserEntity {
     @Column(name = "user_name", nullable = false, length = 10)
     private String userName;
 
+    @CreationTimestamp
     @Column(name = "join_date", nullable = false)
     private LocalDateTime joinDate;
 }

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 @Entity
@@ -41,7 +42,7 @@ public class TestimonyEntity {
     @Column(name="updated_by",nullable = false)
     private Integer updatedBy;
 
-    @CreationTimestamp
+    @UpdateTimestamp
     @Column(name="updated_at",nullable = false)
     private LocalDateTime updatedAt;
 }
