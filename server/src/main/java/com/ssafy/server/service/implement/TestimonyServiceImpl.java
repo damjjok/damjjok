@@ -3,8 +3,10 @@ package com.ssafy.server.service.implement;
 import com.ssafy.server.dto.ResponseDto;
 import com.ssafy.server.dto.proof.TestimonyDto;
 import com.ssafy.server.dto.request.TestimonyCreateRequestDto;
+import com.ssafy.server.dto.request.TestimonyDetailRequestDto;
 import com.ssafy.server.dto.request.TestimonyListRequestDto;
 import com.ssafy.server.dto.response.TestimonyCreateResponseDto;
+import com.ssafy.server.dto.response.TestimonyDetailResponseDto;
 import com.ssafy.server.dto.response.TestimonyListResponseDto;
 import com.ssafy.server.entity.ChallengeEntity;
 import com.ssafy.server.entity.TestimonyEntity;
@@ -40,6 +42,8 @@ public class TestimonyServiceImpl implements TestimonyService {
             testimonyEntity.setTestimonyContent(content);
             testimonyEntity.setCreatedBy(0);
             testimonyEntity.setUpdatedBy(0);
+
+            // TODO : 여기 나중에 유저정보 받아와서 넣어줘야함
 
 
             testimonyRepository.save(testimonyEntity);
@@ -81,6 +85,30 @@ public class TestimonyServiceImpl implements TestimonyService {
             return ResponseDto.databaseError();
         }
         return TestimonyListResponseDto.success(list);
+    }
+
+    @Override
+    public ResponseEntity<? super TestimonyDetailResponseDto> detail(TestimonyDetailRequestDto dto) {
+
+        TestimonyDto testimony = null;
+        try{
+            int testimonyId = dto.getTestimonyId();
+
+            TestimonyEntity e = testimonyRepository.findByTestimonyId(testimonyId);
+            testimony = new TestimonyDto();
+            testimony.setTestimonyId(e.getTestimonyId());
+            testimony.setTestimonyTitle(e.getTestimonyTitle());
+            testimony.setTestimonyContent(e.getTestimonyContent());
+            testimony.setCreatedAt(e.getCreatedAt());
+            testimony.setCreatedBy(e.getCreatedBy());
+            testimony.setUpdatedAt(e.getUpdatedAt());
+            testimony.setUpdatedBy(e.getUpdatedBy());
+
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return TestimonyDetailResponseDto.success(testimony);
     }
 
 }
