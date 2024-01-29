@@ -1,4 +1,4 @@
-package com.ssafy.server.dto.response;
+package com.ssafy.server.dto.response.proof;
 
 import com.ssafy.server.dto.ResponseDto;
 import org.springframework.http.HttpStatus;

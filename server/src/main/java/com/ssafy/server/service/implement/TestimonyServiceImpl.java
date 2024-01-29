@@ -2,27 +2,26 @@ package com.ssafy.server.service.implement;
 
 import com.ssafy.server.dto.ResponseDto;
 import com.ssafy.server.dto.proof.TestimonyDto;
-import com.ssafy.server.dto.request.TestimonyCreateRequestDto;
-import com.ssafy.server.dto.request.TestimonyDetailRequestDto;
-import com.ssafy.server.dto.request.TestimonyListRequestDto;
-import com.ssafy.server.dto.request.TestimonyModifyRequestDto;
-import com.ssafy.server.dto.response.TestimonyCreateResponseDto;
-import com.ssafy.server.dto.response.TestimonyDetailResponseDto;
-import com.ssafy.server.dto.response.TestimonyListResponseDto;
-import com.ssafy.server.dto.response.TestimonyModifyResponseDto;
+import com.ssafy.server.dto.request.proof.*;
+import com.ssafy.server.dto.response.proof.*;
 import com.ssafy.server.entity.ChallengeEntity;
+import com.ssafy.server.entity.EvidenceEntity;
 import com.ssafy.server.entity.TestimonyEntity;
 import com.ssafy.server.repository.ChallengeRepository;
+import com.ssafy.server.repository.EvidenceRepository;
 import com.ssafy.server.repository.TestimonyRepository;
 import com.ssafy.server.service.TestimonyService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 
 @Service
@@ -31,6 +30,7 @@ public class TestimonyServiceImpl implements TestimonyService {
 
     private final TestimonyRepository testimonyRepository;
     private final ChallengeRepository challengeRepository;
+    private final EvidenceRepository evidenceRepository;
     public ResponseEntity<? super TestimonyCreateResponseDto> create(TestimonyCreateRequestDto dto){
         try {
             String title = dto.getTitle();
@@ -135,6 +135,43 @@ public class TestimonyServiceImpl implements TestimonyService {
             return ResponseDto.databaseError();
         }
         return TestimonyModifyResponseDto.success();
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<? super EvidenceCreateResponseDto> createEvidence(EvidenceCreateRequestDto dto) {
+
+        try{
+            MultipartFile image = dto.getImage();
+            int challengeId = dto.getChallengeId();
+            int userId = dto.getUserId();
+            String title = dto.getTitle();
+
+            String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\files";
+
+            String fileName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
+
+            File saveFile = new File(projectPath, fileName);
+            //C:\Users\audtj\Desktop\SSAFY_E105\S10P12E105\server\src\main\resources\files
+            image.transferTo(saveFile);
+
+            ChallengeEntity challengeEntity = challengeRepository.findByChallengeId(challengeId);
+            EvidenceEntity evidenceEntity = new EvidenceEntity();
+            evidenceEntity.setCreatedBy(userId);
+            evidenceEntity.setEvidenceTitle(title);
+            evidenceEntity.setChallengeEntity(challengeEntity);
+            evidenceEntity.setImageDate(LocalDateTime.now()); // TODO : 나중에 메타데이터로 바꿔주기
+            evidenceEntity.setImagePath("/files/" + fileName);
+            evidenceEntity.setUpdatedBy(userId);
+
+            evidenceRepository.save(evidenceEntity);
+
+
+        }catch(Exception exception){
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return EvidenceCreateResponseDto.success();
     }
 
 }

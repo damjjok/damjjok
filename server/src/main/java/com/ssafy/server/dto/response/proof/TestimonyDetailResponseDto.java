@@ -1,10 +1,8 @@
-package com.ssafy.server.dto.response;
+package com.ssafy.server.dto.response.proof;
 
 import com.ssafy.server.dto.ResponseDto;
 import com.ssafy.server.dto.proof.TestimonyDto;
 import lombok.Getter;
-import lombok.Setter;
-import org.eclipse.angus.mail.iap.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 

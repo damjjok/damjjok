@@ -1,4 +1,4 @@
-package com.ssafy.server.dto.request;
+package com.ssafy.server.dto.request.proof;
 
 
 import jakarta.validation.constraints.NotBlank;
@@ -11,13 +11,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TestimonyCreateRequestDto {
-
-    @NotBlank
-    private String title;
-
-    @NotBlank
-    private String content;
+public class TestimonyListRequestDto {
 
     @NotBlank
     private int challengeId;
