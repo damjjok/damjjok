@@ -4,9 +4,11 @@ package com.ssafy.server.controller;
 import com.ssafy.server.dto.request.TestimonyCreateRequestDto;
 import com.ssafy.server.dto.request.TestimonyDetailRequestDto;
 import com.ssafy.server.dto.request.TestimonyListRequestDto;
+import com.ssafy.server.dto.request.TestimonyModifyRequestDto;
 import com.ssafy.server.dto.response.TestimonyCreateResponseDto;
 import com.ssafy.server.dto.response.TestimonyDetailResponseDto;
 import com.ssafy.server.dto.response.TestimonyListResponseDto;
+import com.ssafy.server.dto.response.TestimonyModifyResponseDto;
 import com.ssafy.server.service.TestimonyService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -35,10 +37,16 @@ public class ProofController {
     }
 
     @GetMapping("/testimony/detail/{testimonyId}")
-    public ResponseEntity<?> detailTestimony(@PathVariable int testimonyId){
+    public ResponseEntity<? super TestimonyDetailResponseDto> detailTestimony(@PathVariable int testimonyId){
         TestimonyDetailRequestDto requestBody = new TestimonyDetailRequestDto();
         requestBody.setTestimonyId(testimonyId);
         ResponseEntity<? super TestimonyDetailResponseDto> response = testimonyService.detail(requestBody);
+        return response;
+    }
+
+    @PutMapping("/testimony")
+    public ResponseEntity<? super TestimonyModifyResponseDto> modifyTestimony(@RequestBody TestimonyModifyRequestDto requestBody){
+        ResponseEntity<? super TestimonyModifyResponseDto>  response = testimonyService.modify(requestBody);
         return response;
     }
 

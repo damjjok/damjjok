@@ -5,9 +5,11 @@ import com.ssafy.server.dto.proof.TestimonyDto;
 import com.ssafy.server.dto.request.TestimonyCreateRequestDto;
 import com.ssafy.server.dto.request.TestimonyDetailRequestDto;
 import com.ssafy.server.dto.request.TestimonyListRequestDto;
+import com.ssafy.server.dto.request.TestimonyModifyRequestDto;
 import com.ssafy.server.dto.response.TestimonyCreateResponseDto;
 import com.ssafy.server.dto.response.TestimonyDetailResponseDto;
 import com.ssafy.server.dto.response.TestimonyListResponseDto;
+import com.ssafy.server.dto.response.TestimonyModifyResponseDto;
 import com.ssafy.server.entity.ChallengeEntity;
 import com.ssafy.server.entity.TestimonyEntity;
 import com.ssafy.server.repository.ChallengeRepository;
@@ -18,6 +20,7 @@ import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -109,6 +112,29 @@ public class TestimonyServiceImpl implements TestimonyService {
             return ResponseDto.databaseError();
         }
         return TestimonyDetailResponseDto.success(testimony);
+    }
+
+    @Override
+    public ResponseEntity<? super TestimonyModifyResponseDto> modify(TestimonyModifyRequestDto dto) {
+        try{
+            int testimonyId = dto.getTestimonyId();
+            String title = dto.getTitle();
+            String content = dto.getContent();
+
+
+            TestimonyEntity testimonyEntity = testimonyRepository.findByTestimonyId(testimonyId);
+            testimonyEntity.setTestimonyId(testimonyId);
+            testimonyEntity.setTestimonyTitle(title);
+            testimonyEntity.setTestimonyContent(content);
+            testimonyEntity.setUpdatedAt(LocalDateTime.now());
+
+            testimonyRepository.save(testimonyEntity);
+
+        }catch(Exception exception){
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return TestimonyModifyResponseDto.success();
     }
 
 }
