@@ -1,7 +1,7 @@
 import { useRecoilValue } from "recoil";
-import { challengeState } from "../../../context/Challenge";
-import { currentUserState } from "../../../context/user";
 import Strick from "./strick/Strick";
+import { challengeState } from "../../../../../contexts/Challenge";
+import { currentUserState } from "../../../../../contexts/User";
 function HomeTab() {
     const challenge = useRecoilValue(challengeState);
     const currentUser = useRecoilValue(currentUserState);
