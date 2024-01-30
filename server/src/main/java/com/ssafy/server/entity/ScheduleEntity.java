@@ -39,11 +39,4 @@ public class ScheduleEntity {
     @Column(name="created_at",nullable = false)
     private LocalDateTime createdAt;
 
-    @Column(name="updated_by",nullable = false)
-    private Integer updatedBy;
-
-    @UpdateTimestamp
-    @Column(name="updated_at",nullable = false)
-    private LocalDateTime updatedAt;
-
 }
