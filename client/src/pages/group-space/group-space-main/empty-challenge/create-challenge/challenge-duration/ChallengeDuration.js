@@ -6,7 +6,7 @@ import {
   SliderMark,
 } from "@chakra-ui/react";
 import { useRecoilState } from "recoil";
-import { challengeState } from "../../../../contexts/Challenge";
+import { challengeState } from "../../../../../../contexts/Challenge";
 
 function ChallengeDuration() {
   const labelStyles = {
