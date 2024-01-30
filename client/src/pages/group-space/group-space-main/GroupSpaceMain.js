@@ -2,7 +2,7 @@
 import { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 // import { useRecoilValue } from "recoil";
-import GroupTab from "../group-tab/GroupTab";
+import GroupTab from "./group-tab/GroupTab";
 import EmptyChallenge from "../empty-challenge/EmptyChallenge";
 import { challengeListState } from "../../../context/Challenge";
 import CreateChallenge from "../create-challenge/CreateChallenge";
