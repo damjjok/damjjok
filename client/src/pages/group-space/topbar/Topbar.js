@@ -1,6 +1,6 @@
 import { useRecoilValue } from "recoil";
-import { currentUserState } from "../../../context/user";
-import NormalButton from "../../../components/button/normalbutton";
+import BasicButton from "../../../components/button/BasicButton";
+import { currentUserState } from "../../../contexts/User";
 
 function Topbar() {
     const currentUser = useRecoilValue(currentUserState);
@@ -15,7 +15,7 @@ function Topbar() {
                 <p className=" text-xs font-semibold px-2">
                     안녕하세요! {currentUser.userName} 님!
                 </p>
-                <NormalButton buttonName={"로그아웃"} variant={"smbtn"} />
+                <BasicButton buttonName={"로그아웃"} variant={"smbtn"} />
             </div>
         </div>
     );
