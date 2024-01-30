@@ -3,6 +3,7 @@ package com.ssafy.server.controller;
 
 import com.ssafy.server.dto.request.proof.*;
 import com.ssafy.server.dto.response.proof.*;
+import com.ssafy.server.service.EvidenceService;
 import com.ssafy.server.service.TestimonyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class ProofController {
 
     private final TestimonyService testimonyService;
+    private final EvidenceService evidenceService;
 
     @PostMapping("/testimony")
     public ResponseEntity<? super TestimonyCreateResponseDto> createTestimony(@RequestBody TestimonyCreateRequestDto requestBody){
@@ -48,7 +50,13 @@ public class ProofController {
 
     @PostMapping("/evidence")
     public ResponseEntity<? super EvidenceCreateResponseDto> createEvidence(@ModelAttribute EvidenceCreateRequestDto requestBody){
-        ResponseEntity<? super EvidenceCreateResponseDto> response = testimonyService.createEvidence(requestBody);
+        ResponseEntity<? super EvidenceCreateResponseDto> response = evidenceService.createEvidence(requestBody);
+        return response;
+    }
+
+    @PutMapping("/evidence")
+    public ResponseEntity<? super EvidenceModifyResponseDto> modifyEvidence(@ModelAttribute EvidenceModifyRequestDto requestBody){
+        ResponseEntity<? super EvidenceModifyResponseDto> response = evidenceService.modifyEvidence(requestBody);
         return response;
     }
 

@@ -137,41 +137,5 @@ public class TestimonyServiceImpl implements TestimonyService {
         return TestimonyModifyResponseDto.success();
     }
 
-    @Override
-    @Transactional
-    public ResponseEntity<? super EvidenceCreateResponseDto> createEvidence(EvidenceCreateRequestDto dto) {
-
-        try{
-            MultipartFile image = dto.getImage();
-            int challengeId = dto.getChallengeId();
-            int userId = dto.getUserId();
-            String title = dto.getTitle();
-
-            String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\files";
-
-            String fileName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
-
-            File saveFile = new File(projectPath, fileName);
-            //C:\Users\audtj\Desktop\SSAFY_E105\S10P12E105\server\src\main\resources\files
-            image.transferTo(saveFile);
-
-            ChallengeEntity challengeEntity = challengeRepository.findByChallengeId(challengeId);
-            EvidenceEntity evidenceEntity = new EvidenceEntity();
-            evidenceEntity.setCreatedBy(userId);
-            evidenceEntity.setEvidenceTitle(title);
-            evidenceEntity.setChallengeEntity(challengeEntity);
-            evidenceEntity.setImageDate(LocalDateTime.now()); // TODO : 나중에 메타데이터로 바꿔주기
-            evidenceEntity.setImagePath("/files/" + fileName);
-            evidenceEntity.setUpdatedBy(userId);
-
-            evidenceRepository.save(evidenceEntity);
-
-
-        }catch(Exception exception){
-            exception.printStackTrace();
-            return ResponseDto.databaseError();
-        }
-        return EvidenceCreateResponseDto.success();
-    }
 
 }
