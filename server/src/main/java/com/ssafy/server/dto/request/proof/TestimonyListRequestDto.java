@@ -1,7 +1,8 @@
-package com.ssafy.server.dto.request;
+package com.ssafy.server.dto.request.proof;
 
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,13 +10,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class TestimonyCreateRequestDto {
-
-    @NotBlank
-    private String title;
-
-    @NotBlank
-    private String content;
+@AllArgsConstructor
+public class TestimonyListRequestDto {
 
     @NotBlank
     private int challengeId;

@@ -3,15 +3,14 @@ package com.ssafy.server.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
-public class TestimonyListRequestDto {
-
+public class CandyCreateRequestDto {
     @NotBlank
     private int challengeId;
 
+    @NotBlank
+    private int userId;
 }

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -28,6 +29,7 @@ public class AttendanceEntity {
     @JoinColumn(name="created_by")
     UserEntity userEntity;
 
+    @CreationTimestamp
     @Column(name = "attendance_date", nullable = false)
     private LocalDateTime attendanceDate;
 }

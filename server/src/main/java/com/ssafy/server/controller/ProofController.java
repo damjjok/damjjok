@@ -1,12 +1,10 @@
 package com.ssafy.server.controller;
 
 
-import com.ssafy.server.dto.request.TestimonyCreateRequestDto;
-import com.ssafy.server.dto.request.TestimonyListRequestDto;
-import com.ssafy.server.dto.response.TestimonyCreateResponseDto;
-import com.ssafy.server.dto.response.TestimonyListResponseDto;
+import com.ssafy.server.dto.request.proof.*;
+import com.ssafy.server.dto.response.proof.*;
+import com.ssafy.server.service.EvidenceService;
 import com.ssafy.server.service.TestimonyService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class ProofController {
 
     private final TestimonyService testimonyService;
+    private final EvidenceService evidenceService;
 
     @PostMapping("/testimony")
     public ResponseEntity<? super TestimonyCreateResponseDto> createTestimony(@RequestBody TestimonyCreateRequestDto requestBody){
@@ -26,17 +25,39 @@ public class ProofController {
 
     @GetMapping("/testimony/{challengeId}")
     public ResponseEntity<? super TestimonyListResponseDto> listTestimony(@PathVariable int challengeId){
-        TestimonyListRequestDto responseBody = new TestimonyListRequestDto();
-        responseBody.setChallengeId(challengeId);
-        ResponseEntity<? super TestimonyListResponseDto> response = testimonyService.list(responseBody);
+        TestimonyListRequestDto requestBody = new TestimonyListRequestDto();
+        requestBody.setChallengeId(challengeId);
+        ResponseEntity<? super TestimonyListResponseDto> response = testimonyService.list(requestBody);
+        return response;
+    }
+
+    @GetMapping("/testimony/detail/{testimonyId}")
+    public ResponseEntity<? super TestimonyDetailResponseDto> detailTestimony(@PathVariable int testimonyId){
+        TestimonyDetailRequestDto requestBody = new TestimonyDetailRequestDto();
+        requestBody.setTestimonyId(testimonyId);
+        ResponseEntity<? super TestimonyDetailResponseDto> response = testimonyService.detail(requestBody);
+        return response;
+    }
+
+    @PutMapping("/testimony")
+    public ResponseEntity<? super TestimonyModifyResponseDto> modifyTestimony(@RequestBody TestimonyModifyRequestDto requestBody){
+        ResponseEntity<? super TestimonyModifyResponseDto>  response = testimonyService.modify(requestBody);
         return response;
     }
 
 
-    @GetMapping("/test")
-    public String test(){
-        System.out.println("TEST SUCCESS");
-        return "GOOD";
+    // Evidence
+
+    @PostMapping("/evidence")
+    public ResponseEntity<? super EvidenceCreateResponseDto> createEvidence(@ModelAttribute EvidenceCreateRequestDto requestBody){
+        ResponseEntity<? super EvidenceCreateResponseDto> response = evidenceService.createEvidence(requestBody);
+        return response;
+    }
+
+    @PutMapping("/evidence")
+    public ResponseEntity<? super EvidenceModifyResponseDto> modifyEvidence(@ModelAttribute EvidenceModifyRequestDto requestBody){
+        ResponseEntity<? super EvidenceModifyResponseDto> response = evidenceService.modifyEvidence(requestBody);
+        return response;
     }
 
 
