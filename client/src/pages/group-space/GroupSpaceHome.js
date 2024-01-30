@@ -1,5 +1,5 @@
-import Topbar from "../topbar/Topbar.js";
-import Sidebar from "../sidebar/Sidebar.js";
+import Topbar from "./topbar/Topbar.js";
+import Sidebar from "./sidebar/Sidebar.js";
 import GroupSpaceMain from "./group-space-main/GroupSpaceMain.js";
 // import StatusBar from "../statusbar/StatusBar.js";
 // import { Routes, Route } from "react-router-dom";
