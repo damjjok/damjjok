@@ -1,9 +1,9 @@
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
-import HomeTab from "../home-tab/HomeTab";
-import EvidenceTab from "../evidence-tab/EvidenceTab";
-import TruthRoomTab from "../truth-room-tab/TruthRoomTab";
-import RewardTab from "../reward-tab/RewardTab";
-import StatusBar from "../statusbar/StatusBar";
+import HomeTab from "./home-tab/HomeTab";
+import EvidenceTab from "./evidence-tab/EvidenceTab";
+import TruthRoomTab from "./truth-room-tab/TruthRoomTab";
+import RewardTab from "./reward-tab/RewardTab";
+import StatusBar from "./status-bar/StatusBar";
 
 function GroupTab() {
     // 1. Create the component
