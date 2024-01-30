@@ -28,6 +28,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     private final ChallengeRepository challengeRepository;
 
     @Override
+
     public ResponseEntity<? super Optional<ScheduleDetailResponseDto>> getSchedule(ScheduleDetailRequestDto dto) {
         try {
             int challengeId = dto.getChallengeId();
