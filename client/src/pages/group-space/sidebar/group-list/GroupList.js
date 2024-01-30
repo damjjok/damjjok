@@ -1,7 +1,7 @@
 import { Menu, MenuButton, MenuList, MenuItem, Button } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { useRecoilValue } from "recoil";
-import { currentGroupState } from "../../../../context/user";
+import { currentGroupState } from "../../../../contexts/User";
 
 function GroupList() {
     const currentGroup = useRecoilValue(currentGroupState);
