@@ -11,10 +11,8 @@ import {
 import BasicButton from "../../../../../../components/button/BasicButton";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { challengeState } from "../../../../context/Challenge";
-import { challengeEndDate } from "../../../../context/ChallengeSelectors";
-import { challengeListState } from "../../../../context/Challenge";
-import { currentGroupState } from "../../../../context/user";
+import { challengeState, challengeEndDate, challengeListState } from "../../../../../../contexts/Challenge";
+import { currentGroupState } from "../../../../../../contexts/User";
 
 function saveChallengeListToLocalStorage(challengeList) {
   localStorage.setItem("challengeList", JSON.stringify(challengeList));
