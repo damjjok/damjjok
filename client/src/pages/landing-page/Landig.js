@@ -42,7 +42,7 @@ const Landing = () => {
     const navigate = useNavigate();
 
     const handleSignUp = () => {
-        navigate("/CreateGroup");
+        navigate("/create-group");
     };
 
     const {

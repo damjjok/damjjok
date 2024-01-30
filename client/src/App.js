@@ -1,13 +1,14 @@
 //App.js
 
 import "./App.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import LandingPage from "./LandingPage.js";
+import { Routes, Route } from "react-router-dom";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
-import GroupHome from "./pages/groupspace/group-home/GroupHome.js";
+// import GroupHome from "./pages/groupspace/group-home/GroupHome.js";
 import { useRecoilValue } from "recoil";
-import { currentGroupState } from "./context/user.js";
+import { currentGroupState } from "./contexts/User.js";
 import { Suspense } from "react";
+import Landing from "./pages/landing-page/Landig.js";
+import CreateGroup from "./pages/landing-page/create-group/CreateGroup.js";
 
 const theme = extendTheme({
     colors: {
@@ -38,23 +39,14 @@ function App() {
     return (
         <Suspense>
             <ChakraProvider theme={theme}>
-                <Router>
-                    <Routes>
-                        <Route
-                            path="/"
-                            element={
-                                <LandingPage
-                                    groupId={currentGroup.groupId}
-                                    groupName={currentGroup.groupName}
-                                />
-                            }
-                        />
-                        <Route
+                <Routes>
+                    <Route path="/" element={<Landing />} />
+                    <Route path="/create-group" element={<CreateGroup />} />
+                    {/* <Route
                             path={`/group/${currentGroup.groupId}/*`}
                             element={<GroupHome />}
-                        />
-                    </Routes>
-                </Router>
+                        /> */}
+                </Routes>
             </ChakraProvider>
         </Suspense>
     );
