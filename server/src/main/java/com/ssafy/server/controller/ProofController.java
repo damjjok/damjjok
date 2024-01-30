@@ -68,6 +68,14 @@ public class ProofController {
         return response;
     }
 
+    @GetMapping("/evidence/{challengeId}")
+    public ResponseEntity<? super EvidenceListResponseDto> listEvidence(@PathVariable int challengeId){
+        EvidenceListRequestDto requestBody = new EvidenceListRequestDto();
+        requestBody.setChallengeId(challengeId);
+        ResponseEntity<? super EvidenceListResponseDto> response = evidenceService.listEvidence(requestBody);
+        return response;
+    }
+
 
 
 }
