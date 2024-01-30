@@ -5,7 +5,7 @@ import {
   Input,
   FormHelperText,
 } from "@chakra-ui/react";
-import { challengeState } from "../../../../context/Challenge";
+import { challengeState } from "../../../../../../contexts/Challenge";
 import { useRecoilState } from "recoil";
 
 function ChallengeMoney() {
