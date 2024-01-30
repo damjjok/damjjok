@@ -1,7 +1,7 @@
 import { useRecoilValue } from "recoil";
 import { currentUserState } from "../../../context/user";
 import { challengeState } from "../../../context/Challenge";
-import NormalButton from "../../../components/button/normalbutton";
+import BasicButton from "../../../../../components/button/BasicButton";
 
 function StatusBar() {
     const currentUser = useRecoilValue(currentUserState);
@@ -22,7 +22,7 @@ function StatusBar() {
                 <button>수정</button>
             </div>
             <div className="flex items-center">
-                <NormalButton buttonName={"출석하기"} variant={"smbtn"} />
+                <BasicButton buttonName={"출석하기"} variant={"smbtn"} />
                 <div>
                     <div>리워드</div>
                     <p>리워드 숫자</p>
