@@ -1,9 +1,12 @@
 package com.ssafy.server.service.implement;
 
 import com.ssafy.server.dto.ResponseDto;
+import com.ssafy.server.dto.proof.EvidenceDto;
 import com.ssafy.server.dto.request.proof.EvidenceCreateRequestDto;
+import com.ssafy.server.dto.request.proof.EvidenceDetailRequestDto;
 import com.ssafy.server.dto.request.proof.EvidenceModifyRequestDto;
 import com.ssafy.server.dto.response.proof.EvidenceCreateResponseDto;
+import com.ssafy.server.dto.response.proof.EvidenceDetailResponseDto;
 import com.ssafy.server.dto.response.proof.EvidenceModifyResponseDto;
 import com.ssafy.server.entity.ChallengeEntity;
 import com.ssafy.server.entity.EvidenceEntity;
@@ -115,5 +118,31 @@ public class EvidenceServiceImpl implements EvidenceService {
         }
 
         return EvidenceModifyResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super EvidenceDetailResponseDto> detailEvidence(EvidenceDetailRequestDto dto) {
+        EvidenceDto evidence = null;
+        try{
+            int evidenceId = dto.getEvidenceId();
+
+            EvidenceEntity evidenceEntity = evidenceRepository.findByEvidenceId(evidenceId);
+
+            if(evidenceEntity == null) return ResponseDto.validationFail();
+
+            evidence = new EvidenceDto();
+            evidence.setEvidenceId(evidenceEntity.getEvidenceId());
+            evidence.setEvidenceTitle(evidenceEntity.getEvidenceTitle());
+            evidence.setImagePath(evidenceEntity.getImagePath());
+            evidence.setImageDate(evidenceEntity.getImageDate());
+            evidence.setCreatedBy(evidenceEntity.getCreatedBy());
+
+
+        }catch(Exception exception){
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return EvidenceDetailResponseDto.success(evidence);
     }
 }
