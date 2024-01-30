@@ -1,8 +1,7 @@
-package com.ssafy.server.dto.response;
+package com.ssafy.server.dto.response.proof;
 
 import com.ssafy.server.dto.ResponseDto;
 import com.ssafy.server.dto.proof.TestimonyDto;
-import com.ssafy.server.entity.TestimonyEntity;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

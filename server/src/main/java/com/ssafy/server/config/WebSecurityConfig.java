@@ -32,7 +32,7 @@ public class WebSecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/","/api/v1/**").permitAll()
+                        .requestMatchers("/**").permitAll()
                 );
 
         return httpSecurity.build();
