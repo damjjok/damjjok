@@ -6,11 +6,12 @@ import {
   AccordionIcon,
   Box,
 } from "@chakra-ui/react";
-import { useRecoilValue } from "recoil";
-import { challengeListState } from "../../../../context/Challenge";
+// import { useRecoilValue } from "recoil";
+// import { challengeListState } from "../../../../context/Challenge";
 
 function ChallengeList() {
-  const challengeList = useRecoilValue(challengeListState);
+  // challengeList 반복문 돌릴 예정, 아직은 안 씀.
+  // const challengeList = useRecoilValue(challengeListState);
   return (
       <Accordion defaultIndex={[0]} allowMultiple>
           <AccordionItem>
