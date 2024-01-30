@@ -10,7 +10,7 @@ import {
     useDisclosure,
 } from "@chakra-ui/react";
 
-import NormalButton from "../../../../components/button/normalbutton";
+import BasicButton from "../../../../../../components/button/BasicButton"
 import ChallengeCreateModal from "./ChallengeCreateModal";
 
 function ChallengeCreateAlert() {
@@ -19,7 +19,7 @@ function ChallengeCreateAlert() {
 
     return (
         <>
-            <NormalButton
+            <BasicButton
                 onClick={onOpen}
                 buttonName={"챌린지 생성하기"}
                 variant={"bigbtn"}
@@ -43,7 +43,7 @@ function ChallengeCreateAlert() {
 
                         <AlertDialogFooter>
                             <ChallengeCreateModal />
-                            <NormalButton
+                            <BasicButton
                                 onClick={onClose}
                                 buttonName={"취소"}
                                 variant={"cancel"}
