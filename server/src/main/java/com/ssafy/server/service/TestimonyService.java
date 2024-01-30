@@ -10,6 +10,4 @@ public interface TestimonyService {
     ResponseEntity<? super TestimonyListResponseDto> list(TestimonyListRequestDto dto);
     ResponseEntity<? super TestimonyDetailResponseDto> detail(TestimonyDetailRequestDto dto);
     ResponseEntity<? super TestimonyModifyResponseDto> modify(TestimonyModifyRequestDto dto);
-    // Evidence
-    ResponseEntity<? super EvidenceCreateResponseDto> createEvidence(EvidenceCreateRequestDto dto);
 }

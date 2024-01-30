@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EvidenceRepository extends JpaRepository<EvidenceEntity, Integer> {
+    EvidenceEntity findByEvidenceId(int evidenceId);
+
 }

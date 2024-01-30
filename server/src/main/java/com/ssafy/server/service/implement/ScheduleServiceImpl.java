@@ -22,20 +22,21 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public ResponseEntity<? super Optional<ScheduleDto>> getSchedule(ScheduleDetailRequestDto dto) {
-        try {
-            Optional<ScheduleEntity> optionalSchedule = scheduleRepository.findByChallengeIdAndEndDateFalse(dto.getChallengeId());
-
-            if (optionalSchedule.isPresent()) {
-                ScheduleEntity scheduleEntity = optionalSchedule.get();
-                ScheduleDto scheduleDto = convertToDto(scheduleEntity);
-                return ResponseEntity.ok(Optional.of(scheduleDto));
-            } else {
-                return ResponseEntity.ok(Optional.empty());
-            }
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
+//        try {
+//            Optional<ScheduleEntity> optionalSchedule = scheduleRepository.findByChallengeIdAndEndDateFalse(dto.getChallengeId());
+//
+//            if (optionalSchedule.isPresent()) {
+//                ScheduleEntity scheduleEntity = optionalSchedule.get();
+//                ScheduleDto scheduleDto = convertToDto(scheduleEntity);
+//                return ResponseEntity.ok(Optional.of(scheduleDto));
+//            } else {
+//                return ResponseEntity.ok(Optional.empty());
+//            }
+//        } catch (Exception exception) {
+//            exception.printStackTrace();
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+//        }
+        return null;
     }
 
     @Override
