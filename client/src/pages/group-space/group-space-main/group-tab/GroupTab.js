@@ -1,6 +1,6 @@
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 import HomeTab from "../home-tab/HomeTab";
-import EvidanceTab from "../evidence-tab/EvidanceTab";
+import EvidenceTab from "../evidence-tab/EvidenceTab";
 import TruthRoomTab from "../truth-room-tab/TruthRoomTab";
 import RewardTab from "../reward-tab/RewardTab";
 import StatusBar from "../statusbar/StatusBar";
@@ -37,7 +37,7 @@ function GroupTab() {
         },
         {
             label: "제보",
-            content: <EvidanceTab />,
+            content: <EvidenceTab />,
         },
         {
             label: "진실의 방",
