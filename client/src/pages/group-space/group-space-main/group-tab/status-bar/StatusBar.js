@@ -1,7 +1,7 @@
 import { useRecoilValue } from "recoil";
-import { currentUserState } from "../../../context/user";
-import { challengeState } from "../../../context/Challenge";
 import BasicButton from "../../../../../components/button/BasicButton";
+import { currentUserState } from "../../../../../contexts/User";
+import { challengeState } from "../../../../../contexts/Challenge";
 
 function StatusBar() {
     const currentUser = useRecoilValue(currentUserState);
