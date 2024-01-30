@@ -1,10 +1,10 @@
 // 진행중인 챌린지가 있을 때 보여주는 페이지
 import { useEffect } from "react";
-import { Routes, Route, useLocation } from "react-router-dom";
-import { useRecoilValue } from "recoil";
+import { Routes, Route } from "react-router-dom";
+// import { useRecoilValue } from "recoil";
 import GroupTab from "../group-tab/GroupTab";
 import EmptyChallenge from "../empty-challenge/EmptyChallenge";
-import { challengeState, challengeListState } from "../../../context/Challenge";
+import { challengeListState } from "../../../context/Challenge";
 import CreateChallenge from "../create-challenge/CreateChallenge";
 import { useRecoilState } from "recoil";
 
