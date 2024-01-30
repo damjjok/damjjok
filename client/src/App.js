@@ -7,6 +7,7 @@ import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import GroupHome from "./pages/groupspace/group-home/GroupHome.js";
 import { useRecoilValue } from "recoil";
 import { currentGroupState } from "./context/user.js";
+import { Suspense } from "react";
 
 const theme = extendTheme({
     colors: {
@@ -35,25 +36,27 @@ const theme = extendTheme({
 function App() {
     const currentGroup = useRecoilValue(currentGroupState);
     return (
-        <ChakraProvider theme={theme}>
-            <Router>
-                <Routes>
-                    <Route
-                        path="/"
-                        element={
-                            <LandingPage
-                                groupId={currentGroup.groupId}
-                                groupName={currentGroup.groupName}
-                            />
-                        }
-                    />
-                    <Route
-                        path={`/group/${currentGroup.groupId}/*`}
-                        element={<GroupHome />}
-                    />
-                </Routes>
-            </Router>
-        </ChakraProvider>
+        <Suspense>
+            <ChakraProvider theme={theme}>
+                <Router>
+                    <Routes>
+                        <Route
+                            path="/"
+                            element={
+                                <LandingPage
+                                    groupId={currentGroup.groupId}
+                                    groupName={currentGroup.groupName}
+                                />
+                            }
+                        />
+                        <Route
+                            path={`/group/${currentGroup.groupId}/*`}
+                            element={<GroupHome />}
+                        />
+                    </Routes>
+                </Router>
+            </ChakraProvider>
+        </Suspense>
     );
 }
 
