@@ -1,6 +1,6 @@
 //Challenge.js
 
-import { atom } from "recoil";
+import { atom, selector } from "recoil";
 
 export const challengeState = atom({
     key: "challengeState", // unique ID (with respect to other atoms/selectors)
@@ -22,4 +22,15 @@ export const challengeState = atom({
 export const challengeListState = atom({
     key: "challengeListState",
     default: [],
+});
+
+export const challengeEndDate = selector({
+    key: "challengeEndDate",
+    get: ({ get }) => {
+        const challenge = get(challengeState);
+        const startDate = new Date(challenge.createdAt);
+        return new Date(
+            startDate.setDate(startDate.getDate() + challenge.duration),
+        );
+    },
 });
