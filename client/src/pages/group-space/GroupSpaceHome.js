@@ -1,6 +1,6 @@
 import Topbar from "../topbar/Topbar.js";
 import Sidebar from "../sidebar/Sidebar.js";
-import GroupMain from "../group-main/GroupMain.js";
+import GroupSpaceMain from "./group-space-main/GroupSpaceMain.js";
 // import StatusBar from "../statusbar/StatusBar.js";
 // import { Routes, Route } from "react-router-dom";
 // import CreateChallenge from "../create-challenge/CreateChallenge"
@@ -12,7 +12,7 @@ function GroupSpaceHome() {
             <div className="flex">
                 <Sidebar />
                 <div className="w-full px-8">
-                    <GroupMain />
+                    <GroupSpaceMain />
                 </div>
             </div>
         </div>
