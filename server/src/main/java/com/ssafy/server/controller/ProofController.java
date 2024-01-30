@@ -60,5 +60,13 @@ public class ProofController {
         return response;
     }
 
+    @GetMapping("/evidence/{evidenceId}")
+    public ResponseEntity<? super EvidenceDetailResponseDto> detailEvidence(@PathVariable int evidenceId){
+        EvidenceDetailRequestDto requestBody = new EvidenceDetailRequestDto();
+        requestBody.setEvidenceId(evidenceId);
+        ResponseEntity<? super EvidenceDetailResponseDto> response = evidenceService.detailEvidence(requestBody);
+        return response;
+    }
+
 
 }
