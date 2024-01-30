@@ -1,5 +1,5 @@
 import { useRecoilValue } from "recoil";
-import { challengeState } from "../../../../context/Challenge";
+import { challengeState } from "../../../../../../contexts/Challenge";
 
 function Strick() {
     const currentChallenge = useRecoilValue(challengeState);
