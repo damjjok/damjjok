@@ -1,6 +1,6 @@
 import { ButtonContainer } from "./BasicButton.style";
 
-const NormalButton = ({ buttonName, onClick, variant }) => {
+const BasicButton = ({ buttonName, onClick, variant }) => {
     return (
         <>
             <ButtonContainer onClick={onClick} variant={variant}>
@@ -9,4 +9,4 @@ const NormalButton = ({ buttonName, onClick, variant }) => {
         </>
     );
 };
-export default NormalButton;
+export default BasicButton;
