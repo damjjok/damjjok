@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat Room</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="col-6">
+        <label><b>채팅방</b></label>
+    </div>
+    <div>
+        <div id="msgArea" class="col"></div>
+        <div class="col-6">
+            <div class="input-group mb-3">
+                <input type="text" id="msg" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" id="button-send">전송</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+<script>
+    $(document).ready(function(){
+        // 사용자 이름을 입력 받음
+        const username = prompt("Enter your username");
+
+        // WebSocket 연결 설정
+        const websocket = new WebSocket("ws://localhost:8080/ws/chat");
+
+        websocket.onmessage = onMessage;
+        websocket.onopen = onOpen;
+        websocket.onclose = onClose;
+
+        function send() {
+            let msg = document.getElementById("msg").value;
+            console.log(username + ":" + msg);
+            websocket.send(username + ":" + msg);
+            document.getElementById("msg").value = '';
+        }
+
+        function onClose(evt) {
+            var str = username + " has left the chat.";
+            websocket.send(str);
+        }
+
+        function onOpen(evt) {
+            var str = username + " joined the chat.";
+            websocket.send(str);
+        }
+
+        function onMessage(msg) {
+            var data = msg.data;
+            var sessionId = null;
+            var message = null;
+            var arr = data.split(":");
+
+            for(var i = 0; i < arr.length; i++) {
+                console.log('arr[' + i + ']: ' + arr[i]);
+            }
+
+            var cur_session = username;
+            console.log("cur_session : " + cur_session);
+            sessionId = arr[0];
+            message = arr[1];
+
+            if(sessionId === cur_session) {
+                var str = "<div class='col-6'><div class='alert alert-secondary'><b>" + sessionId + " : " + message + "</b></div></div>";
+                $("#msgArea").append(str);
+            } else {
+                var str = "<div class='col-6'><div class='alert alert-warning'><b>" + sessionId + " : " + message + "</b></div></div>";
+                $("#msgArea").append(str);
+            }
+        }
+
+        $("#button-send").on("click", send);
+    });
+</script>
+</html>
