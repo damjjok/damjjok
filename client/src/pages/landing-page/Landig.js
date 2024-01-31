@@ -18,6 +18,7 @@ import {
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import logo from "assets/images/logo.png";
 
 const Landing = () => {
     // const { isOpen, onOpen, onClose } = useDisclosure();
@@ -63,7 +64,7 @@ const Landing = () => {
 
     return (
         <div className="Landing">
-            <img src="/logo.png" alt="logoImg" />
+            <img src={logo} alt="logoImg" />
             <p className="LandigTitle">"세상에 나쁜 흡연자는 없다!"</p>
             <p>
                 알아요, 누구나 흡연이 건강에 안 좋다는 것을 머리로는 알지만 참
@@ -84,7 +85,7 @@ const Landing = () => {
                     <ModalCloseButton />
                     <ModalBody>
                         <Image
-                            src="/logo.png"
+                            src={logo}
                             alt="Logo"
                             mx="auto"
                             my={4}
@@ -117,7 +118,7 @@ const Landing = () => {
                     <ModalCloseButton />
                     <ModalBody>
                         <Image
-                            src="/logo.png"
+                            src={logo}
                             alt="Logo"
                             mx="auto"
                             my={4}
