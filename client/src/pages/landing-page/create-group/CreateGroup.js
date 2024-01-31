@@ -15,6 +15,7 @@ import {
     FormControl,
     Input,
 } from "@chakra-ui/react";
+import logo from "assets/images/logo.png";
 
 const CreateGroup = () => {
     const [groupData, setGroupData] = useState([]);
@@ -36,7 +37,7 @@ const CreateGroup = () => {
 
     return (
         <div className="CreateGroup">
-            <img src="/logo.png" alt="logoImg" />
+            <img src={logo} alt="logoImg" />
             {groupData.length < 1 ? (
                 <>
                     <p>
