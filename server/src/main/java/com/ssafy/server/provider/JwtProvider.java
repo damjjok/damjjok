@@ -19,7 +19,7 @@ public class JwtProvider {
     private String secretKey;
 
     // 토큰 발급 공통 로직
-    private String createToken(String userId, long duration, ChronoUnit unit){
+    public String createToken(String userId, long duration, ChronoUnit unit){
         Date expiredDate = Date.from(Instant.now().plus(duration, unit));
         Key key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
 
@@ -29,17 +29,19 @@ public class JwtProvider {
                 .compact();
     }
 
-    private String validateToken(String token){
+    public String validateToken(String token){
         String subject = null;
         Key key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
 
         try{
+
             subject = Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()
                     .parseClaimsJws(token)
                     .getBody()
                     .getSubject();
+
         }catch (Exception exception){
             exception.printStackTrace(); // 실제 운영 환경에서는 적절한 로깅 필요
             return null;
