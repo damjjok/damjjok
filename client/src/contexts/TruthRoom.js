@@ -3,7 +3,7 @@ import { atom } from "recoil";
 export const stepState = atom({
     // 대기 중, 제보 판별, 투표, PASS/FAIL, 최후 변론, 벌금 결정, 종료
     key: "step",
-    default: 0,
+    default: 1,
 });
 
 export const groupState = atom({
@@ -25,6 +25,28 @@ export const groupState = atom({
         {
             name: "김삼후",
             role: "phD",
+        },
+    ],
+});
+
+export const testimonyState = atom({
+    key: "testimony",
+    default: [
+        {
+            title: "증언 1",
+            content: "이새끼 담배 폈습니다",
+        },
+        {
+            title: "증언 2",
+            content: "이새끼 담배 폈습니다",
+        },
+        {
+            title: "증언 3",
+            content: "이새끼 담배 폈습니다",
+        },
+        {
+            title: "증언 4",
+            content: "이새끼 담배 폈습니다",
         },
     ],
 });

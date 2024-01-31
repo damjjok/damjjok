@@ -1,5 +1,6 @@
 import React from "react";
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
+import TestimonyComponent from "../testimony/TestimonyComponent";
 
 function ReportTab(props) {
     return (
@@ -14,7 +15,7 @@ function ReportTab(props) {
                         <p>one!</p>
                     </TabPanel>
                     <TabPanel>
-                        <p>two!</p>
+                        <TestimonyComponent />
                     </TabPanel>
                 </TabPanels>
             </Tabs>
