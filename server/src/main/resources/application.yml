@@ -7,7 +7,7 @@ spring:
     show-sql: true
 
 springdoc:
-  packages-to-scan: com.colabear754.springdoc_example.controllers
+  packages-to-scan: com.ssafy.server.controller
   default-consumes-media-type: application/json;charset=UTF-8
   default-produces-media-type: application/json;charset=UTF-8
   api-docs:
