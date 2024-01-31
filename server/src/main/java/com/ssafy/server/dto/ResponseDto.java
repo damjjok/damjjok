@@ -2,6 +2,7 @@ package com.ssafy.server.dto;
 
 import com.ssafy.server.common.ResponseCode;
 import com.ssafy.server.common.ResponseMessage;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
@@ -11,7 +12,10 @@ import org.springframework.http.ResponseEntity;
 @AllArgsConstructor
 public class ResponseDto {
 
+    @Schema(description = "응답 코드", example = "SU")
     private String code;
+
+    @Schema(description = "응답 메시지", example = "Success.")
     private String message;
 
     public ResponseDto(){
