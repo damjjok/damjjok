@@ -3,15 +3,22 @@ package com.ssafy.server.dto.response.auth;
 import com.ssafy.server.common.ResponseCode;
 import com.ssafy.server.common.ResponseMessage;
 import com.ssafy.server.dto.ResponseDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+
 public class SignUpResponseDto extends ResponseDto{
 
-    private SignUpResponseDto()  { super(); }
+    private String accessToken;
 
-    public static ResponseEntity<SignUpResponseDto> success(){
-        SignUpResponseDto responseBody = new SignUpResponseDto();
+    private SignUpResponseDto(String accessToken)  {
+        super();
+        this.accessToken = accessToken;
+    }
+
+    public static ResponseEntity<SignUpResponseDto> success(String accessToken){
+        SignUpResponseDto responseBody = new SignUpResponseDto(accessToken);
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
 
