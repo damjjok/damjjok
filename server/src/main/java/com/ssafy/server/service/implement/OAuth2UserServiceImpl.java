@@ -50,7 +50,7 @@ public class OAuth2UserServiceImpl extends DefaultOAuth2UserService {
 //            userEntity = new UserEntity(userId,email,"naver");
 //        }
 
-        userRepository.save(userEntity);
+        //userRepository.save(userEntity);
 
         return new CustomOAuth2User(email);
         // 반화해주는 값에 사용자의 정보 추가

@@ -35,6 +35,7 @@ public class AuthServiceImpl implements AuthService {
             userRepository.save(userEntity);
 
             accessToken = jwtProvider.createToken(userEntity.getEmail(), 1, ChronoUnit.HOURS);
+            System.out.println(accessToken);
 
 
         }catch(Exception exception){
