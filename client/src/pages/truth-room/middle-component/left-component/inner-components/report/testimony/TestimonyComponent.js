@@ -1,8 +1,8 @@
 import React from "react";
-import { Wrapper } from "./TestimonyComponent.style";
 import { useRecoilValue } from "recoil";
 import { testimonyState } from "contexts/TruthRoom";
 import TestimonyFrame from "./TestimonyFrame";
+import { Wrapper } from "../TabComponent.style";
 
 function TestimonyComponent(props) {
     const testimonies = useRecoilValue(testimonyState);

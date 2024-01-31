@@ -1,5 +1,5 @@
 import React from "react";
-import { Wrapper } from "./TestimonyFrame.style";
+import { Wrapper } from "../Frame.style";
 
 function TestimonyFrame({ testimony }) {
     return (
