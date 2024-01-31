@@ -1,8 +1,13 @@
 import React from "react";
 import { Wrapper } from "./MiddleComponent.style";
+import LeftComponent from "./left-component/LeftComponent";
 
-function WholeFrame() {
-    return <Wrapper></Wrapper>;
+function MiddleComponent() {
+    return (
+        <Wrapper>
+            <LeftComponent></LeftComponent>
+        </Wrapper>
+    );
 }
 
-export default WholeFrame;
+export default MiddleComponent;
