@@ -1,13 +1,15 @@
 import React from "react";
-import Stepper from "./Stepper";
 import { Wrapper } from "./CenterComponent.style";
+import MainFrameComponent from "./main-frame-component/MainFrameComponent";
+import CenterStepper from "./stepper/CenterStepper";
 
 function CenterComponent() {
     return (
         <Wrapper>
             <div className="stepper-container">
-                <Stepper></Stepper>
+                <CenterStepper></CenterStepper>
             </div>
+            <MainFrameComponent></MainFrameComponent>
         </Wrapper>
     );
 }

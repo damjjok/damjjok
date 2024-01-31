@@ -9,7 +9,7 @@ import {
     Stepper,
     Flex,
 } from "@chakra-ui/react";
-import { stepState } from "pages/truth-room/context/truthRoom";
+import { stepState } from "contexts/TruthRoom";
 
 const steps = [
     { title: "First", description: "대기 중" },
@@ -21,7 +21,7 @@ const steps = [
     { title: "Seventh", description: "종료" },
 ];
 
-function Example() {
+function CenterStepper() {
     const step = useRecoilValue(stepState);
 
     return (
@@ -47,4 +47,4 @@ function Example() {
     );
 }
 
-export default Example;
+export default CenterStepper;
