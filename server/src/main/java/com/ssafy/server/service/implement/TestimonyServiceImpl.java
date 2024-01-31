@@ -137,5 +137,35 @@ public class TestimonyServiceImpl implements TestimonyService {
         return TestimonyModifyResponseDto.success();
     }
 
+    @Override
+    public ResponseEntity<? super TestimonyForTruthRoomResponseDto> listForTruthRoom(TestimonyForTruthRoomRequestDto dto) {
+        List<TestimonyDto> list = new ArrayList<>();
+        try{
+            int challengeId = dto.getChallengeId();
+
+            ChallengeEntity challengeEntity = challengeRepository.findByChallengeId(challengeId);
+            List<TestimonyEntity> entityList = testimonyRepository.findByChallengeEntity(challengeEntity);
+
+            entityList.stream().forEach((e) -> {
+                if(e.getCreatedAt().isBefore(challengeEntity.getFinalTruthRoomDate())) return;
+                TestimonyDto testimonyDto = new TestimonyDto();
+                testimonyDto.setTestimonyId(e.getTestimonyId());
+                testimonyDto.setTestimonyTitle(e.getTestimonyTitle());
+                testimonyDto.setTestimonyContent(e.getTestimonyContent());
+                testimonyDto.setCreatedAt(e.getCreatedAt());
+                testimonyDto.setCreatedBy(e.getCreatedBy());
+                testimonyDto.setUpdatedAt(e.getUpdatedAt());
+                testimonyDto.setUpdatedBy(e.getUpdatedBy());
+
+                list.add(testimonyDto);
+            });
+
+        }catch(Exception exception){
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return TestimonyForTruthRoomResponseDto.success(list);
+    }
+
 
 }

@@ -35,10 +35,21 @@ public class ProofController {
     @Operation(summary = "증언 목록 조회", description = "증언 목록을 조회합니다.",
             responses = { @ApiResponse(responseCode = "200", description = "증언 목록 조회 성공",
                     content = @Content(schema = @Schema(implementation = TestimonyListResponseDto.class)))})
-    public ResponseEntity<? super TestimonyListResponseDto> listTestimony(@PathVariable int challengeId){
+    public ResponseEntity<? super TestimonyListResponseDto> listTestimonyForTruthRoom(@PathVariable int challengeId){
         TestimonyListRequestDto requestBody = new TestimonyListRequestDto();
         requestBody.setChallengeId(challengeId);
         ResponseEntity<? super TestimonyListResponseDto> response = testimonyService.list(requestBody);
+        return response;
+    }
+
+    @GetMapping("/testimony/truth-room/{challengeId}")
+    @Operation(summary = "진실의 방 증언 목록 조회", description = "진실의 방 증언 목록을 조회합니다.",
+            responses = { @ApiResponse(responseCode = "200", description = "증언 목록 조회 성공",
+                    content = @Content(schema = @Schema(implementation = TestimonyForTruthRoomResponseDto.class)))})
+    public ResponseEntity<? super TestimonyForTruthRoomResponseDto> listTestimony(@PathVariable int challengeId){
+        TestimonyForTruthRoomRequestDto requestBody = new TestimonyForTruthRoomRequestDto();
+        requestBody.setChallengeId(challengeId);
+        ResponseEntity<? super TestimonyForTruthRoomResponseDto> response = testimonyService.listForTruthRoom(requestBody);
         return response;
     }
 
