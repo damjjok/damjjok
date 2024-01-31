@@ -1,20 +1,4 @@
 spring:
-  security:
-    oauth2:
-      client:
-        registration:
-          kakao:
-            client-id: 255449b7fbcdba8ce06fe0dd5da85d13
-            client-secret: T7MBOLCGFQcTe3AA5oZZA5eK0qoNmB3F
-            redirect-uri: '{baseUrl}/oauth2/callback/{registrationId}'
-            authorization-grant-type: authorization_code
-            client-authentication-method: client_secret_post
-            scope: profile_nickname
-      provider:
-        kakao:
-          authorization-uri: https://kauth.kakao.com/oauth/authorize
-          token-uri: https://kauth.kakao.com/oauth/token
-          user-info-uri: https://kapi.kakao.com/v2/user/me
   profiles:
     active: ${profile}
   jpa:
@@ -34,6 +18,3 @@ springdoc:
     display-request-duration: true
     operations-sorter: alpha
 
-# JWT Secret Key
-jwt:
-  secret-key: 'ThisStatementIsJwtSecretKeyDoNotUseThisStatement'
