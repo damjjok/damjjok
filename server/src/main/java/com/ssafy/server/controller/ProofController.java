@@ -104,6 +104,16 @@ public class ProofController {
         ResponseEntity<? super EvidenceListResponseDto> response = evidenceService.listEvidence(requestBody);
         return response;
     }
+    @GetMapping("/evidence/truth-room/{challengeId}")
+    @Operation(summary = "진실의 방 증거 목록", description = "진실의 방 증거 목록을 받아옵니다.",
+            responses = { @ApiResponse(responseCode = "200", description = "진실의 방증거 목록 조회 성공",
+                    content = @Content(schema = @Schema(implementation = EvidenceForTruthRoomResponseDto.class)))})
+    public ResponseEntity<? super EvidenceForTruthRoomResponseDto> listEvidenceForTruthRoom(@PathVariable int challengeId){
+        EvidenceForTruthRoomRequestDto requestBody = new EvidenceForTruthRoomRequestDto();
+        requestBody.setChallengeId(challengeId);
+        ResponseEntity<? super EvidenceForTruthRoomResponseDto> response = evidenceService.listEvidenceForTruthRoom(requestBody);
+        return response;
+    }
 
 
 
