@@ -35,6 +35,9 @@ public class AttendanceController {
     }
 
     @GetMapping("/{challengeId}")
+    @Operation(summary = "출석 목록 조회", description = "출석 목록을 조회합니다.",
+            responses = { @ApiResponse(responseCode = "200", description = "출석 목록 조회성공",
+                    content = @Content(schema = @Schema(implementation = AttendanceCreateResponseDto.class)))})
     public ResponseEntity<? super AttendanceListResponseDto> listAttendance(
             @PathVariable int challengeId
     ){
