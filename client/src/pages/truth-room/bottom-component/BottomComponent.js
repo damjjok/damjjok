@@ -1,7 +1,8 @@
+import React from "react";
 import { stepState } from "contexts/TruthRoom";
 import { useRecoilValue } from "recoil";
 import { Wrapper } from "./BottomComponent.style";
-import { Button } from "@chakra-ui/react/dist";
+import { Button } from "@chakra-ui/react";
 
 function BottomComponent() {
     const step = useRecoilValue(stepState);
