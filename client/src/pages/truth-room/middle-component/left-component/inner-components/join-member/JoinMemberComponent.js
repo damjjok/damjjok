@@ -27,9 +27,9 @@ function JoinMemberComponent() {
             <div style={{ margin: "20px" }}>참여 인원</div>
             <SectionComponent
                 type={"담쪽이"}
-                users={damJJok}
+                members={damJJok}
             ></SectionComponent>
-            <SectionComponent type={"박사님"} users={phDs}></SectionComponent>
+            <SectionComponent type={"박사님"} members={phDs}></SectionComponent>
         </Wrapper>
     );
 }
