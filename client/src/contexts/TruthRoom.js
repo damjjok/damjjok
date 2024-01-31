@@ -4,7 +4,7 @@ import logo from "assets/images/logo.png";
 export const stepState = atom({
     // 대기 중, 제보 판별, 투표, PASS/FAIL, 최후 변론, 벌금 결정, 종료
     key: "step",
-    default: 4,
+    default: 0,
 });
 
 export const groupState = atom({
