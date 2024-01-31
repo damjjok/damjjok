@@ -5,7 +5,7 @@ function PiggyBank() {
         <div>
             <h1>금연저금통!</h1>
             <img
-                src="../../../../../assets/images/piggybanklogo.png"
+                src={require("./src/assets/images/piggybanklogo.png").default}
                 alt="piggybank"
             />
             {/* <CircularProgress
