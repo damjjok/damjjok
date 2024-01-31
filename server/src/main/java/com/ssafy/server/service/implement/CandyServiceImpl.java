@@ -1,8 +1,10 @@
 package com.ssafy.server.service.implement;
 
 import com.ssafy.server.dto.ResponseDto;
-import com.ssafy.server.dto.request.CandyCreateRequestDto;
-import com.ssafy.server.dto.response.CandyCreateResponseDto;
+import com.ssafy.server.dto.request.candy.CandyCountRequestDto;
+import com.ssafy.server.dto.request.candy.CandyCreateRequestDto;
+import com.ssafy.server.dto.response.candy.CandyCountResponseDto;
+import com.ssafy.server.dto.response.candy.CandyCreateResponseDto;
 import com.ssafy.server.entity.CandyEntity;
 import com.ssafy.server.entity.ChallengeEntity;
 import com.ssafy.server.entity.UserEntity;
@@ -42,5 +44,23 @@ public class CandyServiceImpl implements CandyService {
             return ResponseDto.databaseError();
         }
         return CandyCreateResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super CandyCountResponseDto> count(CandyCountRequestDto dto) {
+        int cnt = 0;
+        try{
+            int challengeId = dto.getChallengeId();
+
+            ChallengeEntity challengeEntity = challengeRepository.findByChallengeId(challengeId);
+
+            cnt = candyRepository.countByChallengeEntity(challengeEntity);
+
+
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return CandyCountResponseDto.success(cnt);
     }
 }
