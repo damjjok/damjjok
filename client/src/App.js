@@ -9,6 +9,8 @@ import { currentGroupState } from "./contexts/User.js";
 import { Suspense } from "react";
 import Landing from "./pages/landing-page/Landig.js";
 import CreateGroup from "./pages/landing-page/create-group/CreateGroup.js";
+import GroupSpaceHome from "./pages/group-space/GroupSpaceHome.js";
+import TruthRoom from "pages/truth-room/TruthRoom";
 
 const theme = extendTheme({
     colors: {
@@ -42,10 +44,11 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Landing />} />
                     <Route path="/create-group" element={<CreateGroup />} />
-                    {/* <Route
-                            path={`/group/${currentGroup.groupId}/*`}
-                            element={<GroupHome />}
-                        /> */}
+                    <Route
+                        path={`/group/${currentGroup.groupId}/*`}
+                        element={<GroupSpaceHome />}
+                    />
+                    <Route path="/truth-room" element={<TruthRoom />} />
                 </Routes>
             </ChakraProvider>
         </Suspense>
