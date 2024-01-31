@@ -1,5 +1,5 @@
-import BasicButton from "components/button/BasicButton";
 import React, { useState } from "react";
+import BasicButton from "components/button/BasicButton";
 
 function ReadyStateFrame() {
     const [buttonClicked, setButtonClicked] = useState(false);
