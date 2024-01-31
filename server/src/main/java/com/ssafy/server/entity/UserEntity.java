@@ -1,9 +1,13 @@
 package com.ssafy.server.entity;
 
+import com.ssafy.server.dto.request.auth.SignUpRequestDto;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -11,6 +15,8 @@ import java.time.LocalDateTime;
 @Table(name = "user")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +35,14 @@ public class UserEntity {
     @Column(name = "user_name", nullable = false, length = 10)
     private String userName;
 
+    @CreationTimestamp
     @Column(name = "join_date", nullable = false)
     private LocalDateTime joinDate;
+
+    public UserEntity(SignUpRequestDto dto) {
+        this.birth = dto.getBirth();
+        this.sex = dto.getSex();
+        this.email = dto.getEmail();
+        this.userName = dto.getName();
+    }
 }
