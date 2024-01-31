@@ -1,5 +1,5 @@
 import React from "react";
-import { Wrapper } from "./InnerComponent.style";
+import { Wrapper } from "../InnerComponent.style";
 
 function ReportComopnent(props) {
     return <Wrapper>ㅎㅇㅎㅇ</Wrapper>;

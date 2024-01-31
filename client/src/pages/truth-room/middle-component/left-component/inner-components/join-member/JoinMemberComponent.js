@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
-import { Wrapper } from "./InnerComponent.style";
+import { Wrapper } from "../InnerComponent.style";
 import { groupState } from "contexts/TruthRoom";
 
 function JoinMemberComponent() {
