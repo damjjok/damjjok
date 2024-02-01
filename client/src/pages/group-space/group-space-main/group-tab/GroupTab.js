@@ -3,7 +3,7 @@ import HomeTab from "./home-tab/HomeTab";
 import TruthRoomTab from "./truth-room-tab/TruthRoomTab";
 import RewardTab from "./reward-tab/RewardTab";
 import StatusBar from "./status-bar/StatusBar";
-import ArticleTab from "./article-tab/EvidenceTab";
+import ArticleTab from "./article-tab/ArticleTab";
 
 function GroupTab() {
     // 1. Create the component
