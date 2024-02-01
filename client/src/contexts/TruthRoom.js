@@ -30,6 +30,11 @@ export const groupState = atom({
     ],
 });
 
+export const reportModeState = atom({
+    key: "reportMode",
+    default: "EVIDENCE", // EVIDENCE, TESTIMONY
+});
+
 export const evidenceState = atom({
     key: "evidence",
     default: [
