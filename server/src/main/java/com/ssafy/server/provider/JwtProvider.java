@@ -44,7 +44,6 @@ public class JwtProvider {
                     .getSubject();
 
         }catch (ExpiredJwtException e){
-            System.out.println("token 만료");
             throw new CustomJwtException("Token is Expired.",e);
         }catch (SignatureException | UnsupportedJwtException | MalformedJwtException e){
             throw new CustomJwtException("Token in not valid.",e);
