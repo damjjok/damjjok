@@ -2,6 +2,7 @@ import { useRecoilValue } from "recoil";
 import BasicButton from "../../../../../components/button/BasicButton";
 import { currentUserState } from "../../../../../contexts/User";
 import { EditIcon } from "@chakra-ui/icons";
+import candyImg from "assets/images/candylogo.png";
 // import { challengeState } from "../../../../../contexts/Challenge";
 
 function StatusBar() {
@@ -39,9 +40,15 @@ function StatusBar() {
             </div>
             <div className="flex items-center">
                 <BasicButton buttonName={"출석하기"} variant={"smbtn"} />
-                <div>
-                    <div>리워드</div>
-                    <p>리워드 숫자</p>
+                <div className="flex flex-col items-center">
+                    <div className="bg-damwhite rounded-full border border-damyellow">
+                        <img
+                            src={candyImg}
+                            alt="candyImg"
+                            className="w-[25px] h-[25px]"
+                        />
+                    </div>
+                    <p className=" text-xs">응원 숫자</p>
                 </div>
             </div>
         </div>
