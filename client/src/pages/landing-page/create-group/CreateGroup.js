@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button, useDisclosure, HStack } from "@chakra-ui/react";
-import CreateGroupModal from "./create-group- modal/CreateGroupModal";
+import CreateGroupModal from "./create-group-modal/CreateGroupModal";
 import logo from "assets/images/logo.png";
 
 const CreateGroup = () => {
