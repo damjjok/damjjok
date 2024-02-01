@@ -39,7 +39,7 @@ function PiggyBank(progress = 0.2) {
                     누적 금액 :
                     {currentChallenge.initialMoney +
                         currentChallenge.savedMoney *
-                            (diffDays / currentChallenge.savedPeriod)}
+                            Math.floor(diffDays / currentChallenge.savedPeriod)}
                 </p>
             </div>
         </div>
