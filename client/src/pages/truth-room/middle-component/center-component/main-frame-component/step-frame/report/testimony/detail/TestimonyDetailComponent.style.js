@@ -1,9 +1,10 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
-    width: 460px;
-    height: 552px;
-    border: 1px solid black;
+    .card-container {
+        width: 460px;
+        height: 552px;
+    }
 
     .title-container {
         margin: 20px;
