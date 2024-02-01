@@ -1,7 +1,5 @@
 import { useRecoilValue } from "recoil";
-import BasicButton from "../../../../../components/button/BasicButton";
 import { currentUserState } from "../../../../../contexts/User";
-import { EditIcon } from "@chakra-ui/icons";
 import candyImg from "assets/images/candylogo.png";
 import StatusBarToast from "./status-bar-toast/StatusBarToast";
 import StatusEditModal from "./status-edit-modal/StatusEditModal";
