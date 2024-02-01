@@ -50,7 +50,8 @@ public class OAuth2UserServiceImpl extends DefaultOAuth2UserService {
 //            userEntity = new UserEntity(userId,email,"naver");
 //        }
 
-        userRepository.save(userEntity);
+        boolean isExist = userRepository.existsByEmail(email);
+        if(!isExist) userRepository.save(userEntity);
 
         return new CustomOAuth2User(email);
     }

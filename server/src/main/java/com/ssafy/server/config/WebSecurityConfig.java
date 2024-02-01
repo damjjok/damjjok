@@ -3,6 +3,7 @@ package com.ssafy.server.config;
 import com.ssafy.server.filter.JwtAuthenticationFilter;
 import com.ssafy.server.filter.JwtExceptionFilter;
 import com.ssafy.server.handler.OAuth2SuccessHandler;
+import com.ssafy.server.provider.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
@@ -26,13 +27,14 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @RequiredArgsConstructor
 public class WebSecurityConfig {
 
+    private final JwtProvider jwtProvider;
 
     private final DefaultOAuth2UserService oAuth2UserService;
 
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
 
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    private final JwtExceptionFilter jwtExceptionFilter;
+    //private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    //private final JwtExceptionFilter jwtExceptionFilter;
 
 
     @Bean
@@ -46,9 +48,9 @@ public class WebSecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(request -> request
-                        //.requestMatchers("/api/v1/auth/**").permitAll()
-                        .requestMatchers("/**").permitAll()
-                        //.anyRequest().authenticated()
+                        .requestMatchers("/api/v1/auth/**").permitAll()
+                        //.requestMatchers("/**").permitAll()
+                        .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2
                         .authorizationEndpoint(endpoint -> endpoint.baseUri("/api/v1/auth/oauth2")) //custom uri 함
@@ -56,8 +58,8 @@ public class WebSecurityConfig {
                         .userInfoEndpoint(endpoint -> endpoint.userService(oAuth2UserService))
                         .successHandler(oAuth2SuccessHandler)
                 )
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(jwtExceptionFilter, JwtAuthenticationFilter.class);
+                .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtExceptionFilter(), JwtAuthenticationFilter.class);
 
 
 
