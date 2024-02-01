@@ -35,6 +35,11 @@ export const reportModeState = atom({
     default: "EVIDENCE", // EVIDENCE, TESTIMONY
 });
 
+export const evidenceIndexState = atom({
+    key: "evidenceIndex",
+    default: 0,
+});
+
 export const evidenceState = atom({
     key: "evidence",
     default: [
@@ -42,6 +47,11 @@ export const evidenceState = atom({
         { title: "증거 2", img: logo },
         { title: "증거 3", img: logo },
     ],
+});
+
+export const testimonyIndexState = atom({
+    key: "testimonyIndex",
+    default: 0,
 });
 
 export const testimonyState = atom({
