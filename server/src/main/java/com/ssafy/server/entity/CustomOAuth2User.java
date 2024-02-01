@@ -13,7 +13,10 @@ import java.util.Map;
 public class CustomOAuth2User implements OAuth2User {
 
     private String email;
+    private Map<String,Object> attributes;
 
+    public CustomOAuth2User(Map<String, Object> attributes) {
+    }
 
     @Override
     public Map<String, Object> getAttributes() {
