@@ -20,13 +20,18 @@ function StatusBarToast() {
           status: 'success',
           duration: 9000,
           isClosable: true,
-        })} else { toast({
+        })
+      // 출석일수 추가해주는 로직 넣어줘야 함
+      } else { toast({
           title: '응원 완료!',
           description: `담쪽이 님을 응원했어요!`,
           status: 'success',
           duration: 9000,
           isClosable: true,
-        })}
+        })
+      // 사탕 추가해주는 로직 넣어줘야 함
+      }
+    
   };
 
   useEffect(() => {
