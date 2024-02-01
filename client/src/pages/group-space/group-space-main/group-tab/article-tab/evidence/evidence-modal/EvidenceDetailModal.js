@@ -10,9 +10,9 @@ import {
     Button,
 } from "@chakra-ui/react";
 
-const TestimonyDetailModal = ({ isOpen, onClose, content, title }) => {
+const EvidenceDetailModal = ({ isOpen, onClose, content, title, img }) => {
     return (
-        <div className="TestimonyDetailModal">
+        <div className="EvidenceDetailModal">
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
                 <ModalContent>
@@ -20,6 +20,8 @@ const TestimonyDetailModal = ({ isOpen, onClose, content, title }) => {
                     <ModalCloseButton />
                     <ModalBody>
                         {content} {/* 내용 */}
+                        {img && <img src={img} alt={title} />}{" "}
+                        {/* 이미지를 렌더링 */}
                     </ModalBody>
                     <ModalFooter>
                         <Button colorScheme="blue" mr={3} onClick={onClose}>
@@ -32,4 +34,4 @@ const TestimonyDetailModal = ({ isOpen, onClose, content, title }) => {
     );
 };
 
-export default TestimonyDetailModal;
+export default EvidenceDetailModal;
