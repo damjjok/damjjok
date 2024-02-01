@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import net.minidev.json.JSONObject;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -29,23 +30,13 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             Authentication authentication
     ) throws IOException, ServletException {
 
-        CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
+        OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
 
-        String email = oAuth2User.getName();
+        String email = "email@email.com"; // oAuth2User 에서 꺼내쓸것
         String accessToken = jwtProvider.createToken(email, 1, ChronoUnit.HOURS);
         String refreshToken = jwtProvider.createToken(email, 7, ChronoUnit.DAYS);
 
         boolean isExist = userRepository.existsByEmail(email);
-
-//        response.setContentType("application/json;charset=UTF-8");
-
-//        JSONObject jsonResponse = new JSONObject();
-//        jsonResponse.put("accessToken", accessToken);
-//        jsonResponse.put("refreshToken", refreshToken);
-//        jsonResponse.put("email", email);
-//
-//        // JSON 응답 전송
-//        response.getWriter().print(jsonResponse.toString());
 
         response.sendRedirect("http://localhost:3000/auth/oauth-response/" + email + "/" + accessToken + "/" + refreshToken + "/3600/" + isExist);
 

@@ -36,16 +36,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try{
             String token = parseBearerToken(request);
-
-            if(token == null) {
-                filterChain.doFilter(request,response);// null이면 밑의 것을 진행하지 말고 다음 필터로 넘겨라 ..? 밑에랑 이거랑 함수가 똑같잖어 ..
-                return;
-            }
-            System.out.println(token);
             String email = null;
 
-            email = jwtProvider.validateToken(token);
+            if(token == null) {
+                filterChain.doFilter(request,response);
+                return;
+            }
 
+            email = jwtProvider.validateToken(token);
             if(email == null){
                 filterChain.doFilter(request,response);
                 return;

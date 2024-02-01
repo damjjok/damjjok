@@ -9,6 +9,8 @@ import com.ssafy.server.repository.UserRepository;
 import com.ssafy.server.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.time.temporal.ChronoUnit;
@@ -25,18 +27,11 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public ResponseEntity<? super SignUpResponseDto> signUp(SignUpRequestDto dto) {
         try{
-
-            //String email = dto.getEmail();
-            //boolean isDuplicated = userRepository.existsByEmail(email);
-
-            //if(isDuplicated) return SignUpResponseDto.duplicateEmail();
-
+//            OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
+//            System.out.println(oAuth2User.toString());
+            // SNS 에서 받은 정보와 결합하여 저장
             UserEntity userEntity = new UserEntity(dto);
             userRepository.save(userEntity);
-
-//            accessToken = jwtProvider.createToken(userEntity.getEmail(), 1, ChronoUnit.HOURS);
-//            System.out.println(accessToken);
-
 
         }catch(Exception exception){
             exception.printStackTrace();
