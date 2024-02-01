@@ -38,6 +38,8 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         boolean isExist = userRepository.existsByEmail(email);
 
+        // redis 에 저장
+
         response.sendRedirect("http://localhost:3000/auth/oauth-response/" + email + "/" + accessToken + "/" + refreshToken + "/3600/" + isExist);
 
     }
