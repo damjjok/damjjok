@@ -32,8 +32,6 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         String email = oAuth2User.getName();
         //String token = jwtProvider.createToken(email, 1, ChronoUnit.HOURS); // jwt token 만들어서 던져줌
-        // 사용자 인증이 완료되면 이 사용자가 회원가입이 되어있는 사용자인지 본 후에, 회원가입 안되있으면
-        // 사용자 정보 가지고 회원가입 창으로 이동함
 
         boolean isExist = userRepository.existsByEmail(email);
 
