@@ -37,7 +37,7 @@
     }
 }
 
-.Landing {
+.LandingMain {
     display: flex;
     flex-direction: column;
     align-items: center;
