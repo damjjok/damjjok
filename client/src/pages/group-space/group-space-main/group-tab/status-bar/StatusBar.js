@@ -3,6 +3,7 @@ import BasicButton from "../../../../../components/button/BasicButton";
 import { currentUserState } from "../../../../../contexts/User";
 import { EditIcon } from "@chakra-ui/icons";
 import candyImg from "assets/images/candylogo.png";
+import StatusBarToast from "./status-bar-toast/StatusBarToast";
 // import { challengeState } from "../../../../../contexts/Challenge";
 
 function StatusBar() {
@@ -39,7 +40,8 @@ function StatusBar() {
                 <EditIcon />
             </div>
             <div className="flex items-center">
-                <BasicButton buttonName={"출석하기"} variant={"smbtn"} />
+                {/* <BasicButton buttonName={"출석하기"} variant={"smbtn"} /> */}
+                <StatusBarToast/>
                 <div className="flex flex-col items-center">
                     <div className="bg-damwhite rounded-full border border-damyellow">
                         <img
