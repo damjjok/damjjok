@@ -11,4 +11,5 @@ public class ChatController {
     public String chatPage() {
         return "chat.html"; // 채팅 페이지로 이동
     }
+
 }

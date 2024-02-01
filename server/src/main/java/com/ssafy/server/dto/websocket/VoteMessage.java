@@ -7,9 +7,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class HelloMessage {
-    private String name;
-    private String content;
+@NoArgsConstructor
+// 사용자 투표 메시지
+public class VoteMessage {
+    private int choice;
+    // 생성자, getter, setter 생략
 }
