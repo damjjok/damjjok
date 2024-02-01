@@ -26,20 +26,12 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
         } catch (ExpiredJwtException e) { // 액세스 토큰 만료 시
             response.setStatus(HttpStatus.BAD_REQUEST.value());
             response.getWriter().write(e.getMessage());
-        } catch (UnsupportedJwtException e) {
-            response.setStatus(HttpStatus.UNAUTHORIZED.value());
-            response.getWriter().write(e.getMessage());
-        } catch (SignatureException e) {
-            response.setStatus(HttpStatus.UNAUTHORIZED.value());
-            response.getWriter().write(e.getMessage());
-        } catch (MalformedJwtException e) {
+        } catch (UnsupportedJwtException | SignatureException | MalformedJwtException e) {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.getWriter().write(e.getMessage());
         } catch (CustomJwtException e) {
-            // 적절한 HTTP 상태 코드 설정
+            response.setContentType("application/json;charset=UTF-8");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401 Unauthorized
-
-            // 클라이언트에게 보낼 에러 메시지 설정
             response.getWriter().write(e.getMessage());
         }
     }

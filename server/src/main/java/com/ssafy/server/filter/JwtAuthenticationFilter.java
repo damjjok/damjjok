@@ -1,8 +1,10 @@
 package com.ssafy.server.filter;
 
 import com.ssafy.server.entity.UserEntity;
+import com.ssafy.server.exception.CustomJwtException;
 import com.ssafy.server.provider.JwtProvider;
 import com.ssafy.server.repository.UserRepository;
+import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,24 +30,26 @@ import java.util.List;
 @RequiredArgsConstructor // 필수 요소에 대한 생성자를 만들어줌
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final UserRepository userRepository;
     private final JwtProvider jwtProvider;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try{
             String token = parseBearerToken(request);
+
             if(token == null) {
                 filterChain.doFilter(request,response);// null이면 밑의 것을 진행하지 말고 다음 필터로 넘겨라 ..? 밑에랑 이거랑 함수가 똑같잖어 ..
                 return;
             }
+            System.out.println(token);
+            String email = null;
 
-            String email = jwtProvider.validateToken(token);
+            email = jwtProvider.validateToken(token);
+
             if(email == null){
                 filterChain.doFilter(request,response);
                 return;
             }
-
 
             //user 정보 꺼내오기
             //현재는 관리자, 사용자 역할구분이 없기 때문에 따로 역할을 부여하지 않는다
@@ -65,8 +69,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             securityContext.setAuthentication(authenticationToken);
             SecurityContextHolder.setContext(securityContext);
 
-        }catch (Exception exception){
-            exception.printStackTrace();
+        }
+        catch (CustomJwtException e){
+            throw new CustomJwtException(e.getMessage(),e);
         }
 
         filterChain.doFilter(request,response); // 다음 필터로 넘어가도록 만들어줌
