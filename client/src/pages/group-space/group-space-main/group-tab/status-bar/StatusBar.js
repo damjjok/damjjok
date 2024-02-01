@@ -4,6 +4,7 @@ import { currentUserState } from "../../../../../contexts/User";
 import { EditIcon } from "@chakra-ui/icons";
 import candyImg from "assets/images/candylogo.png";
 import StatusBarToast from "./status-bar-toast/StatusBarToast";
+import StatusEditModal from "./status-edit-modal/StatusEditModal";
 // import { challengeState } from "../../../../../contexts/Challenge";
 
 function StatusBar() {
@@ -37,7 +38,8 @@ function StatusBar() {
                     D+{diffDays}
                 </div>
                 <p>{currentChallenge.determination}</p>
-                <EditIcon />
+                
+                <StatusEditModal currentChallenge={currentChallenge} />
             </div>
             <div className="flex items-center">
                 {/* <BasicButton buttonName={"출석하기"} variant={"smbtn"} /> */}

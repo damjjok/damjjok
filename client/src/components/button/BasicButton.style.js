@@ -45,7 +45,7 @@ export const ButtonContainer = styled.button`
     ${(props) =>
         props.disabled &&
         css`
-            opacity: 50;
+            opacity: 50%;
             cursor: not-allowed;
         `}
 `;
