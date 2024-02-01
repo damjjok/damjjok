@@ -34,14 +34,14 @@ public class AuthServiceImpl implements AuthService {
             UserEntity userEntity = new UserEntity(dto);
             userRepository.save(userEntity);
 
-            accessToken = jwtProvider.createToken(userEntity.getEmail(), 1, ChronoUnit.HOURS);
-            System.out.println(accessToken);
+//            accessToken = jwtProvider.createToken(userEntity.getEmail(), 1, ChronoUnit.HOURS);
+//            System.out.println(accessToken);
 
 
         }catch(Exception exception){
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
-        return SignUpResponseDto.success(accessToken);
+        return SignUpResponseDto.success();
     }
 }

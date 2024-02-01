@@ -9,19 +9,15 @@ import lombok.Setter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-@Getter
-@Setter
+
 public class SignUpResponseDto extends ResponseDto{
 
-    private String accessToken;
-
-    private SignUpResponseDto(String accessToken)  {
+    private SignUpResponseDto()  {
         super();
-        this.accessToken = accessToken;
     }
 
-    public static ResponseEntity<SignUpResponseDto> success(String accessToken){
-        SignUpResponseDto responseBody = new SignUpResponseDto(accessToken);
+    public static ResponseEntity<SignUpResponseDto> success(){
+        SignUpResponseDto responseBody = new SignUpResponseDto();
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
 
