@@ -1,10 +1,13 @@
+import postboxMain from "assets/images/postboxMain.png";
+
 function RewardBox() {
-  return (
-      <div>
-          <p>나의 리워드</p>
-          <p>우체통 이미지</p>
-      </div>
-  );
+    return (
+        <div className="flex justify-center my-8">
+            <div style={{ width: "300px" }}>
+                <img src={postboxMain} alt="postboxMain" />
+            </div>
+        </div>
+    );
 }
 
 export default RewardBox;

@@ -6,9 +6,8 @@ function PiggyBank(progress = 0.4) {
     const processPercentage = progress * 100;
 
     return (
-        <div>
-            <h1>금연 저금통</h1>
-            <div style={{ width: "500px" }}>
+        <div className="flex justify-center my-8">
+            <div style={{ width: "300px" }}>
                 <img
                     src={piggybanklogo}
                     alt="Piggybank Background"
