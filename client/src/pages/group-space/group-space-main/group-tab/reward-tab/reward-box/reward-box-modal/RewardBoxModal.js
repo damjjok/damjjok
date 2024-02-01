@@ -1,3 +1,5 @@
+import RewardBoxSendAlert from "./RewardBoxSendAlert";
+
 const {
     Modal,
     ModalOverlay,
@@ -46,7 +48,9 @@ function RewardBoxModal() {
                         </FormControl>
                     </ModalBody>
 
-                    <ModalFooter>{/*버튼/*/}</ModalFooter>
+                    <ModalFooter>
+                        <RewardBoxSendAlert isOpen={isOpen} onClose={onClose} />
+                    </ModalFooter>
                 </ModalContent>
             </Modal>
         </div>
