@@ -11,9 +11,10 @@ export const currentUserState = atom({
         email: "kain9101@naver.com",
         userName: "손종민",
         joinDate: "2024-01-10",
+        role: "damJJok",
     },
 });
-
+//role: "phD"
 export const currentGroupState = atom({
     key: "currentGroupState",
     default: { groupId: "1", groupName: "E105" },
