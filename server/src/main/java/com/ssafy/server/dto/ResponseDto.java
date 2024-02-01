@@ -34,6 +34,6 @@ public class ResponseDto {
 
     public static ResponseEntity<ResponseDto> jwtTokenFail(){
         ResponseDto responseBody = new ResponseDto(ResponseCode.VALIDATION_FAIL, ResponseMessage.VALIDATION_FAIL);
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseBody);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(responseBody);
     }
 }
