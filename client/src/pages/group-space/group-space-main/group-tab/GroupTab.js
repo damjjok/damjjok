@@ -1,17 +1,17 @@
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 import HomeTab from "./home-tab/HomeTab";
-import EvidenceTab from "./evidence-tab/EvidenceTab";
 import TruthRoomTab from "./truth-room-tab/TruthRoomTab";
 import RewardTab from "./reward-tab/RewardTab";
 import StatusBar from "./status-bar/StatusBar";
+import ArticleTab from "./article-tab/EvidenceTab";
 
 function GroupTab() {
     // 1. Create the component
     function DataTabs({ data }) {
         return (
             <div>
-                <StatusBar/>
-                <Tabs isFitted colorScheme="yellow" >
+                <StatusBar />
+                <Tabs isFitted colorScheme="yellow">
                     <TabList>
                         {data.map((tab, index) => (
                             <Tab key={index}>{tab.label}</Tab>
@@ -19,7 +19,7 @@ function GroupTab() {
                     </TabList>
                     <TabPanels>
                         {data.map((tab, index) => (
-                            <TabPanel  p={4} key={index}>
+                            <TabPanel p={4} key={index}>
                                 {tab.content}
                             </TabPanel>
                         ))}
@@ -37,7 +37,7 @@ function GroupTab() {
         },
         {
             label: "제보",
-            content: <EvidenceTab />,
+            content: <ArticleTab />,
         },
         {
             label: "진실의 방",
