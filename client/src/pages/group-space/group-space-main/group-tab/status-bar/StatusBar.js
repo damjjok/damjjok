@@ -5,6 +5,8 @@ import { EditIcon } from "@chakra-ui/icons";
 import candyImg from "assets/images/candylogo.png";
 import StatusBarToast from "./status-bar-toast/StatusBarToast";
 import StatusEditModal from "./status-edit-modal/StatusEditModal";
+import { Avatar, WrapItem } from "@chakra-ui/react";
+import avatar1 from 'assets/images/avatar1.png'
 // import { challengeState } from "../../../../../contexts/Challenge";
 
 function StatusBar() {
@@ -28,8 +30,11 @@ function StatusBar() {
     const diffDays = Math.floor(diffMilliseconds / (24 * 60 * 60 * 1000));
 
     return (
-        <div className=" flex justify-between items-center bg-damgray px-4">
+        <div className=" flex justify-between items-center min-w-max max-w-screen-2xl bg-damgray rounded-full px-4 py-1">
             <div className="flex items-center">
+                <WrapItem className="mr-2 ">
+                    <Avatar name='Cat' src={avatar1} size='sm' bg='dam.white'/>
+                </WrapItem>
                 <p className=" text-lg font-bold">
                     {currentUser.userName} 챌린지 -
                     {/* {currentChallenge.createdAt.toLocaleDateString()} */}
