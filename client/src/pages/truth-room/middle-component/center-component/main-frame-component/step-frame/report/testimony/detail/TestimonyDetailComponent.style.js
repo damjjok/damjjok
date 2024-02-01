@@ -5,12 +5,20 @@ export const Wrapper = styled.div`
     height: 552px;
     border: 1px solid black;
 
-    .title-component {
+    .title-container {
         margin: 20px;
+        padding: 10px;
     }
 
-    .content-component {
+    .writer-container {
+        display: flex;
         margin: 20px;
+        justify-content: right;
+    }
+
+    .content-container {
+        margin: 20px;
+        padding: 10px;
         height: 400px;
         border: 1px solid black;
     }
