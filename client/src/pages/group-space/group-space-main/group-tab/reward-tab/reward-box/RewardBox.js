@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import postboxMain from "assets/images/postboxMain.png";
 import { currentUserState } from "contexts/User";
 import { useRecoilValue } from "recoil";
-import BasicButton from "components/button/BasicButton";
+import { useDisclosure } from "@chakra-ui/react";
+import RewardBoxModal from "./reward-box-modal/RewardBoxModal";
 
 function RewardBox() {
     const currentUser = useRecoilValue(currentUserState);
     const [isHovered, setIsHovered] = useState(false);
+    const { isOpen, onClose } = useDisclosure();
 
     return (
         <div>
@@ -40,10 +42,7 @@ function RewardBox() {
                             <img src={postboxMain} alt="postboxMain" />
                         </div>
                     </div>
-                    <BasicButton
-                        variant={"bigbtn"}
-                        buttonName={"담쪽이 응원하기"}
-                    />
+                    <RewardBoxModal isOpen={isOpen} onClose={onClose} />
                 </div>
             )}
         </div>
