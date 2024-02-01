@@ -1,9 +1,11 @@
 import { EditIcon } from "@chakra-ui/icons"
-import { Editable, EditableInput, EditablePreview, FormControl, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure } from "@chakra-ui/react"
+import { Editable, EditableInput, EditablePreview, FormControl, FormLabel, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure } from "@chakra-ui/react"
 import BasicButton from "components/button/BasicButton"
 import React from "react"
+import AvatarSelector from "./AvatarSelector"
 
-function StatusEditModal(props) {
+
+function StatusEditModal({currentChallenge, avatars}) {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const initialRef = React.useRef(null)
@@ -11,7 +13,9 @@ function StatusEditModal(props) {
 
   return (
     <>
-      <EditIcon onClick={onOpen}/>
+      <button>
+        <EditIcon onClick={onOpen}/>
+      </button>
 
       <Modal
         initialFocusRef={initialRef}
@@ -28,20 +32,26 @@ function StatusEditModal(props) {
           <ModalBody pb={6}>
             <FormControl pb={6}>
               <FormLabel>챌린지 프로필 선택</FormLabel>
-              <Input ref={initialRef} placeholder='First name' />
+              <AvatarSelector avatars={avatars}/>
             </FormControl>
 
             <p>나의 한 마디 수정</p>
             <Editable
-              defaultValue={`${props.currentChallenge.determination}`}>
+              defaultValue={`${currentChallenge.determination}`}>
               <EditablePreview/>
               <EditableInput/>
             </Editable>
           </ModalBody>
 
           <ModalFooter>
-            <BasicButton buttonName={'수정하기'}/>
-            <BasicButton onClick={onClose} buttonName={'닫기'} variant={'cancel'}/>
+            <BasicButton buttonName={'수정하기'}
+            onClick={() => {
+              //수정사항 반영 로직 작성
+              onClose()
+            }}
+
+            />
+            <BasicButton onClick={onClose} buttonName={'취소'} variant={'cancel'}/>
           </ModalFooter>
         </ModalContent>
       </Modal>
