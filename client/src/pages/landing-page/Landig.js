@@ -1,7 +1,4 @@
-import {
-    Button,
-    useDisclosure,
-} from "@chakra-ui/react";
+import { Button, useDisclosure } from "@chakra-ui/react";
 
 import LandingMain from "./landing-main/LandingMain";
 import LoginModal from "./landing-main/landing-modal/LoginModal";
@@ -31,12 +28,21 @@ const Landing = () => {
 
     return (
         <div className="Landing">
-            <LandingMain/>
+            <LandingMain />
             <Button onClick={LoginonOpen}>시작하기</Button>
             {/* Login */}
-            <LoginModal LoginisOpen={LoginisOpen} LoginonClose={LoginonClose} LoginonOpen={LoginonOpen} handleLogintoForm={handleLogintoForm}/>
+            <LoginModal
+                LoginisOpen={LoginisOpen}
+                LoginonClose={LoginonClose}
+                LoginonOpen={LoginonOpen}
+                handleLogintoForm={handleLogintoForm}
+            />
             {/* Form */}
-            <FormModal FormisOpen={FormisOpen} FormonOpen={FormonOpen} FormonClose={FormonClose} />
+            <FormModal
+                FormisOpen={FormisOpen}
+                FormonOpen={FormonOpen}
+                FormonClose={FormonClose}
+            />
         </div>
     );
 };

@@ -1,30 +1,28 @@
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalCloseButton,
-  Button,
- 
-  Image,
-  VStack,
-  Text,
-
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalBody,
+    ModalCloseButton,
+    Button,
+    Image,
+    VStack,
+    Text,
 } from "@chakra-ui/react";
+import logo from "assets/images/logo.png";
 
-
-const LoginModal = ({LoginisOpen, LoginonClose, handleLogintoForm})=>{
-  return(
-    <div className="LoginModal">
-       <Modal isOpen={LoginisOpen} onClose={LoginonClose} isCentered>
+const LoginModal = ({ LoginisOpen, LoginonClose, handleLogintoForm }) => {
+    return (
+        <div className="LoginModal">
+            <Modal isOpen={LoginisOpen} onClose={LoginonClose} isCentered>
                 <ModalOverlay />
                 <ModalContent width="sm" p={5} mx="auto" my="auto">
                     <ModalHeader> </ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
                         <Image
-                            src="/logo.png"
+                            src={logo}
                             alt="Logo"
                             mx="auto"
                             my={4}
@@ -48,8 +46,8 @@ const LoginModal = ({LoginisOpen, LoginonClose, handleLogintoForm})=>{
                     </ModalBody>
                 </ModalContent>
             </Modal>
-    </div>
-  )
-}
+        </div>
+    );
+};
 
 export default LoginModal;

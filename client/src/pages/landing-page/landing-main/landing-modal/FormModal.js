@@ -1,59 +1,56 @@
-
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalCloseButton,
-  Button,
-  Image,
-  VStack,
-  Text,
-  FormControl,
-  Input,
-  Stack,
-  Radio,
-  RadioGroup,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalBody,
+    ModalCloseButton,
+    Button,
+    Image,
+    VStack,
+    Text,
+    FormControl,
+    Input,
+    Stack,
+    Radio,
+    RadioGroup,
 } from "@chakra-ui/react";
 
 import { useState } from "react";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import logo from "assets/images/logo.png";
 
-const FormModal = ({FormisOpen, FormonClose})=>{
-
-  const [state, setstate] = useState({
-    user_name: "",
-    email: "",
-    birth: "",
-    sex: "",
-});
-
-const handleChangeState = (e) => {
-    setstate({
-        ...state,
-        [e.target.name]: e.target.value,
+const FormModal = ({ FormisOpen, FormonClose }) => {
+    const [state, setstate] = useState({
+        user_name: "",
+        email: "",
+        birth: "",
+        sex: "",
     });
-};
 
-const navigate = useNavigate();
+    const handleChangeState = (e) => {
+        setstate({
+            ...state,
+            [e.target.name]: e.target.value,
+        });
+    };
 
-const handleSignUp = () => {
-  navigate("/create-group");
-};
+    const navigate = useNavigate();
 
+    const handleSignUp = () => {
+        navigate("/create-group");
+    };
 
-
-  return(
-    <div className="FormModal">
-        <Modal isOpen={FormisOpen} onClose={FormonClose} isCentered>
+    return (
+        <div className="FormModal">
+            <Modal isOpen={FormisOpen} onClose={FormonClose} isCentered>
                 <ModalOverlay />
                 <ModalContent width="md" p={5} mx="auto" my="auto">
                     <ModalHeader> </ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
                         <Image
-                            src="/logo.png"
+                            src={logo}
                             alt="Logo"
                             mx="auto"
                             my={4}
@@ -118,8 +115,8 @@ const handleSignUp = () => {
                     </ModalBody>
                 </ModalContent>
             </Modal>
-    </div>
-  )
-}
+        </div>
+    );
+};
 
 export default FormModal;

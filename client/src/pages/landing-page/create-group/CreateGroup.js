@@ -1,11 +1,7 @@
 import { useState } from "react";
-import {
-
-    Button,
-    useDisclosure,
-    HStack,
-} from "@chakra-ui/react";
-import CreateGroupModal from "./create-group- modal/CreateGroupModal";
+import { Button, useDisclosure, HStack } from "@chakra-ui/react";
+import CreateGroupModal from "./create-group-modal/CreateGroupModal";
+import logo from "assets/images/logo.png";
 
 const CreateGroup = () => {
     const [groupData, setGroupData] = useState([]);
@@ -21,11 +17,9 @@ const CreateGroup = () => {
         onClose();
     };
 
-  
-
     return (
         <div className="CreateGroup">
-            <img src="/logo.png" alt="logoImg" />
+            <img src={logo} alt="logoImg" />
             {groupData.length < 1 ? (
                 <>
                     <p>
@@ -94,11 +88,11 @@ const CreateGroup = () => {
             )}
 
             <CreateGroupModal
-              isOpen={isOpen}
-              onClose={onClose}
-              groupName={groupName}
-              setGroupName={setGroupName}
-              onGroupCreate={onGroupCreate}
+                isOpen={isOpen}
+                onClose={onClose}
+                groupName={groupName}
+                setGroupName={setGroupName}
+                onGroupCreate={onGroupCreate}
             />
         </div>
     );
