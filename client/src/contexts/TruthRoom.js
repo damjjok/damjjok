@@ -49,19 +49,19 @@ export const testimonyState = atom({
     default: [
         {
             title: "증언 1",
-            content: "이새끼 담배 폈습니다",
+            content: "이새끼 담배 폈습니다1",
         },
         {
             title: "증언 2",
-            content: "이새끼 담배 폈습니다",
+            content: "이새끼 담배 폈습니다2",
         },
         {
             title: "증언 3",
-            content: "이새끼 담배 폈습니다",
+            content: "이새끼 담배 폈습니다3",
         },
         {
             title: "증언 4",
-            content: "이새끼 담배 폈습니다",
+            content: "이새끼 담배 폈습니다4",
         },
     ],
 });

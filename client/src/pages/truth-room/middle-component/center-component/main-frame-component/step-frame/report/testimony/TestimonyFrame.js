@@ -20,13 +20,23 @@ function TestimonyFrame(props) {
 
     return (
         <Wrapper>
-            <button onClick={handleLeftClick} disabled={testimonyIdx === 0}>
+            <button
+                onClick={handleLeftClick}
+                disabled={testimonyIdx === 0}
+                style={{ color: testimonyIdx === 0 ? "grey" : "inherit" }}
+            >
                 <ChevronLeftIcon boxSize={"100px"} />
             </button>
             <TestimonyDeatilComponent testimony={testimonies[testimonyIdx]} />
             <button
                 onClick={handleRightClick}
                 disabled={testimonyIdx === testimonies.length - 1}
+                style={{
+                    color:
+                        testimonyIdx === testimonies.length - 1
+                            ? "grey"
+                            : "inherit",
+                }}
             >
                 <ChevronRightIcon boxSize={"100px"} />
             </button>
