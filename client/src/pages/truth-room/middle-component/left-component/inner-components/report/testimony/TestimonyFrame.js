@@ -1,9 +1,9 @@
 import React from "react";
 import { Wrapper } from "../Frame.style";
 
-function TestimonyFrame({ testimony }) {
+function TestimonyFrame({ testimony, onClick }) {
     return (
-        <Wrapper>
+        <Wrapper onClick={onClick}>
             <div>{testimony.title}</div>
             <div>{testimony.content}</div>
         </Wrapper>
