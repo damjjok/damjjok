@@ -49,18 +49,22 @@ export const testimonyState = atom({
     default: [
         {
             title: "증언 1",
+            writer: "작성자1",
             content: "이새끼 담배 폈습니다1",
         },
         {
             title: "증언 2",
+            writer: "작성자2",
             content: "이새끼 담배 폈습니다2",
         },
         {
             title: "증언 3",
+            writer: "작성자3",
             content: "이새끼 담배 폈습니다3",
         },
         {
             title: "증언 4",
+            writer: "작성자4",
             content: "이새끼 담배 폈습니다4",
         },
     ],
