@@ -1,5 +1,8 @@
 package com.ssafy.server.provider;
 
+import com.ssafy.server.exception.CustomJwtException;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -42,9 +45,10 @@ public class JwtProvider {
                     .getBody()
                     .getSubject();
 
-        }catch (Exception exception){
-            exception.printStackTrace(); // 실제 운영 환경에서는 적절한 로깅 필요
-            return null;
+        }catch (ExpiredJwtException e){
+            throw new CustomJwtException("Token is Expired.",e);
+        }catch (JwtException e){
+            throw new CustomJwtException("Jwt is not valid",e);
         }
 
         return subject;

@@ -41,20 +41,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
 
             String email = jwtProvider.validateToken(token);
-
             if(email == null){
                 filterChain.doFilter(request,response);
                 return;
             }
 
+
             //user 정보 꺼내오기
-            UserEntity userEntity = userRepository.findByEmail(email);
-
-            /*
-
-            현재는 관리자, 사용자 역할구분이 없기 때문에 따로 역할을 부여하지 않는다
-
-             */
+            //현재는 관리자, 사용자 역할구분이 없기 때문에 따로 역할을 부여하지 않는다
+            //UserEntity userEntity = userRepository.findByEmail(email);
             //String role = userEntity.getRole(); // role : ROLE_USER, ROLE_ADMIN
 
             // 꼭 규칙을 지킬 것. ROLE_DEVELOPER, ROLE_BOSS <- 이런 형태로 작업을 해달라

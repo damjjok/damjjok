@@ -1,6 +1,7 @@
 package com.ssafy.server.config;
 
 import com.ssafy.server.filter.JwtAuthenticationFilter;
+import com.ssafy.server.filter.JwtExceptionFilter;
 import com.ssafy.server.handler.OAuth2SuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -27,8 +28,12 @@ public class WebSecurityConfig {
 
 
     private final DefaultOAuth2UserService oAuth2UserService;
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
+
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final JwtExceptionFilter rwtExceptionFilter;
+
 
     @Bean
     protected SecurityFilterChain configure(HttpSecurity httpSecurity) throws Exception {
@@ -51,6 +56,7 @@ public class WebSecurityConfig {
                         .userInfoEndpoint(endpoint -> endpoint.userService(oAuth2UserService))
                         .successHandler(oAuth2SuccessHandler)
                 )
+                .addFilterBefore(rwtExceptionFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity.build();
