@@ -48,9 +48,9 @@ public class WebSecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/api/v1/auth/**").permitAll()
-                        //.requestMatchers("/**").permitAll()
-                        .anyRequest().authenticated()
+                        //.requestMatchers("/api/v1/auth/**").permitAll()
+                        .requestMatchers("/**").permitAll()
+                        //.anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2
                         .authorizationEndpoint(endpoint -> endpoint.baseUri("/api/v1/auth/oauth2")) //custom uri 함
