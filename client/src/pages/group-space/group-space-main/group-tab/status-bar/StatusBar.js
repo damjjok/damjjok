@@ -50,7 +50,7 @@ function StatusBar() {
                 <div className=" bg-damblack rounded-xl max-h-4 px-2 mx-2 text-xs text-damyellow">
                     D+{diffDays}
                 </div>
-                <p>{currentChallenge.determination}</p>
+                <p className="mx-4">{currentChallenge.determination}</p>
                 
                 <StatusEditModal currentChallenge={currentChallenge} avatars={avatars} />
             </div>
