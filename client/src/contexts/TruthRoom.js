@@ -30,6 +30,11 @@ export const groupState = atom({
     ],
 });
 
+export const reportModeState = atom({
+    key: "reportMode",
+    default: "EVIDENCE", // EVIDENCE, TESTIMONY
+});
+
 export const evidenceState = atom({
     key: "evidence",
     default: [
@@ -44,19 +49,23 @@ export const testimonyState = atom({
     default: [
         {
             title: "증언 1",
-            content: "이새끼 담배 폈습니다",
+            writer: "작성자1",
+            content: "이새끼 담배 폈습니다1",
         },
         {
             title: "증언 2",
-            content: "이새끼 담배 폈습니다",
+            writer: "작성자2",
+            content: "이새끼 담배 폈습니다2",
         },
         {
             title: "증언 3",
-            content: "이새끼 담배 폈습니다",
+            writer: "작성자3",
+            content: "이새끼 담배 폈습니다3",
         },
         {
             title: "증언 4",
-            content: "이새끼 담배 폈습니다",
+            writer: "작성자4",
+            content: "이새끼 담배 폈습니다4",
         },
     ],
 });

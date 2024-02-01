@@ -3,7 +3,7 @@ import { Wrapper } from "./MainFrameComponent.style";
 import { useRecoilValue } from "recoil";
 import { stepState } from "contexts/TruthRoom";
 import ReadyStateFrame from "./step-frame/ReadyStateFrame";
-import ReportFrame from "./step-frame/ReportFrame";
+import ReportFrame from "./step-frame/report/ReportFrame";
 import VoteFrame from "./step-frame/VoteFrame";
 import PassFailFrame from "./step-frame/PassFailFrame";
 import ClosingArgumentFrame from "./step-frame/ClosingArgumentFrame";
