@@ -11,6 +11,11 @@ import Landing from "./pages/landing-page/Landig.js";
 import CreateGroup from "./pages/landing-page/create-group/CreateGroup.js";
 import GroupSpaceHome from "./pages/group-space/GroupSpaceHome.js";
 import TruthRoom from "pages/truth-room/TruthRoom";
+import HomeTab from "pages/group-space/group-space-main/group-tab/home-tab/HomeTab";
+import ArticleTab from "pages/group-space/group-space-main/group-tab/article-tab/ArticleTab";
+import GroupTab from "pages/group-space/group-space-main/group-tab/GroupTab";
+import CreateChallenge from "pages/group-space/group-space-main/empty-challenge/create-challenge/CreateChallenge";
+import EmptyChallenge from "pages/group-space/group-space-main/empty-challenge/EmptyChallenge";
 
 const theme = extendTheme({
     colors: {
@@ -44,10 +49,11 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Landing />} />
                     <Route path="/create-group" element={<CreateGroup />} />
-                    <Route
-                        path={`/group/${currentGroup.groupId}/*`}
-                        element={<GroupSpaceHome />}
-                    />
+                    <Route path={`/group/${currentGroup.groupId}/*`} element={<GroupSpaceHome />}>
+                        <Route path="createChallenge" element={<CreateChallenge />} />
+                        <Route path="empty-challenge" element={<EmptyChallenge />} />
+                        <Route path="" element={<GroupTab />} />
+                    </Route>
                     <Route path="/truth-room" element={<TruthRoom />} />
                 </Routes>
             </ChakraProvider>

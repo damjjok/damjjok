@@ -8,11 +8,15 @@ import avatar1 from "assets/images/avatar1.png";
 import avatar2 from "assets/images/avatar2.png";
 import avatar3 from "assets/images/avatar3.png";
 import avatar4 from "assets/images/avatar4.png";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 // import { challengeState } from "../../../../../contexts/Challenge";
 
 function StatusBar() {
     const currentUser = useRecoilValue(currentUserState);
     let currentChallenge = localStorage.getItem("challengeList");
+    let navigate = useNavigate();
+
     let today = new Date();
     if (currentChallenge) {
         // 가져온 값이 있으면 JSON.parse를 사용해서 문자열을 객체로 변환합니다.
@@ -22,6 +26,9 @@ function StatusBar() {
         currentChallenge = myChallenge[0];
     } else {
         console.log("No data in localStorage");
+        navigate("./empty-challenge");
+        console.log("123123");
+        return <></>;
     }
 
     const startedDate = new Date(currentChallenge.createdAt);
@@ -44,29 +51,19 @@ function StatusBar() {
                     <Avatar name="Cat" src={avatar1} size="sm" bg="dam.white" />
                 </WrapItem>
                 <p className=" text-lg font-bold">
-                    {currentUser.userName} 챌린지 -{" "}
-                    {startedDate.toLocaleDateString()}
+                    {currentUser.userName} 챌린지 - {startedDate.toLocaleDateString()}
                 </p>
-                <div className=" bg-damblack rounded-xl max-h-4 px-2 mx-2 text-xs text-damyellow">
-                    D+{diffDays}
-                </div>
+                <div className=" bg-damblack rounded-xl max-h-4 px-2 mx-2 text-xs text-damyellow">D+{diffDays}</div>
                 <p className="mx-4">{currentChallenge.determination}</p>
 
-                <StatusEditModal
-                    currentChallenge={currentChallenge}
-                    avatars={avatars}
-                />
+                <StatusEditModal currentChallenge={currentChallenge} avatars={avatars} />
             </div>
             <div className="flex items-center">
                 {/* <BasicButton buttonName={"출석하기"} variant={"smbtn"} /> */}
                 <StatusBarToast />
                 <div className="flex flex-col items-center">
                     <div className="bg-damwhite rounded-full border border-damyellow">
-                        <img
-                            src={candyImg}
-                            alt="candyImg"
-                            className="w-[25px] h-[25px]"
-                        />
+                        <img src={candyImg} alt="candyImg" className="w-[25px] h-[25px]" />
                     </div>
                     <p className=" text-xs">응원 숫자</p>
                 </div>
