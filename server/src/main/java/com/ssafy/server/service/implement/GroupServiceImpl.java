@@ -2,10 +2,12 @@ package com.ssafy.server.service.implement;
 
 import com.ssafy.server.dto.ResponseDto;
 import com.ssafy.server.dto.group.GroupDto;
+import com.ssafy.server.dto.group.UserDto;
 import com.ssafy.server.dto.request.group.GroupCreateRequestDto;
 import com.ssafy.server.dto.response.group.GroupCreateResponseDto;
 import com.ssafy.server.dto.response.group.GroupInviteResponseDto;
 import com.ssafy.server.dto.response.group.GroupDetailResponseDto;
+import com.ssafy.server.dto.response.group.GroupUserListResponseDto;
 import com.ssafy.server.entity.GroupEntity;
 import com.ssafy.server.entity.UserEntity;
 import com.ssafy.server.repository.GroupRepository;
@@ -87,5 +89,29 @@ public class GroupServiceImpl implements GroupService {
             return ResponseDto.databaseError();
         }
         return GroupDetailResponseDto.success(groupDto);
+    }
+
+    @Override
+    public ResponseEntity<? super GroupUserListResponseDto> userList(String email) {
+
+        List<UserDto> list = new ArrayList<>();
+
+        try{
+
+            List<UserEntity> userEntityList = userRepository.findByEmailContaining(email);
+//            System.out.println(userEntityList);
+
+            userEntityList.stream().forEach(e -> {
+                UserDto dto = new UserDto();
+                dto.setEmail(e.getEmail());
+                dto.setUserName(e.getUserName());
+                list.add(dto);
+            });
+
+        }catch(Exception e){
+            e.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return GroupUserListResponseDto.success(list);
     }
 }
