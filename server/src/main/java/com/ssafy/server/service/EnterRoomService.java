@@ -4,6 +4,7 @@ import com.ssafy.server.dto.websocket.TruthRoomDto;
 
 public interface EnterRoomService {
     TruthRoomDto createOrGetRoom(Integer roomId);
+    TruthRoomDto getRoom(Integer roomId);
     void addMember(Integer roomId, String sessionId, String userName);
     void removeMember(Integer roomId, String sessionId);
     void setMemberReady(Integer roomId, String sessionId, boolean isReady);

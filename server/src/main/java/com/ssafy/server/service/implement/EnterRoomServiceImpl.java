@@ -14,12 +14,16 @@ public class EnterRoomServiceImpl implements EnterRoomService {
         //방이 있다면 넣어주고 없다면 생성하고 넣어줌
         return truthRooms.computeIfAbsent(roomId, k -> new TruthRoomDto());
     }
-
+    @Override
+    public TruthRoomDto getRoom(Integer roomId) {
+        return truthRooms.get(roomId); // roomId에 해당하는 방을 반환, 없으면 null 반환
+    }
     @Override
     public void addMember(Integer roomId, String sessionId, String userName) {
         TruthRoomDto room = createOrGetRoom(roomId);
         room.getMembers().put(sessionId, userName);
         room.getReadyState().put(sessionId, false);
+        room.getEvidenceNextStage().put(sessionId, false);
     }
 
     @Override
