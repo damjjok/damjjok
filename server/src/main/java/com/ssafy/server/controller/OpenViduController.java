@@ -5,6 +5,8 @@ import io.openvidu.java.client.*;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +15,10 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/open-vidu")
+@RequiredArgsConstructor
 public class OpenViduController {
+    private final RedisTemplate<String, String> redisTemplate;
+
 
 
     @Value("${openvidu.url}")
@@ -37,9 +42,24 @@ public class OpenViduController {
     @PostMapping("/api/sessions")
     public ResponseEntity<String> initializeSession(@RequestBody(required = false) Map<String, Object> params)
             throws OpenViduJavaClientException, OpenViduHttpException {
+
+        ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
+
+
+
+        String sessionKey = (String) params.get("sessionKey");
+        String sessionId = valueOperations.get(sessionKey) ;
+
+        if(sessionId != null && openvidu.getActiveSession(sessionId) != null){
+            return ResponseEntity.ok(sessionId);
+        }
+
         SessionProperties properties = SessionProperties.fromJson(params).build();
         Session session = openvidu.createSession(properties);
-        return new ResponseEntity<>(session.getSessionId(), HttpStatus.OK);
+        String newSessionId = session.getSessionId();
+        valueOperations.set(sessionKey, newSessionId);
+
+        return ResponseEntity.ok(newSessionId);
     }
 
     /**
@@ -57,7 +77,10 @@ public class OpenViduController {
         }
         ConnectionProperties properties = ConnectionProperties.fromJson(params).build();
         Connection connection = session.createConnection(properties);
+        System.out.println(connection.getClientData());
         return new ResponseEntity<>(connection.getToken(), HttpStatus.OK);
     }
+
+
 
 }
