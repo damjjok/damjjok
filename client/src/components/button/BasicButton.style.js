@@ -41,4 +41,11 @@ export const ButtonContainer = styled.button`
                 font-size: 10px;
             }
         `}
+
+    ${(props) =>
+        props.disabled &&
+        css`
+            opacity: 50%;
+            cursor: not-allowed;
+        `}
 `;
