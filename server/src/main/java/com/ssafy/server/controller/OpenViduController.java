@@ -1,10 +1,23 @@
 package com.ssafy.server.controller;
 
 
+import com.ssafy.server.dto.request.openvidu.OpenViduConnectionRequestDto;
+import com.ssafy.server.dto.request.openvidu.OpenViduDisconnectionRequestDto;
+import com.ssafy.server.dto.request.openvidu.OpenViduSessionInitializeRequestDto;
+import com.ssafy.server.dto.response.openvidu.OpenViduConnectionResponseDto;
+import com.ssafy.server.dto.response.openvidu.OpenViduDisconnectionResponseDto;
+import com.ssafy.server.dto.response.openvidu.OpenViduSessionInitializeResponseDto;
+import com.ssafy.server.service.OpenViduService;
 import io.openvidu.java.client.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +26,11 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/open-vidu")
+@RequiredArgsConstructor
 public class OpenViduController {
+    private final RedisTemplate<String, String> redisTemplate;
+    private final OpenViduService openViduService;
+
 
 
     @Value("${openvidu.url}")
@@ -29,35 +46,40 @@ public class OpenViduController {
         this.openvidu = new OpenVidu(OPENVIDU_URL, OPENVIDU_SECRET);
     }
 
-    /**
-     * @param params The Session properties
-     * @return The Session ID
-     */
+
 
     @PostMapping("/api/sessions")
-    public ResponseEntity<String> initializeSession(@RequestBody(required = false) Map<String, Object> params)
-            throws OpenViduJavaClientException, OpenViduHttpException {
-        SessionProperties properties = SessionProperties.fromJson(params).build();
-        Session session = openvidu.createSession(properties);
-        return new ResponseEntity<>(session.getSessionId(), HttpStatus.OK);
+    @Operation(summary = "진실의방 세션 생성", description = "진실의방 세션을 생성합니다.",
+            responses = { @ApiResponse(responseCode = "200", description = "진실의방 세션 생성 성공",
+                    content = @Content(schema = @Schema(implementation = OpenViduSessionInitializeResponseDto.class)))})
+    public ResponseEntity<? super OpenViduSessionInitializeResponseDto> initializeSession(@RequestBody OpenViduSessionInitializeRequestDto requestBody)
+            {
+        return openViduService.initializeSession(requestBody, openvidu);
     }
 
-    /**
-     * @param sessionId The Session in which to create the Connection
-     * @param params    The Connection properties
-     * @return The Token associated to the Connection
-     */
     @PostMapping("/api/sessions/{sessionId}/connections")
-    public ResponseEntity<String> createConnection(@PathVariable("sessionId") String sessionId,
-                                                   @RequestBody(required = false) Map<String, Object> params)
-            throws OpenViduJavaClientException, OpenViduHttpException {
-        Session session = openvidu.getActiveSession(sessionId);
-        if (session == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        ConnectionProperties properties = ConnectionProperties.fromJson(params).build();
-        Connection connection = session.createConnection(properties);
-        return new ResponseEntity<>(connection.getToken(), HttpStatus.OK);
+    @Operation(summary = "진실의방 토큰 발급", description = "진실의방 토큰을 발급합니다.",
+            responses = { @ApiResponse(responseCode = "200", description = "진실의방 토큰 발급 성공",
+                    content = @Content(schema = @Schema(implementation = OpenViduConnectionResponseDto.class)))})
+    public ResponseEntity<? super OpenViduConnectionResponseDto> createConnection(@PathVariable("sessionId") String sessionId)
+             {
+        OpenViduConnectionRequestDto requestBody = new OpenViduConnectionRequestDto();
+        requestBody.setSessionId(sessionId);
+
+        return openViduService.createConnection(requestBody, openvidu);
+    }
+
+    @DeleteMapping("/api/sessions/{sessionKey}")
+    @Operation(summary = "진실의방 세션 닫기", description = "진실의방 세션을 닫습니다.",
+            responses = { @ApiResponse(responseCode = "200", description = "진실의방 세션 닫기 성공",
+                    content = @Content(schema = @Schema(implementation = OpenViduDisconnectionResponseDto.class)))})
+    public ResponseEntity<? super OpenViduDisconnectionResponseDto> closeSession(@PathVariable String sessionKey)
+             {
+
+        OpenViduDisconnectionRequestDto requestBody = new OpenViduDisconnectionRequestDto();
+        requestBody.setSessionKey(sessionKey);
+
+        return openViduService.closeSession(requestBody, openvidu);
     }
 
 }
