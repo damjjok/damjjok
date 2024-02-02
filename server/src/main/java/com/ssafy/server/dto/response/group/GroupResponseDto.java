@@ -6,14 +6,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 @Getter
-public class GroupCreateResponseDto extends ResponseDto {
+public class GroupResponseDto extends ResponseDto {
 
-    public GroupCreateResponseDto(){
+    public GroupResponseDto(){
         super();
     }
 
-    public static ResponseEntity<GroupCreateResponseDto> success(){
-        GroupCreateResponseDto responseBody = new GroupCreateResponseDto();
+    public static ResponseEntity<GroupResponseDto> success(){
+        GroupResponseDto responseBody = new GroupResponseDto();
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
 

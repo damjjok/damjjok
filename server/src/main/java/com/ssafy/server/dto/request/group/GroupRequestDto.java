@@ -10,12 +10,12 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class GroupCreateRequestDto {
+public class GroupRequestDto {
 
     @NotBlank
-    private String title;
+    private String name;
 
     @NotBlank
-    private String created_by;
+    private Integer created_by;
 
 }
