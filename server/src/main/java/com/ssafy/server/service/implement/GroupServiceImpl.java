@@ -1,7 +1,8 @@
 package com.ssafy.server.service.implement;
 
-import com.ssafy.server.dto.request.group.GroupRequestDto;
-import com.ssafy.server.dto.response.group.GroupResponseDto;
+import com.ssafy.server.dto.request.group.GroupCreateRequestDto;
+import com.ssafy.server.dto.response.group.GroupCreateResponseDto;
+import com.ssafy.server.dto.response.group.GroupInviteResponseDto;
 import com.ssafy.server.entity.GroupEntity;
 import com.ssafy.server.repository.GroupRepository;
 import com.ssafy.server.service.GroupService;
@@ -19,7 +20,7 @@ public class GroupServiceImpl implements GroupService {
     private final GroupRepository groupRepository;
 
     @Override
-    public ResponseEntity<? super GroupResponseDto> create(GroupRequestDto dto) {
+    public ResponseEntity<? super GroupCreateResponseDto> create(GroupCreateRequestDto dto) {
         try{
 
             GroupEntity groupEntity = new GroupEntity();
@@ -35,8 +36,24 @@ public class GroupServiceImpl implements GroupService {
 
         }catch (Exception e){
             e.printStackTrace();
-            return GroupResponseDto.databaseError();
+            return GroupCreateResponseDto.databaseError();
         }
-        return GroupResponseDto.success();
+        return GroupCreateResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super GroupInviteResponseDto> validateInvitationLink(String invitationLink) {
+
+        GroupEntity groupEntity = null;
+
+        try {
+
+            groupEntity = groupRepository.findByInvitationLink(invitationLink);
+
+        }catch(Exception e){
+            e.printStackTrace();
+            return GroupCreateResponseDto.databaseError();
+        }
+        return GroupInviteResponseDto.sendGroupInfo(groupEntity.getGroupId());
     }
 }

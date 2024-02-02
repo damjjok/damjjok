@@ -1,14 +1,12 @@
 package com.ssafy.server.controller;
 
-import com.ssafy.server.dto.request.group.GroupRequestDto;
-import com.ssafy.server.dto.response.group.GroupResponseDto;
+import com.ssafy.server.dto.request.group.GroupCreateRequestDto;
+import com.ssafy.server.dto.response.group.GroupCreateResponseDto;
+import com.ssafy.server.dto.response.group.GroupInviteResponseDto;
 import com.ssafy.server.service.GroupService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/v1/group")
@@ -18,9 +16,16 @@ public class GroupController {
     private final GroupService groupService;
 
     @PostMapping("/create")
-    public ResponseEntity<? super GroupResponseDto> createGroup(@RequestBody GroupRequestDto requestBody){
-        ResponseEntity<? super GroupResponseDto> response = groupService.create(requestBody);
+    public ResponseEntity<? super GroupCreateResponseDto> createGroup(@RequestBody GroupCreateRequestDto requestBody){
+        ResponseEntity<? super GroupCreateResponseDto> response = groupService.create(requestBody);
         return response;
     }
+
+    @GetMapping("/invite/validate")
+    public ResponseEntity<? super GroupInviteResponseDto> validateInvitation(@RequestParam String invitationLink){
+        ResponseEntity<? super GroupInviteResponseDto> response = groupService.validateInvitationLink(invitationLink);
+        return response;
+    }
+
 
 }
