@@ -9,17 +9,17 @@ import org.springframework.http.ResponseEntity;
 import java.util.*;
 
 @Getter
-public class UserGroupResponseDto extends ResponseDto {
+public class GroupDetailResponseDto extends ResponseDto {
 
-    private List<GroupDto> groupList;
+    private GroupDto groupDto;
 
-    public UserGroupResponseDto(List<GroupDto> groupList){
+    public GroupDetailResponseDto(GroupDto groupDto){
         super();
-        this.groupList = groupList;
+        this.groupDto = groupDto;
     }
 
-    public static ResponseEntity<UserGroupResponseDto> success(List<GroupDto> groupList){
-        UserGroupResponseDto responseBody = new UserGroupResponseDto(groupList);
+    public static ResponseEntity<GroupDetailResponseDto> success(GroupDto groupDto){
+        GroupDetailResponseDto responseBody = new GroupDetailResponseDto(groupDto);
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
 
