@@ -25,17 +25,15 @@ function HomeTab() {
     const diffDays = Math.floor(diffMilliseconds / (24 * 60 * 60 * 1000));
 
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col flex-wrap max-w-7xl">
             <div>
                 <p className="text-xl font-bold">
                     {currentUser.userName}님! 오늘은 금연 {diffDays}
                     일차예요!
                 </p>
-                <Strick />
-                <p>
-                    금연 시작일 : {startedDate.toLocaleDateString()} | 목표일 수
-                    : {currentChallenge.duration}일
-                </p>
+                <div className="flex flex-wrap justify-center">
+                    <Strick startedDate={startedDate} />
+                </div>
             </div>
             <div className="py-8">
                 <p className="text-xl font-bold">
