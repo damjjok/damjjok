@@ -2,6 +2,7 @@ package com.ssafy.server.controller;
 
 import com.ssafy.server.dto.request.group.GroupCreateRequestDto;
 import com.ssafy.server.dto.response.group.GroupCreateResponseDto;
+import com.ssafy.server.dto.response.group.GroupDetailResponseDto;
 import com.ssafy.server.dto.response.group.GroupInviteResponseDto;
 import com.ssafy.server.service.GroupService;
 import lombok.RequiredArgsConstructor;
@@ -27,5 +28,9 @@ public class GroupController {
         return response;
     }
 
-
+    @GetMapping("/detail/{groupId}")
+    public ResponseEntity<? super GroupDetailResponseDto> groupDetail(@PathVariable int groupId) {
+        ResponseEntity<? super GroupDetailResponseDto> response = groupService.groupDetail(groupId);
+        return response;
+    }
 }
