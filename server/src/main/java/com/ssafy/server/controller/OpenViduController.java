@@ -45,8 +45,6 @@ public class OpenViduController {
 
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
 
-
-
         String sessionKey = (String) params.get("sessionKey");
         String sessionId = valueOperations.get(sessionKey) ;
 
@@ -81,14 +79,21 @@ public class OpenViduController {
         return new ResponseEntity<>(connection.getToken(), HttpStatus.OK);
     }
 
-    @DeleteMapping("/api/sessions/{sessionId}")
-    public ResponseEntity<String> deleteSession(@PathVariable("sessionId") String sessionId)
+    @DeleteMapping("/api/sessions/{sessionKey}")
+    public ResponseEntity<String> deleteSession(@PathVariable String sessionKey)
             throws OpenViduJavaClientException, OpenViduHttpException {
+        ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
+
+        String sessionId = valueOperations.get(sessionKey);
         Session session = openvidu.getActiveSession(sessionId);
+
         if (session == null || !session.getActiveConnections().isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+
+        redisTemplate.delete(sessionKey);
         session.close();
+
         return ResponseEntity.ok("Room Closed");
     }
 
