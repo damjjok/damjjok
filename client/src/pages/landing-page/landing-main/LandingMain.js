@@ -1,6 +1,6 @@
 import logo from "assets/images/logo.png";
 
-const LandingMain = () => {
+const LandingMain = (props) => {
     return (
         <div className="LandingMain">
             <img src={logo} alt="logoImg" />
@@ -14,6 +14,7 @@ const LandingMain = () => {
                 우리 오늘부터, 함께 금연 생활을 시작해 봐요
                 <br />
             </p>
+            {props.children}
         </div>
     );
 };

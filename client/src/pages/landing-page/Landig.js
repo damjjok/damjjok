@@ -28,8 +28,10 @@ const Landing = () => {
 
     return (
         <div className="Landing">
-            <LandingMain />
-            <Button onClick={LoginonOpen}>시작하기</Button>
+            <LandingMain>
+                <Button onClick={LoginonOpen}>시작하기</Button>
+            </LandingMain>
+
             {/* Login */}
             <LoginModal
                 LoginisOpen={LoginisOpen}
