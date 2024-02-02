@@ -81,6 +81,15 @@ public class OpenViduController {
         return new ResponseEntity<>(connection.getToken(), HttpStatus.OK);
     }
 
-
+    @DeleteMapping("/api/sessions/{sessionId}")
+    public ResponseEntity<String> deleteSession(@PathVariable("sessionId") String sessionId)
+            throws OpenViduJavaClientException, OpenViduHttpException {
+        Session session = openvidu.getActiveSession(sessionId);
+        if (session == null || !session.getActiveConnections().isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        session.close();
+        return ResponseEntity.ok("Room Closed");
+    }
 
 }
