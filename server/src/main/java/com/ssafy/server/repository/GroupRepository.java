@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface GroupRepository extends JpaRepository<GroupEntity, Integer> {
 
     GroupEntity findByInvitationLink(String invitationLink);
-
     GroupEntity findByGroupId(Integer groupId);
 
 }
