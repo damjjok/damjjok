@@ -52,6 +52,7 @@ public class TruthRoomController {
         messagingTemplate.convertAndSend("/topic/evidenceNextStageState", cnt);
         if (cnt == dto.getMembers().size()) {
             //모두 다음단계로를 눌렀다면 투표화면 열어주기
+            messagingTemplate.convertAndSend("/topic/voteStart", true);
         }
     }
 
