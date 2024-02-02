@@ -1,12 +1,11 @@
-import { stepState } from "contexts/TruthRoom";
-import { useRecoilState } from "recoil";
+import { voteState } from "contexts/TruthRoom";
+import { useRecoilValue } from "recoil";
 import SmallFrameComponent from "../../small-frame/SmallFrameComponent";
-import { useState } from "react";
 import VoteWaitComponent from "./VoteWaitComponent";
 import DoVoteComponent from "./DoVoteComponent";
 
 function VoteFrame(props) {
-    const [isVoted, setIsVoted] = useState(false);
+    const isVoted = useRecoilValue(voteState);
     const testUser = {
         name: "김영후",
         role: "phD",

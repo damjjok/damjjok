@@ -9,6 +9,12 @@ export const stepState = atom({
     default: 0,
 });
 
+export const voteState = atom({
+    // 투표 단계에서 투표여부 판단할 때 쓰임
+    key: "vote",
+    default: true,
+});
+
 export const groupState = atom({
     // 진실의 방에 참여한 멤버 목록
     key: "group",
