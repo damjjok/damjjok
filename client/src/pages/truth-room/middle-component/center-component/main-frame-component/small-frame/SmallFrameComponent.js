@@ -1,10 +1,10 @@
 import React from "react";
 import { Wrapper } from "./SmallFrameComponent.style";
 
-function SmallFrameComponent(props) {
+function SmallFrameComponent({ width, height, content }) {
     return (
-        <Wrapper width={200} height={150}>
-            하이
+        <Wrapper width={width} height={height}>
+            {content}
         </Wrapper>
     );
 }
