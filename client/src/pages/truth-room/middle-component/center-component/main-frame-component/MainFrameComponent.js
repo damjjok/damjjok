@@ -4,7 +4,7 @@ import { useRecoilValue } from "recoil";
 import { stepState } from "contexts/TruthRoom";
 import ReadyStateFrame from "./step-frame/ReadyStateFrame";
 import ReportFrame from "./step-frame/report/ReportFrame";
-import VoteFrame from "./step-frame/VoteFrame";
+import VoteFrame from "./step-frame/vote/VoteFrame";
 import PassFailFrame from "./step-frame/PassFailFrame";
 import ClosingArgumentFrame from "./step-frame/ClosingArgumentFrame";
 import FineDecisionFrame from "./step-frame/FineDecisionFrame";
