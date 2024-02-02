@@ -12,7 +12,7 @@ export const stepState = atom({
 export const voteState = atom({
     // 투표 단계에서 투표여부 판단할 때 쓰임
     key: "vote",
-    default: true,
+    default: false,
 });
 
 export const groupState = atom({

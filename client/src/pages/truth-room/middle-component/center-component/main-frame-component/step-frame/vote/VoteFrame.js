@@ -6,6 +6,7 @@ import DoVoteComponent from "./DoVoteComponent";
 
 function VoteFrame(props) {
     const isVoted = useRecoilValue(voteState);
+    console.log("isVoted 상태: " + isVoted);
     const testUser = {
         name: "김영후",
         role: "phD",
