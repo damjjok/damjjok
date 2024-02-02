@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import PassFailResult from "./PassFailResult";
+import PassFailResult from "./result/PassFailResult";
 import { Wrapper } from "./PassFailFrame.style";
 
 function PassFailFrame(props) {
