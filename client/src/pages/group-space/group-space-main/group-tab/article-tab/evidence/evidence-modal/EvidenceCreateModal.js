@@ -11,15 +11,19 @@ import {
     ModalCloseButton,
     Button,
     Input,
-    Textarea,
     FormControl,
     FormLabel,
+    Flex,
+    Box,
+    Image,
+    Text,
 } from "@chakra-ui/react";
 import EvidenceCreateAlert from "../evidence-alert/EvidenceCreateAlert";
 
 const EvidenceCreateModal = ({ isOpen, onClose, onSave }) => {
     const [data, setData] = useRecoilState(evidenceData);
     const [isAlertOpen, setIsAlertOpen] = useState(false);
+    const [previewImage, setPreviewImage] = useState(""); // 미리보기 이미지 상태
 
     const handleSaveClick = () => {
         setIsAlertOpen(true); // Alert 대화 상자 열기
@@ -27,19 +31,28 @@ const EvidenceCreateModal = ({ isOpen, onClose, onSave }) => {
 
     const handleConfirmSave = () => {
         onSave(data); // 실제 저장 로직 실행
-        setData({ title: "", content: "", img: null }); // 데이터 초기화
+        setData({ title: "", img: null }); // 데이터 초기화
         onClose(); // 모달 닫기
         setIsAlertOpen(false); // Alert 대화 상자 닫기
+        setPreviewImage(""); // 미리보기 이미지 초기화
     };
 
     const handleImageChange = (e) => {
         if (e.target.files[0]) {
             const file = e.target.files[0];
-            const imageUrl = URL.createObjectURL(file); // 파일 객체로부터 URL 생성
-            setData({
-                ...data,
-                img: imageUrl, // 생성된 URL을 상태에 저장
-            });
+            const reader = new FileReader();
+
+            reader.onloadend = () => {
+                // 미리보기 이미지 상태를 업데이트하고
+                // 파일 데이터를 data.img에도 저장합니다.
+                setData({
+                    ...data,
+                    img: reader.result, // 여기서 reader.result를 data.img에 저장합니다.
+                    title: data.title,
+                });
+                setPreviewImage(reader.result); // 미리보기 이미지 상태를 업데이트
+            };
+            reader.readAsDataURL(file);
         }
     };
 
@@ -52,48 +65,76 @@ const EvidenceCreateModal = ({ isOpen, onClose, onSave }) => {
                     <ModalCloseButton />
                     <ModalBody>
                         <FormControl>
-                            <FormLabel>제목</FormLabel>
                             <Input
+                                variant="flushed"
                                 placeholder="제목"
                                 value={data.title}
                                 onChange={(e) =>
                                     setData({ ...data, title: e.target.value })
                                 }
+                                _focus={{
+                                    borderBottom: "2px solid #ffd110", // 포커스 시 선 색상 변경
+                                    boxShadow: "none", // 기본 테마의 포커스 boxShadow 제거
+                                }}
                             />
                         </FormControl>
+
                         <FormControl mt={4}>
-                            <FormLabel>내용</FormLabel>
-                            <Textarea
-                                placeholder="내용"
-                                value={data.content}
-                                onChange={(e) =>
-                                    setData({
-                                        ...data,
-                                        content: e.target.value,
-                                    })
-                                }
-                            />
-                        </FormControl>
-                        <FormControl mt={4}>
-                            <FormLabel>이미지 업로드</FormLabel>
+                            <Box
+                                as="label" // Box를 label 역할로 사용
+                                htmlFor="file-upload" // input과 연결
+                                border="2px dashed #CBD5E0" // 점선 테두리 스타일
+                                borderRadius="md"
+                                display="flex"
+                                justifyContent="center"
+                                alignItems="center"
+                                cursor="pointer"
+                                textAlign="center"
+                                flexDirection="column"
+                                height={previewImage ? "" : "200px"} // 적당한 높이 설정
+                                overflow="hidden" // 내부 이미지가 박스를 넘치지 않도록
+                                p={1}
+                            >
+                                {previewImage ? (
+                                    <Image
+                                        src={previewImage}
+                                        alt="미리보기 이미지"
+                                        // maxH="100%"
+                                        maxW="100%"
+                                        m="auto"
+                                    />
+                                ) : (
+                                    <Text
+                                        fontSize="lg"
+                                        fontWeight="bold"
+                                        color="gray.500"
+                                    >
+                                        + 사진 추가
+                                    </Text>
+                                )}
+                            </Box>
                             <Input
+                                id="file-upload"
                                 type="file"
                                 accept="image/*"
                                 onChange={handleImageChange}
+                                display="none" // 실제 input은 숨김
                             />
                         </FormControl>
                     </ModalBody>
                     <ModalFooter>
-                        <Button
-                            colorScheme="blue"
-                            mr={3}
-                            onClick={handleSaveClick}
-                        >
-                            저장
-                        </Button>
-                        <Button variant="ghost" onClick={onClose}>
-                            닫기
-                        </Button>
+                        <Flex justifyContent="center" width="full">
+                            <Button
+                                colorScheme="yellow"
+                                mr={3}
+                                onClick={handleSaveClick}
+                            >
+                                저장
+                            </Button>
+                            <Button variant="ghost" onClick={onClose}>
+                                닫기
+                            </Button>
+                        </Flex>
                     </ModalFooter>
                 </ModalContent>
 
