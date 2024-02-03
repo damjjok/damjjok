@@ -19,4 +19,5 @@ public class TruthRoomDto {
     Map<String, String> members = new HashMap<>(); //진실의 방 입장멤버 저장
     Integer money; //현재 벌금 정보
     Map<String, Boolean> readyState = new HashMap<>(); //첫 시작 준비 상태 저장
+    Map<String, Boolean> evidenceNextStage = new HashMap<>(); //증거 판별 다음 단계 상태 저장
 }
