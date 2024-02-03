@@ -3,6 +3,13 @@ import {
     Button,
     Flex,
     FormLabel,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
     NumberDecrementStepper,
     NumberIncrementStepper,
     NumberInput,
@@ -10,9 +17,11 @@ import {
     NumberInputStepper,
     Text,
     Wrap,
+    useDisclosure,
 } from "@chakra-ui/react";
 
 function TruthRoomTab() {
+    const { isOpen, onOpen, onClose } = useDisclosure();
     return (
         <>
             <Flex justifyContent={"center"} flexDirection={"column"} alignItems={"center"}>
@@ -36,7 +45,7 @@ function TruthRoomTab() {
                                         <NumberDecrementStepper />
                                     </NumberInputStepper>
                                 </NumberInput>
-                                <FormLabel fontSize={"1.5rem"}>년</FormLabel>
+                                <Text fontSize={"1.5rem"}>년</Text>
                                 <NumberInput defaultValue={1} min={1} max={12} width={"10%"}>
                                     <NumberInputField />
                                     <NumberInputStepper>
@@ -44,7 +53,7 @@ function TruthRoomTab() {
                                         <NumberDecrementStepper />
                                     </NumberInputStepper>
                                 </NumberInput>
-                                <FormLabel fontSize={"1.5rem"}>월</FormLabel>
+                                <Text fontSize={"1.5rem"}>월</Text>
                                 <NumberInput defaultValue={1} min={1} max={31} width={"10%"}>
                                     <NumberInputField />
                                     <NumberInputStepper>
@@ -52,18 +61,39 @@ function TruthRoomTab() {
                                         <NumberDecrementStepper />
                                     </NumberInputStepper>
                                 </NumberInput>
-                                <FormLabel fontSize={"1.5rem"}>일</FormLabel>
+                                <Text fontSize={"1.5rem"}>일</Text>
                             </Flex>
                         </Wrap>
-                        <Button bg={"dam.yellow"} size={"sm"}>
+                        <Button bg={"dam.yellow"} size={"sm"} borderRadius={"30px"}>
                             설정하기
                         </Button>
                     </Flex>
                 </Box>
                 <Wrap>
-                    <Button bg={"dam.yellow"} marginTop={"10%"} size={"lg"}>
+                    <Button bg={"dam.yellow"} marginTop={"10%"} size={"lg"} onClick={onOpen} borderRadius={"30px"}>
                         진실의 방 입장하기
                     </Button>
+                    <Modal isOpen={isOpen} onClose={onClose}>
+                        <ModalOverlay />
+                        <ModalContent>
+                            <ModalBody textAlign={"center"}>
+                                <Flex justifyContent={"center"} alignItems={"center"} height={"15vh"}>
+                                    <Text fontSize={"1.3rem"} fontWeight={600}>
+                                        진실의 방에 입장하시겠습니까?
+                                    </Text>
+                                </Flex>
+                            </ModalBody>
+
+                            <Flex justifyContent={"center"}>
+                                <Button bg={"dam.yellow"} onClick={""} margin={"5%"}>
+                                    입장하기
+                                </Button>
+                                <Button bg={"dam.gray"} margin={"5%"} onClick={onClose}>
+                                    취소
+                                </Button>
+                            </Flex>
+                        </ModalContent>
+                    </Modal>
                 </Wrap>
             </Flex>
         </>
