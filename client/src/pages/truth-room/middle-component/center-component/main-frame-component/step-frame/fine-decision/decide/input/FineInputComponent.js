@@ -4,8 +4,18 @@ import ConfirmButtonComponent from "../../ConfirmButtonComponent";
 import TextComponent from "./components/TextComponent";
 import InputComponent from "./components/InputComponent";
 import { Wrapper } from "./FineInputComponent.style";
+import { useRecoilState } from "recoil";
+import { fineDecisionInputStepState } from "contexts/TruthRoom";
 
 function FineInputComponent(props) {
+    const [fineDecisionInputStep, setFineDecisionInputStep] = useRecoilState(
+        fineDecisionInputStepState
+    );
+
+    function handleClickConfirm() {
+        setFineDecisionInputStep(fineDecisionInputStep + 1);
+    }
+
     return (
         <Wrapper>
             <SmallFrameComponent
@@ -20,7 +30,10 @@ function FineInputComponent(props) {
                     >
                         <TextComponent></TextComponent>
                         <InputComponent></InputComponent>
-                        <ConfirmButtonComponent margin={0} />
+                        <ConfirmButtonComponent
+                            margin={0}
+                            onClick={handleClickConfirm}
+                        />
                     </div>
                 }
             ></SmallFrameComponent>

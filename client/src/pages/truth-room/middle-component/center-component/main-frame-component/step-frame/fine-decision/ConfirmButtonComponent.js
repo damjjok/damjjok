@@ -1,7 +1,7 @@
 import BasicButton from "components/button/BasicButton";
 import React from "react";
 
-function ConfirmButtonComponent({ margin }) {
+function ConfirmButtonComponent({ margin, onClick }) {
     return (
         <div
             style={{
@@ -11,7 +11,7 @@ function ConfirmButtonComponent({ margin }) {
                 width: "600px",
             }}
         >
-            <BasicButton buttonName={"확인"}></BasicButton>
+            <BasicButton buttonName={"확인"} onClick={onClick}></BasicButton>
         </div>
     );
 }

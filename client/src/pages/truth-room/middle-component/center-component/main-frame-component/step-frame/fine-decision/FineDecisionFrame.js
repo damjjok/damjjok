@@ -3,7 +3,7 @@ import React from "react";
 import { useRecoilValue } from "recoil";
 import DecideWaitingComponent from "./decide-waiting/DecideWaitingComponent";
 import ResultComponent from "./result/ResultComponent";
-import FineInputComponent from "./decide/input/FineInputComponent";
+import FineInputFrame from "./decide/input/FineInputFrame";
 
 function FineDecisionFrame(props) {
     const fineDecisionStep = useRecoilValue(fineDecisionStepState);
@@ -17,7 +17,7 @@ function FineDecisionFrame(props) {
     } else {
         return (
             <div>
-                {fineDecisionStep === 2 && <FineInputComponent />}
+                {fineDecisionStep === 2 && <FineInputFrame />}
                 {fineDecisionStep === 3 && <ResultComponent />}
             </div>
         );
