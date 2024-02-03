@@ -2,6 +2,7 @@ import { fineDecisionInputStepState } from "contexts/TruthRoom";
 import React from "react";
 import { useRecoilValue } from "recoil";
 import FineInputComponent from "./FineInputComponent";
+import FineInputWaitingComponent from "./FineInputWaitingComponent";
 
 function FineInputFrame(props) {
     const fineDecisionInputStep = useRecoilValue(fineDecisionInputStepState);
@@ -9,7 +10,7 @@ function FineInputFrame(props) {
     return (
         <div>
             {fineDecisionInputStep === 0 && <FineInputComponent />}
-            {fineDecisionInputStep === 1 && <div>hi</div>}
+            {fineDecisionInputStep === 1 && <FineInputWaitingComponent />}
         </div>
     );
 }
