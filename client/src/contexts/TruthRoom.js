@@ -103,13 +103,10 @@ export const gatheredMoneyState = atom({
     default: 100000,
 });
 
-export const inputFineListState =
-    atom[
-        {
-            key: "inputFineList",
-            default: [],
-        }
-    ];
+export const inputFineListState = atom({
+    key: "inputFineList",
+    default: [10000, 18000, 20000],
+});
 
 export const decidedFineState = atom({
     key: "decidedFine", // 결정된 벌금
