@@ -1,7 +1,8 @@
-import { Text } from "@chakra-ui/react";
 import React from "react";
 import SmallFrameComponent from "../../../../small-frame/SmallFrameComponent";
 import ConfirmButtonComponent from "../../ConfirmButtonComponent";
+import TextComponent from "./TextComponent";
+import InputComponent from "./InputComponent";
 
 function FineInputComponent(props) {
     return (
@@ -15,16 +16,8 @@ function FineInputComponent(props) {
                         justifyContent: "center",
                     }}
                 >
-                    <div style={{ margin: "30px" }}>
-                        <Text as="b" fontSize={"35px"}>
-                            벌금 제시
-                        </Text>
-                    </div>
-                    <div style={{ marginBottom: "40px" }}>
-                        <Text as="b" fontSize={"20px"}>
-                            어느 정도의 벌금이 적당할까요?
-                        </Text>
-                    </div>
+                    <TextComponent></TextComponent>
+                    <InputComponent></InputComponent>
                     <ConfirmButtonComponent />
                 </div>
             }
