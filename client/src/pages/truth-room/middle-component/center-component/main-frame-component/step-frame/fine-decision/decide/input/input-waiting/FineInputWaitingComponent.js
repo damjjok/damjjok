@@ -1,5 +1,5 @@
 import React from "react";
-import SmallFrameComponent from "../../../../small-frame/SmallFrameComponent";
+import SmallFrameComponent from "../../../../../small-frame/SmallFrameComponent";
 import { Text } from "@chakra-ui/react";
 
 function FineInputWaitingComponent(props) {
