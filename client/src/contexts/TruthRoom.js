@@ -93,8 +93,13 @@ export const fineDecisionStepState = atom({
     default: 2,
 });
 
+export const fineDecisionInputStepState = atom({
+    key: "fineDecisionInputStep", // 벌금 결정 단계 내의 단계 상태 저장 변수
+    default: 0,
+});
+
 export const gatheredMoneyState = atom({
-    key: "gatheredMoney",
+    key: "gatheredMoney", // 담쪽이가 모은 금액
     default: 100000,
 });
 
