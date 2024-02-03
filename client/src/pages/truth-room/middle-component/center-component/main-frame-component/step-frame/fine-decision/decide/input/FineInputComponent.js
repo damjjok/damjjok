@@ -3,7 +3,7 @@ import SmallFrameComponent from "../../../../small-frame/SmallFrameComponent";
 import ConfirmButtonComponent from "../../ConfirmButtonComponent";
 import TextComponent from "./components/TextComponent";
 import InputComponent from "./components/InputComponent";
-import { Wrapper } from "./FineInputComponent.style";
+import { Wrapper } from "./FineComponent.style";
 import { useRecoilState } from "recoil";
 import { fineDecisionInputStepState } from "contexts/TruthRoom";
 

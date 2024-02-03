@@ -3,6 +3,7 @@ import React from "react";
 import { useRecoilValue } from "recoil";
 import FineInputComponent from "./FineInputComponent";
 import FineInputWaitingComponent from "./FineInputWaitingComponent";
+import FineVoteComponent from "./FineVoteComponent";
 
 function FineInputFrame(props) {
     const fineDecisionInputStep = useRecoilValue(fineDecisionInputStepState);
@@ -11,6 +12,7 @@ function FineInputFrame(props) {
         <div>
             {fineDecisionInputStep === 0 && <FineInputComponent />}
             {fineDecisionInputStep === 1 && <FineInputWaitingComponent />}
+            {fineDecisionInputStep === 2 && <FineVoteComponent />}
         </div>
     );
 }
