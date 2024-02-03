@@ -1,12 +1,13 @@
+import { Text } from "@chakra-ui/react";
 import React from "react";
 
 function InputComponent(props) {
     return (
         <div>
-            <input
-                style={{ borderBottom: "2px solid black", marginRight: "10px" }}
-            ></input>
-            원
+            <input className="input-container" defaultValue={0}></input>
+            <Text as="b" fontSize={"20px"}>
+                원
+            </Text>
         </div>
     );
 }
