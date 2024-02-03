@@ -4,10 +4,10 @@ import candyImg from "assets/images/candylogo.png";
 import StatusBarToast from "./status-bar-toast/StatusBarToast";
 import StatusEditModal from "./status-edit-modal/StatusEditModal";
 import { Avatar, WrapItem } from "@chakra-ui/react";
-import avatar1 from 'assets/images/avatar1.png'
-import avatar2 from 'assets/images/avatar2.png'
-import avatar3 from 'assets/images/avatar3.png'
-import avatar4 from 'assets/images/avatar4.png'
+import avatar1 from "assets/images/avatar1.png";
+import avatar2 from "assets/images/avatar2.png";
+import avatar3 from "assets/images/avatar3.png";
+import avatar4 from "assets/images/avatar4.png";
 // import { challengeState } from "../../../../../contexts/Challenge";
 
 function StatusBar() {
@@ -31,32 +31,35 @@ function StatusBar() {
     const diffDays = Math.floor(diffMilliseconds / (24 * 60 * 60 * 1000));
 
     const avatars = [
-        { name: 'cat1', src: avatar1 },
-        { name: 'cat2', src: avatar2 },
-        { name: 'dog1', src: avatar3 },
-        { name: 'dog2', src: avatar4 },
-      ];
+        { name: "cat1", src: avatar1 },
+        { name: "cat2", src: avatar2 },
+        { name: "dog1", src: avatar3 },
+        { name: "dog2", src: avatar4 },
+    ];
 
     return (
         <div className=" flex justify-between items-center min-w-max max-w-screen-2xl bg-damgray rounded-full px-4 py-1">
             <div className="flex items-center">
                 <WrapItem className="mr-2 ">
-                    <Avatar name='Cat' src={avatar1} size='sm' bg='dam.white'/>
+                    <Avatar name="Cat" src={avatar1} size="sm" bg="dam.white" />
                 </WrapItem>
                 <p className=" text-lg font-bold">
-                    {currentUser.userName} 챌린지 -
-                    {/* {currentChallenge.createdAt.toLocaleDateString()} */}
+                    {currentUser.userName} 챌린지 -{" "}
+                    {startedDate.toLocaleDateString()}
                 </p>
                 <div className=" bg-damblack rounded-xl max-h-4 px-2 mx-2 text-xs text-damyellow">
                     D+{diffDays}
                 </div>
                 <p className="mx-4">{currentChallenge.determination}</p>
-                
-                <StatusEditModal currentChallenge={currentChallenge} avatars={avatars} />
+
+                <StatusEditModal
+                    currentChallenge={currentChallenge}
+                    avatars={avatars}
+                />
             </div>
             <div className="flex items-center">
                 {/* <BasicButton buttonName={"출석하기"} variant={"smbtn"} /> */}
-                <StatusBarToast/>
+                <StatusBarToast />
                 <div className="flex flex-col items-center">
                     <div className="bg-damwhite rounded-full border border-damyellow">
                         <img
