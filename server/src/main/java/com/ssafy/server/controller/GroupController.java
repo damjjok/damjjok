@@ -1,10 +1,8 @@
 package com.ssafy.server.controller;
 
 import com.ssafy.server.dto.request.group.GroupCreateRequestDto;
-import com.ssafy.server.dto.response.group.GroupCreateResponseDto;
-import com.ssafy.server.dto.response.group.GroupDetailResponseDto;
-import com.ssafy.server.dto.response.group.GroupInviteResponseDto;
-import com.ssafy.server.dto.response.group.GroupUserListResponseDto;
+import com.ssafy.server.dto.request.group.GroupMemberCreateRequestDto;
+import com.ssafy.server.dto.response.group.*;
 import com.ssafy.server.service.GroupService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -38,6 +36,12 @@ public class GroupController {
     @GetMapping("/search-user/{email}")
     public ResponseEntity<? super GroupUserListResponseDto> userList(@PathVariable String email){
         ResponseEntity<? super GroupUserListResponseDto> response = groupService.userList(email);
+        return response;
+    }
+
+    @PostMapping("/join")
+    public ResponseEntity<? super GroupMemberCreateResponseDto> joinGroup(@RequestBody  GroupMemberCreateRequestDto dto) {
+        ResponseEntity<? super GroupMemberCreateResponseDto> response = groupService.joinGroupMember(dto);
         return response;
     }
 }
