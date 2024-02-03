@@ -44,4 +44,10 @@ public class GroupController {
         ResponseEntity<? super GroupMemberCreateResponseDto> response = groupService.joinGroupMember(dto);
         return response;
     }
+
+    @GetMapping("/member-list/{userId}")
+    public ResponseEntity<? super GroupListByUserResponseDto> groupListByUser(@PathVariable int userId){
+        ResponseEntity<? super GroupListByUserResponseDto> response = groupService.groupListByUser(userId);
+        return response;
+    }
 }

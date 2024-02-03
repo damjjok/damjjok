@@ -138,4 +138,33 @@ public class GroupServiceImpl implements GroupService {
         }
         return GroupMemberCreateResponseDto.success();
     }
+
+    @Override
+    public ResponseEntity<? super GroupListByUserResponseDto> groupListByUser(int userId) {
+
+        List<GroupDto> list = new ArrayList<>();
+
+        try{
+
+            List<GroupEntity> entityList = groupMemberRepository.findGroupsByUserId(userId);
+
+            entityList.stream().forEach(e -> {
+                GroupDto dto = new GroupDto();
+                dto.setGroupId(e.getGroupId());
+                dto.setGroupname(e.getGroupName());
+                dto.setInvitationLink(e.getInvitationLink());
+                dto.setEndDate(e.getEndDate());
+                dto.setCreateAt(e.getCreatedAt());
+
+                UserEntity userEntity = userRepository.findByUserId(e.getCreatedBy());
+                dto.setCreatedBy(userEntity.getUserName());
+
+                list.add(dto);
+            });
+
+        }catch (Exception e){
+            return ResponseDto.databaseError();
+        }
+        return GroupListByUserResponseDto.success(list);
+    }
 }
