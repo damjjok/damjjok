@@ -1,16 +1,24 @@
 import { Text } from "@chakra-ui/react";
 import React, { useState } from "react";
 import ConfirmButtonComponent from "../../../ConfirmButtonComponent";
-import { useRecoilValue } from "recoil";
-import { inputFineListState } from "contexts/TruthRoom";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { fineDecisionStepState, inputFineListState } from "contexts/TruthRoom";
 import FineItemComponent from "./FineItemComponent";
 
 function VoteComponent(props) {
     const inputFineList = useRecoilValue(inputFineListState);
+    const [fineDecisionStep, setFineDecisionStep] = useRecoilState(
+        fineDecisionStepState
+    );
     const [selectedFine, setSelectedFine] = useState(inputFineList[0]);
 
     const handleFineChange = (fine) => {
         setSelectedFine(fine); // 선택된 벌금 업데이트
+    };
+
+    const handleClickConfrim = () => {
+        // 이 단계는 입력의 가장 마지막 단계이므로, fineDecisionInputStep이 아닌 fineDecisionStep을 컨트롤 해줘야 함
+        setFineDecisionStep(fineDecisionStep + 1);
     };
 
     return (
@@ -34,7 +42,10 @@ function VoteComponent(props) {
                         />
                     ))}
                 </div>
-                <ConfirmButtonComponent margin={50} />
+                <ConfirmButtonComponent
+                    margin={50}
+                    onClick={handleClickConfrim}
+                />
             </div>
         </div>
     );
