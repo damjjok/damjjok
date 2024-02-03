@@ -14,7 +14,13 @@ function VoteComponent(props) {
                 <Text as="b" fontSize={"35px"}>
                     벌금 결정
                 </Text>
-                <div style={{ marginTop: "30px" }}>
+                <div
+                    style={{
+                        marginTop: "30px",
+                        height: "120px",
+                        overflowY: "auto",
+                    }}
+                >
                     {inputFineList.map((fine) => (
                         <FineItemComponent fine={fine} />
                     ))}
