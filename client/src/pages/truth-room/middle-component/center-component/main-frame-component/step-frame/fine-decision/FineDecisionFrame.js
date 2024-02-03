@@ -1,7 +1,10 @@
+import { fineDecisionStepState } from "contexts/TruthRoom";
 import React from "react";
+import { useRecoilValue } from "recoil";
 
 function FineDecisionFrame(props) {
-    return <div>벌금 결정</div>;
+    const fineDecisionStep = useRecoilValue(fineDecisionStepState);
+    return <div></div>;
 }
 
 export default FineDecisionFrame;

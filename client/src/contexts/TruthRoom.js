@@ -6,7 +6,7 @@ import testImg1 from "logo.svg";
 export const stepState = atom({
     // 대기 중, 제보 판별, 투표, PASS/FAIL, 최후 변론, 벌금 결정, 종료
     key: "step",
-    default: 0,
+    default: 5,
 });
 
 export const voteState = atom({
@@ -86,4 +86,9 @@ export const testimonyState = atom({
             content: "이새끼 담배 폈습니다4",
         },
     ],
+});
+
+export const fineDecisionStepState = atom({
+    key: "fineDecisionStep",
+    default: 0,
 });
