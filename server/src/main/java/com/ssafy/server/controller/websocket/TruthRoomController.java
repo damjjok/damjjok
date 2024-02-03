@@ -2,6 +2,7 @@ package com.ssafy.server.controller.websocket;
 
 import com.ssafy.server.dto.websocket.TruthRoomDto;
 import com.ssafy.server.service.EnterRoomService;
+import com.ssafy.server.service.NextStageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -16,10 +17,9 @@ import java.util.Map;
 @Controller
 @RequiredArgsConstructor
 public class TruthRoomController {
-
-    private final Map<Integer, TruthRoomDto> truthRooms = new HashMap<>();
     private final EnterRoomService enterRoomService;
     private final SimpMessageSendingOperations messagingTemplate;
+    private final NextStageService nextStageService;
 
     @MessageMapping("/enter/{userName}")
     public void enter(@DestinationVariable String userName, TruthRoomDto dto, SimpMessageHeaderAccessor headerAccessor) {
@@ -32,13 +32,28 @@ public class TruthRoomController {
     }
 
     @MessageMapping("/ready")
-    public void ready(TruthRoomDto dto, SimpMessageHeaderAccessor headerAccessor){
+    public void ready(TruthRoomDto dto, Boolean isReady,SimpMessageHeaderAccessor headerAccessor){
         String sessionId = headerAccessor.getSessionId();
         Integer roomId = dto.getRoomId();
-        enterRoomService.setMemberReady(roomId, sessionId, true);
+        enterRoomService.setMemberReady(roomId, sessionId, isReady);
         if(enterRoomService.areAllMemberReadey(roomId)) {
             //준비했을때 모든 인원이 준비라면 모두에게 true 보내주기
-            messagingTemplate.convertAndSend("/app/readyState", true);
+            messagingTemplate.convertAndSend("/topic/readyState", true);
         }
     }
+
+    @MessageMapping("/evidenceNextStage")
+    public void evidenceNextStage(TruthRoomDto dto, Boolean isNext, SimpMessageHeaderAccessor headerAccessor){
+        String sessionId = headerAccessor.getSessionId();
+        Integer roomId = dto.getRoomId();
+        nextStageService.setEvidenceNext(roomId, sessionId, isNext);
+        int cnt = nextStageService.cntEvidenceNext(roomId);
+        //다음 단계 누를때마다
+        messagingTemplate.convertAndSend("/topic/evidenceNextStageState", cnt);
+        if (cnt == dto.getMembers().size()) {
+            //모두 다음단계로를 눌렀다면 투표화면 열어주기
+        }
+    }
+
+
 }
