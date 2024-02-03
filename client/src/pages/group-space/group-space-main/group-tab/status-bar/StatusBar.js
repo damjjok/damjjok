@@ -27,7 +27,6 @@ function StatusBar() {
     } else {
         console.log("No data in localStorage");
         navigate("./empty-challenge");
-        console.log("123123");
         return <></>;
     }
 

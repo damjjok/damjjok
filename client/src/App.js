@@ -50,7 +50,7 @@ function App() {
                     <Route path="/" element={<Landing />} />
                     <Route path="/create-group" element={<CreateGroup />} />
                     <Route path={`/group/${currentGroup.groupId}/*`} element={<GroupSpaceHome />}>
-                        <Route path="createChallenge" element={<CreateChallenge />} />
+                        <Route path="create-challenge" element={<CreateChallenge />} />
                         <Route path="empty-challenge" element={<EmptyChallenge />} />
                         <Route path="" element={<GroupTab />} />
                     </Route>
