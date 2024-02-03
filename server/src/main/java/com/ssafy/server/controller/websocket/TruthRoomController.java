@@ -3,6 +3,7 @@ package com.ssafy.server.controller.websocket;
 import com.ssafy.server.dto.websocket.TruthRoomDto;
 import com.ssafy.server.service.EnterRoomService;
 import com.ssafy.server.service.NextStageService;
+import com.ssafy.server.service.VoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -20,6 +21,7 @@ public class TruthRoomController {
     private final EnterRoomService enterRoomService;
     private final SimpMessageSendingOperations messagingTemplate;
     private final NextStageService nextStageService;
+    private final VoteService voteService;
 
     @MessageMapping("/enter/{userName}")
     public void enter(@DestinationVariable String userName, TruthRoomDto dto, SimpMessageHeaderAccessor headerAccessor) {
@@ -54,6 +56,15 @@ public class TruthRoomController {
             //모두 다음단계로를 눌렀다면 투표화면 열어주기
             messagingTemplate.convertAndSend("/topic/voteStart", true);
         }
+    }
+
+    @MessageMapping("/passFailVote")
+    public void passFailVote(TruthRoomDto dto, Boolean isPass, SimpMessageHeaderAccessor headerAccessor){
+        String sessionId = headerAccessor.getSessionId();
+        Integer roomId = dto.getRoomId();
+        int cnt = voteService.vote(roomId, sessionId, isPass);
+        //현재 투표한 수 알려주기
+        messagingTemplate.convertAndSend("/topic/passFailVoteState", cnt);
     }
 
 
