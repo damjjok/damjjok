@@ -6,6 +6,9 @@ import com.ssafy.server.service.VoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
 public class VoteServiceImpl implements VoteService {
@@ -19,4 +22,10 @@ public class VoteServiceImpl implements VoteService {
         long count = room.getPassOrFail().size();
         return (int) count;
     }
+
+    @Override
+    public Map<String, Boolean> voteResult(Integer roomId) {
+        return enterRoomService.getRoom(roomId).getPassOrFail();
+    }
+
 }
