@@ -4,7 +4,7 @@ import CheckImageComponent from "./CheckImageComponent";
 import { Text } from "@chakra-ui/react";
 import { useRecoilValue } from "recoil";
 import { decidedFineState } from "contexts/TruthRoom";
-import ConfirmButtonComponent from "./ConfirmButtonComponent";
+import ConfirmButtonComponent from "../ConfirmButtonComponent";
 
 function ResultComponent(props) {
     const decidedFine = useRecoilValue(decidedFineState);
