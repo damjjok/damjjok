@@ -1,8 +1,8 @@
 import React from "react";
 import SmallFrameComponent from "../../../../small-frame/SmallFrameComponent";
 import ConfirmButtonComponent from "../../ConfirmButtonComponent";
-import TextComponent from "./TextComponent";
-import InputComponent from "./InputComponent";
+import TextComponent from "./components/TextComponent";
+import InputComponent from "./components/InputComponent";
 import { Wrapper } from "./FineInputComponent.style";
 
 function FineInputComponent(props) {

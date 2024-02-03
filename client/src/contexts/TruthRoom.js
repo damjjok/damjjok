@@ -93,6 +93,11 @@ export const fineDecisionStepState = atom({
     default: 2,
 });
 
+export const gatheredMoneyState = atom({
+    key: "gatheredMoney",
+    default: 100000,
+});
+
 export const decidedFineState = atom({
     key: "decidedFine", // 결정된 벌금
     default: 18000,
