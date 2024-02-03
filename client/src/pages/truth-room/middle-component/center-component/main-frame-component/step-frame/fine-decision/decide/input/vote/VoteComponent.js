@@ -1,5 +1,5 @@
 import { Text } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import ConfirmButtonComponent from "../../../ConfirmButtonComponent";
 import { useRecoilValue } from "recoil";
 import { inputFineListState } from "contexts/TruthRoom";
@@ -7,6 +7,11 @@ import FineItemComponent from "./FineItemComponent";
 
 function VoteComponent(props) {
     const inputFineList = useRecoilValue(inputFineListState);
+    const [selectedFine, setSelectedFine] = useState(inputFineList[0]);
+
+    const handleFineChange = (fine) => {
+        setSelectedFine(fine); // 선택된 벌금 업데이트
+    };
 
     return (
         <div style={{ textAlign: "center" }}>
@@ -22,7 +27,11 @@ function VoteComponent(props) {
                     }}
                 >
                     {inputFineList.map((fine) => (
-                        <FineItemComponent fine={fine} />
+                        <FineItemComponent
+                            fine={fine}
+                            onFineChange={handleFineChange}
+                            isSelected={selectedFine === fine}
+                        />
                     ))}
                 </div>
                 <ConfirmButtonComponent margin={50} />
