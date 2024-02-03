@@ -65,6 +65,11 @@ public class TruthRoomController {
         int cnt = voteService.vote(roomId, sessionId, isPass);
         //현재 투표한 수 알려주기
         messagingTemplate.convertAndSend("/topic/passFailVoteState", cnt);
+        TruthRoomDto room =  enterRoomService.getRoom(roomId);
+        //투표 수가 담쪽이를 제외한 접속자 수가 되면 결과 보내주기
+        if(cnt == room.getMembers().size()-1) {
+            messagingTemplate.convertAndSend("/topic/passFailVoteResult", voteService.voteResult(roomId));
+        }
     }
 
 
