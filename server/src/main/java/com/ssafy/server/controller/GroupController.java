@@ -21,7 +21,7 @@ public class GroupController {
     public ResponseEntity<? super GroupCreateResponseDto> createGroup(@RequestBody GroupCreateRequestDto requestBody){
         ResponseEntity<? super GroupCreateResponseDto> response = groupService.create(requestBody);
         return response;
-    }
+}
 
     @GetMapping("/invite/validate")
     public ResponseEntity<? super GroupInviteResponseDto> validateInvitation(@RequestParam String invitationLink){

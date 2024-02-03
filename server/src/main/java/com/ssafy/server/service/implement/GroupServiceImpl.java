@@ -39,7 +39,7 @@ public class GroupServiceImpl implements GroupService {
             groupEntity.setCreatedAt(LocalDateTime.now());
             groupEntity.setEndDate(LocalDateTime.now().plusMonths(1));
 
-            String invitationLink = "https://loaclhost:8080/api/v1/group/invite/validate/" + UUID.randomUUID().toString();
+            String invitationLink = UUID.randomUUID().toString();
             groupEntity.setInvitationLink(invitationLink);
 
             groupRepository.save(groupEntity);
