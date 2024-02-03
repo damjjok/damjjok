@@ -28,7 +28,7 @@ function GroupSpaceMain() {
     return (
         <Routes>
             <Route
-                path="/"
+                path=""
                 element={
                     challengeList.length !== 0 ? (
                         <GroupTab />
