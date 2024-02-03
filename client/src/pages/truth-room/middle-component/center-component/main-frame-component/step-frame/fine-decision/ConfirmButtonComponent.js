@@ -1,13 +1,13 @@
 import BasicButton from "components/button/BasicButton";
 import React from "react";
 
-function ConfirmButtonComponent(props) {
+function ConfirmButtonComponent({ margin }) {
     return (
         <div
             style={{
                 display: "flex",
                 justifyContent: "right",
-                marginTop: "30px",
+                marginTop: `${margin}px`,
                 width: "600px",
             }}
         >

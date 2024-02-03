@@ -30,7 +30,7 @@ function ResultComponent(props) {
                                 </div>
                             </div>
                         </div>
-                        <ConfirmButtonComponent />
+                        <ConfirmButtonComponent margin={30} />
                     </div>
                 }
             ></SmallFrameComponent>

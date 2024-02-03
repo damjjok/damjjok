@@ -20,7 +20,7 @@ function FineInputComponent(props) {
                     >
                         <TextComponent></TextComponent>
                         <InputComponent></InputComponent>
-                        <ConfirmButtonComponent />
+                        <ConfirmButtonComponent margin={0} />
                     </div>
                 }
             ></SmallFrameComponent>
