@@ -14,4 +14,5 @@ public interface GroupService {
     ResponseEntity<? super GroupUserListResponseDto> userList(String email);
     ResponseEntity<? super GroupMemberCreateResponseDto> joinGroupMember(GroupMemberCreateRequestDto dto);
     ResponseEntity<? super GroupListByUserResponseDto> groupListByUser(int userId);
+    ResponseEntity<? super GroupUserListResponseDto> userListByGroup(int groupId);
 }

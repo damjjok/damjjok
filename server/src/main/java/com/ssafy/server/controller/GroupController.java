@@ -45,9 +45,15 @@ public class GroupController {
         return response;
     }
 
-    @GetMapping("/member-list/{userId}")
+    @GetMapping("/{userId}/group-list")
     public ResponseEntity<? super GroupListByUserResponseDto> groupListByUser(@PathVariable int userId){
         ResponseEntity<? super GroupListByUserResponseDto> response = groupService.groupListByUser(userId);
+        return response;
+    }
+
+    @GetMapping("/{groupId}/user-list")
+    public ResponseEntity<? super GroupUserListResponseDto> userListByGroup(@PathVariable int groupId){
+        ResponseEntity<? super GroupUserListResponseDto> response = groupService.userListByGroup(groupId);
         return response;
     }
 }

@@ -167,4 +167,25 @@ public class GroupServiceImpl implements GroupService {
         }
         return GroupListByUserResponseDto.success(list);
     }
+
+    @Override
+    public ResponseEntity<? super GroupUserListResponseDto> userListByGroup(int groupId) {
+        List<UserDto> list = new ArrayList<>();
+        try{
+
+            List<UserEntity> userEntityList = groupMemberRepository.findUsersByGroupId(groupId);
+
+            userEntityList.stream().forEach(e -> {
+                UserDto dto = new UserDto();
+                dto.setUserName(e.getUserName());
+                dto.setEmail(e.getEmail());
+
+                list.add(dto);
+            });
+
+        }catch (Exception e){
+            return ResponseDto.databaseError();
+        }
+        return GroupUserListResponseDto.success(list);
+    }
 }
