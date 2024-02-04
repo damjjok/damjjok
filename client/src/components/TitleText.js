@@ -4,7 +4,7 @@ const TitleText = (props) => {
     const { children, ...rest } = props;
     return (
         <>
-            <Text fontWeight={700} borderLeft={"3px solid #FFD100"} paddingLeft={"1rem"} {...rest}>
+            <Text fontWeight={700} borderLeft={"5px solid #FFD100"} paddingLeft={"1rem"} {...rest}>
                 {children}
             </Text>
         </>
