@@ -1,4 +1,4 @@
-package com.ssafy.server.controller;
+package com.ssafy.server.controller.websocket;
 
 
 import org.springframework.stereotype.Controller;
@@ -12,7 +12,7 @@ public class ChatController {
     @GetMapping("/chat/{roomNumber}")
     public String chatPage(@PathVariable String roomNumber, Model model) {
         model.addAttribute("roomNumber", roomNumber);
-        return "chat.html"; // 채팅 페이지로 이동
+        return  "redirect:/socketTest.html"; // 채팅 페이지로 이동
     }
 
 }
