@@ -30,8 +30,10 @@ public class TruthRoomController {
     public void enter(@DestinationVariable Integer roomId, @DestinationVariable String userName, SimpMessageHeaderAccessor headerAccessor) {
         String sessionId = headerAccessor.getSessionId();
         enterRoomService.addMember(roomId, sessionId, userName);
+        // 방에 남아 있는 멤버들의 이름 목록 가져오기
+        Map<String, String> remainingMembers = enterRoomService.getRoomMembers(roomId);
         //입장 목록 보내주기
-        messagingTemplate.convertAndSend("/topic/member/" + roomId, enterRoomService.getRoomMembers(roomId));
+        messagingTemplate.convertAndSend("/topic/member/" + roomId, remainingMembers.values());
     }
 
     // 준비 상태 설정 (공통 준비 상태)
