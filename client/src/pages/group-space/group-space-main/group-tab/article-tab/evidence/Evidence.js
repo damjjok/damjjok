@@ -28,8 +28,8 @@ const Evidence = () => {
                         flexDirection="column"
                         justifyContent="center"
                         alignItems="center"
-                        minH="200px"
-                        minW="200px"
+                        minH="300px"
+                        minW="300px"
                     >
                         <VStack>
                             <ViewIcon boxSize={8} />
@@ -53,8 +53,8 @@ const Evidence = () => {
                                 flexDirection="column"
                                 justifyContent="center"
                                 alignItems="center"
-                                minH="200px"
-                                minW="200px"
+                                minH="300px"
+                                minW="300px"
                             >
                                 <VStack>
                                     <ViewIcon boxSize={8} />
