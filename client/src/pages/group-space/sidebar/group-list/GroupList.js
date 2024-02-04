@@ -6,7 +6,7 @@ import { useState } from "react";
 import Select from "react-select";
 
 //테스트를 위한 더미 데이터
-const groupItems = ['E105', 'E106', 'E107']
+const groupItems = ['우리끼리만든그룹', 'E106', 'E107']
 
 
 function GroupList() {
@@ -25,6 +25,7 @@ function GroupList() {
             backgroundColor: '#FFD100',
             borderColor: 'white', // 프레임 색상을 흰색으로 설정
             boxShadow: state.isFocused ? 0 : 0, // 포커스 시 테두리 색상 제거
+            width: '160px',
             "&:hover": {
                 borderColor: "white" // 마우스 호버 시 테두리 색상 유지
             }
@@ -51,23 +52,6 @@ function GroupList() {
     };
     
     return (
-
-        // Chakra UI Selector 활용 코드
-        // <Select placeholder={selectedGroup || currentGroup.groupName} size='md' bg='dam.yellow'>
-        //      {
-        //      groupItems.map((item, index) => (
-        //             selectedGroup !== item &&
-        //             <option minH="48px" key={index} onClick={() => setSelectedGroup(item)} className=" hover:cursor-pointer">
-        //                 <span>{item}</span>
-        //                {/* 해당 그룹으로 가도록 링크도 달아줘야 함 */}
-        //            </option>
-
-                
-        //     ))
-        // }
-        // </Select>
-
-
         <Select 
         placeholder={selectedGroup || currentGroup.groupName}
         options={options} 
