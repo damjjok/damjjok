@@ -22,8 +22,6 @@ function ChallengeList() {
   // challengeList 반복문 돌릴 예정, 아직은 안 씀.
   // const challengeList = useRecoilValue(challengeListState);
   //선택된 챌린지 표시를 위한 상태
-  const [selectedCurrentChallenge, setSelectedCurrentChallenge] = useState(null);
-  const [selectedLastChallenge, setSelectedLastChallenge] = useState(null);
   const [selectedChallenge, setSelectedChallenge] = useState({ index: null, list: null });
 
   return (
