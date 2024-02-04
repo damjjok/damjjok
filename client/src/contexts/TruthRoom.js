@@ -90,12 +90,12 @@ export const testimonyState = atom({
 
 export const fineDecisionStepState = atom({
     key: "fineDecisionStep", // 벌금 결정 단계 내의 단계 상태 저장 변수
-    default: 2,
+    default: 0,
 });
 
 export const fineDecisionInputStepState = atom({
     key: "fineDecisionInputStep", // 벌금 결정 단계 내의 벌금 입력의 단계 상태 저장 변수
-    default: 2,
+    default: 0,
 });
 
 export const gatheredMoneyState = atom({

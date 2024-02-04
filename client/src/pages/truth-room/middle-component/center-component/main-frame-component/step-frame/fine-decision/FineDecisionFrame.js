@@ -12,13 +12,13 @@ function FineDecisionFrame(props) {
         role: "phD",
     };
 
-    if (testUser.role === "damJJok" && fineDecisionStep !== 3) {
+    if (testUser.role === "damJJok" && fineDecisionStep !== 2) {
         return <DecideWaitingComponent />;
     } else {
         return (
             <div>
-                {fineDecisionStep === 2 && <FineInputFrame />}
-                {fineDecisionStep === 3 && <ResultComponent />}
+                {fineDecisionStep === 0 && <FineInputFrame />}
+                {fineDecisionStep === 1 && <ResultComponent />}
             </div>
         );
     }
