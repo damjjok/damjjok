@@ -9,6 +9,7 @@ function FineInputWaitingComponent(props) {
         fineDecisionInputStepState
     );
     function testOnClick() {
+        // 테스트 시 단계 건너뛰기 용 함수
         setFineDecisionInputStep(fineDecisionInputStep + 1);
     }
 
