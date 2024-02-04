@@ -151,7 +151,7 @@ public class TruthRoomController {
         }
     }
 
-    //마지막 나가기 버튼을 눌렀을 때 
+    //마지막 나가기 버튼을 눌렀을 때
     @MessageMapping("/leaveRoom/{roomId}")
     public void leaveRoom(@DestinationVariable Integer roomId, SimpMessageHeaderAccessor headerAccessor) {
         String sessionId = headerAccessor.getSessionId();
