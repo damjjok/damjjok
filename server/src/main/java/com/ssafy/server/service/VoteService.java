@@ -10,4 +10,10 @@ public interface VoteService {
     boolean checkVotingComplete(Integer roomId);
     //벌금 입력 처리
     Integer submitFine(Integer roomId, String sessionId, Integer fineAmount);
+    //벌금 투표 받기, 투표 한 인원 수 반환
+    Integer voteForMoney(Integer roomId, Integer fineAmount);
+    //벌금 투표에서 가장 많이 투표된 벌금 찾기
+    Integer getMostVotedFine(Integer roomId);
 }
+
+

@@ -20,4 +20,6 @@ public class TruthRoomDto {
     Map<String, Boolean> finalArgumentReadyState = new HashMap<>(); // 최후 변론 준비 상태 저장
     Set<Integer> finesSubmitted = new HashSet<>(); //벌금 입력 값 저장 -> 중복 방지
     Integer submitCnt; //벌금 값 입력한 수
+    Map<Integer, Integer> fineVotes = new HashMap<>(); // 각 벌금 값에 대한 투표 수
+    Integer resultMoney;
 }
