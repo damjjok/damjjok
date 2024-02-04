@@ -97,4 +97,12 @@ public class TruthRoomController {
         }
     }
 
+    //최후 변론이 끝났다고 알려주면 money 투표가 시작됐다고 알려주기
+    @MessageMapping("/finishFinalArgument/{roomId}")
+    public void startMoneyVote(@DestinationVariable Integer roomId, SimpMessageHeaderAccessor headerAccessor){
+        messagingTemplate.convertAndSend("/topic/startMoneyVote", "START");
+    }
+
+    
+
 }
