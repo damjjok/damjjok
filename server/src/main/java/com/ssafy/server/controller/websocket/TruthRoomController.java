@@ -151,6 +151,25 @@ public class TruthRoomController {
         }
     }
 
+    //마지막 나가기 버튼을 눌렀을 때 
+    @MessageMapping("/leaveRoom/{roomId}")
+    public void leaveRoom(@DestinationVariable Integer roomId, SimpMessageHeaderAccessor headerAccessor) {
+        String sessionId = headerAccessor.getSessionId();
+        // 사용자를 방에서 제거
+        enterRoomService.removeMember(roomId, sessionId);
+        enterRoomService.removeSessionFromRoomMap(sessionId); // 세션 매핑 제거
+
+        // 방에 남아 있는 멤버들의 이름 목록 가져오기
+        Map<String, String> remainingMembers = enterRoomService.getRoomMembers(roomId);
+        // 남은 멤버들의 이름 목록을 웹소켓을 통해 전송
+        messagingTemplate.convertAndSend("/topic/remainingMembers/" + roomId, remainingMembers.values());
+
+        if(enterRoomService.isRoomEmpty(roomId)) {
+            enterRoomService.deleteRoom(roomId); // 모든 사용자가 나갔다면 방 삭제
+        }
+    }
+
+
 
 
 }
