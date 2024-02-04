@@ -1,6 +1,7 @@
 import { SettingsIcon } from "@chakra-ui/icons";
 import { Box, Menu, MenuButton, MenuDivider, MenuItem, MenuList } from "@chakra-ui/react";
 import GroupMemberModal from "./group-member-modal/GroupMemberModal";
+import GroupInviteModal from "./group-invite-modal/GroupInviteModal";
 
 function SettingButton() {
   return <>
@@ -21,7 +22,7 @@ function SettingButton() {
         {/* 그룹멤버모달 */}
         <GroupMemberModal/>
         <MenuDivider />
-        <MenuItem>멤버 초대하기</MenuItem>
+        <GroupInviteModal/>
       </MenuList>
     </Menu>
   </>
