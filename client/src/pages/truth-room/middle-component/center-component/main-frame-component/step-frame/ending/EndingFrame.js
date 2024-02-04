@@ -13,7 +13,7 @@ function EndingFrame(props) {
             <SmallFrameComponent
                 width={900}
                 height={600}
-                content={<EndingDamJJokFrame />}
+                content={<EndingDamJJokFrame damJJok={testUser} />}
             ></SmallFrameComponent>
         );
     } else {
