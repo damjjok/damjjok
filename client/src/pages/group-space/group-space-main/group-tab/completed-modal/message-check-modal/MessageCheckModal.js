@@ -91,7 +91,7 @@ function MessageCheckModal({nextContent}) {
                 }
                 {isMessagesVisible && 
                   <Box display={'flex'} justifyContent={'center'} marginY={4}>
-                    <BasicButton buttonName='다음으로'/>
+                    <BasicButton buttonName='다음으로' onClick={nextContent}/>
                   </Box>
                 }
               </Box>
