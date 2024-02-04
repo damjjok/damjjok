@@ -1,6 +1,7 @@
 package com.ssafy.server.controller.websocket;
 
 import com.ssafy.server.dto.websocket.TruthRoomDto;
+import com.ssafy.server.dto.websocket.websocketDto;
 import com.ssafy.server.service.EnterRoomService;
 import com.ssafy.server.service.NextStageService;
 import com.ssafy.server.service.VoteService;
@@ -33,19 +34,22 @@ public class TruthRoomController {
 
     // 준비 상태 설정 (공통 준비 상태)
     @MessageMapping("/ready/{roomId}")
-    public void ready(@DestinationVariable Integer roomId, Boolean isReady, SimpMessageHeaderAccessor headerAccessor) {
+    public void ready(@DestinationVariable Integer roomId, websocketDto dto, SimpMessageHeaderAccessor headerAccessor) {
         String sessionId = headerAccessor.getSessionId();
+        boolean isReady = dto.isReady();
         enterRoomService.setMemberReady(roomId, sessionId, isReady);
+        messagingTemplate.convertAndSend("/topic/readyState/" + roomId, enterRoomService.countMemberReady(roomId));
         if (enterRoomService.areAllMemberReady(roomId)) {
             //준비했을때 모든 인원이 준비라면 모두에게 true 보내주기
-            messagingTemplate.convertAndSend("/topic/readyState/" + roomId, true);
+            messagingTemplate.convertAndSend("/topic/readyResult/" + roomId, true);
         }
     }
 
     // 증거 목록 단계 준비 상태 설정
     @MessageMapping("/evidenceNextStage/{roomId}")
-    public void evidenceNextStage(@DestinationVariable Integer roomId, Boolean isNext, SimpMessageHeaderAccessor headerAccessor) {
+    public void evidenceNextStage(@DestinationVariable Integer roomId, websocketDto dto, SimpMessageHeaderAccessor headerAccessor) {
         String sessionId = headerAccessor.getSessionId();
+        boolean isNext = dto.isNext();
         nextStageService.setEvidenceNext(roomId, sessionId, isNext);
         messagingTemplate.convertAndSend("/topic/evidenceNextStageState/" + roomId, nextStageService.countEvidenceNext(roomId));
         //모두 다음단계로를 눌렀다면 투표화면 열어주기
@@ -55,8 +59,9 @@ public class TruthRoomController {
     }
 
     @MessageMapping("/passFailVote/{roomId}")
-    public void passFailVote(@DestinationVariable Integer roomId, Boolean isPass, SimpMessageHeaderAccessor headerAccessor) {
+    public void passFailVote(@DestinationVariable Integer roomId, websocketDto dto, SimpMessageHeaderAccessor headerAccessor) {
         String sessionId = headerAccessor.getSessionId();
+        boolean isPass = dto.isPass();
         voteService.vote(roomId, sessionId, isPass);
         int voteCount = voteService.countVotes(roomId);
         //현재 투표한 수 알려주기
@@ -80,8 +85,9 @@ public class TruthRoomController {
     }
 
     @MessageMapping("/finalArgumentReady/{roomId}")
-    public void finalArgumentReady(@DestinationVariable Integer roomId, Boolean isReady, SimpMessageHeaderAccessor headerAccessor) {
+    public void finalArgumentReady(@DestinationVariable Integer roomId, websocketDto dto, SimpMessageHeaderAccessor headerAccessor) {
         String sessionId = headerAccessor.getSessionId();
+        boolean isReady = dto.isReady();
         nextStageService.setFinalArgumentReady(roomId, sessionId, isReady);
         int readyCount = nextStageService.countFinalArgumentReady(roomId);
         messagingTemplate.convertAndSend("/topic/finalArgumentReadyState/" + roomId, readyCount);

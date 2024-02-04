@@ -26,6 +26,7 @@ public class EnterRoomServiceImpl implements EnterRoomService {
         room.getMembers().put(sessionId, userName);
         room.getReadyState().put(sessionId, false);
         room.getEvidenceNextStage().put(sessionId, false);
+        room.getFinalArgumentReadyState().put(sessionId, false);
     }
 
     @Override
@@ -58,6 +59,14 @@ public class EnterRoomServiceImpl implements EnterRoomService {
         if (room != null && room.getReadyState().containsKey(sessionId)) {
             room.getReadyState().put(sessionId, isReady);
         }
+    }
+
+    public Integer countMemberReady(Integer roomId) {
+        TruthRoomDto room = truthRooms.get(roomId);
+        long count = room.getReadyState().values().stream()
+                .filter(Boolean::booleanValue)
+                .count();
+        return (int) count;
     }
 
     @Override
