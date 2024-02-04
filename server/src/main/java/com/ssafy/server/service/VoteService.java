@@ -5,5 +5,7 @@ import java.util.Map;
 
 public interface VoteService {
     Integer vote (Integer roomId, String sessionId, boolean isPass);
-    Map<String, Boolean> voteResult (Integer roomId);
+
+    Boolean calculateResult(Integer roomId);
+//    Map<String, Boolean> voteResult (Integer roomId);
 }

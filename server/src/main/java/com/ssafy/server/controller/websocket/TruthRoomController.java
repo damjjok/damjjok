@@ -68,7 +68,15 @@ public class TruthRoomController {
         TruthRoomDto room =  enterRoomService.getRoom(roomId);
         //투표 수가 담쪽이를 제외한 접속자 수가 되면 결과 보내주기
         if(cnt == room.getMembers().size()-1) {
-            messagingTemplate.convertAndSend("/topic/passFailVoteResult", voteService.voteResult(roomId));
+            boolean voteResult = voteService.calculateResult(roomId); // 투표 결과 계산
+            // 투표 결과에 따른 처리
+            if(voteResult) {
+                // PASS: 나가기 화면으로 전환
+                messagingTemplate.convertAndSend("/topic/voteResult" + roomId, "PASS");
+            } else {
+                // FAIL: 최후 변론 단계로 진행
+                messagingTemplate.convertAndSend("/topic/voteResult" + roomId, "FAIL");
+            }
         }
     }
 
