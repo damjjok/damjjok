@@ -24,7 +24,26 @@ public class VoteServiceImpl implements VoteService {
     }
 
     @Override
-    public Boolean calculateResult(Integer roomId) {
+    public Integer countVotes(Integer roomId) {
+        TruthRoomDto room = enterRoomService.getRoom(roomId);
+        if (room == null || room.getPassOrFail() == null) {
+            return 0; // 방이 존재하지 않거나 투표 데이터가 없는 경우
+        }
+        return room.getPassOrFail().size(); // 진행된 투표의 총 수 반환
+    }
+
+    @Override
+    public boolean checkVotingComplete(Integer roomId) {
+        TruthRoomDto room = enterRoomService.getRoom(roomId);
+        if (room == null || room.getMembers() == null || room.getPassOrFail() == null) {
+            return false; // 방이 존재하지 않거나 필요한 데이터가 없는 경우
+        }
+        //담쪽이 제외 모두가 투표를 했을 경우 true 반환
+        return room.getMembers().size() - 1 == room.getPassOrFail().size();
+    }
+
+    @Override
+    public boolean calculateResult(Integer roomId) {
         TruthRoomDto room = enterRoomService.getRoom(roomId);
         if (room == null || room.getPassOrFail().isEmpty()) {
             // 방이 존재하지 않거나 아무도 투표하지 않았으면 FAIL 처리
@@ -43,6 +62,8 @@ public class VoteServiceImpl implements VoteService {
         // PASS 표가 FAIL 표보다 많으면 true (PASS), 그렇지 않으면 false (FAIL) 반환
         return passCount > failCount;
     }
+
+
 
 //    @Override
 //    public Map<String, Boolean> voteResult(Integer roomId) {
