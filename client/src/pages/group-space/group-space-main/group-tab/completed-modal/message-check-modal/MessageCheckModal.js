@@ -1,9 +1,9 @@
-import { Box, Card, CardBody, CardHeader, Flex, Heading, Modal, ModalBody, ModalContent, ModalOverlay, VStack, useDisclosure } from "@chakra-ui/react"
+import { Box, Card, CardBody, CardHeader, Flex, Heading, Modal, ModalBody, ModalContent, ModalOverlay, Text, VStack, useDisclosure } from "@chakra-ui/react"
 import BasicButton from "components/button/BasicButton"
 import postbox from 'assets/images/postboxMain.png'
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
-import messageBg from 'assets/images/postboxMain.png'
+import messageBg from 'assets/images/messageBg.png'
 
 
 //더미 데이터
@@ -26,9 +26,6 @@ function MessageCheckModal({nextContent}) {
   const handleClick = () => {
     setIsMessagesVisible(true);}
 
-    const handleMoreClick = () => {
-      setDisplayCount(messages.length);  // '더보기' 버튼을 누르면 모든 메시지를 보여주도록 설정
-    };
 
   return (
       <>
@@ -41,36 +38,53 @@ function MessageCheckModal({nextContent}) {
                   <AnimatePresence>
                   {isMessagesVisible &&
                     messages.slice(0, displayCount).map((message, index) => (
-                      <Card 
-                      width={'20%'} 
-                      marginX='2rem' 
-                      marginY='2rem' 
-                      backgroundColor={'dam.yellow'} 
-                      style={{ 
-                        boxShadow: '0 0 20px 10px rgba(255, 255, 255, 0.7)',
-                        transition: '0.5s'
-                      }}>
+
+                    
                         <motion.div
                           key={index}
                           initial={{ opacity: 0, scale: 0 }}
                           animate={{ opacity: 1, scale: 1 }}
                           exit={{ opacity: 0, scale: 0 }}
-                        >
-                          <CardHeader>
+                        >     
+             
+                        <div
+                      
+                        // width={'20%'} 
+                        // marginX='2rem' 
+                        // marginY='2rem' 
+                        // backgroundColor={'dam.yellow'} 
+                        style={{ 
+                          backgroundImage: `url(${messageBg})`,
+                          backgroundSize: 'cover',
+                          backgroundPositon: 'center',
+                          // boxShadow: '20 10 20px 10px rgba(255, 255, 255, 0.7)',
+                          transition: '0.5s',
+                          minHeight: '10rem',
+                          maxHeight: '10rem',
+                          minWidth: '15rem',
+                          maxWidth: '15rem',
+                          padding: '80px',
+
+                          
+                        }}>
+                          <Box>
                             <Heading size='sm'>
                               {message.writer}
                             </Heading>
-                          </CardHeader>
-                          <CardBody>
+                          </Box>
+                          <Box>
+                            <Text noOfLines={2}>
                               {message.content}
-                          </CardBody>
+
+                            </Text>
+                          </Box>
+                      </div>
                         </motion.div>
-                      </Card>
                     ))}
                   </AnimatePresence>
                 </Flex>
                 {isMessagesVisible &&  // 메시지가 더 있을 경우에만 '더보기' 버튼을 표시
-                <p className="text-center" onClick={handleMoreClick}>전체 메시지 보기</p>
+                <p className="text-center">전체 메시지 보기</p>
                 }
                 {isMessagesVisible && 
                   <Box display={'flex'} justifyContent={'center'} marginY={4}>
