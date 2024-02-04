@@ -1,5 +1,7 @@
 import { MenuItem, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, useDisclosure } from "@chakra-ui/react"
 
+
+// 초대 코드 생성 페이지 완료되면, 해당 코드 ModalBody 안에 붙여넣기
 function GroupInviteModal() {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
