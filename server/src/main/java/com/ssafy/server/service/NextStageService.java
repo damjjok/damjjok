@@ -7,4 +7,9 @@ public interface NextStageService {
 
     //증거 리스트에서 다음단계 누른 사람 수 세줌
     Integer cntEvidenceNext(Integer roomId);
+    void setFinalArgumentReady(Integer roomId, String sessionId, Boolean isReady);
+    boolean checkAllFinalArgumentReady(Integer roomId);
+
+
+
 }
