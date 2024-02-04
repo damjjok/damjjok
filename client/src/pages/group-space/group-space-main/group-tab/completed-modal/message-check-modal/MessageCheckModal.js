@@ -12,7 +12,7 @@ const messages = [
   {writer:'작성자1', content:"안녕잘지내니테스트용으로메시지를길게넣어보려고해"},
   {writer:'작성자2', content:"사실처음봤을때부터...더보기"},
   {writer:'작성자3', content:"이편지는영국에서시작되어..."},
-  {writer:'작성자4', content:"메시지 4"},
+  {writer:'작성자4', content:"[WEB발신] 너는 나를 존중해야 하고"},
   {writer:'작성자5', content:"메시지 5"},
   {writer:'작성자6', content:"메시지 6"},
   {writer:'작성자7', content:"메시지 7"},
@@ -34,7 +34,7 @@ function MessageCheckModal({nextContent}) {
             <VStack position='relative'>
               <p className=" font-extrabold text-4xl text-center py-4">내가 금연 중일 때 어떤 메시지들이 쌓여있었을까요?</p>
               <img src={postbox} alt='postbox' width={'300vw'} onClick={handleClick}/>
-              <Box position={'absolute'} top='50%' left='50%' transform="translate(-50%, -50%)" width='90%'>
+              <Box position={'absolute'} top='50%' left='50%' transform="translate(-50%, -50%)" minWidth={'90%'} width='90%'>
                 <Flex flexWrap='wrap' justifyContent={'center'} >
                   <AnimatePresence>
                   {isMessagesVisible &&
@@ -74,7 +74,7 @@ function MessageCheckModal({nextContent}) {
                             </Heading>
                           </Box>
                           <Box>
-                            <Text noOfLines={2}>
+                            <Text noOfLines={2} fontSize='sm'>
                               {message.content}
 
                             </Text>
@@ -86,7 +86,7 @@ function MessageCheckModal({nextContent}) {
                 </Flex>
                 {isMessagesVisible &&  // 메시지가 더 있을 경우에만 '더보기' 버튼을 표시
                 <Flex justifyContent={'center'}>
-                  <WholeMessageList/>
+                  <WholeMessageList messages={ messages }/>
                 </Flex>
                 }
                 {isMessagesVisible && 

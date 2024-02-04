@@ -1,6 +1,6 @@
-import { Box, Flex, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Text, VStack, useDisclosure } from "@chakra-ui/react"
+import { Box, Divider, Flex, Heading, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Text, VStack, useDisclosure } from "@chakra-ui/react"
 
-function WholeMessageList() {
+function WholeMessageList({ messages }) {
   const { isOpen, onOpen, onClose } = useDisclosure()
   return (
   <>
@@ -15,16 +15,29 @@ function WholeMessageList() {
       </p>
     </ModalHeader>
     <ModalCloseButton />
-    <ModalBody py={10} px={20}>
+    <ModalBody>
       <Box marginBottom={4}>
-        <p className="text-xl font-bold py-4">담쪽이</p>
-        <VStack alignItems={'start'} px={10}>
-          <Box py={2}>
-            <Flex alignItems={'center'}>
-              <Text>텍스트</Text>
-
-            </Flex>
-          </Box>
+        <VStack 
+        alignItems={'start'} 
+        px={10}
+        style={{ 
+          maxHeight: '500px',  // 최대 높이 설정
+          overflow: 'auto'  // 내용이 넘치는 경우에만 스크롤바 생성
+        }}
+        >
+          {messages.map((message, index) => {
+            return (
+              <Box key={index}>
+                <Flex flexFlow={'column'} paddingY={4}>
+                  <Heading size='md'>
+                    {message.writer}
+                  </Heading>
+                  <Text>{message.content}</Text>
+                </Flex>
+                <Divider/>
+              </Box>
+            )
+          })}
         </VStack>
       </Box>
     </ModalBody>
