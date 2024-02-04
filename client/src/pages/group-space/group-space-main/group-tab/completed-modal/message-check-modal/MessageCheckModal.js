@@ -3,6 +3,7 @@ import BasicButton from "components/button/BasicButton"
 import postbox from 'assets/images/postboxMain.png'
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
+import messageBg from 'assets/images/postboxMain.png'
 
 
 //더미 데이터
