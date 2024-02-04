@@ -1,14 +1,4 @@
-import {
-    Card,
-    CardBody,
-    Stack,
-    Text,
-    useDisclosure,
-    CardHeader,
-    Flex,
-    CardFooter,
-    Box,
-} from "@chakra-ui/react";
+import { Card, CardBody, Stack, Text, useDisclosure, CardHeader, Flex, CardFooter, Box } from "@chakra-ui/react";
 import TestimonyDetailModal from "../testimony-modal/TestimonyDetailModal";
 
 const TestimonyItems = ({ title, content }) => {
@@ -19,22 +9,15 @@ const TestimonyItems = ({ title, content }) => {
     return (
         <div className="TestimonyItems">
             <Card
-                maxW="200px" // 최대 너비 설정
-                w="200px" // 너비 설정
-                h="200px" // 높이 설정
+                width={"15vw"}
+                height={"15vh"}
                 borderWidth="1px" // 테두리 두께 설정
                 borderRadius="lg" // 테두리 둥근 처리
+                borderColor={"dam.lightgray"}
                 overflow="hidden" // 내용이 넘칠 경우 숨김 처리
                 onClick={onOpen}
             >
-                <CardHeader
-                    isTruncated
-                    bg="#ffd100"
-                    p={2}
-                    display="flex"
-                    justifyContent="space-between"
-                    alignItems="center"
-                >
+                <CardHeader isTruncated bg="#ffd100" display="flex" justifyContent="space-between" alignItems="center">
                     <Text fontSize="lg" fontWeight="bold" isTruncated>
                         {title}
                     </Text>
@@ -45,25 +28,22 @@ const TestimonyItems = ({ title, content }) => {
                     </Box>
                 </CardHeader>
                 <CardBody>
-                    <Stack mt="6" spacing="3">
-                        <Text isTruncated>{content}</Text>ㅁ
+                    <Stack mt="" spacing="3">
+                        <Text isTruncated>{content}</Text>
                         {/* 내용이 넘치면 말줄임표로 처리 */}
                     </Stack>
                 </CardBody>
 
                 <CardFooter p={2}>
                     <Flex justifyContent="flex-end" width="100%">
-                        <Text fontSize="10px">{day}</Text>
+                        <Text fontSize="12px" fontWeight="bold">
+                            {day}
+                        </Text>
                     </Flex>
                 </CardFooter>
             </Card>
 
-            <TestimonyDetailModal
-                isOpen={isOpen}
-                onClose={onClose}
-                title={title}
-                content={content}
-            />
+            <TestimonyDetailModal isOpen={isOpen} onClose={onClose} title={title} content={content} />
         </div>
     );
 };
