@@ -1,10 +1,7 @@
 package com.ssafy.server.controller;
 
 import com.ssafy.server.dto.request.challenge.ChallengeCreateRequestDto;
-import com.ssafy.server.dto.response.challenge.ChallengeCreateResponseDto;
-import com.ssafy.server.dto.response.challenge.ChallengeDetailResponseDto;
-import com.ssafy.server.dto.response.challenge.ChallengeListByGroupIdResponseDto;
-import com.ssafy.server.dto.response.challenge.ChallengeProfileImageResponseDto;
+import com.ssafy.server.dto.response.challenge.*;
 import com.ssafy.server.service.ChallengeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -38,6 +35,12 @@ public class ChallengeController {
     @GetMapping("/{challengeId}/detail")
     public ResponseEntity<? super ChallengeDetailResponseDto> challengeDetail(@PathVariable int challengeId){
         ResponseEntity<? super ChallengeDetailResponseDto> response = challengeService.challengeDetail(challengeId);
+        return response;
+    }
+
+    @GetMapping("/{challengeId}/member-list")
+    public ResponseEntity<? super ChallengeMemberListResponseDto> challengeMemberList(@PathVariable int challengeId){
+        ResponseEntity<? super ChallengeMemberListResponseDto> response = challengeService.challengeMemberList(challengeId);
         return response;
     }
 }

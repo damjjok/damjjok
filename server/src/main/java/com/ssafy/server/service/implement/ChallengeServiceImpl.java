@@ -2,12 +2,10 @@ package com.ssafy.server.service.implement;
 
 import com.ssafy.server.dto.ResponseDto;
 import com.ssafy.server.dto.challenge.ChallengeDto;
+import com.ssafy.server.dto.challenge.ChallengeMemeberDto;
 import com.ssafy.server.dto.challenge.ImageDto;
 import com.ssafy.server.dto.request.challenge.ChallengeCreateRequestDto;
-import com.ssafy.server.dto.response.challenge.ChallengeCreateResponseDto;
-import com.ssafy.server.dto.response.challenge.ChallengeDetailResponseDto;
-import com.ssafy.server.dto.response.challenge.ChallengeListByGroupIdResponseDto;
-import com.ssafy.server.dto.response.challenge.ChallengeProfileImageResponseDto;
+import com.ssafy.server.dto.response.challenge.*;
 import com.ssafy.server.entity.*;
 import com.ssafy.server.repository.*;
 import com.ssafy.server.service.ChallengeService;
@@ -142,5 +140,23 @@ public class ChallengeServiceImpl implements ChallengeService {
             return ResponseDto.databaseError();
         }
         return ChallengeDetailResponseDto.success(dto);
+    }
+
+    @Override
+    public ResponseEntity<? super ChallengeMemberListResponseDto> challengeMemberList(int challengeId) {
+        List<ChallengeMemeberDto> list = new ArrayList<>();
+        try{
+
+            List<ChallengeMemberEntity> entityList = challengeMemeberRepository.findByChallengeEntityChallengeId(challengeId);
+
+            entityList.stream().forEach(e -> {
+                ChallengeMemeberDto dto = new ChallengeMemeberDto(e);
+                list.add(dto);
+            });
+
+        }catch (Exception e){
+            return ResponseDto.databaseError();
+        }
+        return ChallengeMemberListResponseDto.success(list);
     }
 }
