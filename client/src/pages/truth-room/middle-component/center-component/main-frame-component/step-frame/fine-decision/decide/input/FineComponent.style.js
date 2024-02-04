@@ -44,4 +44,24 @@ export const Wrapper = styled.div`
         padding: 3px;
         margin: 5px;
     }
+
+    .custom-radio-button {
+        display: inline-block;
+        padding: 5px;
+    }
+
+    .radio-inner {
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        border: 2px solid #000;
+        border-radius: 4px; /* 사각형 모양을 원한다면 이 값을 0으로 설정합니다. */
+        margin-right: 10px;
+        vertical-align: middle;
+        cursor: pointer;
+    }
+
+    .radio-inner.selected {
+        background-color: #000; /* 선택됐을 때의 색상을 설정합니다. */
+    }
 `;
