@@ -1,4 +1,4 @@
-import { CheckCircleIcon, PlusSquareIcon } from "@chakra-ui/icons";
+import { CheckCircleIcon, NotAllowedIcon, PlusSquareIcon, WarningIcon } from "@chakra-ui/icons";
 import {
   Accordion,
   AccordionItem,
@@ -16,12 +16,14 @@ import { useState } from "react";
 //더미데이터
 const currentGroupChallengeList = [{ username : '손종민', createdAt : '2024.02.02'}, { username : '김싸피', createdAt : '2023.12.01'}]
 // const currentGroupChallengeList = []
+const lastChallenge = [{ username : '손종민', createdAt : '2023.11.01', status : 'success'}, {username : '손종민', createdAt : '2023.10.01', status: 'failed'}]
 
 function ChallengeList() {
   // challengeList 반복문 돌릴 예정, 아직은 안 씀.
   // const challengeList = useRecoilValue(challengeListState);
   //선택된 챌린지 표시를 위한 상태
-  const [selectedChallenge, setSelectedChallenge] = useState(null);
+  const [selectedCurrentChallenge, setSelectedCurrentChallenge] = useState(null);
+  const [selectedLastChallenge, setSelectedLastChallenge] = useState(null);
 
   return (
       <Accordion defaultIndex={[0]} allowMultiple>
@@ -39,8 +41,8 @@ function ChallengeList() {
             {currentGroupChallengeList.length > 0 ? (currentGroupChallengeList.map((challenge, index) => (
                 <Flex 
                 alignItems="center"
-                className={`py-2 px-4 rounded-lg ${selectedChallenge === index ? 'bg-[rgba(255,209,0,0.5)]' : 'hover:bg-damyellow'} hover:cursor-pointer`}
-                onClick={() => setSelectedChallenge(index)}>
+                className={`py-2 px-4 rounded-lg ${selectedCurrentChallenge === index ? 'bg-[rgba(255,209,0,0.5)]' : 'hover:bg-damyellow'} hover:cursor-pointer`}
+                onClick={() => setSelectedCurrentChallenge(index)}>
                     <Circle size="2" bg="green.500" mr="2" />
                     <li key={index}>
                         <p className=" font-semibold">{challenge.username} 챌린지</p>
@@ -72,10 +74,28 @@ function ChallengeList() {
                   </AccordionButton>
               </h2>
               <AccordionPanel pb={4}>
-                  <ul>
-                      <li>지난 챌린지 (성공)</li>
-                      <li>지난 챌린지 (실패)</li>
-                  </ul>
+              <ul>
+            {lastChallenge.length > 0 ? (lastChallenge.map((challenge, index) => (
+                <Flex 
+                alignItems="center"
+                className={`py-2 px-4 rounded-lg ${selectedLastChallenge === index ? 'bg-[rgba(255,209,0,0.5)]' : 'hover:bg-damyellow'} hover:cursor-pointer`}
+                onClick={() => setSelectedLastChallenge(index)}>
+                    {challenge.status === 'success' ? (                    
+                        <CheckCircleIcon size="4" color="green.500" mr="2" />
+                    ) : (
+                        <WarningIcon size="4" color="dam.gray" mr="2"/>
+                    )}
+
+                    <li key={index}>
+                        <p className=" font-semibold">{challenge.username} 챌린지</p>
+                        <p className="text-xs">{challenge.createdAt} 진행</p>
+                    </li>
+                </Flex>
+                // 해당 챌린지 페이지로 향하는 링크 추가해야함.
+            ))) : (
+                <p className="text-xs text-gray-400 mb-2">지난 챌린지가 없습니다</p>
+            )}
+          </ul>
               </AccordionPanel>
           </AccordionItem>
       </Accordion>
