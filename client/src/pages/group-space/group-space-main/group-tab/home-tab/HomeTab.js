@@ -16,6 +16,7 @@ function HomeTab() {
         currentChallenge = myChallenge[0];
     } else {
         console.log("No data in localStorage");
+        return <></>;
     }
 
     const startedDate = new Date(currentChallenge.createdAt);
@@ -36,9 +37,7 @@ function HomeTab() {
                 </div>
             </div>
             <div className="py-8">
-                <p className="text-xl font-bold">
-                    오늘의 {currentUser.userName}님은...
-                </p>
+                <p className="text-xl font-bold">오늘의 {currentUser.userName}님은...</p>
                 <div className="flex flex-wrap my-4 justify-center">
                     <InfoCards />
                 </div>
