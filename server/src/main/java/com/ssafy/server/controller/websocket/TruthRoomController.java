@@ -6,11 +6,13 @@ import com.ssafy.server.service.EnterRoomService;
 import com.ssafy.server.service.NextStageService;
 import com.ssafy.server.service.VoteService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.event.EventListener;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -127,5 +129,28 @@ public class TruthRoomController {
             messagingTemplate.convertAndSend("/topic/fineVoteResulte/" + roomId, money);
         }
     }
-    
+
+    // 웹소켓 세션이 종료될 때 호출될 메소드
+    @EventListener
+    public void handleWebSocketDisconnectListener(SessionDisconnectEvent event) {
+        String sessionId = event.getSessionId();
+        // sessionId를 이용해 방 ID와 사용자 이름을 찾아낸다.
+        Integer roomId = enterRoomService.getRoomIdFromSession(sessionId);
+        if (roomId != null) {
+            enterRoomService.removeMember(roomId, sessionId); // 사용자를 방에서 제거
+            // 세션 ID에 대한 매핑을 sessionRoomMap에서 제거
+            enterRoomService.removeSessionFromRoomMap(sessionId);
+
+            // 방에 남아 있는 멤버들의 이름 목록 가져오기
+            Map<String, String> remainingMembers = enterRoomService.getRoomMembers(roomId);
+            // 남은 멤버들의 이름 목록을 웹소켓을 통해 전송
+            messagingTemplate.convertAndSend("/topic/remainingMembers/" + roomId, remainingMembers.values());
+            if(enterRoomService.isRoomEmpty(roomId)) {
+                enterRoomService.deleteRoom(roomId); // 모든 사용자가 나갔다면 방 삭제
+            }
+        }
+    }
+
+
+
 }
