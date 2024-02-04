@@ -4,7 +4,7 @@
 
 // 수정해야 할 것 : Route 설정
 import { useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Outlet, useNavigate } from "react-router-dom";
 // import { useRecoilValue } from "recoil";
 import GroupTab from "./group-tab/GroupTab";
 import EmptyChallenge from "./empty-challenge/EmptyChallenge";
@@ -15,30 +15,22 @@ import { useRecoilState } from "recoil";
 // import NormalButton from "../components/button/normalbutton/NormalButton";
 
 function GroupSpaceMain() {
-    const [challengeList, setChallengeList] =
-        useRecoilState(challengeListState);
+    const [challengeList, setChallengeList] = useRecoilState(challengeListState);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const storedChallengeList = localStorage.getItem("challengeList");
         if (storedChallengeList) {
             setChallengeList(JSON.parse(storedChallengeList));
+        } else {
+            navigate("empty-challenge");
         }
     }, []);
 
     return (
-        <Routes>
-            <Route
-                path="/"
-                element={
-                    challengeList.length !== 0 ? (
-                        <GroupTab />
-                    ) : (
-                        <EmptyChallenge />
-                    )
-                }
-            />
-            <Route path="createChallenge" element={<CreateChallenge />} />
-        </Routes>
+        <>
+            <Outlet></Outlet>
+        </>
     );
 }
 
