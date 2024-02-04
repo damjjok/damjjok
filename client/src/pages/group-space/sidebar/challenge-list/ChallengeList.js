@@ -10,6 +10,7 @@ import {
   Circle,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import challengeIcon from 'assets/images/currentChallengeIcon.png'
 // import { useRecoilValue } from "recoil";
 // import { challengeListState } from "../../../../context/Challenge";
 
@@ -29,9 +30,13 @@ function ChallengeList() {
           <AccordionItem>
               <h2>
                   <AccordionButton>
+                    <Flex alignItems='center'>
+                        <img src={challengeIcon} alt="challengeIcon" className="w-[20px] h-[20px]"/>
                       <Box as="span" flex="1" textAlign="left">
                           <p className=" text-lg font-bold">진행중인 챌린지</p>
                       </Box>
+
+                    </Flex>
                       <AccordionIcon />
                   </AccordionButton>
               </h2>
