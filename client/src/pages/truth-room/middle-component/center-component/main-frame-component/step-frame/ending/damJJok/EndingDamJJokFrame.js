@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import CheerStepComponent from "./step-component/CheerStepComponent";
 
 function EndingDamJJokFrame(props) {
     // 0: 응원해요!
@@ -12,7 +13,7 @@ function EndingDamJJokFrame(props) {
 
     return (
         <div>
-            {endingDamJJokStep === 0 && <div>test1</div>}
+            {endingDamJJokStep === 0 && <CheerStepComponent />}
             {endingDamJJokStep === 1 && <div>test2</div>}
             {endingDamJJokStep === 2 && <div>test3</div>}
         </div>
