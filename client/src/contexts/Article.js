@@ -22,7 +22,6 @@ export const evidenceData = atom({
     key: "evidenceData",
     default: {
         title: "",
-        content: "",
         img: null,
     },
 });
