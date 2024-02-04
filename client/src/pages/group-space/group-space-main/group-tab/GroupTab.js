@@ -1,4 +1,4 @@
-import { Tabs, TabList, TabPanels, Tab, TabPanel, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, Flex } from "@chakra-ui/react";
+import { Tabs, TabList, TabPanels, Tab, TabPanel, Modal, ModalOverlay, ModalContent, ModalBody, Flex } from "@chakra-ui/react";
 import HomeTab from "./home-tab/HomeTab";
 import TruthRoomTab from "./truth-room-tab/TruthRoomTab";
 import RewardTab from "./reward-tab/RewardTab";
@@ -7,6 +7,8 @@ import ArticleTab from "./article-tab/ArticleTab";
 import { useEffect, useState } from "react";
 import { StarIcon } from "@chakra-ui/icons";
 import BasicButton from "components/button/BasicButton";
+import MessageCheckModal from "./completed-modal/message-check-modal/MessageCheckModal";
+import ChallengeCompletedModal from "./completed-modal/ChallengeCompletedModal";
 
 // 테스트용 더미데이터
 const challenge = {
@@ -25,7 +27,10 @@ const challenge = {
 };
 
 function GroupTab() {
+    
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [contentStep, setContentStep] = useState(0);
+
     useEffect(() => {
         if (challenge.status === 'completed') {
           setIsModalOpen(true);
@@ -33,6 +38,15 @@ function GroupTab() {
           setIsModalOpen(false);
         }
       }, [challenge.status]);
+
+      const nextContent = () => setContentStep(contentStep + 1);
+      const closeModal = () => {
+        setIsModalOpen(false);
+        setContentStep(0);  // 모달을 닫을 때는 내용 단계를 초기화
+      };
+      const contents = [
+        <ChallengeCompletedModal nextContent={nextContent}/>,
+        <MessageCheckModal nextContent={nextContent} />,]
 
     // 1. Create the component
     function DataTabs({ data }) {
@@ -81,17 +95,10 @@ function GroupTab() {
     return (
     <>
         <DataTabs data={tabData} />
-        <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} closeOnOverlayClick={false}>
+        <Modal isOpen={isModalOpen} onClose={closeModal} closeOnOverlayClick={false}>
             <ModalOverlay />
             <ModalContent maxW={'1000px'} margin={'auto'}>
-                <Flex flexFlow={'column'} justifyContent={'center'} alignItems={'center'} marginY={20}>
-                    <StarIcon boxSize={20} color='dam.yellow'/>
-                    <ModalBody>
-                        <p className=" font-extrabold text-4xl text-center">축하해요! 챌린지 도전에 성공했어요!</p>
-                        <p className="font-semibold text-center">성공한 챌린지의 리포트를 확인할 수 있어요!</p>
-                    </ModalBody>
-                    <BasicButton buttonName={'리포트 확인하기'} variant={'bigbtn'}/>
-                </Flex>
+                {contents[contentStep]}
             </ModalContent>
         </Modal>
     </>
