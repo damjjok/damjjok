@@ -7,7 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ChallengeRepository extends JpaRepository<ChallengeEntity, Integer> {
-
     ChallengeEntity findByChallengeId(Integer challengeId);
-
 }
