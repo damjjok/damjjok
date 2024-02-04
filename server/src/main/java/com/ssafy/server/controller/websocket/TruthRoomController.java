@@ -22,91 +22,73 @@ public class TruthRoomController {
     private final NextStageService nextStageService;
     private final VoteService voteService;
 
-    @MessageMapping("/enter/{userName}")
-    public void enter(@DestinationVariable String userName, TruthRoomDto dto, SimpMessageHeaderAccessor headerAccessor) {
+    // 방에 입장
+    @MessageMapping("/enter/{roomId}/{userName}")
+    public void enter(@DestinationVariable Integer roomId, @DestinationVariable String userName, SimpMessageHeaderAccessor headerAccessor) {
         String sessionId = headerAccessor.getSessionId();
-        Integer roomId = dto.getRoomId();
-        enterRoomService.createOrGetRoom(roomId);
         enterRoomService.addMember(roomId, sessionId, userName);
         //입장 목록 보내주기
-        messagingTemplate.convertAndSend("/topic/member",enterRoomService.createOrGetRoom(roomId));
+        messagingTemplate.convertAndSend("/topic/member/" + roomId, enterRoomService.getRoomMembers(roomId));
     }
 
-    @MessageMapping("/ready")
-    public void ready(TruthRoomDto dto, Boolean isReady,SimpMessageHeaderAccessor headerAccessor){
+    // 준비 상태 설정 (공통 준비 상태)
+    @MessageMapping("/ready/{roomId}")
+    public void ready(@DestinationVariable Integer roomId, Boolean isReady, SimpMessageHeaderAccessor headerAccessor) {
         String sessionId = headerAccessor.getSessionId();
-        Integer roomId = dto.getRoomId();
         enterRoomService.setMemberReady(roomId, sessionId, isReady);
-        if(enterRoomService.areAllMemberReadey(roomId)) {
+        if (enterRoomService.areAllMemberReady(roomId)) {
             //준비했을때 모든 인원이 준비라면 모두에게 true 보내주기
-            messagingTemplate.convertAndSend("/topic/readyState", true);
+            messagingTemplate.convertAndSend("/topic/readyState/" + roomId, true);
         }
     }
 
-    @MessageMapping("/evidenceNextStage")
-    public void evidenceNextStage(TruthRoomDto dto, Boolean isNext, SimpMessageHeaderAccessor headerAccessor){
+    // 증거 목록 단계 준비 상태 설정
+    @MessageMapping("/evidenceNextStage/{roomId}")
+    public void evidenceNextStage(@DestinationVariable Integer roomId, Boolean isNext, SimpMessageHeaderAccessor headerAccessor) {
         String sessionId = headerAccessor.getSessionId();
-        Integer roomId = dto.getRoomId();
         nextStageService.setEvidenceNext(roomId, sessionId, isNext);
-        int cnt = nextStageService.cntEvidenceNext(roomId);
-        //다음 단계 누를때마다
-        messagingTemplate.convertAndSend("/topic/evidenceNextStageState", cnt);
-        if (cnt == dto.getMembers().size()) {
-            //모두 다음단계로를 눌렀다면 투표화면 열어주기
-            messagingTemplate.convertAndSend("/topic/voteStart", true);
+        messagingTemplate.convertAndSend("/topic/evidenceNextStageState/" + roomId, nextStageService.countEvidenceNext(roomId));
+        //모두 다음단계로를 눌렀다면 투표화면 열어주기
+        if (nextStageService.checkAllEvidenceNextReady(roomId)) {
+            messagingTemplate.convertAndSend("/topic/voteStart/" + roomId, true);
         }
     }
 
-    @MessageMapping("/passFailVote")
-    public void passFailVote(TruthRoomDto dto, Boolean isPass, SimpMessageHeaderAccessor headerAccessor){
+    @MessageMapping("/passFailVote/{roomId}")
+    public void passFailVote(@DestinationVariable Integer roomId, Boolean isPass, SimpMessageHeaderAccessor headerAccessor) {
         String sessionId = headerAccessor.getSessionId();
-        Integer roomId = dto.getRoomId();
-        int cnt = voteService.vote(roomId, sessionId, isPass);
+        voteService.vote(roomId, sessionId, isPass);
+        int voteCount = voteService.countVotes(roomId);
         //현재 투표한 수 알려주기
-        messagingTemplate.convertAndSend("/topic/passFailVoteState", cnt);
-        TruthRoomDto room =  enterRoomService.getRoom(roomId);
+        messagingTemplate.convertAndSend("/topic/passFailVoteState/" + roomId, voteCount);
         //투표 수가 담쪽이를 제외한 접속자 수가 되면 결과 보내주기
-        if(cnt == room.getMembers().size()-1) {
-            boolean voteResult = voteService.calculateResult(roomId); // 투표 결과 계산
-            // 투표 결과에 따른 처리
-            if(voteResult) {
-                // PASS: 나가기 화면으로 전환
-                messagingTemplate.convertAndSend("/topic/voteResult" + roomId, "PASS");
-            } else {
-                // FAIL: 최후 변론 단계로 진행
-                messagingTemplate.convertAndSend("/topic/voteResult" + roomId, "FAIL");
-            }
+        if(voteService.checkVotingComplete(roomId)) {
+            boolean result = voteService.calculateResult(roomId);
+            messagingTemplate.convertAndSend("/topic/voteResult/" + roomId, result ? "PASS" : "FAIL");
         }
     }
 
     //pass일 경우 방 나가기 버튼을 누르면
-    @MessageMapping("/afterPass")
-    public void afterPass(TruthRoomDto dto, SimpMessageHeaderAccessor headerAccessor) {
+    @MessageMapping("/afterPass/{roomId}")
+    public void afterPass(@DestinationVariable Integer roomId, SimpMessageHeaderAccessor headerAccessor) {
         String sessionId = headerAccessor.getSessionId();
-        Integer roomId = dto.getRoomId();
         enterRoomService.removeMember(roomId, sessionId);
-        TruthRoomDto room = enterRoomService.getRoom(roomId);
-
         //방이 삭제 되지 않았는데 방의 멤버가 나 다갔다면 방 없애주기
-        if (room != null && room.getMembers().isEmpty()) {
+        if(enterRoomService.isRoomEmpty(roomId)) {
             enterRoomService.deleteRoom(roomId);
         }
     }
 
-    @MessageMapping("/finalArgumentReady")
-    public void finalArgumentReady(TruthRoomDto dto, Boolean isReady, SimpMessageHeaderAccessor headerAccessor) {
+    @MessageMapping("/finalArgumentReady/{roomId}")
+    public void finalArgumentReady(@DestinationVariable Integer roomId, Boolean isReady, SimpMessageHeaderAccessor headerAccessor) {
         String sessionId = headerAccessor.getSessionId();
-        Integer roomId = dto.getRoomId();
-
         nextStageService.setFinalArgumentReady(roomId, sessionId, isReady);
-
+        int readyCount = nextStageService.countFinalArgumentReady(roomId);
+        messagingTemplate.convertAndSend("/topic/finalArgumentReadyState/" + roomId, readyCount);
         //모두가 준비를 누르면 최후변론 단계 시작됐다고 알려주기
         if(nextStageService.checkAllFinalArgumentReady(roomId)) {
-            messagingTemplate.convertAndSend("/topic/startFianlArgument/");
+            messagingTemplate.convertAndSend("/topic/startFinalArgument/" + roomId, "START");
         }
     }
-
-
-
 
 }
