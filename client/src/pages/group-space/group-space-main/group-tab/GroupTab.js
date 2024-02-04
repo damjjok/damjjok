@@ -11,7 +11,7 @@ function GroupTab() {
         return (
             <div>
                 <StatusBar />
-                <Tabs isFitted colorScheme="yellow">
+                <Tabs isFitted colorScheme="yellow" marginTop={"2rem"}>
                     <TabList>
                         {data.map((tab, index) => (
                             <Tab key={index}>{tab.label}</Tab>

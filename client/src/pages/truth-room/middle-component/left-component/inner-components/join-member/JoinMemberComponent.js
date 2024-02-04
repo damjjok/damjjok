@@ -13,8 +13,7 @@ function JoinMemberComponent() {
         let tempPhDs = [];
         for (var i = 0; i < joinMember.length; i++) {
             // 담쪽이와 박사님들 구분
-            if (joinMember[i].role === "damJJok")
-                tempDamJJok.push(joinMember[i]);
+            if (joinMember[i].role === "damJJok") tempDamJJok.push(joinMember[i]);
             else if (joinMember[i].role === "phD") tempPhDs.push(joinMember[i]);
         }
         setDamJJok(tempDamJJok);
@@ -25,10 +24,7 @@ function JoinMemberComponent() {
         // 지금은 임시 코드입니다.
         <Wrapper>
             <div style={{ margin: "20px" }}>참여 인원</div>
-            <SectionComponent
-                type={"담쪽이"}
-                members={damJJok}
-            ></SectionComponent>
+            <SectionComponent type={"담쪽이"} members={damJJok}></SectionComponent>
             <SectionComponent type={"박사님"} members={phDs}></SectionComponent>
         </Wrapper>
     );
