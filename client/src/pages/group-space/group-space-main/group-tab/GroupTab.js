@@ -9,6 +9,7 @@ import { StarIcon } from "@chakra-ui/icons";
 import BasicButton from "components/button/BasicButton";
 import MessageCheckModal from "./completed-modal/message-check-modal/MessageCheckModal";
 import ChallengeCompletedModal from "./completed-modal/ChallengeCompletedModal";
+import BestCheerMemberModal from "./completed-modal/best-cheer/BestCheerMemberModal";
 
 // 테스트용 더미데이터
 const challenge = {
@@ -21,6 +22,7 @@ const challenge = {
     savedMoney: "",
     createdAt: new Date(),
     status: "completed",
+    // status: 'ing',
     determination: "오늘 하루도,,, 홧팅 ^^@@",
     profilePath: "",
 
@@ -46,7 +48,9 @@ function GroupTab() {
       };
       const contents = [
         <ChallengeCompletedModal nextContent={nextContent}/>,
-        <MessageCheckModal nextContent={nextContent} />,]
+        <MessageCheckModal nextContent={nextContent} />,
+        <BestCheerMemberModal nextContent={nextContent}/>,
+        ]
 
     // 1. Create the component
     function DataTabs({ data }) {
