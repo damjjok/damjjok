@@ -7,7 +7,7 @@ import {
 import React from "react";
 import { useRecoilValue } from "recoil";
 
-function ShowRemainingComponent(onClick) {
+function ShowRemainingStepComponent({ onClick }) {
     const gatheredMoney = useRecoilValue(gatheredMoneyState);
     const group = useRecoilValue(groupState);
     const decidedFine = useRecoilValue(decidedFineState);
@@ -30,4 +30,4 @@ function ShowRemainingComponent(onClick) {
     );
 }
 
-export default ShowRemainingComponent;
+export default ShowRemainingStepComponent;
