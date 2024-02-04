@@ -5,8 +5,8 @@ export const Wrapper = styled.div`
     justify-content: center;
     align-items: center;
     width: 1000px;
-    height: 720px;
+    height: 65vh;
     margin: 50px;
-    background-color: grey;
     border-radius: 30px;
+    background-color: #515151;
 `;
