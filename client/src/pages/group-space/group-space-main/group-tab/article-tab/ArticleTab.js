@@ -5,8 +5,7 @@ import { VStack } from "@chakra-ui/react";
 function ArticleTab() {
     return (
         <div className="ArticleTab">
-            <div>증언 증거 제보 컴포넌트입니당</div>
-            <VStack spacing={20} align="stretch">
+            <VStack spacing={64} align="stretch">
                 <Testimony />
 
                 <Evidence />

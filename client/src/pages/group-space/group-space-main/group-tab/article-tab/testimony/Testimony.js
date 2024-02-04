@@ -1,5 +1,5 @@
 import { useRecoilState } from "recoil";
-import { useDisclosure, Button, HStack } from "@chakra-ui/react";
+import { useDisclosure, Button, HStack, Text } from "@chakra-ui/react";
 import { testimonyList } from "contexts/Article";
 import TestimonyCreateModal from "./testimony-modal/TestimonyCreateModal";
 import TestimonyItems from "./testimony-items/TestimonyItems";
@@ -15,8 +15,9 @@ const Testimony = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     return (
         <div className="Testimony">
-            <h2>증언</h2>
-
+            <Text fontSize="3xl" fontWeight="bold">
+                증언
+            </Text>
             {testimony.length < 1 ? (
                 <>
                     <Button

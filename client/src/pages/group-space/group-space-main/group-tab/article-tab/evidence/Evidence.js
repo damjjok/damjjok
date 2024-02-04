@@ -1,5 +1,5 @@
 import { useRecoilState } from "recoil";
-import { useDisclosure, Button, HStack } from "@chakra-ui/react";
+import { useDisclosure, Button, HStack, Text } from "@chakra-ui/react";
 import { evidenceList } from "contexts/Article";
 import EvidenceItems from "./evidence-items/EvidenceItems";
 import EvidenceCreateModal from "./evidence-modal/EvidenceCreateModal";
@@ -13,7 +13,9 @@ const Evidence = () => {
     };
     return (
         <div className="Evidence">
-            <h2>증거</h2>
+            <Text fontSize="3xl" fontWeight="bold">
+                증거
+            </Text>
             {evidence.length < 1 ? (
                 <>
                     <Button
