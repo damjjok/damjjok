@@ -159,4 +159,20 @@ public class ChallengeServiceImpl implements ChallengeService {
         }
         return ChallengeMemberListResponseDto.success(list);
     }
+
+    @Override
+    public ResponseEntity<? super ChallengeEndResponseDto> changeStatus(int challengeId) {
+        try{
+
+            ChallengeEntity entity = challengeRepository.findByChallengeId(challengeId);
+
+            entity.setStatus("OFF");
+
+            challengeRepository.save(entity);
+
+        }catch (Exception e){
+            return ResponseDto.databaseError();
+        }
+        return ChallengeEndResponseDto.success();
+    }
 }

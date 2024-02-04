@@ -43,4 +43,10 @@ public class ChallengeController {
         ResponseEntity<? super ChallengeMemberListResponseDto> response = challengeService.challengeMemberList(challengeId);
         return response;
     }
+
+    @PatchMapping("/{challengeId}/end")
+    public ResponseEntity<? super ChallengeEndResponseDto> changeStatus(@PathVariable int challengeId){
+        ResponseEntity<? super ChallengeEndResponseDto> response = challengeService.changeStatus(challengeId);
+        return response;
+    }
 }
