@@ -5,6 +5,7 @@ import com.ssafy.server.dto.challenge.ChallengeDto;
 import com.ssafy.server.dto.challenge.ChallengeMemeberDto;
 import com.ssafy.server.dto.challenge.ImageDto;
 import com.ssafy.server.dto.request.challenge.ChallengeCreateRequestDto;
+import com.ssafy.server.dto.request.challenge.ChallengeProfileModifyRequestDto;
 import com.ssafy.server.dto.response.challenge.*;
 import com.ssafy.server.entity.*;
 import com.ssafy.server.repository.*;
@@ -174,5 +175,22 @@ public class ChallengeServiceImpl implements ChallengeService {
             return ResponseDto.databaseError();
         }
         return ChallengeEndResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super ChallengeProfileModifyResponseDto> modifyProfile(int challengeId, ChallengeProfileModifyRequestDto dto) {
+        try{
+
+            ChallengeEntity entity = challengeRepository.findByChallengeId(challengeId);
+
+            entity.setDetermination(dto.getDetermination());
+            entity.setProfilePath(dto.getImagePath());
+
+            challengeRepository.save(entity);
+
+        }catch (Exception e){
+            return ResponseDto.databaseError();
+        }
+        return ChallengeProfileModifyResponseDto.success();
     }
 }
