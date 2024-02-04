@@ -3,6 +3,8 @@ package com.ssafy.server.service.implement;
 import com.ssafy.server.dto.websocket.TruthRoomDto;
 import com.ssafy.server.service.EnterRoomService;
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -24,6 +26,15 @@ public class EnterRoomServiceImpl implements EnterRoomService {
         room.getMembers().put(sessionId, userName);
         room.getReadyState().put(sessionId, false);
         room.getEvidenceNextStage().put(sessionId, false);
+    }
+
+    @Override
+    public Map<String, String> getRoomMembers(Integer roomId) {
+        TruthRoomDto room = truthRooms.get(roomId);
+        if (room != null) {
+            return room.getMembers();
+        }
+        return Collections.emptyMap(); // 방이 존재하지 않는 경우 빈 맵 반환
     }
 
     @Override
@@ -50,10 +61,16 @@ public class EnterRoomServiceImpl implements EnterRoomService {
     }
 
     @Override
-    public boolean areAllMemberReadey(Integer roomId) {
+    public boolean areAllMemberReady(Integer roomId) {
         TruthRoomDto room = truthRooms.get(roomId);
         //모두 true 이면 true 반환
         return room != null &&
                 room.getReadyState().values().stream().allMatch(Boolean::booleanValue);
+    }
+
+    @Override
+    public boolean isRoomEmpty(Integer roomId) {
+        TruthRoomDto room = truthRooms.get(roomId);
+        return room != null && room.getMembers().isEmpty();
     }
 }
