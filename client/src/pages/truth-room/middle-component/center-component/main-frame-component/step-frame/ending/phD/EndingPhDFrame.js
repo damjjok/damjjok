@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import CommentComponent from "./step-component/CommentComponent";
 
 function EndingPhDFrame({ damJJok }) {
     // 0: 담쪽이는 실패했지만 응원해주세요
@@ -9,7 +10,16 @@ function EndingPhDFrame({ damJJok }) {
         setEndingPhDStep(endingPhDStep + 1);
     }
 
-    return <div></div>;
+    return (
+        <div>
+            {endingPhDStep === 0 && (
+                <CommentComponent
+                    damJJok={damJJok}
+                    onClick={() => handleClickConfirm}
+                />
+            )}
+        </div>
+    );
 }
 
 export default EndingPhDFrame;
