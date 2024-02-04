@@ -1,8 +1,10 @@
 package com.ssafy.server.service.implement;
 
 import com.ssafy.server.dto.ResponseDto;
+import com.ssafy.server.dto.challenge.ImageDto;
 import com.ssafy.server.dto.request.challenge.ChallengeCreateRequestDto;
 import com.ssafy.server.dto.response.challenge.ChallengeCreateResponseDto;
+import com.ssafy.server.dto.response.challenge.ChallengeProfileImageResponseDto;
 import com.ssafy.server.entity.*;
 import com.ssafy.server.repository.*;
 import com.ssafy.server.service.ChallengeService;
@@ -11,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,6 +25,7 @@ public class ChallengeServiceImpl implements ChallengeService {
     private final UserRepository userRepository;
     private final ChallengeMemeberRepository challengeMemeberRepository;
     private final GroupMemberRepository groupMemberRepository;
+    private final ImageRespository imageRespository;
 
     @Override
     public ResponseEntity<? super ChallengeCreateResponseDto> create(ChallengeCreateRequestDto dto) {
@@ -74,5 +78,25 @@ public class ChallengeServiceImpl implements ChallengeService {
         }
 
         return ChallengeCreateResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super ChallengeProfileImageResponseDto> profileImages() {
+        List<ImageDto> list = new ArrayList<>();
+        try{
+
+            for (int i = 1; i <= 4 ; i++) {
+                ImageEntity entity = imageRespository.findByImageId(i);
+
+                ImageDto dto = new ImageDto();
+                dto.setImageId(entity.getImageId());
+                dto.setImagePath(entity.getImagePath());
+                list.add(dto);
+            }
+
+        }catch(Exception e){
+            return ResponseDto.databaseError();
+        }
+        return ChallengeProfileImageResponseDto.success(list);
     }
 }
