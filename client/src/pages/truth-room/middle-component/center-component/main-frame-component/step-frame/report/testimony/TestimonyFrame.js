@@ -22,7 +22,7 @@ function TestimonyFrame(props) {
             <button
                 onClick={handleLeftClick}
                 disabled={testimonyIdx === 0}
-                style={{ color: testimonyIdx === 0 ? "grey" : "inherit" }}
+                style={{ color: testimonyIdx === 0 ? "#4A5568" : "white" }}
             >
                 <ChevronLeftIcon boxSize={"100px"} />
             </button>
@@ -33,8 +33,8 @@ function TestimonyFrame(props) {
                 style={{
                     color:
                         testimonyIdx === testimonies.length - 1
-                            ? "grey"
-                            : "inherit",
+                            ? "#4A5568"
+                            : "white",
                 }}
             >
                 <ChevronRightIcon boxSize={"100px"} />
