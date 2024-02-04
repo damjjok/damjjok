@@ -97,6 +97,7 @@ const SearchBar = () => {
                 boxShadow="sm"
                 maxH="200px"
                 overflowY="auto"
+                spacing={5}
             >
                 {searchResults.map((result, index) => (
                     <HStack
@@ -105,9 +106,10 @@ const SearchBar = () => {
                         justifyContent="space-between"
                         cursor="pointer"
                         onClick={() => handleSelectName(result.userName)}
+                        _hover={{ bg: "#fde336" }}
                     >
-                        <Text>{result.userName}</Text>
-                        <Text>{result.email}</Text>
+                        <Text fontSize="lg">{result.userName}</Text>
+                        <Text fontSize="lg">{result.email}</Text>
                     </HStack>
                 ))}
             </VStack>
