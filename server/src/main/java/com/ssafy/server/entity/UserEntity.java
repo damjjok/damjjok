@@ -45,4 +45,11 @@ public class UserEntity {
         this.email = dto.getEmail();
         this.userName = dto.getName();
     }
+
+    public UserEntity(String email, String userName){
+        this.birth = "00000000";
+        this.sex = "male";
+        this.email = email;
+        this.userName = userName;
+    }
 }

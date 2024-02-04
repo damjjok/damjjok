@@ -3,12 +3,18 @@ package com.ssafy.server.dto.response.auth;
 import com.ssafy.server.common.ResponseCode;
 import com.ssafy.server.common.ResponseMessage;
 import com.ssafy.server.dto.ResponseDto;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+
 public class SignUpResponseDto extends ResponseDto{
 
-    private SignUpResponseDto()  { super(); }
+    private SignUpResponseDto()  {
+        super();
+    }
 
     public static ResponseEntity<SignUpResponseDto> success(){
         SignUpResponseDto responseBody = new SignUpResponseDto();

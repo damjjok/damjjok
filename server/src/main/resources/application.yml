@@ -5,6 +5,8 @@ spring:
     hibernate:
       ddl-auto: none
     show-sql: true
+    format_sql: true
+    use_sql_comments: true
 
 springdoc:
   packages-to-scan: com.ssafy.server.controller
@@ -18,3 +20,11 @@ springdoc:
     display-request-duration: true
     operations-sorter: alpha
 
+logging:
+  level:
+    root: info
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: trace

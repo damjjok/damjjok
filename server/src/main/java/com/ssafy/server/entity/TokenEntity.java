@@ -1,26 +1,23 @@
 package com.ssafy.server.entity;
 
-import jakarta.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.redis.core.RedisHash;
 
-@Entity
+
 @Getter
-@Setter
+//@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="token")
+//@Table(name="token")
+@RedisHash(value = "sns")
 public class TokenEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="user_id",nullable = false)
-    private Integer userId;
-
-    @Column(name="access_token",nullable = false)
-    private String accessToken;
-
-    @Column(name="refresh_token",nullable = false)
     private String refreshToken;
+
+    private String email;
 }

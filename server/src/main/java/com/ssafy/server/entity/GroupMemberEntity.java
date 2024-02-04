@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -29,5 +30,6 @@ public class GroupMemberEntity {
     UserEntity userEntity;
 
     @Column(name="group_join_date",nullable = false)
+    @CreationTimestamp
     private LocalDateTime groupJoinDate;
 }
