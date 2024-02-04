@@ -10,6 +10,8 @@ import BasicButton from "components/button/BasicButton";
 import MessageCheckModal from "./completed-modal/message-check-modal/MessageCheckModal";
 import ChallengeCompletedModal from "./completed-modal/ChallengeCompletedModal";
 import BestCheerMemberModal from "./completed-modal/best-cheer/BestCheerMemberModal";
+import InfoCards from "./home-tab/info-cards/InfoCards";
+import ChallengeReport from "./completed-modal/challenge-report/ChallengeReport";
 
 // 테스트용 더미데이터
 const challenge = {
@@ -50,6 +52,7 @@ function GroupTab() {
         <ChallengeCompletedModal nextContent={nextContent}/>,
         <MessageCheckModal nextContent={nextContent} />,
         <BestCheerMemberModal nextContent={nextContent}/>,
+        <ChallengeReport nextContent={nextContent}/>
         ]
 
     // 1. Create the component
