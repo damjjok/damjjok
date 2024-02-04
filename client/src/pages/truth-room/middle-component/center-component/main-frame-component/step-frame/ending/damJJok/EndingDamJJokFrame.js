@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import CheerStepComponent from "./step-component/CheerStepComponent";
+import ShowRemainingComponent from "./step-component/ShowRemainingComponent";
 
 function EndingDamJJokFrame({ damJJok }) {
     // 0: 응원해요!
@@ -16,10 +17,12 @@ function EndingDamJJokFrame({ damJJok }) {
             {endingDamJJokStep === 0 && (
                 <CheerStepComponent
                     damJJok={damJJok}
-                    onClick={() => handleClickConfirm()}
+                    onClick={() => handleClickConfirm}
                 />
             )}
-            {endingDamJJokStep === 1 && <div>test2</div>}
+            {endingDamJJokStep === 1 && (
+                <ShowRemainingComponent onClick={() => handleClickConfirm} />
+            )}
             {endingDamJJokStep === 2 && <div>test3</div>}
         </div>
     );
