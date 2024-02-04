@@ -7,7 +7,6 @@ import com.ssafy.server.service.VoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
@@ -91,6 +90,19 @@ public class TruthRoomController {
         //방이 삭제 되지 않았는데 방의 멤버가 나 다갔다면 방 없애주기
         if (room != null && room.getMembers().isEmpty()) {
             enterRoomService.deleteRoom(roomId);
+        }
+    }
+
+    @MessageMapping("/finalArgumentReady")
+    public void finalArgumentReady(TruthRoomDto dto, Boolean isReady, SimpMessageHeaderAccessor headerAccessor) {
+        String sessionId = headerAccessor.getSessionId();
+        Integer roomId = dto.getRoomId();
+
+        nextStageService.setFinalArgumentReady(roomId, sessionId, isReady);
+
+        //모두가 준비를 누르면 최후변론 단계 시작됐다고 알려주기
+        if(nextStageService.checkAllFinalArgumentReady(roomId)) {
+            messagingTemplate.convertAndSend("/topic/startFianlArgument/");
         }
     }
 

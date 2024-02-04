@@ -32,4 +32,21 @@ public class NextStageServiceImpl implements NextStageService {
                 .count();
         return (int) count;
     }
+
+    @Override
+    public void setFinalArgumentReady(Integer roomId, String sessionId, Boolean isReady) {
+        TruthRoomDto room = enterRoomService.getRoom(roomId); // 변경된 부분
+        if (room != null) {
+            room.getFinalArgumentReadyState().put(sessionId, isReady);
+        }
+    }
+
+    @Override
+    public boolean checkAllFinalArgumentReady(Integer roomId) {
+        TruthRoomDto room = enterRoomService.getRoom(roomId); // 변경된 부분
+        if (room == null) {
+            return false;
+        }
+        return room.getFinalArgumentReadyState().values().stream().allMatch(Boolean::booleanValue);
+    }
 }
