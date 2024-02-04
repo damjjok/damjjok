@@ -80,5 +80,21 @@ public class TruthRoomController {
         }
     }
 
+    //pass일 경우 방 나가기 버튼을 누르면
+    @MessageMapping("/afterPass")
+    public void afterPass(TruthRoomDto dto, SimpMessageHeaderAccessor headerAccessor) {
+        String sessionId = headerAccessor.getSessionId();
+        Integer roomId = dto.getRoomId();
+        enterRoomService.removeMember(roomId, sessionId);
+        TruthRoomDto room = enterRoomService.getRoom(roomId);
+
+        //방이 삭제 되지 않았는데 방의 멤버가 나 다갔다면 방 없애주기
+        if (room != null && room.getMembers().isEmpty()) {
+            enterRoomService.deleteRoom(roomId);
+        }
+    }
+
+
+
 
 }

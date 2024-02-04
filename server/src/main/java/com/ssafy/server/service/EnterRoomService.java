@@ -7,6 +7,7 @@ public interface EnterRoomService {
     TruthRoomDto getRoom(Integer roomId);
     void addMember(Integer roomId, String sessionId, String userName);
     void removeMember(Integer roomId, String sessionId);
+    void deleteRoom(Integer roomId);
     void setMemberReady(Integer roomId, String sessionId, boolean isReady);
     boolean areAllMemberReadey(Integer roomId);
 }

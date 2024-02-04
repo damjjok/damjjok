@@ -37,6 +37,11 @@ public class EnterRoomServiceImpl implements EnterRoomService {
     }
 
     @Override
+    public void deleteRoom(Integer roomId) {
+        truthRooms.remove(roomId);
+    }
+
+    @Override
     public void setMemberReady(Integer roomId, String sessionId, boolean isReady) {
         TruthRoomDto room = truthRooms.get(roomId);
         if (room != null && room.getReadyState().containsKey(sessionId)) {
