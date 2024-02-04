@@ -1,6 +1,7 @@
 package com.ssafy.server.controller;
 
 import com.ssafy.server.dto.request.challenge.ChallengeCreateRequestDto;
+import com.ssafy.server.dto.request.challenge.ChallengeProfileModifyRequestDto;
 import com.ssafy.server.dto.response.challenge.*;
 import com.ssafy.server.service.ChallengeService;
 import lombok.RequiredArgsConstructor;
@@ -47,6 +48,12 @@ public class ChallengeController {
     @PatchMapping("/{challengeId}/end")
     public ResponseEntity<? super ChallengeEndResponseDto> changeStatus(@PathVariable int challengeId){
         ResponseEntity<? super ChallengeEndResponseDto> response = challengeService.changeStatus(challengeId);
+        return response;
+    }
+
+    @PatchMapping("/{challengeId}/profile-modify")
+    public ResponseEntity<? super ChallengeProfileModifyResponseDto> modifyProfile(@PathVariable int challengeId, @RequestBody ChallengeProfileModifyRequestDto dto){
+        ResponseEntity<? super ChallengeProfileModifyResponseDto> response = challengeService.modifyProfile(challengeId,dto);
         return response;
     }
 }
