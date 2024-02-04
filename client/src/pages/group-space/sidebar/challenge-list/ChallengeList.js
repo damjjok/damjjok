@@ -1,4 +1,4 @@
-import { CheckCircleIcon, NotAllowedIcon, PlusSquareIcon, WarningIcon } from "@chakra-ui/icons";
+import { CheckCircleIcon, NotAllowedIcon, PlusSquareIcon, RepeatClockIcon, WarningIcon } from "@chakra-ui/icons";
 import {
   Accordion,
   AccordionItem,
@@ -28,32 +28,28 @@ function ChallengeList() {
   return (
       <Accordion defaultIndex={[0]} allowMultiple>
           <AccordionItem>
-              <h2>
-                  <AccordionButton>
-                    <Flex alignItems='center'>
-                        <img src={challengeIcon} alt="challengeIcon" className="w-[20px] h-[20px]"/>
-                      <Box as="span" flex="1" textAlign="left">
-                          <p className=" text-lg font-bold">진행중인 챌린지</p>
-                      </Box>
+                <AccordionButton display='flex' justifyContent='space-between'>
+                    <Box display='flex' alignItems='center' textAlign="left">
+                        <img src={challengeIcon} alt="challengeIcon" className="w-[20px] h-[20px] mr-2"/>
+                        <p className=" text-lg font-bold">진행중인 챌린지</p>
+                    </Box>
 
-                    </Flex>
-                      <AccordionIcon />
-                  </AccordionButton>
-              </h2>
+                    <AccordionIcon />
+                </AccordionButton>
               <AccordionPanel pb={4}>
               <ul>
-            {currentGroupChallengeList.length > 0 ? (currentGroupChallengeList.map((challenge, index) => (
-                <Flex 
-                alignItems="center"
-                className={`py-2 px-4 rounded-lg ${selectedChallenge.index === index && selectedChallenge.list === 'current' ? 'bg-[rgba(255,209,0,0.5)]' : 'hover:bg-damyellow'} hover:cursor-pointer`}
-                onClick={() => setSelectedChallenge({index, list: 'current'})}>
-                    <Circle size="2" bg="green.500" mr="2" />
-                    <li key={index}>
-                        <p className=" font-semibold">{challenge.username} 챌린지</p>
-                        <p className="text-xs">{challenge.createdAt} 시작</p>
-                    </li>
-                </Flex>
-                // 해당 챌린지 페이지로 향하는 링크 추가해야함.
+                {currentGroupChallengeList.length > 0 ? (currentGroupChallengeList.map((challenge, index) => (
+                    <Flex 
+                    alignItems="center"
+                    className={`py-2 px-4 rounded-lg ${selectedChallenge.index === index && selectedChallenge.list === 'current' ? 'bg-[rgba(255,209,0,0.5)]' : 'hover:bg-damyellow'} hover:cursor-pointer`}
+                    onClick={() => setSelectedChallenge({index, list: 'current'})}>
+                        <Circle size="2" bg="green.500" mr="2" />
+                        <li key={index}>
+                            <p className=" font-semibold">{challenge.username} 챌린지</p>
+                            <p className="text-xs">{challenge.createdAt} 시작</p>
+                        </li>
+                    </Flex>
+                    // 해당 챌린지 페이지로 향하는 링크 추가해야함.
             ))) : (
             <Box>
                 <p className="text-xs text-gray-400 mb-2">활성화된 챌린지가 없습니다</p>
@@ -69,14 +65,14 @@ function ChallengeList() {
           </AccordionItem>
 
           <AccordionItem>
-              <h2>
-                  <AccordionButton>
-                      <Box as="span" flex="1" textAlign="left">
-                          <p className="text-lg font-bold">지난 챌린지</p>
-                      </Box>
-                      <AccordionIcon />
-                  </AccordionButton>
-              </h2>
+                <AccordionButton display='flex' justifyContent='space-between'>
+                    <Box display='flex' alignItems='center' textAlign="left">
+                        <RepeatClockIcon color='dam.yellow' boxSize={5} marginRight='2'/>
+                        <p className=" text-lg font-bold">지난 챌린지</p>
+                    </Box>
+
+                    <AccordionIcon />
+                </AccordionButton>
               <AccordionPanel pb={4}>
               <ul>
             {lastChallenge.length > 0 ? (lastChallenge.map((challenge, index) => (
