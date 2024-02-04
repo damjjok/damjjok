@@ -4,6 +4,7 @@ import postbox from 'assets/images/postboxMain.png'
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import messageBg from 'assets/images/messageBg.png'
+import WholeMessageList from "./WholeMessageList";
 
 
 //더미 데이터
@@ -84,7 +85,9 @@ function MessageCheckModal({nextContent}) {
                   </AnimatePresence>
                 </Flex>
                 {isMessagesVisible &&  // 메시지가 더 있을 경우에만 '더보기' 버튼을 표시
-                <p className="text-center">전체 메시지 보기</p>
+                <Flex justifyContent={'center'}>
+                  <WholeMessageList/>
+                </Flex>
                 }
                 {isMessagesVisible && 
                   <Box display={'flex'} justifyContent={'center'} marginY={4}>
