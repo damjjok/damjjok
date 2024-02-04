@@ -14,7 +14,10 @@ function EndingDamJJokFrame({ damJJok }) {
     return (
         <div>
             {endingDamJJokStep === 0 && (
-                <CheerStepComponent damJJok={damJJok} />
+                <CheerStepComponent
+                    damJJok={damJJok}
+                    onClick={() => handleClickConfirm()}
+                />
             )}
             {endingDamJJokStep === 1 && <div>test2</div>}
             {endingDamJJokStep === 2 && <div>test3</div>}
