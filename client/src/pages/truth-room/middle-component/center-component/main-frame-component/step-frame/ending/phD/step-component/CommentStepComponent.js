@@ -1,7 +1,7 @@
 import { Button, Text } from "@chakra-ui/react";
 import React from "react";
 
-function CommentComponent({ damJJok, onClick }) {
+function CommentStepComponent({ damJJok, onClick }) {
     return (
         <div>
             <div style={{ margin: "100px", textAlign: "center" }}>
@@ -24,4 +24,4 @@ function CommentComponent({ damJJok, onClick }) {
     );
 }
 
-export default CommentComponent;
+export default CommentStepComponent;

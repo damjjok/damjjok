@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import CommentComponent from "./step-component/CommentComponent";
+import CommentStepComponent from "./step-component/CommentStepComponent";
+import ShowDistributedStepComponent from "./step-component/ShowDistributedStepComponent";
 
 function EndingPhDFrame({ damJJok }) {
     // 0: 담쪽이는 실패했지만 응원해주세요
@@ -13,11 +14,12 @@ function EndingPhDFrame({ damJJok }) {
     return (
         <div>
             {endingPhDStep === 0 && (
-                <CommentComponent
+                <CommentStepComponent
                     damJJok={damJJok}
-                    onClick={() => handleClickConfirm}
+                    onClick={() => handleClickConfirm()}
                 />
             )}
+            {endingPhDStep === 1 && <ShowDistributedStepComponent />}
         </div>
     );
 }
