@@ -2,6 +2,7 @@ package com.ssafy.server.controller;
 
 import com.ssafy.server.dto.request.challenge.ChallengeCreateRequestDto;
 import com.ssafy.server.dto.response.challenge.ChallengeCreateResponseDto;
+import com.ssafy.server.dto.response.challenge.ChallengeListByGroupIdResponseDto;
 import com.ssafy.server.dto.response.challenge.ChallengeProfileImageResponseDto;
 import com.ssafy.server.service.ChallengeService;
 import lombok.RequiredArgsConstructor;
@@ -21,9 +22,15 @@ public class ChallengeController {
         return response;
     }
 
-    @GetMapping("profile-images")
+    @GetMapping("/profile-images")
     public ResponseEntity<? super ChallengeProfileImageResponseDto> profileImages(){
         ResponseEntity<? super ChallengeProfileImageResponseDto> response = challengeService.profileImages();
+        return response;
+    }
+
+    @GetMapping("/list/{groupId}")
+    public ResponseEntity<? super ChallengeListByGroupIdResponseDto> challengeList(@PathVariable int groupId){
+        ResponseEntity<? super ChallengeListByGroupIdResponseDto> response = challengeService.challengeList(groupId);
         return response;
     }
 }

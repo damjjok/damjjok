@@ -1,9 +1,11 @@
 package com.ssafy.server.service.implement;
 
 import com.ssafy.server.dto.ResponseDto;
+import com.ssafy.server.dto.challenge.ChallengeDto;
 import com.ssafy.server.dto.challenge.ImageDto;
 import com.ssafy.server.dto.request.challenge.ChallengeCreateRequestDto;
 import com.ssafy.server.dto.response.challenge.ChallengeCreateResponseDto;
+import com.ssafy.server.dto.response.challenge.ChallengeListByGroupIdResponseDto;
 import com.ssafy.server.dto.response.challenge.ChallengeProfileImageResponseDto;
 import com.ssafy.server.entity.*;
 import com.ssafy.server.repository.*;
@@ -98,5 +100,34 @@ public class ChallengeServiceImpl implements ChallengeService {
             return ResponseDto.databaseError();
         }
         return ChallengeProfileImageResponseDto.success(list);
+    }
+
+    @Override
+    public ResponseEntity<? super ChallengeListByGroupIdResponseDto> challengeList(int groupId) {
+        List<ChallengeDto> list = new ArrayList<>();
+        try{
+
+            List<ChallengeEntity> entityList = challengeRepository.findByGroupEntityGroupId(groupId);
+
+            entityList.stream().forEach(e -> {
+                ChallengeDto dto = new ChallengeDto();
+                dto.setChallgeId(e.getChallengeId());
+                dto.setGroupId(e.getGroupEntity().getGroupId());
+                dto.setUserId(e.getUserId());
+                dto.setInitialMoney(e.getInitialMoney());
+                dto.setSavedMoney(e.getSavedMoney());
+                dto.setSavedPeriod(e.getSavedPeriod());
+                dto.setFinalTruthRoomDate(e.getFinalTruthRoomDate());
+                dto.setEndDate(e.getEndDate());
+                dto.setStatus(e.getStatus());
+                dto.setDetermination(e.getDetermination());
+                dto.setProfilePath(e.getProfilePath());
+                list.add(dto);
+            });
+
+        }catch (Exception e){
+            return ResponseDto.databaseError();
+        }
+        return ChallengeListByGroupIdResponseDto.success(list);
     }
 }
