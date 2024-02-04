@@ -34,5 +34,6 @@ public class ChallengeMemberEntity {
     private String role; // 기본값으로 빈 문자열 설정
 
     @Column(name = "challenge_join_date", nullable = false)
+    @CreationTimestamp
     private LocalDateTime challengeJoinDate;
 }
