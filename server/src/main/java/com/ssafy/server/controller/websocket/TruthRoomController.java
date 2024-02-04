@@ -7,7 +7,6 @@ import com.ssafy.server.service.VoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
@@ -68,9 +67,46 @@ public class TruthRoomController {
         TruthRoomDto room =  enterRoomService.getRoom(roomId);
         //투표 수가 담쪽이를 제외한 접속자 수가 되면 결과 보내주기
         if(cnt == room.getMembers().size()-1) {
-            messagingTemplate.convertAndSend("/topic/passFailVoteResult", voteService.voteResult(roomId));
+            boolean voteResult = voteService.calculateResult(roomId); // 투표 결과 계산
+            // 투표 결과에 따른 처리
+            if(voteResult) {
+                // PASS: 나가기 화면으로 전환
+                messagingTemplate.convertAndSend("/topic/voteResult" + roomId, "PASS");
+            } else {
+                // FAIL: 최후 변론 단계로 진행
+                messagingTemplate.convertAndSend("/topic/voteResult" + roomId, "FAIL");
+            }
         }
     }
+
+    //pass일 경우 방 나가기 버튼을 누르면
+    @MessageMapping("/afterPass")
+    public void afterPass(TruthRoomDto dto, SimpMessageHeaderAccessor headerAccessor) {
+        String sessionId = headerAccessor.getSessionId();
+        Integer roomId = dto.getRoomId();
+        enterRoomService.removeMember(roomId, sessionId);
+        TruthRoomDto room = enterRoomService.getRoom(roomId);
+
+        //방이 삭제 되지 않았는데 방의 멤버가 나 다갔다면 방 없애주기
+        if (room != null && room.getMembers().isEmpty()) {
+            enterRoomService.deleteRoom(roomId);
+        }
+    }
+
+    @MessageMapping("/finalArgumentReady")
+    public void finalArgumentReady(TruthRoomDto dto, Boolean isReady, SimpMessageHeaderAccessor headerAccessor) {
+        String sessionId = headerAccessor.getSessionId();
+        Integer roomId = dto.getRoomId();
+
+        nextStageService.setFinalArgumentReady(roomId, sessionId, isReady);
+
+        //모두가 준비를 누르면 최후변론 단계 시작됐다고 알려주기
+        if(nextStageService.checkAllFinalArgumentReady(roomId)) {
+            messagingTemplate.convertAndSend("/topic/startFianlArgument/");
+        }
+    }
+
+
 
 
 }
