@@ -81,10 +81,18 @@ public class TruthRoomController {
     @MessageMapping("/afterPass/{roomId}")
     public void afterPass(@DestinationVariable Integer roomId, SimpMessageHeaderAccessor headerAccessor) {
         String sessionId = headerAccessor.getSessionId();
-        enterRoomService.removeMember(roomId, sessionId);
-        //방이 삭제 되지 않았는데 방의 멤버가 나 다갔다면 방 없애주기
-        if(enterRoomService.isRoomEmpty(roomId)) {
-            enterRoomService.deleteRoom(roomId);
+        if (roomId != null) {
+            enterRoomService.removeMember(roomId, sessionId); // 사용자를 방에서 제거
+            // 세션 ID에 대한 매핑을 sessionRoomMap에서 제거
+            enterRoomService.removeSessionFromRoomMap(sessionId);
+
+            // 방에 남아 있는 멤버들의 이름 목록 가져오기
+            Map<String, String> remainingMembers = enterRoomService.getRoomMembers(roomId);
+            // 남은 멤버들의 이름 목록을 웹소켓을 통해 전송
+            messagingTemplate.convertAndSend("/topic/remainingMembers/" + roomId, remainingMembers.values());
+            if(enterRoomService.isRoomEmpty(roomId)) {
+                enterRoomService.deleteRoom(roomId); // 모든 사용자가 나갔다면 방 삭제
+            }
         }
     }
 
