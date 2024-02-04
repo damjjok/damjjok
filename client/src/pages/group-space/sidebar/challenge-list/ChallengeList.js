@@ -24,6 +24,7 @@ function ChallengeList() {
   //선택된 챌린지 표시를 위한 상태
   const [selectedCurrentChallenge, setSelectedCurrentChallenge] = useState(null);
   const [selectedLastChallenge, setSelectedLastChallenge] = useState(null);
+  const [selectedChallenge, setSelectedChallenge] = useState({ index: null, list: null });
 
   return (
       <Accordion defaultIndex={[0]} allowMultiple>
@@ -41,8 +42,8 @@ function ChallengeList() {
             {currentGroupChallengeList.length > 0 ? (currentGroupChallengeList.map((challenge, index) => (
                 <Flex 
                 alignItems="center"
-                className={`py-2 px-4 rounded-lg ${selectedCurrentChallenge === index ? 'bg-[rgba(255,209,0,0.5)]' : 'hover:bg-damyellow'} hover:cursor-pointer`}
-                onClick={() => setSelectedCurrentChallenge(index)}>
+                className={`py-2 px-4 rounded-lg ${selectedChallenge.index === index && selectedChallenge.list === 'current' ? 'bg-[rgba(255,209,0,0.5)]' : 'hover:bg-damyellow'} hover:cursor-pointer`}
+                onClick={() => setSelectedChallenge({index, list: 'current'})}>
                     <Circle size="2" bg="green.500" mr="2" />
                     <li key={index}>
                         <p className=" font-semibold">{challenge.username} 챌린지</p>
@@ -78,8 +79,8 @@ function ChallengeList() {
             {lastChallenge.length > 0 ? (lastChallenge.map((challenge, index) => (
                 <Flex 
                 alignItems="center"
-                className={`py-2 px-4 rounded-lg ${selectedLastChallenge === index ? 'bg-[rgba(255,209,0,0.5)]' : 'hover:bg-damyellow'} hover:cursor-pointer`}
-                onClick={() => setSelectedLastChallenge(index)}>
+                className={`py-2 px-4 rounded-lg ${selectedChallenge.index === index && selectedChallenge.list === 'last' ? 'bg-[rgba(255,209,0,0.5)]' : 'hover:bg-damyellow'} hover:cursor-pointer`}
+                onClick={() => setSelectedChallenge({index, list:'last'})}>
                     {challenge.status === 'success' ? (                    
                         <CheckCircleIcon size="4" color="green.500" mr="2" />
                     ) : (
