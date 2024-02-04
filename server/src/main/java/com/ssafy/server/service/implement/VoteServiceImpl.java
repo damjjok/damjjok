@@ -43,6 +43,19 @@ public class VoteServiceImpl implements VoteService {
     }
 
     @Override
+    public Integer submitFine(Integer roomId, String sessionId, Integer fineAmount) {
+        TruthRoomDto room = enterRoomService.getRoom(roomId);
+        int cnt = 0;
+        if (room != null) {
+            room.getFinesSubmitted().add(fineAmount);
+            //입력한 사람 수 올려주기
+            cnt = room.getSubmitCnt()+1;
+            room.setSubmitCnt(cnt);
+        }
+        return cnt;
+    }
+
+    @Override
     public boolean calculateResult(Integer roomId) {
         TruthRoomDto room = enterRoomService.getRoom(roomId);
         if (room == null || room.getPassOrFail().isEmpty()) {
@@ -64,15 +77,5 @@ public class VoteServiceImpl implements VoteService {
     }
 
 
-
-//    @Override
-//    public Map<String, Boolean> voteResult(Integer roomId) {
-//        TruthRoomDto room = enterRoomService.getRoom(roomId);
-//        if(room != null) {
-//            return room.getPassOrFail();
-//        } else {
-//            return new HashMap<>();
-//        }
-//    }
 
 }

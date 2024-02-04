@@ -100,9 +100,20 @@ public class TruthRoomController {
     //최후 변론이 끝났다고 알려주면 money 투표가 시작됐다고 알려주기
     @MessageMapping("/finishFinalArgument/{roomId}")
     public void startMoneyVote(@DestinationVariable Integer roomId, SimpMessageHeaderAccessor headerAccessor){
-        messagingTemplate.convertAndSend("/topic/startMoneyVote", "START");
+        messagingTemplate.convertAndSend("/topic/startSubmit", "START");
     }
 
-    
+    @MessageMapping("/submitFine/{roomId}")
+    public void submitFine(@DestinationVariable Integer roomId, websocketDto dto, SimpMessageHeaderAccessor headerAccessor) {
+        String sessionId = headerAccessor.getSessionId();
+        Integer fineAmount = dto.getFineAmount();
+        Integer cnt = voteService.submitFine(roomId, sessionId, fineAmount);
+        // 벌금 입력 완료된 멤버 수 알려주기
+        messagingTemplate.convertAndSend("/topic/fineSubmittedCount/" + roomId, cnt);
+        // 모든 멤버가 벌금 입력을 완료했다면 투표 시작하기
+        if(cnt == enterRoomService.getRoomMembers(roomId).size() - 1) {
+            messagingTemplate.convertAndSend("/topic/startMoenyVote", "START");
+        }
+    }
 
 }

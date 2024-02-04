@@ -13,4 +13,5 @@ public class websocketDto {
     boolean isReady;
     boolean isNext;
     boolean isPass;
+    Integer fineAmount;
 }
