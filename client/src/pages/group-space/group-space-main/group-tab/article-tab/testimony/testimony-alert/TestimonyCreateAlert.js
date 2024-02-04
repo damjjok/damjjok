@@ -8,7 +8,9 @@ import {
     AlertDialogContent,
     AlertDialogOverlay,
     Button,
+    Flex,
 } from "@chakra-ui/react";
+import { WarningTwoIcon } from "@chakra-ui/icons";
 
 const TestimonyCreateAlert = ({ isOpen, onClose, onConfirm }) => {
     const cancelRef = React.useRef();
@@ -22,10 +24,17 @@ const TestimonyCreateAlert = ({ isOpen, onClose, onConfirm }) => {
             <AlertDialogOverlay>
                 <AlertDialogContent>
                     <AlertDialogHeader fontSize="lg" fontWeight="bold">
-                        여기 대충 이모티콘 해야할듯
+                        <Flex
+                            justifyContent="center"
+                            alignItems="center"
+                            width="100%"
+                        >
+                            <WarningTwoIcon color="#ffd100" boxSize="50px" />{" "}
+                            {/* 아이콘 크기 조정 */}
+                        </Flex>
                     </AlertDialogHeader>
 
-                    <AlertDialogBody>
+                    <AlertDialogBody textAlign="center">
                         작성한 증언은 삭제할 수 없습니다!
                         <br />
                         제출하면 담쪽이에게 알림이 가고, <br />
@@ -33,12 +42,18 @@ const TestimonyCreateAlert = ({ isOpen, onClose, onConfirm }) => {
                     </AlertDialogBody>
 
                     <AlertDialogFooter>
-                        <Button ref={cancelRef} onClick={onClose}>
-                            취소
-                        </Button>
-                        <Button colorScheme="blue" onClick={onConfirm} ml={3}>
-                            저장
-                        </Button>
+                        <Flex justifyContent="center" width="full">
+                            <Button
+                                colorScheme="yellow"
+                                onClick={onConfirm}
+                                mr={3}
+                            >
+                                제출
+                            </Button>
+                            <Button ref={cancelRef} onClick={onClose}>
+                                취소
+                            </Button>
+                        </Flex>
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialogOverlay>

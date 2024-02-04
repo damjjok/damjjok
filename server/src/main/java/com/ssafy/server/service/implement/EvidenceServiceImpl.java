@@ -1,9 +1,14 @@
 package com.ssafy.server.service.implement;
 
 import com.ssafy.server.dto.ResponseDto;
+import com.ssafy.server.dto.proof.EvidenceDto;
 import com.ssafy.server.dto.request.proof.EvidenceCreateRequestDto;
+import com.ssafy.server.dto.request.proof.EvidenceDetailRequestDto;
+import com.ssafy.server.dto.request.proof.EvidenceListRequestDto;
 import com.ssafy.server.dto.request.proof.EvidenceModifyRequestDto;
 import com.ssafy.server.dto.response.proof.EvidenceCreateResponseDto;
+import com.ssafy.server.dto.response.proof.EvidenceDetailResponseDto;
+import com.ssafy.server.dto.response.proof.EvidenceListResponseDto;
 import com.ssafy.server.dto.response.proof.EvidenceModifyResponseDto;
 import com.ssafy.server.entity.ChallengeEntity;
 import com.ssafy.server.entity.EvidenceEntity;
@@ -20,6 +25,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -115,5 +122,59 @@ public class EvidenceServiceImpl implements EvidenceService {
         }
 
         return EvidenceModifyResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super EvidenceDetailResponseDto> detailEvidence(EvidenceDetailRequestDto dto) {
+        EvidenceDto evidence = null;
+        try{
+            int evidenceId = dto.getEvidenceId();
+
+            EvidenceEntity evidenceEntity = evidenceRepository.findByEvidenceId(evidenceId);
+
+            if(evidenceEntity == null) return ResponseDto.validationFail();
+
+            evidence = new EvidenceDto();
+            evidence.setEvidenceId(evidenceEntity.getEvidenceId());
+            evidence.setEvidenceTitle(evidenceEntity.getEvidenceTitle());
+            evidence.setImagePath(evidenceEntity.getImagePath());
+            evidence.setImageDate(evidenceEntity.getImageDate());
+            evidence.setCreatedBy(evidenceEntity.getCreatedBy());
+
+
+        }catch(Exception exception){
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return EvidenceDetailResponseDto.success(evidence);
+    }
+
+    @Override
+    public ResponseEntity<? super EvidenceListResponseDto> listEvidence(EvidenceListRequestDto dto) {
+        List<EvidenceDto> list = new ArrayList<>();
+        try {
+            int challengeId = dto.getChallengeId();
+
+            ChallengeEntity challengeEntity = challengeRepository.findByChallengeId(challengeId);
+
+            List<EvidenceEntity> entityList = evidenceRepository.findByChallengeEntity(challengeEntity);
+
+            entityList.stream().forEach(e ->{
+                EvidenceDto evidenceDto = new EvidenceDto();
+                evidenceDto.setEvidenceId(e.getEvidenceId());
+                evidenceDto.setEvidenceTitle(e.getEvidenceTitle());
+                evidenceDto.setCreatedBy(e.getCreatedBy());
+                evidenceDto.setImagePath(e.getImagePath());
+                evidenceDto.setImageDate(e.getImageDate());
+
+                list.add(evidenceDto);
+            });
+
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return EvidenceListResponseDto.success(list);
     }
 }
