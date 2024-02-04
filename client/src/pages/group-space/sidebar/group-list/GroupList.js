@@ -1,5 +1,3 @@
-import { Menu, MenuButton, MenuList, MenuItem, Button } from "@chakra-ui/react";
-import { ChevronDownIcon } from "@chakra-ui/icons";
 import { useRecoilValue } from "recoil";
 import { currentGroupState } from "../../../../contexts/User";
 import { useState } from "react";
@@ -44,6 +42,9 @@ function GroupList() {
         dropdownIndicator: (base) => ({
             ...base,
             color: "black", // dropdown indicator 색상을 흰색으로 설정
+            "&:hover": {
+                color: "black"
+            }
         }),
         indicatorSeparator: (base) => ({
             ...base,
