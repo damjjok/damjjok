@@ -10,7 +10,12 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class EnterRoomServiceImpl implements EnterRoomService {
+    //현재 진실의 방이 진행되고 있는 방들 정보
     private final Map<Integer, TruthRoomDto> truthRooms = new ConcurrentHashMap<>();
+
+    //sessionId가 어느 방에 위치해 있는지 알려줄 Map
+    private final Map<String, Integer> sessionRoomMap = new ConcurrentHashMap<>();
+
     @Override
     public TruthRoomDto createOrGetRoom(Integer roomId) {
         //방이 있다면 넣어주고 없다면 생성하고 넣어줌
@@ -26,6 +31,8 @@ public class EnterRoomServiceImpl implements EnterRoomService {
         room.getMembers().put(sessionId, userName);
         room.getReadyState().put(sessionId, false);
         room.getEvidenceNextStage().put(sessionId, false);
+        room.getFinalArgumentReadyState().put(sessionId, false);
+        mapSessionToRoom(sessionId, roomId);
     }
 
     @Override
@@ -60,6 +67,14 @@ public class EnterRoomServiceImpl implements EnterRoomService {
         }
     }
 
+    public Integer countMemberReady(Integer roomId) {
+        TruthRoomDto room = truthRooms.get(roomId);
+        long count = room.getReadyState().values().stream()
+                .filter(Boolean::booleanValue)
+                .count();
+        return (int) count;
+    }
+
     @Override
     public boolean areAllMemberReady(Integer roomId) {
         TruthRoomDto room = truthRooms.get(roomId);
@@ -72,5 +87,20 @@ public class EnterRoomServiceImpl implements EnterRoomService {
     public boolean isRoomEmpty(Integer roomId) {
         TruthRoomDto room = truthRooms.get(roomId);
         return room != null && room.getMembers().isEmpty();
+    }
+
+    // 세션 ID와 방 ID를 매핑하는 메소드
+    public void mapSessionToRoom(String sessionId, Integer roomId) {
+        sessionRoomMap.put(sessionId, roomId);
+    }
+
+    // 세션 ID로 방 ID를 조회하는 메소드
+    public Integer getRoomIdFromSession(String sessionId) {
+        return sessionRoomMap.get(sessionId);
+    }
+
+    // 세션 ID에 해당하는 매핑을 제거하는 메소드
+    public void removeSessionFromRoomMap(String sessionId) {
+        sessionRoomMap.remove(sessionId);
     }
 }

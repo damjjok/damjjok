@@ -1,4 +1,4 @@
-package com.ssafy.server.controller;
+package com.ssafy.server.controller.websocket;
 
 import com.ssafy.server.dto.websocket.Greeting;
 import com.ssafy.server.dto.websocket.HelloMessage;

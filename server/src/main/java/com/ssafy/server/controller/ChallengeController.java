@@ -1,9 +1,8 @@
 package com.ssafy.server.controller;
 
 import com.ssafy.server.dto.request.challenge.ChallengeCreateRequestDto;
-import com.ssafy.server.dto.response.challenge.ChallengeCreateResponseDto;
-import com.ssafy.server.dto.response.challenge.ChallengeListByGroupIdResponseDto;
-import com.ssafy.server.dto.response.challenge.ChallengeProfileImageResponseDto;
+import com.ssafy.server.dto.request.challenge.ChallengeProfileModifyRequestDto;
+import com.ssafy.server.dto.response.challenge.*;
 import com.ssafy.server.service.ChallengeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +30,30 @@ public class ChallengeController {
     @GetMapping("/list/{groupId}")
     public ResponseEntity<? super ChallengeListByGroupIdResponseDto> challengeList(@PathVariable int groupId){
         ResponseEntity<? super ChallengeListByGroupIdResponseDto> response = challengeService.challengeList(groupId);
+        return response;
+    }
+
+    @GetMapping("/{challengeId}/detail")
+    public ResponseEntity<? super ChallengeDetailResponseDto> challengeDetail(@PathVariable int challengeId){
+        ResponseEntity<? super ChallengeDetailResponseDto> response = challengeService.challengeDetail(challengeId);
+        return response;
+    }
+
+    @GetMapping("/{challengeId}/member-list")
+    public ResponseEntity<? super ChallengeMemberListResponseDto> challengeMemberList(@PathVariable int challengeId){
+        ResponseEntity<? super ChallengeMemberListResponseDto> response = challengeService.challengeMemberList(challengeId);
+        return response;
+    }
+
+    @PatchMapping("/{challengeId}/end")
+    public ResponseEntity<? super ChallengeEndResponseDto> changeStatus(@PathVariable int challengeId){
+        ResponseEntity<? super ChallengeEndResponseDto> response = challengeService.changeStatus(challengeId);
+        return response;
+    }
+
+    @PatchMapping("/{challengeId}/profile-modify")
+    public ResponseEntity<? super ChallengeProfileModifyResponseDto> modifyProfile(@PathVariable int challengeId, @RequestBody ChallengeProfileModifyRequestDto dto){
+        ResponseEntity<? super ChallengeProfileModifyResponseDto> response = challengeService.modifyProfile(challengeId,dto);
         return response;
     }
 }

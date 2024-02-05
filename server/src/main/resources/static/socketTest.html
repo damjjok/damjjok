@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Truth Room Test</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.0/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+</head>
+<body>
+<h2>Truth Room Test</h2>
+<div>
+    <input type="text" id="userName" placeholder="Enter your name"/>
+    <input type="number" id="roomId" placeholder="Enter room ID"/>
+    <button onclick="enterRoom()">Enter Room</button>
+    <button onclick="setReady()">Set Ready</button>
+    <button onclick="setEvidenceNextReady()">Evidence Next Ready</button>
+    <button onclick="setFinalArgumentReady()">Final Argument Ready</button>
+    <button onclick="votePass()">Vote Pass</button>
+    <button onclick="voteFail()">Vote Fail</button>
+    <button onclick="startFinalArgument()">Finish Final Argument</button>
+    <button onclick="submitFine()">Submit Fine</button>
+    <button onclick="voteFine()">Vote Fine</button>
+    <button onclick="leaveRoom()">Leave Room</button>
+</div>
+
+<script>
+    var stompClient = null;
+    var roomId = null;
+    var userName = null;
+
+    function connect() {
+        var socket = new SockJS('/truth-room-websocket');
+        stompClient = Stomp.over(socket);
+        stompClient.connect({}, function(frame) {
+            console.log('Connected: ' + frame);
+        });
+    }
+
+    window.onload = connect;
+
+    function subscribeToTopics() {
+        if (roomId) {
+            stompClient.subscribe('/topic/member/' + roomId, function(message){
+                console.log("Room Members: ", message.body);
+            });
+            stompClient.subscribe('/topic/readyState/' + roomId, function(message){
+                console.log("Ready State: ", message.body);
+            });
+            stompClient.subscribe('/topic/readyResult/' + roomId, function(message){
+                console.log("Ready State: ", message.body);
+            });
+            stompClient.subscribe('/topic/evidenceNextStageState/' + roomId, function(message){
+                console.log("Evidence Next Stage Ready Count: ", message.body);
+            });
+            stompClient.subscribe('/topic/voteStart/' + roomId, function(message){
+                console.log("Vote Start Notification: ", message.body);
+            });
+            stompClient.subscribe('/topic/passFailVoteState/' + roomId, function(message){
+                console.log("Current Vote Count: ", message.body);
+            });
+            stompClient.subscribe('/topic/voteResult/' + roomId, function(message){
+                console.log("Vote Result: ", message.body);
+            });
+            stompClient.subscribe('/topic/finalArgumentReadyState/' + roomId, function(message){
+                console.log("Final Argument Ready State: ", message.body);
+            });
+            stompClient.subscribe('/topic/startFinalArgument/' + roomId, function(message){
+                console.log("Start Final Argument: ", message.body);
+            });
+            stompClient.subscribe('/topic/remainingMembers/' + roomId, function(message) {
+                console.log("Remaining Members: ", message.body);
+            });
+            stompClient.subscribe('/topic/fineSubmittedCount/' + roomId, function(message) {
+                console.log("Fine Submitted Count: ", message.body);
+            });
+            stompClient.subscribe('/topic/startMoenyVote/' + roomId, function(message) {
+                console.log("Start Money Vote: ", message.body);
+            });
+            stompClient.subscribe('/topic/fineVoteCount/' + roomId, function(message) {
+                console.log("Fine Vote Count: ", message.body);
+            });
+            stompClient.subscribe('/topic/fineVoteResulte/' + roomId, function(message) {
+                console.log("Fine Vote Result: ", message.body);
+            });
+        }
+    }
+
+    // 방에 입장하는 함수
+    function enterRoom() {
+        var userNameInput = document.getElementById("userName");
+        var roomIdInput = document.getElementById("roomId");
+        if (userNameInput.value && roomIdInput.value) {
+            userName = userNameInput.value;
+            roomId = parseInt(roomIdInput.value);
+
+            // 사용자가 방에 입장한 후 구독 시작
+            subscribeToTopics(roomId);
+            var message = {
+                roomId: parseInt(roomIdInput.value),
+                userName: userNameInput.value
+            };
+            stompClient.send("/app/enter/" + message.roomId + "/" + message.userName, {}, JSON.stringify({}));
+        } else {
+            alert("Please enter your name and room ID.");
+        }
+    }
+
+    // 준비 상태를 설정하는 함수
+    function setReady() {
+        var roomIdInput = document.getElementById("roomId");
+        if (roomIdInput.value) {
+            var message = {
+                roomId: parseInt(roomIdInput.value),
+                ready: true // 예시로 true로 설정
+            };
+            stompClient.send("/app/ready/" + message.roomId, {}, JSON.stringify(message));
+        } else {
+            alert("Please enter the room ID.");
+        }
+    }
+
+    // 증거 다음 단계 준비 상태를 설정하는 함수
+    function setEvidenceNextReady() {
+        var roomIdInput = document.getElementById("roomId");
+        if (roomIdInput.value) {
+            var message = {
+                roomId: parseInt(roomIdInput.value),
+                next: true // 예시로 true로 설정
+            };
+            stompClient.send("/app/evidenceNextStage/" + message.roomId, {}, JSON.stringify(message));
+        } else {
+            alert("Please enter the room ID.");
+        }
+    }
+
+    // 최후 변론 준비 상태를 설정하는 함수
+    function setFinalArgumentReady() {
+        var roomIdInput = document.getElementById("roomId");
+        if (roomIdInput.value) {
+            var message = {
+                roomId: parseInt(roomIdInput.value),
+                ready: true // 예시로 true로 설정
+            };
+            stompClient.send("/app/finalArgumentReady/" + message.roomId, {}, JSON.stringify(message));
+        } else {
+            alert("Please enter the room ID.");
+        }
+    }
+
+    // PASS 투표 함수
+    function votePass() {
+        var roomIdInput = document.getElementById("roomId");
+        if (roomIdInput.value) {
+            var message = {
+                roomId: parseInt(roomIdInput.value),
+                pass: true // 예시로 true로 설정
+            };
+            stompClient.send("/app/passFailVote/" + message.roomId, {}, JSON.stringify(message));
+        } else {
+            alert("Please enter the room ID.");
+        }
+    }
+
+    // FAIL 투표 함수
+    function voteFail() {
+        var roomIdInput = document.getElementById("roomId");
+        if (roomIdInput.value) {
+            var message = {
+                roomId: parseInt(roomIdInput.value),
+                pass: false // 예시로 false로 설정
+            };
+            stompClient.send("/app/passFailVote/" + message.roomId, {}, JSON.stringify(message));
+        } else {
+            alert("Please enter the room ID.");
+        }
+    }
+
+     function startFinalArgument() {
+        if (roomId) {
+            stompClient.send(`/app/finishFinalArgument/${roomId}`, {}, JSON.stringify({}));
+        }
+    }
+
+    function submitFine() {
+        var fineAmount = prompt("Enter your fine amount:");
+        if (roomId && fineAmount) {
+            stompClient.send(`/app/submitFine/${roomId}`, {}, JSON.stringify({fineAmount: parseInt(fineAmount)}));
+        }
+    }
+
+    function voteFine() {
+        var fineAmount = prompt("Vote on a fine amount:");
+        if (roomId && fineAmount) {
+            stompClient.send(`/app/voteFine/${roomId}`, {}, JSON.stringify({fineAmount: parseInt(fineAmount)}));
+        }
+    }
+
+    function leaveRoom() {
+        if (roomId) {
+            stompClient.send(`/app/leaveRoom/${roomId}`, {}, JSON.stringify({}));
+            alert("You've left the room.");
+        }
+    }
+
+
+</script>
+
+</body>
+</html>

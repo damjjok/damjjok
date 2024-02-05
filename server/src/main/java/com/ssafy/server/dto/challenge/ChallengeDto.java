@@ -1,5 +1,6 @@
 package com.ssafy.server.dto.challenge;
 
+import com.ssafy.server.entity.ChallengeEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,5 +20,23 @@ public class ChallengeDto {
     private String status;
     private String determination;
     private String profilePath;
+
+    public ChallengeDto() {
+    }
+
+    public ChallengeDto(ChallengeEntity entity){
+        this.challgeId = entity.getChallengeId();
+        this.groupId = entity.getGroupEntity().getGroupId();
+        this.userId = entity.getUserId();
+        this.initialMoney = entity.getInitialMoney();
+        this.savedMoney = entity.getSavedMoney();
+        this.savedPeriod = entity.getSavedPeriod();
+        this.finalTruthRoomDate = entity.getFinalTruthRoomDate();
+        this.endDate = entity.getEndDate();
+        this.status = entity.getStatus();
+        this.determination = entity.getDetermination();
+        this.profilePath = entity.getProfilePath();
+
+    }
 
 }
