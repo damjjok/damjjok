@@ -45,7 +45,7 @@ function StatusBar({ challenge }) {
     ];
 
     return (
-        <Box width={"100%"} marginTop={"2rem"}>
+        <Box width={"70vw"} marginY={"1rem"}>
             <Flex
                 justifyContent={"space-between"}
                 alignItems={"center"}

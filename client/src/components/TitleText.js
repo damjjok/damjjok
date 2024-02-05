@@ -5,7 +5,7 @@ const TitleText = (props) => {
     return (
         <>
             <Box
-                width={"80vw"}
+                width={"70vw"}
                 height={"150px"}
                 borderRadius={"xl"}
                 bgImage={`linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)), url(${img})`}
