@@ -71,30 +71,6 @@ const levelData = [
 
 const currentLevel = 1;
 
-// Box에 들어갈 데이터 배열
-// 박스 내에 세로로 긴 이미지 가로 폭 줄어드는 문제 해결하고 싶음..
-const boxData = [
-    {
-        gifSrc: getMoneyGif,
-        altText: "getMoneyGif",
-        prefix: "하루 ", // prefix로 "하루 "를 분리
-        // value: cigaretteCount, // value를 state로 관리
-        text2: "4500원을 아꼈어요!",
-    },
-    {
-        gifSrc: gradeGif,
-        altText: "gradeGif",
-        text1: "전체 챌린저 중",
-        text2: "상위 n%에요!",
-    },
-    {
-        gifSrc: levelData[currentLevel - 1].img,
-        altText: `"${levelData[currentLevel - 1].img}"`,
-        text1: `금연 건강 레벨 ${levelData[currentLevel - 1].key}!`,
-        text2: `${levelData[currentLevel - 1].text}`,
-    },
-];
-
 function InfoCards() {
     // 셀렉터 감지를 위해
     const [dailyState, setDailyState] = useState(1)
@@ -151,12 +127,13 @@ function InfoCards() {
                 className="flex flex-col items-center justify-center rounded-3xl border-4 p-8 mx-4 border-damyellow transition-shadow hover:shadow-xl"
             >
                 <VStack spacing={2} alignItems="center">
-                    <Box w="20" h="20" className="overflow-hidden">
+                    <Box w="30" h="20" className="overflow-visible">
                         <Image
                             src={gradeGif}
                             alt="gradeGif"
                             boxSize="100%"
                             className=" rounded-xl"
+                            objectFit='cover'
                         />
                     </Box>
                     <Box
@@ -189,6 +166,7 @@ function InfoCards() {
                             alt="currentlvimg"
                             boxSize="100%"
                             className=" rounded-xl"
+                            objectFit='cover'
                         />
                     </Box>
                     <Box
