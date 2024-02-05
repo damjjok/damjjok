@@ -1,5 +1,4 @@
 import { useLocation } from "react-router-dom";
-import StatusBar from "./status-bar/StatusBar";
 import HomeTab from "../group-tab/home-tab/HomeTab";
 import TitleText from "components/TitleText";
 import bgSucceedChallenge from "assets/images/bgSucceedChallenge.png";
@@ -7,6 +6,7 @@ import bgFailedChallenge from "assets/images/bgFailedChallenge.png";
 import { Box, VStack } from "@chakra-ui/react";
 import MessageCheckModal from "../group-tab/completed-modal/message-check-modal/MessageCheckModal";
 import PiggyBankFinished from "../group-tab/completed-modal/piggy-bank/PiggyBankFinished";
+import StatusBar from "../group-tab/status-bar/StatusBar";
 
 function LastChallenge() {
     const location = useLocation();
@@ -24,6 +24,7 @@ function LastChallenge() {
     return (
         <>
             <VStack marginBottom={15} >
+                <StatusBar challenge={challenge} />
                 <TitleText
                     fontSize="2rem"
                     img={bgImage}
@@ -31,14 +32,15 @@ function LastChallenge() {
                 >
                     {tabName}
                 </TitleText>
-                <StatusBar challenge={challenge} />
+
                 <Box
                     display={"flex"}
                     flexFlow={"column"}
                     alignItems={"center"}
-                    width={"70vw"}
+                    width={"80vw"}
                     overflowY={"auto"}
                     minheight="50vh"
+                    marginY={10}
                     // height="120vh"
                 >
                     <HomeTab challengeId={challenge.challengeId} />
