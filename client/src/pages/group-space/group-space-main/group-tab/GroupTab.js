@@ -35,8 +35,8 @@ const challenge = {
     savedPeriod: "",
     savedMoney: "",
     createdAt: new Date(),
-    // status: "completed",
-    status: "ing",
+    status: "completed",
+    // status: "ing",
     determination: "오늘 하루도,,, 홧팅 ^^@@",
     profilePath: "",
 };

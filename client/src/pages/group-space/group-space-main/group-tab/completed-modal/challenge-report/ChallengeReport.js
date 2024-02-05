@@ -25,7 +25,6 @@ function ChallengeReport({ nextContent }) {
                 flexFlow={"column"}
                 justifyContent={"center"}
                 alignItems={"center"}
-                marginY={20}
             >
                 <VStack
                     flexFlow={"column"}
