@@ -6,11 +6,9 @@ import StatusEditModal from "./status-edit-modal/StatusEditModal";
 import {
     Avatar,
     Box,
-    Container,
     Flex,
     Image,
     Wrap,
-    WrapItem,
 } from "@chakra-ui/react";
 import avatar1 from "assets/images/avatar1.png";
 import avatar2 from "assets/images/avatar2.png";
@@ -21,6 +19,8 @@ import { useEffect } from "react";
 // import { challengeState } from "../../../../../contexts/Challenge";
 
 function StatusBar() {
+    // axios 연결하고, 상태 분기 추가해서 현재 챌린지 / 만료 챌린지 구분해서 분기할 것.
+    // 만료된 챌린지일 시, '챌린지 정보 수정' 버튼과 '출석하기' 버튼 없애주기.
     const currentUser = useRecoilValue(currentUserState);
     let currentChallenge = localStorage.getItem("challengeList");
     let navigate = useNavigate();
@@ -83,7 +83,6 @@ function StatusBar() {
                     </Flex>
                 </Wrap>
                 <div className="flex items-center">
-                    {/* <BasicButton buttonName={"출석하기"} variant={"smbtn"} /> */}
                     <StatusBarToast />
                     <Box
                         position="relative"

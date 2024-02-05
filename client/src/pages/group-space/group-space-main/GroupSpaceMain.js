@@ -22,6 +22,9 @@ function GroupSpaceMain() {
         const storedChallengeList = localStorage.getItem("challengeList");
         if (storedChallengeList) {
             setChallengeList(JSON.parse(storedChallengeList));
+
+            // axios 이어주면서, 챌린지가 존재하면 'challengeId' 링크로 이동하도록 navigate해주기
+            // navigate(`${storedChallengeList}`)
         } else {
             navigate("empty-challenge");
         }

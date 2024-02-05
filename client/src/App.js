@@ -80,7 +80,7 @@ function App() {
                                 path="empty-challenge"
                                 element={<EmptyChallenge />}
                             />
-                            <Route path="" element={<GroupTab />} />
+                            <Route path=":challengeId" element={<GroupTab />} />
                             <Route
                                 path="last-challenge/:challengeId"
                                 element={<LastChallenge />}

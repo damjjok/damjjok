@@ -5,6 +5,8 @@ import { currentUserState } from "../../../../../contexts/User";
 import InfoCards from "./info-cards/InfoCards";
 import { Box } from "@chakra-ui/react";
 
+
+// 받아오는 Status에 따라 표출되는 텍스트 달라져야 함
 function HomeTab({ challengeId }) {
     // axios = challengeId 기반으로 challenge 불러오기. (수정해야 함)
     let currentChallenge = localStorage.getItem("challengeList");
