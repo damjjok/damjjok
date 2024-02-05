@@ -152,6 +152,7 @@ function ChallengeList() {
                                         });
                                         navigate(
                                             `/group/1/last-challenge/${challenge.challengeId}`,
+                                            { state: { challenge } },
                                         );
                                     }}
                                 >
