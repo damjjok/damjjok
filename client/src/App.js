@@ -16,6 +16,7 @@ import ArticleTab from "pages/group-space/group-space-main/group-tab/article-tab
 import GroupTab from "pages/group-space/group-space-main/group-tab/GroupTab";
 import CreateChallenge from "pages/group-space/group-space-main/empty-challenge/create-challenge/CreateChallenge";
 import EmptyChallenge from "pages/group-space/group-space-main/empty-challenge/EmptyChallenge";
+import LastChallenge from "pages/group-space/group-space-main/last-challenge/LastChallenge";
 
 const theme = extendTheme({
     colors: {
@@ -49,10 +50,23 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Landing />} />
                     <Route path="/create-group" element={<CreateGroup />} />
-                    <Route path={`/group/${currentGroup.groupId}/*`} element={<GroupSpaceHome />}>
-                        <Route path="create-challenge" element={<CreateChallenge />} />
-                        <Route path="empty-challenge" element={<EmptyChallenge />} />
+                    <Route
+                        path={`/group/${currentGroup.groupId}/*`}
+                        element={<GroupSpaceHome />}
+                    >
+                        <Route
+                            path="create-challenge"
+                            element={<CreateChallenge />}
+                        />
+                        <Route
+                            path="empty-challenge"
+                            element={<EmptyChallenge />}
+                        />
                         <Route path="" element={<GroupTab />} />
+                        <Route
+                            path="last-challenge/:challengeId"
+                            element={<LastChallenge />}
+                        />
                     </Route>
                     <Route path="/truth-room" element={<TruthRoom />} />
                 </Routes>

@@ -1,4 +1,15 @@
-import { Tabs, TabList, TabPanels, Tab, TabPanel, Modal, ModalOverlay, ModalContent, ModalBody, Flex } from "@chakra-ui/react";
+import {
+    Tabs,
+    TabList,
+    TabPanels,
+    Tab,
+    TabPanel,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalBody,
+    Flex,
+} from "@chakra-ui/react";
 import HomeTab from "./home-tab/HomeTab";
 import TruthRoomTab from "./truth-room-tab/TruthRoomTab";
 import RewardTab from "./reward-tab/RewardTab";
@@ -25,37 +36,35 @@ const challenge = {
     savedMoney: "",
     createdAt: new Date(),
     // status: "completed",
-    status: 'ing',
+    status: "ing",
     determination: "오늘 하루도,,, 홧팅 ^^@@",
     profilePath: "",
-
 };
 
 function GroupTab() {
-    
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [contentStep, setContentStep] = useState(0);
 
     useEffect(() => {
-        if (challenge.status === 'completed') {
-          setIsModalOpen(true);
+        if (challenge.status === "completed") {
+            setIsModalOpen(true);
         } else {
-          setIsModalOpen(false);
+            setIsModalOpen(false);
         }
-      }, [challenge.status]);
+    }, [challenge.status]);
 
-      const nextContent = () => setContentStep(contentStep + 1);
-      const closeModal = () => {
+    const nextContent = () => setContentStep(contentStep + 1);
+    const closeModal = () => {
         setIsModalOpen(false);
-        setContentStep(0);  // 모달을 닫을 때는 내용 단계를 초기화
-      };
-      const contents = [
-        <ChallengeCompletedModal nextContent={nextContent}/>,
+        setContentStep(0); // 모달을 닫을 때는 내용 단계를 초기화
+    };
+    const contents = [
+        <ChallengeCompletedModal nextContent={nextContent} />,
         <MessageCheckModal nextContent={nextContent} />,
-        <BestCheerMemberModal nextContent={nextContent}/>,
-        <ChallengeReport nextContent={nextContent}/>,
-        <PiggyBankFinished nextContent={nextContent}/>
-        ]
+        <BestCheerMemberModal nextContent={nextContent} />,
+        <ChallengeReport nextContent={nextContent} />,
+        <PiggyBankFinished nextContent={nextContent} />,
+    ];
 
     // 1. Create the component
     function DataTabs({ data }) {
@@ -102,17 +111,20 @@ function GroupTab() {
 
     // 3. Pass the props and chill!
     return (
-    <>
-        <DataTabs data={tabData} />
-        <Modal isOpen={isModalOpen} onClose={closeModal} closeOnOverlayClick={false}>
-            <ModalOverlay />
-            <ModalContent maxW={'1000px'} margin={'auto'}>
-                {contents[contentStep]}
-            </ModalContent>
-        </Modal>
-    </>
-
-    )
+        <>
+            <DataTabs data={tabData} />
+            <Modal
+                isOpen={isModalOpen}
+                onClose={closeModal}
+                closeOnOverlayClick={false}
+            >
+                <ModalOverlay />
+                <ModalContent maxW={"1000px"} margin={"auto"}>
+                    {contents[contentStep]}
+                </ModalContent>
+            </Modal>
+        </>
+    );
 }
 
 export default GroupTab;
