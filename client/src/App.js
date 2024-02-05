@@ -68,7 +68,7 @@ function App() {
                             element={<LastChallenge />}
                         />
                     </Route>
-                    <Route path="/truth-room" element={<TruthRoom />} />
+                    <Route path="/truth-room/*" element={<TruthRoom />} />
                 </Routes>
             </ChakraProvider>
         </Suspense>
