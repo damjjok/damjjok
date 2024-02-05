@@ -1,11 +1,6 @@
 import { atom } from "recoil";
 
-export const sessionId = atom({
-    key: "openViduSessionId",
-    default: "",
-});
-
-export const tokenState = atom({
-    key: "openViduToken",
-    default: "",
+export const sessionKeyState = atom({
+    key: "sessionKey",
+    default: "0",
 });

@@ -4,12 +4,14 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import "./OpenViduTest.css";
 import UserVideoComponent from "./UserVideoComponent";
 import { closeOpenviduSession } from "apis/api/TruthRoom";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { sessionKeyState } from "contexts/OpenVidu";
 
 const APPLICATION_SERVER_URL =
     process.env.NODE_ENV === "production" ? "" : "https://i10e105.p.ssafy.io/";
 
 export default function OpenViduTest() {
-    const [mySessionId, setMySessionId] = useState("SessionA");
+    const sessionKey = useRecoilValue(sessionKeyState);
     const [myUserName, setMyUserName] = useState(
         `Participant${Math.floor(Math.random() * 100)}`,
     );
@@ -42,6 +44,7 @@ export default function OpenViduTest() {
     useEffect(() => {
         if (session) {
             // Get a token from the OpenVidu deployment
+            setSessionKey("1");
             getToken().then(async (token) => {
                 try {
                     await session.connect(token, { clientData: myUserName });
@@ -90,7 +93,7 @@ export default function OpenViduTest() {
     const leaveSession = useCallback(() => {
         // Leave the session
         if (session) {
-            closeOpenviduSession(mySessionId);
+            closeOpenviduSession(sessionKey);
             session.disconnect();
         }
 
@@ -98,7 +101,7 @@ export default function OpenViduTest() {
         OV.current = new OpenVidu();
         setSession(undefined);
         setSubscribers([]);
-        setMySessionId("SessionA");
+        setSessionKey("0");
         setMyUserName("Participant" + Math.floor(Math.random() * 100));
         setPublisher(undefined);
     }, [session]);
@@ -143,15 +146,13 @@ export default function OpenViduTest() {
      * more about the integration of OpenVidu in your application server.
      */
     const getToken = useCallback(async () => {
-        return createSession(mySessionId).then((sessionId) =>
-            createToken(sessionId),
-        );
-    }, [mySessionId]);
+        return createSession().then((sessionId) => createToken(sessionId));
+    }, [sessionKey]);
 
-    const createSession = async (propsSessionKey) => {
+    const createSession = async () => {
         const response = await axios.post(
             APPLICATION_SERVER_URL + "api/v1/sessions",
-            { sessionKey: propsSessionKey },
+            { sessionKey: sessionKey },
         );
         return response.data; // The sessionId
     };
@@ -194,7 +195,6 @@ export default function OpenViduTest() {
             {session !== undefined ? (
                 <div id="session">
                     <div id="session-header">
-                        <h1 id="session-title">{mySessionId}</h1>
                         <input
                             className="btn btn-large btn-danger"
                             type="button"
