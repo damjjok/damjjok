@@ -12,7 +12,8 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 // import { challengeState } from "../../../../../contexts/Challenge";
 
-function StatusBar() {
+function StatusBar({ challenge }) {
+    console.log(challenge);
     const currentUser = useRecoilValue(currentUserState);
     let currentChallenge = localStorage.getItem("challengeList");
     let navigate = useNavigate();
@@ -45,26 +46,45 @@ function StatusBar() {
 
     return (
         <Box width={"100%"} marginTop={"2rem"}>
-            <Flex justifyContent={"space-between"} alignItems={"center"} bg={"dam.gray"} borderRadius={"30px"} padding={".5rem"}>
+            <Flex
+                justifyContent={"space-between"}
+                alignItems={"center"}
+                bg={"dam.gray"}
+                borderRadius={"30px"}
+                padding={".5rem"}
+            >
                 <Wrap>
                     <Flex alignItems={"center"}>
-                        <Avatar name="Cat" src={avatar1} size="sm" bg="dam.white" />
+                        <Avatar
+                            name="Cat"
+                            src={avatar1}
+                            size="sm"
+                            bg="dam.white"
+                        />
                         <p className="px-3 text-lg font-bold">
-                            {currentUser.userName} 챌린지 - {startedDate.toLocaleDateString()}
+                            {challenge.username} 챌린지 -{" "}
+                            {startedDate.toLocaleDateString()}
                         </p>
-                        <div className="bg-damblack rounded-xl max-h-8 px-2 text-damyellow">D+{diffDays}</div>
+                        <div className="bg-damblack rounded-xl max-h-8 px-2 text-damyellow">
+                            D+{diffDays}
+                        </div>
                         <p className="mx-2">{currentChallenge.determination}</p>
-                        <StatusEditModal currentChallenge={currentChallenge} avatars={avatars} />
                     </Flex>
                 </Wrap>
                 <div className="flex items-center">
-                    {/* <BasicButton buttonName={"출석하기"} variant={"smbtn"} /> */}
-                    <StatusBarToast />
                     <div className="flex flex-col items-center">
                         <div className="bg-damwhite rounded-full border border-damyellow">
-                            <img src={candyImg} alt="candyImg" className="w-[25px] h-[25px]" />
+                            <img
+                                src={candyImg}
+                                alt="candyImg"
+                                className="w-[25px] h-[25px]"
+                            />
                         </div>
-                        <Box className="text-xs" width="5rem" textAlign={"center"}>
+                        <Box
+                            className="text-xs"
+                            width="5rem"
+                            textAlign={"center"}
+                        >
                             1
                         </Box>
                     </div>

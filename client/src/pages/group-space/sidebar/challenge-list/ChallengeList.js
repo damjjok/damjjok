@@ -36,7 +36,7 @@ const lastChallenge = [
     },
     {
         challengeId: "12",
-        username: "손종민",
+        username: "김종민",
         createdAt: "2023.10.01",
         status: "failed",
     },
