@@ -84,15 +84,15 @@
 }
 
 .CreateGroup img {
-    position: absolute; /* 절대 위치 */
-    top: 20px; /* 상단에 맞춤 */
-    left: 20px; /* 왼쪽에 맞춤 */
+    /* position: absolute; */
+    top: 20px;
+    left: 20px;
     width: 100px;
     height: auto;
 }
 
 .CreateGroup {
-    display: flex;
+    /* display: flex; */
     flex-direction: column;
     justify-content: center;
     align-items: center;
