@@ -6,7 +6,7 @@ import testImg1 from "logo.svg";
 export const stepState = atom({
     // 대기 중, 제보 판별, 투표, PASS/FAIL, 최후 변론, 벌금 결정, 종료
     key: "step",
-    default: 6,
+    default: 0,
 });
 
 export const voteState = atom({
