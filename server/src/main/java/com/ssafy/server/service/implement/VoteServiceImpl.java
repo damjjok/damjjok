@@ -43,6 +43,19 @@ public class VoteServiceImpl implements VoteService {
     }
 
     @Override
+    public Integer submitFine(Integer roomId, String sessionId, Integer fineAmount) {
+        TruthRoomDto room = enterRoomService.getRoom(roomId);
+        int cnt = 0;
+        if (room != null) {
+            room.getFinesSubmitted().add(fineAmount);
+            //입력한 사람 수 올려주기
+            cnt = room.getSubmitCnt()+1;
+            room.setSubmitCnt(cnt);
+        }
+        return cnt;
+    }
+
+    @Override
     public boolean calculateResult(Integer roomId) {
         TruthRoomDto room = enterRoomService.getRoom(roomId);
         if (room == null || room.getPassOrFail().isEmpty()) {
@@ -63,16 +76,32 @@ public class VoteServiceImpl implements VoteService {
         return passCount > failCount;
     }
 
+    //벌금 투표 받기, 투표 한 인원 수 반환
+    @Override
+    public Integer voteForMoney(Integer roomId, Integer fineAmount) {
+        TruthRoomDto room = enterRoomService.getRoom(roomId);
+        int cnt = 0;
+        if(room != null) {
+            room.getFineVotes().merge(fineAmount, 1, Integer::sum); // 해당 벌금 값에 대한 투표 수 증가
+            //총 투표 수
+            cnt = room.getFineVotes().values().stream()
+                    .mapToInt(Integer::intValue)
+                    .sum();
+        }
+        return cnt;
+    }
+    //벌금 투표에서 가장 많이 투표된 벌금 찾기
+    @Override
+    public Integer getMostVotedFine(Integer roomId) {
+        TruthRoomDto room = enterRoomService.getRoom(roomId);
+        Integer resultMoney = room.getFineVotes().entrySet().stream()
+                .max(Map.Entry.comparingByValue())
+                .map(Map.Entry::getKey)
+                .orElse(null); // 가장 많이 투표된 벌금 값 찾기
+        //결과 값 dto에 저장하기
+        room.setResultMoney(resultMoney);
+        return resultMoney;
+    }
 
-
-//    @Override
-//    public Map<String, Boolean> voteResult(Integer roomId) {
-//        TruthRoomDto room = enterRoomService.getRoom(roomId);
-//        if(room != null) {
-//            return room.getPassOrFail();
-//        } else {
-//            return new HashMap<>();
-//        }
-//    }
 
 }
