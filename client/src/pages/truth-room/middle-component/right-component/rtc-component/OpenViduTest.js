@@ -2,7 +2,7 @@ import { OpenVidu } from "openvidu-browser";
 import axios from "axios";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import "./OpenViduTest.css";
-import UserVideoComponent from "./UserVideoComponent";
+import UserVideoComponent from "../../../openvidu/UserVideoComponent";
 import { closeOpenviduSession } from "apis/api/TruthRoom";
 import { useRecoilState } from "recoil";
 import { sessionKeyState } from "contexts/OpenVidu";
@@ -56,21 +56,21 @@ export default function OpenViduTest() {
                             frameRate: 30,
                             insertMode: "APPEND",
                             mirror: false,
-                        },
+                        }
                     );
 
                     session.publish(publisher);
 
                     const devices = await OV.current.getDevices();
                     const videoDevices = devices.filter(
-                        (device) => device.kind === "videoinput",
+                        (device) => device.kind === "videoinput"
                     );
                     const currentVideoDeviceId = publisher.stream
                         .getMediaStream()
                         .getVideoTracks()[0]
                         .getSettings().deviceId;
                     const currentVideoDevice = videoDevices.find(
-                        (device) => device.deviceId === currentVideoDeviceId,
+                        (device) => device.deviceId === currentVideoDeviceId
                     );
 
                     setPublisher(publisher);
@@ -79,7 +79,7 @@ export default function OpenViduTest() {
                     console.log(
                         "There was an error connecting to the session:",
                         error.code,
-                        error.message,
+                        error.message
                     );
                 }
             });
@@ -147,7 +147,7 @@ export default function OpenViduTest() {
     const createSession = async () => {
         const response = await axios.post(
             APPLICATION_SERVER_URL + "api/v1/sessions",
-            { sessionKey: sessionKey },
+            { sessionKey: sessionKey }
         );
         return response.data; // The sessionId
     };
@@ -157,7 +157,7 @@ export default function OpenViduTest() {
             APPLICATION_SERVER_URL +
                 "api/v1/sessions/" +
                 sessionId +
-                "/connections",
+                "/connections"
         );
         return response.data.token; // The token
     };
