@@ -1,6 +1,7 @@
 import Topbar from "./topbar/Topbar.js";
 import Sidebar from "./sidebar/Sidebar.js";
 import GroupSpaceMain from "./group-space-main/GroupSpaceMain.js";
+import { Box } from "@chakra-ui/react";
 // import StatusBar from "../statusbar/StatusBar.js";
 // import { Routes, Route } from "react-router-dom";
 // import CreateChallenge from "../create-challenge/CreateChallenge"
@@ -11,9 +12,9 @@ function GroupSpaceHome() {
             <Topbar />
             <div className="flex">
                 <Sidebar />
-                <div className="w-full px-8">
+                <Box className="w-full px-8">
                     <GroupSpaceMain />
-                </div>
+                </Box>
             </div>
         </div>
     );
