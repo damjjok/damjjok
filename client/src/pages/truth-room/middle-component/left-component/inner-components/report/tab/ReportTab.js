@@ -22,7 +22,7 @@ function ReportTab(props) {
                     changeReportMode(index === 0 ? "EVIDENCE" : "TESTIMONY")
                 }
             >
-                <TabList>
+                <TabList color={"dam.white"}>
                     <Tab>증거</Tab>
                     <Tab>증언</Tab>
                 </TabList>
@@ -35,7 +35,12 @@ function ReportTab(props) {
                     >
                         <EvidenceComponent />
                     </TabPanel>
-                    <TabPanel>
+                    <TabPanel
+                        p={0}
+                        paddingLeft={2}
+                        paddingY={2}
+                        paddingRight={1}
+                    >
                         <TestimonyComponent />
                     </TabPanel>
                 </TabPanels>

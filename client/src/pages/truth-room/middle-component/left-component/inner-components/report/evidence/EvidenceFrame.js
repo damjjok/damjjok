@@ -4,16 +4,17 @@ import { Box, Image, Text } from "@chakra-ui/react";
 
 function EvidenceFrame({ evidence, onClick }) {
     return (
-        <Wrapper onClick={onClick}>
+        <Box onClick={onClick} cursor={"pointer"}>
             <Box
                 color={"dam.white"}
                 display={"inline-block"}
                 borderBottom={"3px solid"}
                 borderColor={"dam.yellow"}
+                marginY={2}
             >
                 {evidence.title}
             </Box>
-            <div>
+            <Box borderBottomColor={"dam.gray"} paddingBottom={2}>
                 <Image
                     src={evidence.img}
                     alt="에러"
@@ -21,8 +22,8 @@ function EvidenceFrame({ evidence, onClick }) {
                     h={"6rem"}
                     padding={2}
                 ></Image>
-            </div>
-        </Wrapper>
+            </Box>
+        </Box>
     );
 }
 
