@@ -6,7 +6,7 @@ import {
     getSessionId,
 } from "apis/api/TruthRoom";
 import React, { useState } from "react";
-import OpenViduTest from "../middle-component/right-component/rtc-component/OpenViduTest";
+import OpenViduTest from "../middle-component/right-component/rtc-component/OpenViduComponent";
 import { Link } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { challengeIdState } from "contexts/TruthRoom";
