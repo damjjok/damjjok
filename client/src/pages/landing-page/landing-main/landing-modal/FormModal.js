@@ -57,7 +57,9 @@ const FormModal = ({ FormisOpen, FormonClose }) => {
                             boxSize="70%"
                         />
                         <VStack spacing={4}>
-                            <Text mb={3}>소셜 ID로 시작하기</Text>
+                            <Text mb={3} mt={4} fontSize="md" fontWeight="bold">
+                                소셜 ID로 시작하기
+                            </Text>
 
                             <FormControl>
                                 <Input
