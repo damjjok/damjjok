@@ -21,13 +21,8 @@ const getSessionId = async (propsSessionKey) => {
     };
 
     try {
-        const response = await axiosInstance.post(
-            "/open-vidu/api/sessions",
-            body,
-        );
-        console.log(response.status);
-        console.log(response.data);
-        if (response.status === 200) return response.data.sessionKey;
+        const response = await axiosInstance.post("/v1/sessions", body);
+        if (response.status === 200) return response.data;
         else console.log("통신 실패, 상태 코드: " + response.status);
     } catch (error) {
         console.log("오픈비두 세션 id 통신에서 에러: " + error);
