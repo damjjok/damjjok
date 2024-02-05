@@ -3,6 +3,7 @@ import axios from "axios";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import "./OpenViduTest.css";
 import UserVideoComponent from "./UserVideoComponent";
+import { closeOpenviduSession } from "apis/api/TruthRoom";
 
 const APPLICATION_SERVER_URL =
     process.env.NODE_ENV === "production" ? "" : "https://i10e105.p.ssafy.io/";
@@ -108,6 +109,7 @@ export default function OpenViduTest() {
     const leaveSession = useCallback(() => {
         // Leave the session
         if (session) {
+            closeOpenviduSession(mySessionId);
             session.disconnect();
         }
 
@@ -275,13 +277,6 @@ export default function OpenViduTest() {
                             id="buttonLeaveSession"
                             onClick={leaveSession}
                             value="Leave session"
-                        />
-                        <input
-                            className="btn btn-large btn-success"
-                            type="button"
-                            id="buttonSwitchCamera"
-                            onClick={switchCamera}
-                            value="Switch Camera"
                         />
                     </div>
 
