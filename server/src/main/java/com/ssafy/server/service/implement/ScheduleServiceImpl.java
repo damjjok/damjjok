@@ -64,7 +64,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
              //담쪽이가 아닌 경우 "VF"
              if(requestDto.getDamjjokId() != damjjokId) {
-                 return ScheduleCreateResponseDto.validationFail();
+                 return ScheduleCreateResponseDto.notDomjjok();
              }
 
             ScheduleEntity newSchedule = new ScheduleEntity();
