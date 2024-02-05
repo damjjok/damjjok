@@ -6,7 +6,7 @@ import BottomComponent from "./bottom-component/BottomComponent";
 import { Route, Routes } from "react-router-dom";
 import ConnectionTest from "./openvidu/ConnectionTest";
 
-function TruthRoom() {
+function TruthRoom({ challengeId }) {
     return (
         <Routes>
             <Route

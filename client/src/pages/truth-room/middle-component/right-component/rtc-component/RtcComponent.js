@@ -1,17 +1,12 @@
 import React from "react";
-import { Wrapper } from "./RtcComponent.style";
-import { useRecoilValue } from "recoil";
-import { groupState } from "contexts/TruthRoom";
-import RtcFrameComponent from "./RtcFrameComponent";
+import OpenViduComponent from "./OpenViduComponent";
 
 function RtcComponent(props) {
-    const group = useRecoilValue(groupState);
     return (
-        <Wrapper>
-            {group.map((user) => (
-                <RtcFrameComponent user={user}></RtcFrameComponent>
-            ))}
-        </Wrapper>
+        <OpenViduComponent
+            challengeId={"1"}
+            userName={"hoo"}
+        ></OpenViduComponent>
     );
 }
 

@@ -6,11 +6,15 @@ import {
     getSessionId,
 } from "apis/api/TruthRoom";
 import React, { useState } from "react";
-import OpenViduTest from "./OpenViduTest";
+import OpenViduTest from "../middle-component/right-component/rtc-component/OpenViduComponent";
+import { Link } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { challengeIdState } from "contexts/TruthRoom";
 
 function ConnectionTest(props) {
     const [sessionId, setSessionId] = useState("d");
     const [openviduToken, setOpenviduToken] = useState("d");
+    const challengeId = useRecoilValue(challengeIdState);
 
     async function getSessionIdAndSave() {
         const gotSessionId = await getSessionId(5);
@@ -24,7 +28,7 @@ function ConnectionTest(props) {
 
     return (
         <div>
-            {/* <Button onClick={() => getSessionIdAndSave()}>
+            <Button onClick={() => getSessionIdAndSave()}>
                 세션 id 받아오기
             </Button>
             <Button onClick={() => getOpenviduTokenAndSave()}>
@@ -32,8 +36,10 @@ function ConnectionTest(props) {
             </Button>
             <Button onClick={() => closeOpenviduSession(5)}>
                 세션 삭제하기
-            </Button> */}
-            <OpenViduTest></OpenViduTest>
+            </Button>
+            <Link to="/truth-room">
+                <Button>오픈비두 연결하기</Button>
+            </Link>
         </div>
     );
 }
