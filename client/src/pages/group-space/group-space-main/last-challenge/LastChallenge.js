@@ -23,7 +23,7 @@ function LastChallenge() {
 
     return (
         <>
-            <VStack marginBottom={15}>
+            <VStack marginBottom={15} >
                 <TitleText
                     fontSize="2rem"
                     img={bgImage}
@@ -38,7 +38,8 @@ function LastChallenge() {
                     alignItems={"center"}
                     width={"70vw"}
                     overflowY={"auto"}
-                    height="50vh"
+                    minheight="50vh"
+                    // height="120vh"
                 >
                     <HomeTab challengeId={challenge.challengeId} />
                     {challenge.status === "success" ? (
