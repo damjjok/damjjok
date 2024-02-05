@@ -1,18 +1,9 @@
 import { useRecoilValue } from "recoil";
-import {
-    Step,
-    Stack,
-    StepIcon,
-    StepIndicator,
-    StepSeparator,
-    StepStatus,
-    Stepper,
-    Flex,
-} from "@chakra-ui/react";
+import { Step, Stack, StepIcon, StepIndicator, StepSeparator, StepStatus, Stepper, Flex, Text } from "@chakra-ui/react";
 import { stepState } from "contexts/TruthRoom";
 
 const steps = [
-    { title: "First", description: "대기 중" },
+    { title: "First", description: "대기중" },
     { title: "Second", description: "제보 판별" },
     { title: "Third", description: "투표" },
     { title: "Fourth", description: "PASS / FAIL" },
@@ -22,23 +13,27 @@ const steps = [
 ];
 
 function CenterStepper() {
-    const step = useRecoilValue(stepState);
+    const currentStep = useRecoilValue(stepState);
 
     return (
         <Stack>
-            <Stepper size="sm" index={step} gap="0">
+            <Stepper size="sm" index={currentStep} gap="0" colorScheme="yellow">
                 {steps.map((step, index) => (
                     <Step key={index} gap="0">
-                        <Flex
-                            direction="column"
-                            align="center"
-                            key={step.title}
+                        <StepIndicator>
+                            <StepStatus complete={<StepIcon />} />
+                        </StepIndicator>
+                        <Text
+                            textAlign="center"
+                            position={"absolute"}
+                            width={"5rem"}
+                            left={"-1.75rem"}
+                            top={"1.5rem"}
+                            color={index <= currentStep ? "dam.yellow" : "white"}
                         >
-                            <StepIndicator>
-                                <StepStatus complete={<StepIcon />} />
-                            </StepIndicator>
-                            <div>{step.description}</div>
-                        </Flex>
+                            {step.description}
+                        </Text>
+
                         <StepSeparator _horizontal={{ ml: "0" }} />
                     </Step>
                 ))}

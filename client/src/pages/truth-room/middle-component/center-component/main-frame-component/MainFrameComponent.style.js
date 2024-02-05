@@ -4,8 +4,10 @@ export const Wrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 1000px;
-    height: 720px;
-    border: 1px solid black;
-    margin: 50px;
+    width: 60vw;
+    height: 65vh;
+    margin: 50px 0;
+
+    border-radius: 30px;
+    background-color: #515151;
 `;

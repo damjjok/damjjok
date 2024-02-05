@@ -3,6 +3,8 @@ import { useRecoilValue } from "recoil";
 import { Wrapper } from "../InnerComponent.style";
 import { groupState } from "contexts/TruthRoom";
 import SectionComponent from "./section/SectionComponent";
+import { Box, Flex, Text, Wrap } from "@chakra-ui/react";
+import { ChatIcon } from "@chakra-ui/icons";
 
 function JoinMemberComponent() {
     const joinMember = useRecoilValue(groupState);
@@ -23,8 +25,32 @@ function JoinMemberComponent() {
 
     return (
         // 지금은 임시 코드입니다.
-        <Wrapper>
-            <div style={{ margin: "20px" }}>참여 인원</div>
+        <Wrapper className="shadow-xl">
+            <Flex
+                justifyContent={"center"}
+                alignItems={"center"}
+                marginTop={"1rem"}
+            >
+                <Flex
+                    borderRadius={"50%"}
+                    backgroundColor={"dam.yellow"}
+                    width={"2rem"}
+                    height={"2rem"}
+                    justifyContent={"center"}
+                    alignItems={"center"}
+                >
+                    <ChatIcon></ChatIcon>
+                </Flex>
+                <Text
+                    color={"dam.yellow"}
+                    marginX={"0.5rem"}
+                    fontWeight={700}
+                    fontSize={"24px"}
+                >
+                    참여 인원
+                </Text>
+            </Flex>
+
             <SectionComponent
                 type={"담쪽이"}
                 members={damJJok}

@@ -1,14 +1,22 @@
 import React from "react";
 import { Wrapper } from "./SectionComponent.style";
 import MemberComponent from "./member/MemberComponent";
+import { Text } from "@chakra-ui/react";
 
 // props로 무슨 type(담쪽이, 박사님)인지와 user 정보 받아옴
 function SectionComponent({ type, members }) {
     return (
         <Wrapper>
-            {type}
+            <Text
+                fontSize={"20px"}
+                fontWeight={700}
+                color={"dam.yellow"}
+                marginBottom={".5rem"}
+            >
+                {type}
+            </Text>
             {members.map((member) => (
-                <MemberComponent m={member} />
+                <MemberComponent m={member} type={type} />
             ))}
         </Wrapper>
     );

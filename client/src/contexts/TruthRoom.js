@@ -54,6 +54,7 @@ export const evidenceState = atom({
         { title: "증거 1", img: logo },
         { title: "증거 2", img: piggyBankLogo },
         { title: "증거 3", img: testImg1 },
+        { title: "증거 4", img: testImg1 },
     ],
 });
 
@@ -68,7 +69,8 @@ export const testimonyState = atom({
         {
             title: "증언 1",
             writer: "작성자1",
-            content: "이새끼 담배 폈습니다1",
+            content:
+                "이새끼 담배 폈습니다111111111111111111111111111111111111111111111111111111111111111111",
         },
         {
             title: "증언 2",
@@ -85,5 +87,55 @@ export const testimonyState = atom({
             writer: "작성자4",
             content: "이새끼 담배 폈습니다4",
         },
+        {
+            title: "증언 4",
+            writer: "작성자4",
+            content: "이새끼 담배 폈습니다4",
+        },
+        {
+            title: "증언 4",
+            writer: "작성자4",
+            content: "이새끼 담배 폈습니다4",
+        },
+        {
+            title: "증언 4",
+            writer: "작성자4",
+            content: "이새끼 담배 폈습니다4",
+        },
+        {
+            title: "증언 4",
+            writer: "작성자4",
+            content: "이새끼 담배 폈습니다4",
+        },
+        {
+            title: "증언 4",
+            writer: "작성자4",
+            content: "이새끼 담배 폈습니다4",
+        },
     ],
+});
+
+export const fineDecisionStepState = atom({
+    key: "fineDecisionStep", // 벌금 결정 단계 내의 단계 상태 저장 변수
+    default: 0,
+});
+
+export const fineDecisionInputStepState = atom({
+    key: "fineDecisionInputStep", // 벌금 결정 단계 내의 벌금 입력의 단계 상태 저장 변수
+    default: 0,
+});
+
+export const gatheredMoneyState = atom({
+    key: "gatheredMoney", // 담쪽이가 모은 금액
+    default: 100000,
+});
+
+export const inputFineListState = atom({
+    key: "inputFineList",
+    default: [10000, 18000, 20000],
+});
+
+export const decidedFineState = atom({
+    key: "decidedFine", // 결정된 벌금
+    default: 18000,
 });

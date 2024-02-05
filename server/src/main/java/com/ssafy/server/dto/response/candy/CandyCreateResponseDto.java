@@ -1,4 +1,4 @@
-package com.ssafy.server.dto.response;
+package com.ssafy.server.dto.response.candy;
 
 
 import com.ssafy.server.dto.ResponseDto;

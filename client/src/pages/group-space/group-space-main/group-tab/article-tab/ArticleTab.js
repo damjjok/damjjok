@@ -1,17 +1,27 @@
+import TitleText from "components/TitleText";
 import Evidence from "./evidence/Evidence";
 import Testimony from "./testimony/Testimony";
+import { Box, VStack, Wrap } from "@chakra-ui/react";
 
 function ArticleTab() {
     return (
-        <div className="ArticleTab">
-            <div>증언 증거 제보 컴포넌트입니당</div>
-            <div className="Tesimony">
+        <Box height={"60vh"}>
+            <Box>
+                <Wrap width="100%" padding={"1rem"} borderRadius={"20px"}>
+                    <TitleText
+                        fontSize="2rem"
+                        description="담쪽이가 흡연하는 장면을 목격했다면 증거를 제출해주세요!"
+                    >
+                        제보게시판
+                    </TitleText>
+                </Wrap>
+            </Box>
+            <VStack align="stretch">
                 <Testimony />
-            </div>
-            <div className="Evidence">
+                <hr></hr>
                 <Evidence />
-            </div>
-        </div>
+            </VStack>
+        </Box>
     );
 }
 
