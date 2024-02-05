@@ -2,14 +2,26 @@ import { useRecoilValue } from "recoil";
 import BasicButton from "../../../components/button/BasicButton";
 import { currentUserState } from "../../../contexts/User";
 import logo from "assets/images/logo.png";
-import { Box, Button, Flex, Icon, IconButton, Wrap, WrapItem, theme } from "@chakra-ui/react";
+import {
+    Box,
+    Button,
+    Flex,
+    Icon,
+    IconButton,
+    Wrap,
+    WrapItem,
+    theme,
+} from "@chakra-ui/react";
 import { BellIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
 
 function Topbar() {
     const currentUser = useRecoilValue(currentUserState);
     return (
-        <Box className="flex justify-between py-4 border-b border-damlightgray/25" height={"10vh"}>
+        <Box
+            className="flex justify-between py-4 border-b border-damlightgray/25"
+            height={"8vh"}
+        >
             <Flex justifyContent={"center"} alignItems={"center"}>
                 <Link to={""}>
                     <img src={logo} className="max-h-12 px-4" alt="logo" />
@@ -17,14 +29,34 @@ function Topbar() {
             </Flex>
 
             <div className="flex justify-center items-center">
-                <Flex justifyContent={"center"} alignItems={"center"} backgroundColor={"#D9D9D9"} padding={".5em"} borderRadius={"30px"}>
-                    <p className="font-semibold px-2">안녕하세요! {currentUser.userName} 님!</p>
-                    <Button rounded={"20px"} backgroundColor={"#FFD100"} _hover={{ backgroundColor: "#3182CE" }}>
+                <Flex
+                    justifyContent={"center"}
+                    alignItems={"center"}
+                    backgroundColor={"#D9D9D9"}
+                    padding={"0.5em"}
+                    borderRadius={"30px"}
+                >
+                    <p className="font-semibold px-2">
+                        안녕하세요! {currentUser.userName} 님!
+                    </p>
+                    <BasicButton
+                        // rounded={"20px"}
+                        // backgroundColor={"#FFD100"}
+                        buttonName={"로그아웃"}
+                        variant={"smbtn"}
+                        _hover={{ backgroundColor: "#3182CE" }}
+                    >
                         로그아웃
-                    </Button>
+                    </BasicButton>
                 </Flex>
                 <Wrap>
-                    <Button marginX={"1em"} backgroundColor={"#FFD100"} borderRadius={"50%"} width={"50%"} _hover={{ backgroundColor: "#3182CE" }}>
+                    <Button
+                        marginX={"1em"}
+                        backgroundColor={"#FFD100"}
+                        borderRadius={"50%"}
+                        width={"50%"}
+                        _hover={{ backgroundColor: "#3182CE" }}
+                    >
                         <BellIcon></BellIcon>
                         <Wrap
                             position={"absolute"}

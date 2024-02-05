@@ -3,7 +3,15 @@ import { currentUserState } from "../../../../../contexts/User";
 import candyImg from "assets/images/candylogo.png";
 import StatusBarToast from "./status-bar-toast/StatusBarToast";
 import StatusEditModal from "./status-edit-modal/StatusEditModal";
-import { Avatar, Box, Container, Flex, Wrap, WrapItem } from "@chakra-ui/react";
+import {
+    Avatar,
+    Box,
+    Container,
+    Flex,
+    Image,
+    Wrap,
+    WrapItem,
+} from "@chakra-ui/react";
 import avatar1 from "assets/images/avatar1.png";
 import avatar2 from "assets/images/avatar2.png";
 import avatar3 from "assets/images/avatar3.png";
@@ -44,13 +52,13 @@ function StatusBar() {
     ];
 
     return (
-        <Box width={"80vw"}>
+        <Box width={"80vw"} marginY={"0.5rem"}>
             <Flex
                 justifyContent={"space-between"}
                 alignItems={"center"}
                 bg={"dam.gray"}
                 borderRadius={"30px"}
-                padding={".5rem"}
+                paddingX={".5rem"}
             >
                 <Wrap>
                     <Flex alignItems={"center"}>
@@ -77,22 +85,42 @@ function StatusBar() {
                 <div className="flex items-center">
                     {/* <BasicButton buttonName={"출석하기"} variant={"smbtn"} /> */}
                     <StatusBarToast />
-                    <div className="flex flex-col items-center">
-                        <div className="bg-damwhite rounded-full border border-damyellow">
-                            <img
+                    <Box
+                        position="relative"
+                        display="flex"
+                        flexDirection="column"
+                        alignItems="center"
+                        role="group"
+                        marginLeft={3}
+                    >
+                        <Box className="bg-damwhite rounded-full border border-damyellow">
+                            <Image
                                 src={candyImg}
                                 alt="candyImg"
-                                className="w-[25px] h-[25px]"
+                                boxSize="25px"
+                                _groupHover={{ opacity: "0.5" }}
+                                transition="opacity 0.2s"
                             />
-                        </div>
-                        <Box
-                            className="text-xs"
-                            width="5rem"
-                            textAlign={"center"}
+                        </Box>
+                        <Flex
+                            bgColor={"black"}
+                            position="absolute"
+                            top="0"
+                            right="0"
+                            bottom="0"
+                            left="0"
+                            borderRadius={"full"}
+                            alignItems="center"
+                            justifyContent="center"
+                            fontSize="xs"
+                            opacity="0"
+                            _groupHover={{ opacity: "1" }}
+                            transition="opacity 0.2s"
+                            textColor={"white"}
                         >
                             1
-                        </Box>
-                    </div>
+                        </Flex>
+                    </Box>
                 </div>
             </Flex>
         </Box>
