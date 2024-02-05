@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/open-vidu")
+@RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class OpenViduController {
     private final RedisTemplate<String, String> redisTemplate;
@@ -48,7 +48,7 @@ public class OpenViduController {
 
 
 
-    @PostMapping("/api/sessions")
+    @PostMapping("/sessions")
     @Operation(summary = "진실의방 세션 생성", description = "진실의방 세션을 생성합니다.",
             responses = { @ApiResponse(responseCode = "200", description = "진실의방 세션 생성 성공",
                     content = @Content(schema = @Schema(implementation = OpenViduSessionInitializeResponseDto.class)))})
@@ -57,7 +57,7 @@ public class OpenViduController {
         return openViduService.initializeSession(requestBody, openvidu);
     }
 
-    @PostMapping("/api/sessions/{sessionId}/connections")
+    @PostMapping("/sessions/{sessionId}/connections")
     @Operation(summary = "진실의방 토큰 발급", description = "진실의방 토큰을 발급합니다.",
             responses = { @ApiResponse(responseCode = "200", description = "진실의방 토큰 발급 성공",
                     content = @Content(schema = @Schema(implementation = OpenViduConnectionResponseDto.class)))})
@@ -69,7 +69,7 @@ public class OpenViduController {
         return openViduService.createConnection(requestBody, openvidu);
     }
 
-    @DeleteMapping("/api/sessions/{sessionKey}")
+    @DeleteMapping("/sessions/{sessionKey}")
     @Operation(summary = "진실의방 세션 닫기", description = "진실의방 세션을 닫습니다.",
             responses = { @ApiResponse(responseCode = "200", description = "진실의방 세션 닫기 성공",
                     content = @Content(schema = @Schema(implementation = OpenViduDisconnectionResponseDto.class)))})
