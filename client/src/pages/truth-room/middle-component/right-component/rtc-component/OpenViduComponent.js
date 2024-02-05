@@ -1,7 +1,7 @@
 import { OpenVidu } from "openvidu-browser";
 import axios from "axios";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import "./OpenViduTest.css";
+import "./OpenViduComponent.css";
 import UserVideoComponent from "../../../openvidu/UserVideoComponent";
 import { closeOpenviduSession } from "apis/api/TruthRoom";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -12,7 +12,7 @@ import RtcFrameComponent from "./RtcFrameComponent";
 const APPLICATION_SERVER_URL =
     process.env.NODE_ENV === "production" ? "" : "https://i10e105.p.ssafy.io/";
 
-export default function OpenViduTest() {
+export default function OpenViduComponent() {
     const [sessionKey, setSessionKey] = useRecoilState(sessionKeyState);
     const userName = useRecoilValue(userNameState);
     const [session, setSession] = useState(undefined);

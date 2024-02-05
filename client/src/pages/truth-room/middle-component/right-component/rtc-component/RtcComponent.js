@@ -1,8 +1,13 @@
 import React from "react";
-import OpenViduTest from "./OpenViduComponent";
+import OpenViduComponent from "./OpenViduComponent";
 
 function RtcComponent(props) {
-    return <OpenViduTest challengeId={"1"} userName={"hoo"}></OpenViduTest>;
+    return (
+        <OpenViduComponent
+            challengeId={"1"}
+            userName={"hoo"}
+        ></OpenViduComponent>
+    );
 }
 
 export default RtcComponent;
