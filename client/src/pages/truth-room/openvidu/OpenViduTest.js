@@ -123,40 +123,6 @@ export default function OpenViduTest() {
         setPublisher(undefined);
     }, [session]);
 
-    const switchCamera = useCallback(async () => {
-        try {
-            const devices = await OV.current.getDevices();
-            const videoDevices = devices.filter(
-                (device) => device.kind === "videoinput",
-            );
-
-            if (videoDevices && videoDevices.length > 1) {
-                const newVideoDevice = videoDevices.filter(
-                    (device) => device.deviceId !== currentVideoDevice.deviceId,
-                );
-
-                if (newVideoDevice.length > 0) {
-                    const newPublisher = OV.current.initPublisher(undefined, {
-                        videoSource: newVideoDevice[0].deviceId,
-                        publishAudio: true,
-                        publishVideo: true,
-                        mirror: true,
-                    });
-
-                    if (session) {
-                        await session.unpublish(mainStreamManager);
-                        await session.publish(newPublisher);
-                        setCurrentVideoDevice(newVideoDevice[0]);
-                        setMainStreamManager(newPublisher);
-                        setPublisher(newPublisher);
-                    }
-                }
-            }
-        } catch (e) {
-            console.error(e);
-        }
-    }, [currentVideoDevice, session, mainStreamManager]);
-
     const deleteSubscriber = useCallback((streamManager) => {
         setSubscribers((prevSubscribers) => {
             const index = prevSubscribers.indexOf(streamManager);
