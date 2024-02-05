@@ -4,14 +4,17 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import "./OpenViduTest.css";
 import UserVideoComponent from "../../../openvidu/UserVideoComponent";
 import { closeOpenviduSession } from "apis/api/TruthRoom";
-import { useRecoilState } from "recoil";
-import { sessionKeyState } from "contexts/OpenVidu";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { sessionKeyState, userNameState } from "contexts/OpenVidu";
+import { Wrapper } from "./RtcComponent.style";
+import RtcFrameComponent from "./RtcFrameComponent";
 
 const APPLICATION_SERVER_URL =
     process.env.NODE_ENV === "production" ? "" : "https://i10e105.p.ssafy.io/";
 
 export default function OpenViduTest() {
     const [sessionKey, setSessionKey] = useRecoilState(sessionKeyState);
+    const userName = useRecoilValue(userNameState);
     const [session, setSession] = useState(undefined);
     const [publisher, setPublisher] = useState(undefined);
     const [subscribers, setSubscribers] = useState([]);
@@ -43,7 +46,7 @@ export default function OpenViduTest() {
             // Get a token from the OpenVidu deployment
             getToken().then(async (token) => {
                 try {
-                    await session.connect(token, { clientData: "" });
+                    await session.connect(token, { clientData: userName });
 
                     let publisher = await OV.current.initPublisherAsync(
                         undefined,
@@ -163,60 +166,67 @@ export default function OpenViduTest() {
     };
     return (
         <div className="container">
-            {session === undefined ? (
-                <div id="join">
-                    <div id="img-div">
-                        <img
-                            src="resources/images/openvidu_grey_bg_transp_cropped.png"
-                            alt="OpenVidu logo"
-                        />
-                    </div>
-                    <div id="join-dialog" className="jumbotron vertical-center">
-                        <h1> Join a video session </h1>
-                        <form className="form-group" onSubmit={joinSession}>
-                            <p className="text-center">
-                                <input
-                                    className="btn btn-lg btn-success"
-                                    name="commit"
-                                    type="submit"
-                                    value="JOIN"
-                                />
-                            </p>
-                        </form>
-                    </div>
-                </div>
-            ) : null}
-
-            {session !== undefined ? (
-                <div id="session">
-                    <div id="session-header">
-                        <input
-                            className="btn btn-large btn-danger"
-                            type="button"
-                            id="buttonLeaveSession"
-                            onClick={leaveSession}
-                            value="Leave session"
-                        />
-                    </div>
-
-                    <div id="video-container" className="col-md-6">
-                        {publisher !== undefined ? (
-                            <div className="stream-container col-md-6 col-xs-6">
-                                <UserVideoComponent streamManager={publisher} />
-                            </div>
-                        ) : null}
-                        {subscribers.map((sub, i) => (
+            <div id="session">
+                <div id="session-header">
+                    {session === undefined ? (
+                        <div id="join">
                             <div
-                                key={sub.id}
-                                className="stream-container col-md-6 col-xs-6"
+                                id="join-dialog"
+                                className="jumbotron vertical-center"
                             >
-                                <span>{sub.id}</span>
-                                <UserVideoComponent streamManager={sub} />
+                                <form
+                                    className="form-group"
+                                    onSubmit={joinSession}
+                                >
+                                    <p className="text-center">
+                                        <input
+                                            className="btn btn-lg btn-success"
+                                            name="commit"
+                                            type="submit"
+                                            value="JOIN"
+                                        />
+                                    </p>
+                                </form>
                             </div>
-                        ))}
-                    </div>
+                        </div>
+                    ) : null}
+                    <input
+                        className="btn btn-large btn-danger"
+                        type="button"
+                        id="buttonLeaveSession"
+                        onClick={leaveSession}
+                        value="Leave session"
+                    />
                 </div>
-            ) : null}
+
+                <div id="video-container" className="col-md-6">
+                    <Wrapper>
+                        {publisher !== undefined ? ( // 본인 화면
+                            <RtcFrameComponent
+                                content={
+                                    <UserVideoComponent
+                                        streamManager={publisher}
+                                    />
+                                }
+                            ></RtcFrameComponent>
+                        ) : null}
+                        {subscribers.map(
+                            (
+                                sub,
+                                i // 나머지 참가자들 화면
+                            ) => (
+                                <RtcFrameComponent
+                                    content={
+                                        <UserVideoComponent
+                                            streamManager={sub}
+                                        />
+                                    }
+                                ></RtcFrameComponent>
+                            )
+                        )}
+                    </Wrapper>
+                </div>
+            </div>
         </div>
     );
 }

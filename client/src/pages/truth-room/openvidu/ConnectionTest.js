@@ -37,10 +37,9 @@ function ConnectionTest(props) {
             <Button onClick={() => closeOpenviduSession(5)}>
                 세션 삭제하기
             </Button>
-            <Link to="/truth-room" state={{ challengeId: challengeId }}>
+            <Link to="/truth-room">
                 <Button>오픈비두 연결하기</Button>
             </Link>
-            <OpenViduTest></OpenViduTest>
         </div>
     );
 }
