@@ -167,38 +167,6 @@ export default function OpenViduTest() {
     return (
         <div className="container">
             <div id="session">
-                <div id="session-header">
-                    {session === undefined ? (
-                        <div id="join">
-                            <div
-                                id="join-dialog"
-                                className="jumbotron vertical-center"
-                            >
-                                <form
-                                    className="form-group"
-                                    onSubmit={joinSession}
-                                >
-                                    <p className="text-center">
-                                        <input
-                                            className="btn btn-lg btn-success"
-                                            name="commit"
-                                            type="submit"
-                                            value="JOIN"
-                                        />
-                                    </p>
-                                </form>
-                            </div>
-                        </div>
-                    ) : null}
-                    <input
-                        className="btn btn-large btn-danger"
-                        type="button"
-                        id="buttonLeaveSession"
-                        onClick={leaveSession}
-                        value="Leave session"
-                    />
-                </div>
-
                 <div id="video-container" className="col-md-6">
                     <Wrapper>
                         {publisher !== undefined ? ( // 본인 화면
@@ -225,6 +193,36 @@ export default function OpenViduTest() {
                             )
                         )}
                     </Wrapper>
+                </div>
+                <div id="session-header">
+                    {session === undefined ? (
+                        <div id="join">
+                            <div id="join-dialog" className="jumbotron">
+                                <form
+                                    className="form-group"
+                                    onSubmit={joinSession}
+                                >
+                                    <p className="text-center">
+                                        <input
+                                            className="btn"
+                                            name="commit"
+                                            type="submit"
+                                            value="화상 카메라 연결"
+                                        />
+                                    </p>
+                                </form>
+                            </div>
+                        </div>
+                    ) : null}
+                    {session !== undefined ? (
+                        <input
+                            className="btn btn-large btn-danger"
+                            type="button"
+                            id="buttonLeaveSession"
+                            onClick={leaveSession}
+                            value="Leave session"
+                        />
+                    ) : null}
                 </div>
             </div>
         </div>
