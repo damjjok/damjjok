@@ -2,14 +2,14 @@ import { useRecoilValue } from "recoil";
 import BasicButton from "../../../components/button/BasicButton";
 import { currentUserState } from "../../../contexts/User";
 import logo from "assets/images/logo.png";
-import { Button, Flex, Icon, IconButton, Wrap, WrapItem, theme } from "@chakra-ui/react";
+import { Box, Button, Flex, Icon, IconButton, Wrap, WrapItem, theme } from "@chakra-ui/react";
 import { BellIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
 
 function Topbar() {
     const currentUser = useRecoilValue(currentUserState);
     return (
-        <div className="flex justify-between py-4 border-b border-damlightgray/25">
+        <Box className="flex justify-between py-4 border-b border-damlightgray/25" height={"10vh"}>
             <Flex justifyContent={"center"} alignItems={"center"}>
                 <Link to={""}>
                     <img src={logo} className="max-h-12 px-4" alt="logo" />
@@ -41,7 +41,7 @@ function Topbar() {
                     </Button>
                 </Wrap>
             </div>
-        </div>
+        </Box>
     );
 }
 

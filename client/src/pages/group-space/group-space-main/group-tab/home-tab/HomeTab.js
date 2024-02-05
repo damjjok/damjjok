@@ -16,7 +16,7 @@ function HomeTab() {
         currentChallenge = myChallenge[0];
     } else {
         console.log("No data in localStorage");
-        return (<></>)
+        return <></>;
     }
 
     const startedDate = new Date(currentChallenge.createdAt);
