@@ -14,21 +14,11 @@ export default function OpenViduTest() {
         `Participant${Math.floor(Math.random() * 100)}`,
     );
     const [session, setSession] = useState(undefined);
-    const [mainStreamManager, setMainStreamManager] = useState(undefined);
     const [publisher, setPublisher] = useState(undefined);
     const [subscribers, setSubscribers] = useState([]);
     const [currentVideoDevice, setCurrentVideoDevice] = useState(null);
 
     const OV = useRef(new OpenVidu());
-
-    const handleMainVideoStream = useCallback(
-        (stream) => {
-            if (mainStreamManager !== stream) {
-                setMainStreamManager(stream);
-            }
-        },
-        [mainStreamManager],
-    );
 
     const joinSession = useCallback(() => {
         const mySession = OV.current.initSession();
@@ -84,7 +74,6 @@ export default function OpenViduTest() {
                         (device) => device.deviceId === currentVideoDeviceId,
                     );
 
-                    setMainStreamManager(publisher);
                     setPublisher(publisher);
                     setCurrentVideoDevice(currentVideoDevice);
                 } catch (error) {
@@ -111,7 +100,6 @@ export default function OpenViduTest() {
         setSubscribers([]);
         setMySessionId("SessionA");
         setMyUserName("Participant" + Math.floor(Math.random() * 100));
-        setMainStreamManager(undefined);
         setPublisher(undefined);
     }, [session]);
 
@@ -216,19 +204,9 @@ export default function OpenViduTest() {
                         />
                     </div>
 
-                    {mainStreamManager !== undefined ? (
-                        <div id="main-video" className="col-md-6">
-                            <UserVideoComponent
-                                streamManager={mainStreamManager}
-                            />
-                        </div>
-                    ) : null}
                     <div id="video-container" className="col-md-6">
                         {publisher !== undefined ? (
-                            <div
-                                className="stream-container col-md-6 col-xs-6"
-                                onClick={() => handleMainVideoStream(publisher)}
-                            >
+                            <div className="stream-container col-md-6 col-xs-6">
                                 <UserVideoComponent streamManager={publisher} />
                             </div>
                         ) : null}
@@ -236,7 +214,6 @@ export default function OpenViduTest() {
                             <div
                                 key={sub.id}
                                 className="stream-container col-md-6 col-xs-6"
-                                onClick={() => handleMainVideoStream(sub)}
                             >
                                 <span>{sub.id}</span>
                                 <UserVideoComponent streamManager={sub} />
