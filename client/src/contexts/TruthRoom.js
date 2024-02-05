@@ -54,6 +54,7 @@ export const evidenceState = atom({
         { title: "증거 1", img: logo },
         { title: "증거 2", img: piggyBankLogo },
         { title: "증거 3", img: testImg1 },
+        { title: "증거 4", img: testImg1 },
     ],
 });
 
