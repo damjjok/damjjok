@@ -1,9 +1,7 @@
 package com.ssafy.server.dto.response;
 
 import com.ssafy.server.dto.ResponseDto;
-import com.ssafy.server.dto.request.ScheduleDetailRequestDto;
 import com.ssafy.server.dto.schedule.ScheduleDto;
-import com.ssafy.server.entity.ScheduleEntity;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

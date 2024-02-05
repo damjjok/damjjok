@@ -1,4 +1,4 @@
-package com.ssafy.server.dto.request;
+package com.ssafy.server.dto.request.schedule;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,4 +12,5 @@ import java.time.LocalDateTime;
 public class ScheduleCreateRequestDto {
     private Integer challengeId;
     private LocalDateTime date;
+    private Integer damjjokId;
 }

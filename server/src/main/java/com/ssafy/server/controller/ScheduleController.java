@@ -1,10 +1,9 @@
 package com.ssafy.server.controller;
 
-import com.ssafy.server.dto.request.ScheduleCreateRequestDto;
-import com.ssafy.server.dto.request.ScheduleDetailRequestDto;
+import com.ssafy.server.dto.request.schedule.ScheduleCreateRequestDto;
+import com.ssafy.server.dto.request.schedule.ScheduleDetailRequestDto;
 import com.ssafy.server.dto.response.ScheduleCreateResponseDto;
 import com.ssafy.server.dto.response.ScheduleDetailResponseDto;
-import com.ssafy.server.dto.schedule.ScheduleDto;
 import com.ssafy.server.service.ScheduleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,8 +25,6 @@ public class ScheduleController {
         ResponseEntity<? super Optional<ScheduleDetailResponseDto>> response = scheduleService.getSchedule(requestBody);
         return response;
     }
-
-
     @PostMapping
     public ResponseEntity<? super ScheduleCreateResponseDto> createSchedule(@RequestBody @Valid ScheduleCreateRequestDto requestBody) {
         ResponseEntity<? super ScheduleCreateResponseDto> response = scheduleService.createSchedule(requestBody);
