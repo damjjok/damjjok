@@ -4,39 +4,20 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import "./OpenViduTest.css";
 import UserVideoComponent from "./UserVideoComponent";
 import { closeOpenviduSession } from "apis/api/TruthRoom";
+import { useRecoilState } from "recoil";
+import { sessionKeyState } from "contexts/OpenVidu";
 
 const APPLICATION_SERVER_URL =
     process.env.NODE_ENV === "production" ? "" : "https://i10e105.p.ssafy.io/";
 
 export default function OpenViduTest() {
-    const [mySessionId, setMySessionId] = useState("SessionA");
-    const [myUserName, setMyUserName] = useState(
-        `Participant${Math.floor(Math.random() * 100)}`,
-    );
+    const [sessionKey, setSessionKey] = useRecoilState(sessionKeyState);
     const [session, setSession] = useState(undefined);
-    const [mainStreamManager, setMainStreamManager] = useState(undefined);
     const [publisher, setPublisher] = useState(undefined);
     const [subscribers, setSubscribers] = useState([]);
     const [currentVideoDevice, setCurrentVideoDevice] = useState(null);
 
     const OV = useRef(new OpenVidu());
-
-    const handleChangeSessionId = useCallback((e) => {
-        setMySessionId(e.target.value);
-    }, []);
-
-    const handleChangeUserName = useCallback((e) => {
-        setMyUserName(e.target.value);
-    }, []);
-
-    const handleMainVideoStream = useCallback(
-        (stream) => {
-            if (mainStreamManager !== stream) {
-                setMainStreamManager(stream);
-            }
-        },
-        [mainStreamManager],
-    );
 
     const joinSession = useCallback(() => {
         const mySession = OV.current.initSession();
@@ -62,7 +43,7 @@ export default function OpenViduTest() {
             // Get a token from the OpenVidu deployment
             getToken().then(async (token) => {
                 try {
-                    await session.connect(token, { clientData: myUserName });
+                    await session.connect(token, { clientData: "" });
 
                     let publisher = await OV.current.initPublisherAsync(
                         undefined,
@@ -92,7 +73,6 @@ export default function OpenViduTest() {
                         (device) => device.deviceId === currentVideoDeviceId,
                     );
 
-                    setMainStreamManager(publisher);
                     setPublisher(publisher);
                     setCurrentVideoDevice(currentVideoDevice);
                 } catch (error) {
@@ -104,12 +84,12 @@ export default function OpenViduTest() {
                 }
             });
         }
-    }, [session, myUserName]);
+    }, [session]);
 
     const leaveSession = useCallback(() => {
         // Leave the session
         if (session) {
-            closeOpenviduSession(mySessionId);
+            closeOpenviduSession(sessionKey);
             session.disconnect();
         }
 
@@ -117,45 +97,9 @@ export default function OpenViduTest() {
         OV.current = new OpenVidu();
         setSession(undefined);
         setSubscribers([]);
-        setMySessionId("SessionA");
-        setMyUserName("Participant" + Math.floor(Math.random() * 100));
-        setMainStreamManager(undefined);
+        setSessionKey("0");
         setPublisher(undefined);
     }, [session]);
-
-    const switchCamera = useCallback(async () => {
-        try {
-            const devices = await OV.current.getDevices();
-            const videoDevices = devices.filter(
-                (device) => device.kind === "videoinput",
-            );
-
-            if (videoDevices && videoDevices.length > 1) {
-                const newVideoDevice = videoDevices.filter(
-                    (device) => device.deviceId !== currentVideoDevice.deviceId,
-                );
-
-                if (newVideoDevice.length > 0) {
-                    const newPublisher = OV.current.initPublisher(undefined, {
-                        videoSource: newVideoDevice[0].deviceId,
-                        publishAudio: true,
-                        publishVideo: true,
-                        mirror: true,
-                    });
-
-                    if (session) {
-                        await session.unpublish(mainStreamManager);
-                        await session.publish(newPublisher);
-                        setCurrentVideoDevice(newVideoDevice[0]);
-                        setMainStreamManager(newPublisher);
-                        setPublisher(newPublisher);
-                    }
-                }
-            }
-        } catch (e) {
-            console.error(e);
-        }
-    }, [currentVideoDevice, session, mainStreamManager]);
 
     const deleteSubscriber = useCallback((streamManager) => {
         setSubscribers((prevSubscribers) => {
@@ -197,15 +141,13 @@ export default function OpenViduTest() {
      * more about the integration of OpenVidu in your application server.
      */
     const getToken = useCallback(async () => {
-        return createSession(mySessionId).then((sessionId) =>
-            createToken(sessionId),
-        );
-    }, [mySessionId]);
+        return createSession().then((sessionId) => createToken(sessionId));
+    }, [sessionKey]);
 
-    const createSession = async (propsSessionKey) => {
+    const createSession = async () => {
         const response = await axios.post(
             APPLICATION_SERVER_URL + "api/v1/sessions",
-            { sessionKey: propsSessionKey },
+            { sessionKey: sessionKey },
         );
         return response.data; // The sessionId
     };
@@ -232,28 +174,6 @@ export default function OpenViduTest() {
                     <div id="join-dialog" className="jumbotron vertical-center">
                         <h1> Join a video session </h1>
                         <form className="form-group" onSubmit={joinSession}>
-                            <p>
-                                <label>Participant: </label>
-                                <input
-                                    className="form-control"
-                                    type="text"
-                                    id="userName"
-                                    value={myUserName}
-                                    onChange={handleChangeUserName}
-                                    required
-                                />
-                            </p>
-                            <p>
-                                <label> Session: </label>
-                                <input
-                                    className="form-control"
-                                    type="text"
-                                    id="sessionId"
-                                    value={mySessionId}
-                                    onChange={handleChangeSessionId}
-                                    required
-                                />
-                            </p>
                             <p className="text-center">
                                 <input
                                     className="btn btn-lg btn-success"
@@ -270,7 +190,6 @@ export default function OpenViduTest() {
             {session !== undefined ? (
                 <div id="session">
                     <div id="session-header">
-                        <h1 id="session-title">{mySessionId}</h1>
                         <input
                             className="btn btn-large btn-danger"
                             type="button"
@@ -280,19 +199,9 @@ export default function OpenViduTest() {
                         />
                     </div>
 
-                    {mainStreamManager !== undefined ? (
-                        <div id="main-video" className="col-md-6">
-                            <UserVideoComponent
-                                streamManager={mainStreamManager}
-                            />
-                        </div>
-                    ) : null}
                     <div id="video-container" className="col-md-6">
                         {publisher !== undefined ? (
-                            <div
-                                className="stream-container col-md-6 col-xs-6"
-                                onClick={() => handleMainVideoStream(publisher)}
-                            >
+                            <div className="stream-container col-md-6 col-xs-6">
                                 <UserVideoComponent streamManager={publisher} />
                             </div>
                         ) : null}
@@ -300,7 +209,6 @@ export default function OpenViduTest() {
                             <div
                                 key={sub.id}
                                 className="stream-container col-md-6 col-xs-6"
-                                onClick={() => handleMainVideoStream(sub)}
                             >
                                 <span>{sub.id}</span>
                                 <UserVideoComponent streamManager={sub} />
