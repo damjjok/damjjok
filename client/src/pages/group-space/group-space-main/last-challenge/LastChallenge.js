@@ -13,6 +13,7 @@ import messageBg from "assets/images/messageBg.png";
 import { motion } from "framer-motion";
 import WholeMessageList from "../group-tab/completed-modal/message-check-modal/WholeMessageList";
 import MessageCheckModal from "../group-tab/completed-modal/message-check-modal/MessageCheckModal";
+import PiggyBankFinished from "../group-tab/completed-modal/piggy-bank/PiggyBankFinished";
 
 //더미 데이터
 const messages = [
@@ -70,13 +71,10 @@ function LastChallenge() {
                 >
                     <HomeTab challengeId={challenge.challengeId} />
                     {challenge.status === "success" ? (
-                        <>
-                            <BasicButton
-                                buttonName={"리워드 다시보기"}
-                                variant={"bigbtn"}
-                            />
+                        <VStack spacing={"30px"}>
                             <MessageCheckModal isExpired={isExpired} />
-                        </>
+                            <PiggyBankFinished isExpired={isExpired} />
+                        </VStack>
                     ) : (
                         <></>
                     )}

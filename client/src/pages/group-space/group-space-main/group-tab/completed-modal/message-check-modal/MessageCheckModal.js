@@ -55,6 +55,7 @@ function MessageCheckModal({ nextContent, isExpired }) {
                     alt="postbox"
                     width={"300vw"}
                     onClick={handleClick}
+                    style={{ cursor: "pointer" }}
                 />
                 <Box
                     position={"absolute"}
