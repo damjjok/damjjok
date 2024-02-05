@@ -11,6 +11,8 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 
 @Service
 @RequiredArgsConstructor
@@ -43,20 +45,14 @@ public class OAuth2UserServiceImpl extends DefaultOAuth2UserService {
             userEntity = new UserEntity(email,userName);
         }
 
-//        if(oauthClientName.equals("naver")){
-//            Map<String, String> responseMap =(Map<String, String>) oAuth2User.getAttributes().get("response");
-//            userId = "naver_" + responseMap.get("id").substring(0,14);
-//            email = responseMap.get("email");
-//            userEntity = new UserEntity(userId,email,"naver");
-//        }
+        if(oauthClientName.equals("naver")){
+            Map<String, String> responseMap =(Map<String, String>) oAuth2User.getAttributes().get("response");
+            //userId = "naver_" + responseMap.get("id").substring(0,14);
+            email = responseMap.get("email");
+            userName = responseMap.get("name");
+            userEntity = new UserEntity(email,userName);
+        }
 
-//        boolean isExist = userRepository.existsByEmail(email);
-//        if(!isExist) userRepository.save(userEntity);
-
-        // 여기서 필요에 따라 추가적인 정보를 처리하고 CustomOAuth2User 객체 생성
-        // UserEntity userEntity = userRepository.findByEmail(email);
         return oAuth2User;
-        //return oAuth2User;
-        //return new CustomOAuth2User(email);
     }
 }
