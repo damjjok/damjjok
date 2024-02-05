@@ -7,13 +7,15 @@ import {
     Tag,
     WrapItem,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-
+import { useRecoilState } from "recoil";
+import { myFriendState } from "contexts/Search";
 const SearchBar = () => {
     const [email, setEmail] = useState("");
     const [searchResults, setSearchResults] = useState([]);
-    const [selectedNames, setSelectedNames] = useState([]); // 선택된 이름들을 저장할 상태
+
+    const [myfriend, setMyFriend] = useRecoilState(myFriendState);
     // 사용자가 입력할 때마다 호출되는 함수
     const handleChange = (e) => {
         const newEmail = e.target.value;
@@ -41,17 +43,23 @@ const SearchBar = () => {
         }
     };
 
-    const handleSelectName = (userName) => {
-        // 이미 선택된 이름은 추가하지 않습니다.
-        if (!selectedNames.includes(userName)) {
-            setSelectedNames([...selectedNames, userName]);
+    // API 요청 후 사용자 선택 시
+    const handleSelectUser = (user) => {
+        // 이미 선택된 이메일은 추가하지 않습니다.
+        if (
+            !myfriend.some((selectedUser) => selectedUser.email === user.email)
+        ) {
+            setMyFriend([...myfriend, user]);
         }
     };
-    const handleRemoveName = (name) => {
-        setSelectedNames(
-            selectedNames.filter((selectedName) => selectedName !== name),
-        );
+    // 사용자 제거 처리
+    const handleRemoveUser = (email) => {
+        setMyFriend(myfriend.filter((user) => user.email !== email));
     };
+
+    useEffect(() => {
+        console.log(myfriend); // myfriend 상태가 변경될 때마다 실행됩니다.
+    }, [myfriend]); // 의존성 배열에 myfriend를 추가하여 myfriend 상태가 변경될 때마다 useEffect가 실행되도록 합니다.
 
     return (
         <>
@@ -72,41 +80,50 @@ const SearchBar = () => {
             />
             {/* 선택된 이름들을 태그로 표시합니다. */}
             <Wrap mt={2}>
-                {selectedNames.map((name, index) => (
+                {myfriend.map((user, index) => (
                     <WrapItem key={index}>
                         <Tag
                             size="lg"
                             borderRadius="full"
                             variant="solid"
                             colorScheme="yellow"
-                            onClick={() => handleRemoveName(name)}
+                            onClick={() => handleRemoveUser(user.email)}
                         >
-                            {name}
+                            {user.userName}
                             <Text ml={2} cursor="pointer">
                                 ×
-                            </Text>{" "}
+                            </Text>
                             {/* 태그에서 이름을 제거하는 'x' 아이콘 */}
                         </Tag>
                     </WrapItem>
                 ))}
             </Wrap>
             <VStack
-                mt={2}
                 p={4}
                 bg="white"
                 boxShadow="sm"
                 maxH="200px"
                 overflowY="auto"
-                spacing={5}
+                spacing={0}
             >
                 {searchResults.map((result, index) => (
                     <HStack
+                        p={3}
                         key={index}
                         w="full"
                         justifyContent="space-between"
                         cursor="pointer"
-                        onClick={() => handleSelectName(result.userName)}
-                        _hover={{ bg: "#fde336" }}
+                        onClick={() =>
+                            handleSelectUser({
+                                userName: result.userName,
+                                email: result.email,
+                            })
+                        }
+                        _hover={{
+                            bg: "rgba(255,209,0, 0.4)",
+                            transition: "all 0.5s",
+                        }}
+                        borderRadius="10px"
                     >
                         <Text fontSize="lg">{result.userName}</Text>
                         <Text fontSize="lg">{result.email}</Text>
