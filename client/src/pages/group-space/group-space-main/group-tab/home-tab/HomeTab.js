@@ -3,6 +3,7 @@ import Strick from "./strick/Strick";
 import { challengeState } from "../../../../../contexts/Challenge";
 import { currentUserState } from "../../../../../contexts/User";
 import InfoCards from "./info-cards/InfoCards";
+import { Box } from "@chakra-ui/react";
 
 function HomeTab({ challengeId }) {
     // axios = challengeId 기반으로 challenge 불러오기. (수정해야 함)
@@ -29,7 +30,13 @@ function HomeTab({ challengeId }) {
     const diffDays = Math.floor(diffMilliseconds / (24 * 60 * 60 * 1000));
 
     return (
-        <div className="flex flex-col flex-wrap max-w-7xl">
+        <Box
+            display={"flex"}
+            flexFlow="column"
+            overflowY={"auto"}
+            height="50vh"
+            className="flex flex-col flex-wrap max-w-7xl"
+        >
             <div>
                 <p className="text-xl font-bold">
                     {currentUser.userName}님! 오늘은 금연 {diffDays}
@@ -47,7 +54,7 @@ function HomeTab({ challengeId }) {
                     <InfoCards />
                 </div>
             </div>
-        </div>
+        </Box>
     );
 }
 

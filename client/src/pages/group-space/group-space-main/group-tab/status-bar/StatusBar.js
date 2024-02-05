@@ -44,7 +44,7 @@ function StatusBar() {
     ];
 
     return (
-        <Box width={"70vw"} marginY={"2rem"}>
+        <Box width={"80vw"}>
             <Flex
                 justifyContent={"space-between"}
                 alignItems={"center"}

@@ -84,7 +84,6 @@ function GroupTab() {
                 <Tabs
                     isFitted
                     colorScheme="yellow"
-                    marginTop={"2rem"}
                     onChange={handleTabsChange}
                     index={tabIndex}
                 >
@@ -140,6 +139,7 @@ function GroupTab() {
     return (
         <>
             <VStack>
+                <StatusBar />
                 <TitleText
                     fontSize="2rem"
                     img={tabData[tabIndex].img}
@@ -147,7 +147,7 @@ function GroupTab() {
                 >
                     {tabData[tabIndex].label}
                 </TitleText>
-                <StatusBar />
+
                 <DataTabs data={tabData} />
             </VStack>
             <Modal
