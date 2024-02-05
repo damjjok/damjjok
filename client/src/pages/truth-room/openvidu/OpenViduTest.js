@@ -4,17 +4,14 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import "./OpenViduTest.css";
 import UserVideoComponent from "./UserVideoComponent";
 import { closeOpenviduSession } from "apis/api/TruthRoom";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { sessionKeyState } from "contexts/OpenVidu";
 
 const APPLICATION_SERVER_URL =
     process.env.NODE_ENV === "production" ? "" : "https://i10e105.p.ssafy.io/";
 
 export default function OpenViduTest() {
-    const sessionKey = useRecoilValue(sessionKeyState);
-    const [myUserName, setMyUserName] = useState(
-        `Participant${Math.floor(Math.random() * 100)}`,
-    );
+    const [sessionKey, setSessionKey] = useRecoilState(sessionKeyState);
     const [session, setSession] = useState(undefined);
     const [publisher, setPublisher] = useState(undefined);
     const [subscribers, setSubscribers] = useState([]);
@@ -44,10 +41,9 @@ export default function OpenViduTest() {
     useEffect(() => {
         if (session) {
             // Get a token from the OpenVidu deployment
-            setSessionKey("1");
             getToken().then(async (token) => {
                 try {
-                    await session.connect(token, { clientData: myUserName });
+                    await session.connect(token, { clientData: "" });
 
                     let publisher = await OV.current.initPublisherAsync(
                         undefined,
@@ -88,7 +84,7 @@ export default function OpenViduTest() {
                 }
             });
         }
-    }, [session, myUserName]);
+    }, [session]);
 
     const leaveSession = useCallback(() => {
         // Leave the session
@@ -102,7 +98,6 @@ export default function OpenViduTest() {
         setSession(undefined);
         setSubscribers([]);
         setSessionKey("0");
-        setMyUserName("Participant" + Math.floor(Math.random() * 100));
         setPublisher(undefined);
     }, [session]);
 
