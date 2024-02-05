@@ -1,10 +1,11 @@
-import { useToast } from "@chakra-ui/react";
+import { useDisclosure, useToast } from "@chakra-ui/react";
 import BasicButton from "components/button/BasicButton";
 import { currentUserState } from "contexts/User";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 
 function StatusBarToast() {
+    // const [onOpen] = useDisclosure();
     const [isClicked, setIsClicked] = useState(false); // 버튼 클릭 여부 확인
     const toast = useToast();
     const currentUser = useRecoilValue(currentUserState);
@@ -53,12 +54,10 @@ function StatusBarToast() {
 
     return (
         <BasicButton
-            onClick={handleButtonClick}
-            isDisabled={isClicked}
+            // onClick={onOpen}
             buttonName={
                 currentUser.role === "damJJok" ? "출석하기" : "응원하기"
             }
-            variant={"smbtn"}
         ></BasicButton>
     );
 }

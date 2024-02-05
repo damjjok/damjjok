@@ -3,15 +3,7 @@ import { currentUserState } from "../../../../../contexts/User";
 import candyImg from "assets/images/candylogo.png";
 import StatusBarToast from "./status-bar-toast/StatusBarToast";
 import StatusEditModal from "./status-edit-modal/StatusEditModal";
-import {
-    Avatar,
-    Box,
-    Container,
-    Flex,
-    Image,
-    Wrap,
-    WrapItem,
-} from "@chakra-ui/react";
+import { Avatar, Box, Container, Flex, Wrap, WrapItem } from "@chakra-ui/react";
 import avatar1 from "assets/images/avatar1.png";
 import avatar2 from "assets/images/avatar2.png";
 import avatar3 from "assets/images/avatar3.png";
@@ -20,7 +12,8 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 // import { challengeState } from "../../../../../contexts/Challenge";
 
-function StatusBar() {
+function StatusBar({ challenge }) {
+    console.log(challenge);
     const currentUser = useRecoilValue(currentUserState);
     let currentChallenge = localStorage.getItem("challengeList");
     let navigate = useNavigate();
@@ -52,13 +45,13 @@ function StatusBar() {
     ];
 
     return (
-        <Box width={"80vw"} marginY={"0.5rem"}>
+        <Box width={"70vw"} marginY={"1rem"}>
             <Flex
                 justifyContent={"space-between"}
                 alignItems={"center"}
                 bg={"dam.gray"}
                 borderRadius={"30px"}
-                paddingX={".5rem"}
+                padding={".5rem"}
             >
                 <Wrap>
                     <Flex alignItems={"center"}>
@@ -69,58 +62,32 @@ function StatusBar() {
                             bg="dam.white"
                         />
                         <p className="px-3 text-lg font-bold">
-                            {currentUser.userName} 챌린지 -{" "}
+                            {challenge.username} 챌린지 -{" "}
                             {startedDate.toLocaleDateString()}
                         </p>
                         <div className="bg-damblack rounded-xl max-h-8 px-2 text-damyellow">
                             D+{diffDays}
                         </div>
                         <p className="mx-2">{currentChallenge.determination}</p>
-                        <StatusEditModal
-                            currentChallenge={currentChallenge}
-                            avatars={avatars}
-                        />
                     </Flex>
                 </Wrap>
                 <div className="flex items-center">
-                    {/* <BasicButton buttonName={"출석하기"} variant={"smbtn"} /> */}
-                    <StatusBarToast />
-                    <Box
-                        position="relative"
-                        display="flex"
-                        flexDirection="column"
-                        alignItems="center"
-                        role="group"
-                        marginLeft={3}
-                    >
-                        <Box className="bg-damwhite rounded-full border border-damyellow">
-                            <Image
+                    <div className="flex flex-col items-center">
+                        <div className="bg-damwhite rounded-full border border-damyellow">
+                            <img
                                 src={candyImg}
                                 alt="candyImg"
-                                boxSize="25px"
-                                _groupHover={{ opacity: "0.5" }}
-                                transition="opacity 0.2s"
+                                className="w-[25px] h-[25px]"
                             />
-                        </Box>
-                        <Flex
-                            bgColor={"black"}
-                            position="absolute"
-                            top="0"
-                            right="0"
-                            bottom="0"
-                            left="0"
-                            borderRadius={"full"}
-                            alignItems="center"
-                            justifyContent="center"
-                            fontSize="xs"
-                            opacity="0"
-                            _groupHover={{ opacity: "1" }}
-                            transition="opacity 0.2s"
-                            textColor={"white"}
+                        </div>
+                        <Box
+                            className="text-xs"
+                            width="5rem"
+                            textAlign={"center"}
                         >
                             1
-                        </Flex>
-                    </Box>
+                        </Box>
+                    </div>
                 </div>
             </Flex>
         </Box>
