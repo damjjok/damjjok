@@ -23,7 +23,7 @@ const getSessionId = async (propsSessionKey) => {
     try {
         const response = await axiosInstance.post(
             "/open-vidu/api/sessions",
-            body
+            body,
         );
         console.log(response.status);
         console.log(response.data);

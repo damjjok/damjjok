@@ -6,7 +6,7 @@ import React from "react";
 function ConnectionTest(props) {
     return (
         <div>
-            <Button onClick={getSessionId(5)}>세션 id 받아오기</Button>
+            <Button onClick={() => getSessionId(5)}>세션 id 받아오기</Button>
             <Button>토큰 받아오기</Button>
         </div>
     );
