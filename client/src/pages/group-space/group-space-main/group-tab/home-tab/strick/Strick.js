@@ -30,7 +30,7 @@ function Strick({ startedDate }) {
     return (
         // css 150~80일인 경우 오른쪽으로 쏠림
         <div className="flex flex-col over">
-            <div className="mt-4 max-w-2xl grid grid-flow-col grid-rows-5 grid-cols-32 gap-1">
+            <div className="mt-4 max-w-2xl grid grid-flow-col grid-rows-5 grid-cols-39 gap-1">
                 {attendanceData.map((attended, i) => (
                     <div
                         key={i}
