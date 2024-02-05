@@ -120,7 +120,7 @@ function GroupTab() {
             >
                 <ModalOverlay />
                 <ModalContent maxW={"1000px"} margin={"auto"}>
-                    {contents[contentStep]}
+                    <ModalBody paddingY={20}>{contents[contentStep]}</ModalBody>
                 </ModalContent>
             </Modal>
         </>
