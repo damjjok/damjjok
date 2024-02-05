@@ -1,5 +1,12 @@
 import { useRecoilState } from "recoil";
-import { useDisclosure, Button, HStack, Text, VStack, Box } from "@chakra-ui/react";
+import {
+    useDisclosure,
+    Button,
+    HStack,
+    Text,
+    VStack,
+    Box,
+} from "@chakra-ui/react";
 import { evidenceList } from "contexts/Article";
 import EvidenceItems from "./evidence-items/EvidenceItems";
 import EvidenceCreateModal from "./evidence-modal/EvidenceCreateModal";
@@ -13,8 +20,8 @@ const Evidence = () => {
         setEvidence([...evidence, newEvidence]);
     };
     return (
-        <div className="Evidence mt-5">
-            <Text fontSize="2xl" fontWeight="bold" mb={"1rem"}>
+        <div className="Evidence mt-3">
+            <Text fontSize="xl" fontWeight="bold" mb={"1rem"}>
                 증거
             </Text>
 
@@ -43,7 +50,11 @@ const Evidence = () => {
                 </HStack>
             </Box>
 
-            <EvidenceCreateModal isOpen={isOpen} onClose={onClose} onSave={handleSaveEvidence} />
+            <EvidenceCreateModal
+                isOpen={isOpen}
+                onClose={onClose}
+                onSave={handleSaveEvidence}
+            />
         </div>
     );
 };

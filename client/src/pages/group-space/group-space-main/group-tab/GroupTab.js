@@ -94,7 +94,7 @@ function GroupTab() {
                     </TabList>
                     <TabPanels>
                         {data.map((tab, index) => (
-                            <TabPanel p={4} key={index}>
+                            <TabPanel p={0} key={index}>
                                 {tab.content}
                             </TabPanel>
                         ))}

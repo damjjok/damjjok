@@ -1,5 +1,5 @@
 import React from "react";
-import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
+import { Tabs, TabList, TabPanels, Tab, TabPanel, Box } from "@chakra-ui/react";
 import TestimonyComponent from "../testimony/TestimonyComponent";
 import EvidenceComponent from "../evidence/EvidenceComponent";
 import { useSetRecoilState } from "recoil";
@@ -14,28 +14,38 @@ function ReportTab(props) {
     }
 
     return (
-        <div>
+        <Box height={"100%"}>
             <Tabs
                 isFitted
-                variant="enclosed"
+                colorScheme="yellow"
                 onChange={(index) =>
                     changeReportMode(index === 0 ? "EVIDENCE" : "TESTIMONY")
                 }
             >
-                <TabList mb="1em">
-                    <Tab>목격 사진</Tab>
-                    <Tab>목격담</Tab>
+                <TabList color={"dam.white"}>
+                    <Tab>증거</Tab>
+                    <Tab>증언</Tab>
                 </TabList>
                 <TabPanels>
-                    <TabPanel>
+                    <TabPanel
+                        p={0}
+                        paddingLeft={2}
+                        paddingY={2}
+                        paddingRight={1}
+                    >
                         <EvidenceComponent />
                     </TabPanel>
-                    <TabPanel>
+                    <TabPanel
+                        p={0}
+                        paddingLeft={2}
+                        paddingY={2}
+                        paddingRight={1}
+                    >
                         <TestimonyComponent />
                     </TabPanel>
                 </TabPanels>
             </Tabs>
-        </div>
+        </Box>
     );
 }
 

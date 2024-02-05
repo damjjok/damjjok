@@ -2,7 +2,7 @@ import logo from "assets/images/logo.png";
 
 const LandingMain = (props) => {
     return (
-        <div className="LandingMain">
+        <div className="LandingMain" style={{ color: "white" }}>
             <img src={logo} alt="logoImg" />
             <p className="LandigTitle">"세상에 나쁜 흡연자는 없다!"</p>
             <p>

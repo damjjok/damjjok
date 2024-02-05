@@ -1,14 +1,29 @@
 import React from "react";
 import { Wrapper } from "../Frame.style";
+import { Box, Image, Text } from "@chakra-ui/react";
 
 function EvidenceFrame({ evidence, onClick }) {
     return (
-        <Wrapper onClick={onClick}>
-            <div>{evidence.title}</div>
-            <div>
-                <img src={evidence.img} alt="에러"></img>
-            </div>
-        </Wrapper>
+        <Box onClick={onClick} cursor={"pointer"}>
+            <Box
+                color={"dam.white"}
+                display={"inline-block"}
+                borderBottom={"3px solid"}
+                borderColor={"dam.yellow"}
+                marginY={2}
+            >
+                {evidence.title}
+            </Box>
+            <Box borderBottomColor={"dam.gray"} paddingBottom={2}>
+                <Image
+                    src={evidence.img}
+                    alt="에러"
+                    w={"10rem"}
+                    h={"6rem"}
+                    padding={2}
+                ></Image>
+            </Box>
+        </Box>
     );
 }
 
