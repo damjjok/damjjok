@@ -1,8 +1,8 @@
 package com.ssafy.server.service.implement;
 
 import com.ssafy.server.dto.ResponseDto;
-import com.ssafy.server.dto.request.ScheduleCreateRequestDto;
-import com.ssafy.server.dto.request.ScheduleDetailRequestDto;
+import com.ssafy.server.dto.request.schedule.ScheduleCreateRequestDto;
+import com.ssafy.server.dto.request.schedule.ScheduleDetailRequestDto;
 import com.ssafy.server.dto.response.ScheduleCreateResponseDto;
 import com.ssafy.server.dto.response.ScheduleDetailResponseDto;
 import com.ssafy.server.dto.schedule.ScheduleDto;
@@ -55,10 +55,16 @@ public class ScheduleServiceImpl implements ScheduleService {
             // 챌린지 관련 데이터를 가져오는 부분
             int challengeId = requestDto.getChallengeId();
             ChallengeEntity challengeEntity = challengeRepository.findByChallengeId(challengeId);
+            int damjjokId = challengeEntity.getUserId(); //담쪽이id
 
             // 챌린지 종료일 3일 전보다 이후인지 확인하는 로직 (가정)
              if (requestDto.getDate().isAfter(challengeEntity.getEndDate().minusDays(3))) {
                  return ScheduleCreateResponseDto.wrongDate();
+             }
+
+             //담쪽이가 아닌 경우 "VF"
+             if(requestDto.getDamjjokId() != damjjokId) {
+                 return ScheduleCreateResponseDto.validationFail();
              }
 
             ScheduleEntity newSchedule = new ScheduleEntity();

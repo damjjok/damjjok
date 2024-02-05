@@ -66,7 +66,6 @@
             stompClient.subscribe('/topic/startFinalArgument/' + roomId, function(message){
                 console.log("Start Final Argument: ", message.body);
             });
-            // 여기에 추가된 기능에 대한 구독을 추가
             stompClient.subscribe('/topic/remainingMembers/' + roomId, function(message) {
                 console.log("Remaining Members: ", message.body);
             });

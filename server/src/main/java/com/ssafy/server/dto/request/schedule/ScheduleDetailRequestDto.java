@@ -1,4 +1,4 @@
-package com.ssafy.server.dto.request;
+package com.ssafy.server.dto.request.schedule;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
