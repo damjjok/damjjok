@@ -6,6 +6,7 @@ import {
     getSessionId,
 } from "apis/api/TruthRoom";
 import React, { useState } from "react";
+import OpenViduTest from "./OpenViduTest";
 
 function ConnectionTest(props) {
     const [sessionId, setSessionId] = useState("d");
@@ -23,7 +24,7 @@ function ConnectionTest(props) {
 
     return (
         <div>
-            <Button onClick={() => getSessionIdAndSave()}>
+            {/* <Button onClick={() => getSessionIdAndSave()}>
                 세션 id 받아오기
             </Button>
             <Button onClick={() => getOpenviduTokenAndSave()}>
@@ -31,7 +32,8 @@ function ConnectionTest(props) {
             </Button>
             <Button onClick={() => closeOpenviduSession(5)}>
                 세션 삭제하기
-            </Button>
+            </Button> */}
+            <OpenViduTest></OpenViduTest>
         </div>
     );
 }
