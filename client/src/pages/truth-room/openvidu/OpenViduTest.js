@@ -21,14 +21,6 @@ export default function OpenViduTest() {
 
     const OV = useRef(new OpenVidu());
 
-    const handleChangeSessionId = useCallback((e) => {
-        setMySessionId(e.target.value);
-    }, []);
-
-    const handleChangeUserName = useCallback((e) => {
-        setMyUserName(e.target.value);
-    }, []);
-
     const handleMainVideoStream = useCallback(
         (stream) => {
             if (mainStreamManager !== stream) {
@@ -198,28 +190,6 @@ export default function OpenViduTest() {
                     <div id="join-dialog" className="jumbotron vertical-center">
                         <h1> Join a video session </h1>
                         <form className="form-group" onSubmit={joinSession}>
-                            <p>
-                                <label>Participant: </label>
-                                <input
-                                    className="form-control"
-                                    type="text"
-                                    id="userName"
-                                    value={myUserName}
-                                    onChange={handleChangeUserName}
-                                    required
-                                />
-                            </p>
-                            <p>
-                                <label> Session: </label>
-                                <input
-                                    className="form-control"
-                                    type="text"
-                                    id="sessionId"
-                                    value={mySessionId}
-                                    onChange={handleChangeSessionId}
-                                    required
-                                />
-                            </p>
                             <p className="text-center">
                                 <input
                                     className="btn btn-lg btn-success"
