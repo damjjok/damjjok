@@ -36,7 +36,7 @@ const messages = [
     { writer: "작성자9", content: "메시지 9" },
 ];
 
-function MessageCheckModal({ nextContent }) {
+function MessageCheckModal({ nextContent, isExpired }) {
     const [isMessagesVisible, setIsMessagesVisible] = useState(false);
     const [displayCount, setDisplayCount] = useState(8); // 메시지 표시 개수 상태
 
@@ -117,18 +117,21 @@ function MessageCheckModal({ nextContent }) {
                             <WholeMessageList messages={messages} />
                         </Flex>
                     )}
-                    {isMessagesVisible && (
-                        <Box
-                            display={"flex"}
-                            justifyContent={"center"}
-                            marginY={4}
-                        >
-                            <BasicButton
-                                buttonName="다음으로"
-                                onClick={nextContent}
-                            />
-                        </Box>
-                    )}
+                    {isMessagesVisible &&
+                        (!isExpired ? (
+                            <Box
+                                display={"flex"}
+                                justifyContent={"center"}
+                                marginY={4}
+                            >
+                                <BasicButton
+                                    buttonName="다음으로"
+                                    onClick={nextContent}
+                                />
+                            </Box>
+                        ) : (
+                            <></>
+                        ))}
                 </Box>
             </VStack>
         </>

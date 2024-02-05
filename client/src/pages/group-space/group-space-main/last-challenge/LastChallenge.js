@@ -47,6 +47,7 @@ function LastChallenge() {
     const handleClick = () => {
         setIsMessagesVisible(true);
     };
+    const isExpired = "True";
 
     return (
         <>
@@ -74,7 +75,7 @@ function LastChallenge() {
                                 buttonName={"리워드 다시보기"}
                                 variant={"bigbtn"}
                             />
-                            <MessageCheckModal />
+                            <MessageCheckModal isExpired={isExpired} />
                         </>
                     ) : (
                         <></>
