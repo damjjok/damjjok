@@ -29,7 +29,9 @@ const LoginModal = ({ LoginisOpen, LoginonClose, handleLogintoForm }) => {
                             boxSize="70%"
                         />
                         <VStack spacing={4}>
-                            <Text mb={3}>소셜 ID로 시작하기</Text>
+                            <Text mb={2} mt={4} fontWeight="bold" fontSize="md">
+                                소셜 ID로 시작하기
+                            </Text>
                             <Button
                                 colorScheme="yellow"
                                 size="md"
