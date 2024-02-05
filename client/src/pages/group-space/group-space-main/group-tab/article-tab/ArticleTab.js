@@ -5,13 +5,13 @@ import { Box, VStack, Wrap } from "@chakra-ui/react";
 
 function ArticleTab() {
     return (
-        <Box>
+        <Box height={"60vh"}>
             <Box>
-                <Wrap width="100%" padding={"1rem"} borderRadius={"20px"}>
+                {/* <Wrap width="100%" padding={"1rem"} borderRadius={"20px"}>
                     <TitleText fontSize="2rem" description="담쪽이가 흡연하는 장면을 목격했다면 증거를 제출해주세요!">
                         제보게시판
                     </TitleText>
-                </Wrap>
+                </Wrap> */}
             </Box>
             <VStack align="stretch">
                 <Testimony />

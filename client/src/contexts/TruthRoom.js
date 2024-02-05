@@ -59,6 +59,7 @@ export const evidenceState = atom({
         { title: "증거 1", img: logo },
         { title: "증거 2", img: piggyBankLogo },
         { title: "증거 3", img: testImg1 },
+        { title: "증거 4", img: testImg1 },
     ],
 });
 
@@ -73,7 +74,8 @@ export const testimonyState = atom({
         {
             title: "증언 1",
             writer: "작성자1",
-            content: "이새끼 담배 폈습니다1",
+            content:
+                "이새끼 담배 폈습니다111111111111111111111111111111111111111111111111111111111111111111",
         },
         {
             title: "증언 2",
@@ -84,6 +86,31 @@ export const testimonyState = atom({
             title: "증언 3",
             writer: "작성자3",
             content: "이새끼 담배 폈습니다3",
+        },
+        {
+            title: "증언 4",
+            writer: "작성자4",
+            content: "이새끼 담배 폈습니다4",
+        },
+        {
+            title: "증언 4",
+            writer: "작성자4",
+            content: "이새끼 담배 폈습니다4",
+        },
+        {
+            title: "증언 4",
+            writer: "작성자4",
+            content: "이새끼 담배 폈습니다4",
+        },
+        {
+            title: "증언 4",
+            writer: "작성자4",
+            content: "이새끼 담배 폈습니다4",
+        },
+        {
+            title: "증언 4",
+            writer: "작성자4",
+            content: "이새끼 담배 폈습니다4",
         },
         {
             title: "증언 4",

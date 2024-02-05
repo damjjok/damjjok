@@ -15,6 +15,7 @@ import {
     Text,
 } from "@chakra-ui/react";
 import logo from "assets/images/logo.png";
+import SearchBar from "./searchbar/SearchBar";
 
 const CreateGroupModal = ({
     isOpen,
@@ -42,15 +43,24 @@ const CreateGroupModal = ({
                         boxSize="70%"
                     />
                     <VStack spacing={4}>
-                        <Text mb={3}>그룹 생성하기</Text>
+                        <Text mt={10} fontSize="2xl" fontWeight="bold">
+                            그룹 생성하기
+                        </Text>
 
                         <FormControl>
                             <Input
+                                variant="flushed"
                                 mb={3}
                                 placeholder="그룹이름"
                                 value={groupName}
                                 onChange={handleGroupNameChange}
+                                _focus={{
+                                    borderBottom: "2px solid #ffd110", // 포커스 시 선 색상 변경
+                                    boxShadow: "none", // 기본 테마의 포커스 boxShadow 제거
+                                }}
                             />
+
+                            <SearchBar />
                         </FormControl>
 
                         <Button

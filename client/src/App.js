@@ -16,6 +16,23 @@ import ArticleTab from "pages/group-space/group-space-main/group-tab/article-tab
 import GroupTab from "pages/group-space/group-space-main/group-tab/GroupTab";
 import CreateChallenge from "pages/group-space/group-space-main/empty-challenge/create-challenge/CreateChallenge";
 import EmptyChallenge from "pages/group-space/group-space-main/empty-challenge/EmptyChallenge";
+import LastChallenge from "pages/group-space/group-space-main/last-challenge/LastChallenge";
+import { createGlobalStyle } from "styled-components";
+
+const GlobalStyle = createGlobalStyle`
+  * {
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+    &::-webkit-scrollbar-track {
+      width: 6px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: gray;
+      borderRadius: 24px;
+    }
+  }
+`;
 
 const theme = extendTheme({
     colors: {
@@ -44,29 +61,36 @@ const theme = extendTheme({
 function App() {
     const currentGroup = useRecoilValue(currentGroupState);
     return (
-        <Suspense>
-            <ChakraProvider theme={theme}>
-                <Routes>
-                    <Route path="/" element={<Landing />} />
-                    <Route path="/create-group" element={<CreateGroup />} />
-                    <Route
-                        path={`/group/${currentGroup.groupId}/*`}
-                        element={<GroupSpaceHome />}
-                    >
+        <>
+            <GlobalStyle />
+            <Suspense>
+                <ChakraProvider theme={theme}>
+                    <Routes>
+                        <Route path="/" element={<Landing />} />
+                        <Route path="/create-group" element={<CreateGroup />} />
                         <Route
-                            path="create-challenge"
-                            element={<CreateChallenge />}
-                        />
-                        <Route
-                            path="empty-challenge"
-                            element={<EmptyChallenge />}
-                        />
-                        <Route path="" element={<GroupTab />} />
-                    </Route>
-                    <Route path="/truth-room/*" element={<TruthRoom />} />
-                </Routes>
-            </ChakraProvider>
-        </Suspense>
+                            path={`/group/${currentGroup.groupId}/*`}
+                            element={<GroupSpaceHome />}
+                        >
+                            <Route
+                                path="create-challenge"
+                                element={<CreateChallenge />}
+                            />
+                            <Route
+                                path="empty-challenge"
+                                element={<EmptyChallenge />}
+                            />
+                            <Route path="" element={<GroupTab />} />
+                            <Route
+                                path="last-challenge/:challengeId"
+                                element={<LastChallenge />}
+                            />
+                        </Route>
+                        <Route path="/truth-room/*" element={<TruthRoom />} />
+                    </Routes>
+                </ChakraProvider>
+            </Suspense>
+        </>
     );
 }
 
