@@ -6,13 +6,12 @@ const TitleText = (props) => {
         <>
             <Box
                 width={"80vw"}
-                height={"100px"}
+                height={"150px"}
                 borderRadius={"xl"}
                 bgImage={`linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)), url(${img})`}
                 bgPosition="left"
                 paddingLeft={8}
-                paddingY={3}
-                marginY={2}
+                paddingY={8}
                 backdropContrast={"30%"}
             >
                 <Box
