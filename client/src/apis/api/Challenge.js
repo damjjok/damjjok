@@ -6,6 +6,7 @@ const getAttendanceList = async (challengeId, setAttendanceList) => {
         const data = response.data;
 
         if (response.status === 200) {
+            console.log(data.list);
             setAttendanceList(data.list);
         }
     } catch (error) {
