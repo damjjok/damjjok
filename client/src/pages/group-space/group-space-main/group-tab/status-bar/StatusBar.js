@@ -19,7 +19,7 @@ function StatusBar() {
 
     const currentChallenge = useRecoilValue(challengeState)
     const currentUser = currentChallenge.userName;
-    console.log(currentChallenge);
+    // console.log(currentChallenge);
     let today = new Date();
 
     const startedDate = new Date(currentChallenge.createdAt);
