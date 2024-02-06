@@ -1,4 +1,4 @@
-package com.ssafy.server.dto.response;
+package com.ssafy.server.dto.response.schedule;
 
 import com.ssafy.server.dto.ResponseDto;
 import com.ssafy.server.dto.schedule.ScheduleDto;

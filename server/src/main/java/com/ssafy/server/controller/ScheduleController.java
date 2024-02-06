@@ -2,8 +2,8 @@ package com.ssafy.server.controller;
 
 import com.ssafy.server.dto.request.schedule.ScheduleCreateRequestDto;
 import com.ssafy.server.dto.request.schedule.ScheduleDetailRequestDto;
-import com.ssafy.server.dto.response.ScheduleCreateResponseDto;
-import com.ssafy.server.dto.response.ScheduleDetailResponseDto;
+import com.ssafy.server.dto.response.schedule.ScheduleCreateResponseDto;
+import com.ssafy.server.dto.response.schedule.ScheduleDetailResponseDto;
 import com.ssafy.server.service.ScheduleService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
