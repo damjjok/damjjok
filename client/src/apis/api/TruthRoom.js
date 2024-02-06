@@ -32,7 +32,7 @@ const getSessionId = async (propsSessionKey) => {
 const getOpenviduToken = async (propsSessionId) => {
     try {
         const response = await axiosInstance.post(
-            `/v1/sessions/${propsSessionId}/connections`,
+            `/v1/sessions/${propsSessionId}/connections`
         );
         if (response.status === 200) return response.data.token;
         else console.log("통신 실패, 상태 코드: " + response.status);
@@ -45,7 +45,7 @@ const closeOpenviduSession = async (propsSessionKey) => {
     // 마지막 유저가 나갈 때 실행되는 통신
     try {
         const response = await axiosInstance.delete(
-            `/v1/sessions/${propsSessionKey}`,
+            `/v1/sessions/${propsSessionKey}`
         );
         if (response.status === 200) console.log("세션 닫기 성공");
         else console.log("통신 실패, 상태 코드: " + response.status);
@@ -54,4 +54,26 @@ const closeOpenviduSession = async (propsSessionKey) => {
     }
 };
 
-export { getSessionId, getOpenviduToken, closeOpenviduSession };
+const getEvidenceInTruthRoom = async (challengeId, setEvidences) => {
+    try {
+        const response = await axiosInstance.get(
+            `/v1/proof/evidence/truth-room/${challengeId}`
+        );
+        const data = await response.data;
+        if (response.status === 200) {
+            console.log(data.list);
+            setEvidences(data.list);
+        }
+    } catch (error) {
+        console.log(error);
+    }
+
+    return null;
+};
+
+export {
+    getSessionId,
+    getOpenviduToken,
+    closeOpenviduSession,
+    getEvidenceInTruthRoom,
+};

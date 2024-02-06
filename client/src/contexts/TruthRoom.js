@@ -144,3 +144,8 @@ export const decidedFineState = atom({
     key: "decidedFine", // 결정된 벌금
     default: 18000,
 });
+
+export const showingEvidenceState = atom({
+    key: "showingEvidence",
+    default: {},
+});
