@@ -100,27 +100,42 @@ const FormModal = ({ FormisOpen, FormonClose }) => {
 
                             <FormControl>
                                 <Input
+                                    variant="flushed"
                                     mb={3}
                                     placeholder="이름"
                                     name="user_name"
                                     value={state.user_name}
                                     onChange={handleChangeState}
                                     isReadOnly
+                                    _focus={{
+                                        borderBottom: "2px solid #ffd110", // 포커스 시 선 색상 변경
+                                        boxShadow: "none", // 기본 테마의 포커스 boxShadow 제거
+                                    }}
                                 />
                                 <Input
+                                    variant="flushed"
                                     mb={3}
                                     placeholder="이메일"
                                     name="email"
                                     value={state.email}
                                     onChange={handleChangeState}
                                     isReadOnly
+                                    _focus={{
+                                        borderBottom: "2px solid #ffd110", // 포커스 시 선 색상 변경
+                                        boxShadow: "none", // 기본 테마의 포커스 boxShadow 제거
+                                    }}
                                 />
                                 <Input
+                                    variant="flushed"
                                     mb={3}
                                     placeholder="생년월일"
                                     name="birth"
                                     value={state.birth}
                                     onChange={handleChangeState}
+                                    _focus={{
+                                        borderBottom: "2px solid #ffd110", // 포커스 시 선 색상 변경
+                                        boxShadow: "none", // 기본 테마의 포커스 boxShadow 제거
+                                    }}
                                 />
 
                                 <RadioGroup
@@ -136,7 +151,9 @@ const FormModal = ({ FormisOpen, FormonClose }) => {
                                         justifyContent="center"
                                         mb={3}
                                     >
-                                        <Radio value="male">남성</Radio>
+                                        <Radio value="male" mr={5}>
+                                            남성
+                                        </Radio>
                                         <Radio value="female">여성</Radio>
                                     </Stack>
                                 </RadioGroup>

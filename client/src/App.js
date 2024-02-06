@@ -57,6 +57,26 @@ const theme = extendTheme({
             900: "#FFA500",
         },
     },
+    // 라디오 버튼때문에 추가
+    components: {
+        Radio: {
+            baseStyle: (props) => ({
+                control: {
+                    borderRadius: "none", // 네모난 모양으로 변경
+                    _checked: {
+                        bg: "#ffd110", // 체크될 때의 배경색상
+                        borderColor: "#ffd110", // 체크될 때의 테두리 색상
+                        color: "white", // 체크될 때 내부 아이콘(체크 표시) 색상
+
+                        _hover: {
+                            bg: "yellow.400", // 호버 시 배경 색상 조정
+                            borderColor: "yellow.400", // 호버 시 테두리 색상 조정
+                        },
+                    },
+                },
+            }),
+        },
+    },
 });
 
 function App() {
