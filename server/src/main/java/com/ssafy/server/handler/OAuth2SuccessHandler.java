@@ -54,14 +54,14 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
             valueOperations.set(refreshToken, email);
             response.sendRedirect("http://localhost:8080/auth/oauth-response?" +
-                    "accessToken = " + accessToken + "&" +
-                    "refreshToken = " + refreshToken
+                    "accessToken=" + accessToken + "&" +
+                    "refreshToken=" + refreshToken
             );
         }
         else{
             response.sendRedirect("http://localhost:8080/auth/oauth-response?" +
-                    "email = " +encodedEmail + "&" +
-                    "name = " + encodedName
+                    "email=" +email + "&" +
+                    "name=" + encodedName
             );
         }
     }
