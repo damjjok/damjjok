@@ -28,20 +28,25 @@ import bgRoomofTruth from "assets/images/bgRoomofTruth.jpg";
 import bgRewardTab from "assets/images/bgRewardTab.jpg";
 import { useRecoilValue } from "recoil";
 import { challengeState } from "contexts/Challenge";
+import { useParams } from "react-router-dom";
+import { getChallengeInfo } from "apis/api/Group";
 
 function GroupTab() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [contentStep, setContentStep] = useState(0);
-    const challenge = useRecoilValue(challengeState);
+    const { groupId, challengeId } = useParams();
+
+    const currentChallenge = getChallengeInfo(challengeId)
+
     useEffect(() => {
         // 조건 수정 필요
         // 모달 마지막에 navigate 하면 url이 하위 URL로 감.(/challenge/4/empty-challenge). 바꿔줘야 함.
-        if (challenge.status === "OFF") {
+        if ( currentChallenge.status === "OFF") {
             setIsModalOpen(true);
         } else {
             setIsModalOpen(false);
         }
-    }, [challenge.status]);
+    }, [currentChallenge.status]);
 
     const nextContent = () => setContentStep(contentStep + 1);
     const closeModal = () => {

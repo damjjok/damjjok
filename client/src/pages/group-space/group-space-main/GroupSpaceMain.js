@@ -38,7 +38,23 @@ function GroupSpaceMain() {
         const fetchData = async () => {
             try {
                 const response = await getChallengeList(groupId);
-                setCurrentChallengeList(response); // Recoil 상태에 데이터 적용
+                const updatedChallengeList = response.list
+                setCurrentChallengeList(updatedChallengeList); // Recoil 상태에 데이터 적용
+                // console.log(currentChallengeList);
+                const currentMyChallenge = updatedChallengeList.find(
+                    (challenge) =>
+                        challenge.userId === userId && challenge.status === "ON",
+                );
+                setChallengeState(currentMyChallenge);
+
+                if (currentMyChallenge) {
+                    navigate(`challenge/${currentMyChallenge.challengeId}`);
+                } else if (!currentMyChallenge && currentChallengeList) {
+                    navigate("test");
+                } else {
+                    navigate("empty-challenge");
+                }
+
             } catch (error) {
                 console.error("챌린지 정보 불러오기 실패", error);
             }
@@ -46,27 +62,6 @@ function GroupSpaceMain() {
 
         fetchData(); // fetchData 함수 호출
     }, [groupId, setCurrentChallengeList]);
-
-    useEffect(() => {
-        console.log(currentChallengeList);
-        // if (currentChallengeList) return;
-        const currentMyChallenge = currentChallengeList.list?.find(
-            (challenge) =>
-                challenge.userId === userId && challenge.status === "ON",
-        );
-
-        // currentMyChallenge가 정의되면, Recoil 업데이트
-        setChallengeState(currentMyChallenge);
-        console.log(currentMyChallenge);
-
-        if (currentMyChallenge) {
-            navigate(`challenge/${currentMyChallenge.challengeId}`);
-        } else if (!currentMyChallenge && currentChallengeList) {
-            navigate("test");
-        } else {
-            navigate("empty-challenge");
-        }
-    }, [currentChallengeList]);
 
     return (
         <>
