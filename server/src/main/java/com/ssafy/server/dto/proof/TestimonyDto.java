@@ -20,4 +20,5 @@ public class TestimonyDto {
     private LocalDateTime createdAt;
     private Integer updatedBy;
     private LocalDateTime updatedAt;
+    private String userName;
 }

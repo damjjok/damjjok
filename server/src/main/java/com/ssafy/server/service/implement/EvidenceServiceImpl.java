@@ -13,6 +13,7 @@ import com.ssafy.server.repository.UserRepository;
 import com.ssafy.server.service.EvidenceService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -128,7 +129,9 @@ public class EvidenceServiceImpl implements EvidenceService {
 
             if(evidenceEntity == null) return ResponseDto.validationFail();
 
+            UserEntity userEntity = userRepository.findByUserId(evidenceEntity.getCreatedBy());
             evidence = new EvidenceDto();
+            evidence.setUserName(userEntity.getUserName());
             evidence.setEvidenceId(evidenceEntity.getEvidenceId());
             evidence.setEvidenceTitle(evidenceEntity.getEvidenceTitle());
             evidence.setImagePath(evidenceEntity.getImagePath());
