@@ -63,7 +63,7 @@ function MessageCheckModal({ nextContent, isExpired }) {
                     left="50%"
                     transform="translate(-50%, -50%)"
                     minWidth={"90%"}
-                    width="90%"
+                    width="60vw"
                 >
                     <Flex flexWrap="wrap" justifyContent={"center"}>
                         <AnimatePresence>
