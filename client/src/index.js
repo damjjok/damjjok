@@ -5,15 +5,18 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { RecoilRoot } from "recoil";
 import { BrowserRouter } from "react-router-dom";
+import { WebSocketProvider } from "contexts/WebSocketContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
     <React.StrictMode>
-        <BrowserRouter>
-            <RecoilRoot>
-                <App />
-            </RecoilRoot>
-        </BrowserRouter>
+        <WebSocketProvider>
+            <BrowserRouter>
+                <RecoilRoot>
+                    <App />
+                </RecoilRoot>
+            </BrowserRouter>
+        </WebSocketProvider>
     </React.StrictMode>,
 );
 
