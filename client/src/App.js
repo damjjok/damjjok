@@ -18,6 +18,7 @@ import CreateChallenge from "pages/group-space/group-space-main/empty-challenge/
 import EmptyChallenge from "pages/group-space/group-space-main/empty-challenge/EmptyChallenge";
 import LastChallenge from "pages/group-space/group-space-main/last-challenge/LastChallenge";
 import { createGlobalStyle } from "styled-components";
+import OauthPage from "pages/landing-page/oauth-page/OauthPage";
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -86,7 +87,12 @@ function App() {
                                 element={<LastChallenge />}
                             />
                         </Route>
+
                         <Route path="/truth-room/*" element={<TruthRoom />} />
+                        <Route
+                            path="/auth/oauth-response"
+                            element={<OauthPage />}
+                        ></Route>
                     </Routes>
                 </ChakraProvider>
             </Suspense>
