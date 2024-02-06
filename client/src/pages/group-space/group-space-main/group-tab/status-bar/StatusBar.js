@@ -3,40 +3,33 @@ import { currentUserState } from "../../../../../contexts/User";
 import candyImg from "assets/images/candylogo.png";
 import StatusBarToast from "./status-bar-toast/StatusBarToast";
 import StatusEditModal from "./status-edit-modal/StatusEditModal";
-import {
-    Avatar,
-    Box,
-    Flex,
-    Image,
-    Wrap,
-} from "@chakra-ui/react";
+import { Avatar, Box, Flex, Image, Wrap } from "@chakra-ui/react";
 import avatar1 from "assets/images/avatar1.png";
 import avatar2 from "assets/images/avatar2.png";
 import avatar3 from "assets/images/avatar3.png";
 import avatar4 from "assets/images/avatar4.png";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { challengeState } from "contexts/Challenge";
 // import { challengeState } from "../../../../../contexts/Challenge";
 
 function StatusBar() {
-    // axios 연결하고, 상태 분기 추가해서 현재 챌린지 / 만료 챌린지 구분해서 분기할 것.
-    // 만료된 챌린지일 시, '챌린지 정보 수정' 버튼과 '출석하기' 버튼 없애주기.
-    const currentUser = useRecoilValue(currentUserState);
-    let currentChallenge = localStorage.getItem("challengeList");
+    let currentChallenge = useRecoilValue(challengeState);
+    const currentUser = currentChallenge.userName;
     let navigate = useNavigate();
 
     let today = new Date();
-    if (currentChallenge) {
-        // 가져온 값이 있으면 JSON.parse를 사용해서 문자열을 객체로 변환합니다.
-        const myChallenge = JSON.parse(currentChallenge);
+    // if (currentChallenge) {
+    //     // 가져온 값이 있으면 JSON.parse를 사용해서 문자열을 객체로 변환합니다.
+    //     const myChallenge = JSON.parse(currentChallenge);
 
-        // 이후 myObject를 원하는대로 사용할 수 있습니다.
-        currentChallenge = myChallenge[0];
-    } else {
-        console.log("No data in localStorage");
-        navigate("./empty-challenge");
-        return <></>;
-    }
+    //     // 이후 myObject를 원하는대로 사용할 수 있습니다.
+    //     currentChallenge = myChallenge[0];
+    // } else {
+    //     console.log("No data in localStorage");
+    //     navigate("./empty-challenge");
+    //     return <></>;
+    // }
 
     const startedDate = new Date(currentChallenge.createdAt);
 
@@ -69,7 +62,7 @@ function StatusBar() {
                             bg="dam.white"
                         />
                         <p className="px-3 text-lg font-bold">
-                            {currentUser.userName} 챌린지 -{" "}
+                            {currentUser} 챌린지 -{" "}
                             {startedDate.toLocaleDateString()}
                         </p>
                         <div className="bg-damblack rounded-xl max-h-8 px-2 text-damyellow">
