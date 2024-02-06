@@ -111,7 +111,7 @@ public class ChallengeServiceImpl implements ChallengeService {
 
             entityList.stream().forEach(e -> {
                 ChallengeDto dto = new ChallengeDto();
-                dto.setChallgeId(e.getChallengeId());
+                dto.setChallengeId(e.getChallengeId());
                 dto.setGroupId(e.getGroupEntity().getGroupId());
 
                 UserEntity userEntity = userRepository.findByUserId(e.getUserId());
