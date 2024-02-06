@@ -88,10 +88,28 @@ const getTestimoniesInTruthRoom = async (challengeId, setTestimonies) => {
     return null;
 };
 
+const getChallengeMembers = async (challengeId, setGroupMembers) => {
+    try {
+        const response = await axiosInstance.get(
+            `v1/challenge/${challengeId}/member-list`
+        );
+        const data = await response.data;
+        if (response.status === 200) {
+            console.log(data.list);
+            setGroupMembers(data.list);
+        }
+    } catch (error) {
+        console.log(error);
+    }
+
+    return null;
+};
+
 export {
     getSessionId,
     getOpenviduToken,
     closeOpenviduSession,
     getEvidenceInTruthRoom,
     getTestimoniesInTruthRoom,
+    getChallengeMembers,
 };
