@@ -149,3 +149,8 @@ export const showingEvidenceState = atom({
     key: "showingEvidence",
     default: {},
 });
+
+export const showingTestimonyState = atom({
+    key: "showingTestimony",
+    default: {},
+});

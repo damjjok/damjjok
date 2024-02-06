@@ -29,14 +29,16 @@ function TestimonyDeatilComponent({ testimony }) {
                             flexWrap="wrap"
                         >
                             <Box>
-                                <Heading size="md">{testimony.title}</Heading>
-                                <Text>{testimony.writer}</Text>
+                                <Heading size="md">
+                                    {testimony.testimonyTitle}
+                                </Heading>
+                                <Text>{testimony.createdBy}</Text>
                             </Box>
                         </Flex>
                     </Flex>
                 </CardHeader>
                 <CardBody>
-                    <Text>{testimony.content}</Text>
+                    <Text>{testimony.testimonyContent}</Text>
                 </CardBody>
             </Card>
         </Wrapper>

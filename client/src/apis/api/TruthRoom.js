@@ -71,9 +71,27 @@ const getEvidenceInTruthRoom = async (challengeId, setEvidences) => {
     return null;
 };
 
+const getTestimoniesInTruthRoom = async (challengeId, setTestimonies) => {
+    try {
+        const response = await axiosInstance.get(
+            `/v1/proof/testimony/truth-room/${challengeId}`
+        );
+        const data = await response.data;
+        if (response.status === 200) {
+            console.log(data.list);
+            setTestimonies(data.list);
+        }
+    } catch (error) {
+        console.log(error);
+    }
+
+    return null;
+};
+
 export {
     getSessionId,
     getOpenviduToken,
     closeOpenviduSession,
     getEvidenceInTruthRoom,
+    getTestimoniesInTruthRoom,
 };
