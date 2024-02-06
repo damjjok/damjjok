@@ -91,6 +91,10 @@ function App() {
                             />
                         </Route>
                         <Route
+                            path="/auth/oauth-response"
+                            element={<OauthPage />}
+                        ></Route>
+                        <Route
                             path="/truth-room/:groupId/challenge/:challengeId"
                             element={<TruthRoom />}
                         />
