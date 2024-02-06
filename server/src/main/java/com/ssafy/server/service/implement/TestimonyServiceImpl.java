@@ -7,9 +7,11 @@ import com.ssafy.server.dto.response.proof.*;
 import com.ssafy.server.entity.ChallengeEntity;
 import com.ssafy.server.entity.EvidenceEntity;
 import com.ssafy.server.entity.TestimonyEntity;
+import com.ssafy.server.entity.UserEntity;
 import com.ssafy.server.repository.ChallengeRepository;
 import com.ssafy.server.repository.EvidenceRepository;
 import com.ssafy.server.repository.TestimonyRepository;
+import com.ssafy.server.repository.UserRepository;
 import com.ssafy.server.service.TestimonyService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +33,7 @@ public class TestimonyServiceImpl implements TestimonyService {
     private final TestimonyRepository testimonyRepository;
     private final ChallengeRepository challengeRepository;
     private final EvidenceRepository evidenceRepository;
+    private final UserRepository userRepository;
     public ResponseEntity<? super TestimonyCreateResponseDto> create(TestimonyCreateRequestDto dto){
         try {
             String title = dto.getTitle();
@@ -80,6 +83,9 @@ public class TestimonyServiceImpl implements TestimonyService {
                 testimonyDto.setUpdatedAt(e.getUpdatedAt());
                 testimonyDto.setUpdatedBy(e.getUpdatedBy());
 
+                UserEntity userEntity = userRepository.findByUserId(e.getCreatedBy());
+                testimonyDto.setUserName(userEntity.getUserName());
+
                 list.add(testimonyDto);
             });
 
@@ -106,6 +112,8 @@ public class TestimonyServiceImpl implements TestimonyService {
             testimony.setCreatedBy(e.getCreatedBy());
             testimony.setUpdatedAt(e.getUpdatedAt());
             testimony.setUpdatedBy(e.getUpdatedBy());
+            UserEntity userEntity = userRepository.findByUserId(e.getCreatedBy());
+            testimony.setUserName(userEntity.getUserName());
 
         }catch (Exception exception){
             exception.printStackTrace();
@@ -156,6 +164,9 @@ public class TestimonyServiceImpl implements TestimonyService {
                 testimonyDto.setCreatedBy(e.getCreatedBy());
                 testimonyDto.setUpdatedAt(e.getUpdatedAt());
                 testimonyDto.setUpdatedBy(e.getUpdatedBy());
+
+                UserEntity userEntity = userRepository.findByUserId(e.getCreatedBy());
+                testimonyDto.setUserName(userEntity.getUserName());
 
                 list.add(testimonyDto);
             });
