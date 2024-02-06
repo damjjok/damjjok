@@ -1,5 +1,6 @@
 package com.ssafy.server.controller;
 
+import com.ssafy.server.dto.request.challenge.ChallengeChangeStatusRequestDto;
 import com.ssafy.server.dto.request.challenge.ChallengeCreateRequestDto;
 import com.ssafy.server.dto.request.challenge.ChallengeProfileModifyRequestDto;
 import com.ssafy.server.dto.response.challenge.*;
@@ -45,9 +46,9 @@ public class ChallengeController {
         return response;
     }
 
-    @PatchMapping("/{challengeId}/end")
-    public ResponseEntity<? super ChallengeEndResponseDto> changeStatus(@PathVariable int challengeId){
-        ResponseEntity<? super ChallengeEndResponseDto> response = challengeService.changeStatus(challengeId);
+    @PatchMapping("/change/status")
+    public ResponseEntity<? super ChallengeChangeStatusResponseDto> changeStatus(@RequestBody ChallengeChangeStatusRequestDto dto){
+        ResponseEntity<? super ChallengeChangeStatusResponseDto> response = challengeService.changeStatus(dto);
         return response;
     }
 

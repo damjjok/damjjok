@@ -4,6 +4,7 @@ import com.ssafy.server.dto.ResponseDto;
 import com.ssafy.server.dto.challenge.ChallengeDto;
 import com.ssafy.server.dto.challenge.ChallengeMemeberDto;
 import com.ssafy.server.dto.challenge.ImageDto;
+import com.ssafy.server.dto.request.challenge.ChallengeChangeStatusRequestDto;
 import com.ssafy.server.dto.request.challenge.ChallengeCreateRequestDto;
 import com.ssafy.server.dto.request.challenge.ChallengeProfileModifyRequestDto;
 import com.ssafy.server.dto.response.challenge.*;
@@ -169,19 +170,19 @@ public class ChallengeServiceImpl implements ChallengeService {
     }
 
     @Override
-    public ResponseEntity<? super ChallengeEndResponseDto> changeStatus(int challengeId) {
+    public ResponseEntity<? super ChallengeChangeStatusResponseDto> changeStatus(ChallengeChangeStatusRequestDto dto) {
         try{
 
-            ChallengeEntity entity = challengeRepository.findByChallengeId(challengeId);
+            ChallengeEntity entity = challengeRepository.findByChallengeId(dto.getChallengeId());
 
-            entity.setStatus("OFF");
+            entity.setStatus(dto.getStatus());
 
             challengeRepository.save(entity);
 
         }catch (Exception e){
             return ResponseDto.databaseError();
         }
-        return ChallengeEndResponseDto.success();
+        return ChallengeChangeStatusResponseDto.success();
     }
 
     @Override
