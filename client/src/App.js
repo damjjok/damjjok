@@ -69,7 +69,7 @@ function App() {
                         <Route path="/" element={<Landing />} />
                         <Route path="/create-group" element={<CreateGroup />} />
                         <Route
-                            path={`/group/${currentGroup.groupId}/*`}
+                            path={`/group/:groupId/*`}
                             element={<GroupSpaceHome />}
                         >
                             <Route
@@ -80,13 +80,19 @@ function App() {
                                 path="empty-challenge"
                                 element={<EmptyChallenge />}
                             />
-                            <Route path=":challengeId" element={<GroupTab />} />
+                            <Route
+                                path="challenge/:challengeId"
+                                element={<GroupTab />}
+                            />
                             <Route
                                 path="last-challenge/:challengeId"
                                 element={<LastChallenge />}
                             />
                         </Route>
-                        <Route path="/truth-room/*" element={<TruthRoom />} />
+                        <Route
+                            path="/truth-room/:challengeId"
+                            element={<TruthRoom />}
+                        />
                     </Routes>
                 </ChakraProvider>
             </Suspense>
