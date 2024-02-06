@@ -13,21 +13,7 @@ function HomeTab() {
     // axios = challengeId 기반으로 challenge 불러오기. (수정해야 함)
     const { groupId, challengeId } = useParams();
     // const setChallengeState = useSetRecoilState(challengeState);
-    const [currentChallenge, setCurrentChallenge] = useRecoilState(challengeState);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await getChallengeInfo(challengeId);
-                setCurrentChallenge(response.dto); // Recoil 상태에 데이터 적용
-            } catch (error) {
-                console.error("챌린지 정보 불러오기 실패", error);
-            }
-        };
-
-        fetchData(); // fetchData 함수 호출
-    }, [challengeId, setCurrentChallenge]);
-    console.log(currentChallenge);
+    const currentChallenge = useRecoilValue(challengeState);
     let today = new Date();
 
     // 이하 내용은 createdAt 데이터 있는 더미 데이터로 테스트할 것.

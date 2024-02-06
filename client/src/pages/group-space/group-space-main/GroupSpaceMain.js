@@ -29,7 +29,7 @@ function GroupSpaceMain() {
     const userId = 0;
 
     const { groupId } = useParams();
-    const setChallengeState = useSetRecoilState(challengeState);
+    // const setChallengeState = useSetRecoilState(challengeState);
     const [currentChallengeList, setCurrentChallengeList] =
         useRecoilState(challengeListState);
     const navigate = useNavigate();
@@ -45,7 +45,7 @@ function GroupSpaceMain() {
                     (challenge) =>
                         challenge.userId === userId && challenge.status === "ON",
                 );
-                setChallengeState(currentMyChallenge);
+                // setChallengeState(currentMyChallenge);
 
                 if (currentMyChallenge) {
                     navigate(`challenge/${currentMyChallenge.challengeId}`);
@@ -61,7 +61,8 @@ function GroupSpaceMain() {
         };
 
         fetchData(); // fetchData 함수 호출
-    }, [groupId, setCurrentChallengeList]);
+    }, [groupId]
+    );
 
     return (
         <>
