@@ -34,6 +34,8 @@ function HomeTab({ challengeId }) {
         <Box
             display={"flex"}
             flexFlow="column"
+            overflowY={"auto"}
+            height="50vh"
             className="flex flex-col flex-wrap max-w-7xl"
             my={6}
         >
