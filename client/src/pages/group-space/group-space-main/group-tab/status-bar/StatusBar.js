@@ -13,10 +13,18 @@ import { useEffect } from "react";
 import { challengeState } from "contexts/Challenge";
 // import { challengeState } from "../../../../../contexts/Challenge";
 
+// 백엔드 물어볼 거
+// /api/v1/challenge/{challengeId}/detail API관련
+// 더미데이터에 profilePath는 임시로 넣어둔 건가용?
+// 혹시 수정 가능하다면, 챌린지 생성할 때 기본값을 "assets/images/avatar1.png" 로 잡아줄 수 있나요?
+// 기본 값이 있고, 수정하면 적용하기 위함
+// determination 기본 값도 '챌린지 각오를 적어주세요' 로 기본값을 잡아주면 좋을 것 같습니다,,,
+// create challenge 시에 설정해주시면 좋을 것 같읍니다,,,
+// 기본값이 비면 프로필 수정창에서 UI가 수정이 안되더라구요...
 function StatusBar() {
-    let currentChallenge = useRecoilValue(challengeState);
-    const currentUser = currentChallenge.userName;
-    let navigate = useNavigate();
+    let challenge = useRecoilValue(challengeState);
+    const currentUser = challenge.userName;
+    // let navigate = useNavigate();
 
     let today = new Date();
     // if (currentChallenge) {
@@ -31,7 +39,7 @@ function StatusBar() {
     //     return <></>;
     // }
 
-    const startedDate = new Date(currentChallenge.createdAt);
+    const startedDate = new Date(challenge.createdAt);
 
     // 두 날짜 사이의 밀리초 차이를 계산합니다.
     const diffMilliseconds = today.getTime() - startedDate.getTime();
@@ -68,9 +76,11 @@ function StatusBar() {
                         <div className="bg-damblack rounded-xl max-h-8 px-2 text-damyellow">
                             D+{diffDays}
                         </div>
-                        <p className="mx-2">{currentChallenge.determination}</p>
+                        <p className="mx-2">{challenge.determination}</p>
+                        {/* EditModal axios 적용해야 함 */}
+                        {/* 요청 API : /api/v1/challenge/{challengeId}/profile-modify */}
                         <StatusEditModal
-                            currentChallenge={currentChallenge}
+                            currentChallenge={challenge}
                             avatars={avatars}
                         />
                     </Flex>
