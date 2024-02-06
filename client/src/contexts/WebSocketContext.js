@@ -10,14 +10,14 @@ export const WebSocketProvider = ({ children }) => {
 
     const connect = useCallback(() => {
         if (!stompClient.current) {
-            // SockJS 인스턴스 생성
+            // SockJS 인스턴스 생성(소켓 연결을 위함)
             const socket = new SockJS(
-                "https://i10e105.p.ssafy.io/truth-room-websocket",
+                "https://i10e105.p.ssafy.io/truth-room-websocket"
             );
 
             // Client 인스턴스 생성
             stompClient.current = new Client({
-                // brokerURL: "wss://i10e105.p.ssafy.io/truth-room-websocket", // 이 부분은 실제 서버 경로로 변경해야 합니다.
+                brokerURL: "wss://i10e105.p.ssafy.io/truth-room-websocket",
                 webSocketFactory: () => socket, // SockJS 인스턴스를 사용하여 WebSocket 연결을 생성
                 onConnect: (frame) => {
                     console.log("Connected: " + frame);
@@ -29,10 +29,10 @@ export const WebSocketProvider = ({ children }) => {
                         (message) => {
                             // 수신 메시지 처리
                             console.log(JSON.parse(message.body).content);
-                        },
+                        }
                     );
                 },
-                // 연결 해제 및 오류 처리에 대한 콜백도 여기에 추가할 수 있습니다.
+                // 연결 해제 및 오류 처리에 대한 콜백도 여기에 추가 가능
             });
 
             // 연결 시작
@@ -42,8 +42,9 @@ export const WebSocketProvider = ({ children }) => {
 
     const disconnect = useCallback(() => {
         if (stompClient.current && stompClient.current.connected) {
-            stompClient.current.disconnect(() => {
+            stompClient.current.deactivate().then(() => {
                 console.log("Disconnected");
+                stompClient.current = null; // 연결 해제 후 stompClient도 null로
                 setIsConnected(false);
             });
         }
