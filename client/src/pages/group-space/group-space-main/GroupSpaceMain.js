@@ -4,31 +4,61 @@
 
 // 수정해야 할 것 : Route 설정
 import { useEffect } from "react";
-import { Routes, Route, Outlet, useNavigate } from "react-router-dom";
+import {
+    Routes,
+    Route,
+    Outlet,
+    useNavigate,
+    useParams,
+} from "react-router-dom";
 // import { useRecoilValue } from "recoil";
 import GroupTab from "./group-tab/GroupTab";
 import EmptyChallenge from "./empty-challenge/EmptyChallenge";
 import { challengeListState } from "../../../contexts/Challenge";
 import CreateChallenge from "./empty-challenge/create-challenge/CreateChallenge";
 import { useRecoilState } from "recoil";
+import { getChallengeList } from "apis/api/Group";
 
 // import NormalButton from "../components/button/normalbutton/NormalButton";
 
 function GroupSpaceMain() {
-    const [challengeList, setChallengeList] = useRecoilState(challengeListState);
+    // 더미데이터
+    const userId = 0;
+
+    const { groupId } = useParams();
+    const [currentChallengeList, setCurrentChallengeList] =
+        useRecoilState(challengeListState);
     const navigate = useNavigate();
 
     useEffect(() => {
-        const storedChallengeList = localStorage.getItem("challengeList");
-        if (storedChallengeList) {
-            setChallengeList(JSON.parse(storedChallengeList));
+        const fetchData = async () => {
+            try {
+                const response = await getChallengeList(groupId);
+                setCurrentChallengeList(response); // Recoil 상태에 데이터 적용
+            } catch (error) {
+                console.error("챌린지 정보 불러오기 실패", error);
+            }
+        };
 
-            // axios 이어주면서, 챌린지가 존재하면 'challengeId' 링크로 이동하도록 navigate해주기
-            // navigate(`${storedChallengeList}`)
+        fetchData(); // fetchData 함수 호출
+    }, [groupId, setCurrentChallengeList]);
+
+    useEffect(() => {
+        console.log(currentChallengeList);
+        // if (currentChallengeList) return;
+        const myChallenge = currentChallengeList.list?.find(
+            (challenge) =>
+                challenge.userId === userId && challenge.status === "ON",
+        );
+        console.log(myChallenge);
+        if (myChallenge) {
+            navigate(`${myChallenge.challgeId}`);
+        } else if (!myChallenge && currentChallengeList) {
+            navigate("test");
         } else {
             navigate("empty-challenge");
         }
-    }, []);
+    }, [currentChallengeList]);
 
     return (
         <>
