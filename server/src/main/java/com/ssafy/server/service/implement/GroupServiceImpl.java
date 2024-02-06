@@ -10,11 +10,18 @@ import com.ssafy.server.entity.GroupEntity;
 import com.ssafy.server.entity.GroupMemberEntity;
 import com.ssafy.server.entity.GroupMemberId;
 import com.ssafy.server.entity.UserEntity;
+import com.ssafy.server.exception.CustomJwtException;
+import com.ssafy.server.provider.JwtProvider;
 import com.ssafy.server.repository.GroupMemberRepository;
 import com.ssafy.server.repository.GroupRepository;
 import com.ssafy.server.repository.UserRepository;
 import com.ssafy.server.service.GroupService;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +37,7 @@ public class GroupServiceImpl implements GroupService {
     private final GroupRepository groupRepository;
     private final UserRepository userRepository;
     private final GroupMemberRepository groupMemberRepository;
+    private final JwtProvider jwtProvider;
 
     @Override
     public ResponseEntity<? super GroupCreateResponseDto> create(GroupCreateRequestDto dto) {
@@ -140,11 +148,15 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public ResponseEntity<? super GroupListByUserResponseDto> groupListByUser(int userId) {
+    public ResponseEntity<? super GroupListByUserResponseDto> groupListByUser(String authorizationHeader) {
 
         List<GroupDto> list = new ArrayList<>();
 
-        try{
+        try {
+            String token = authorizationHeader.substring(7);
+            String email = jwtProvider.validateToken(token);
+
+            int userId = userRepository.findByEmail(email).getUserId();
 
             List<GroupEntity> entityList = groupMemberRepository.findGroupsByUserId(userId);
 
@@ -162,8 +174,15 @@ public class GroupServiceImpl implements GroupService {
                 list.add(dto);
             });
 
-        }catch (Exception e){
-            return ResponseDto.databaseError();
+//        }catch (Exception e){
+//            return ResponseDto.databaseError();
+//        }
+        }catch (ExpiredJwtException e) { // 액세스 토큰 만료 시
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        } catch (UnsupportedJwtException | SignatureException | MalformedJwtException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        } catch (CustomJwtException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
         return GroupListByUserResponseDto.success(list);
     }
