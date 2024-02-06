@@ -90,7 +90,7 @@ function App() {
                             />
                         </Route>
                         <Route
-                            path="/truth-room/:challengeId"
+                            path="/truth-room/:groupId/challenge/:challengeId"
                             element={<TruthRoom />}
                         />
                     </Routes>
