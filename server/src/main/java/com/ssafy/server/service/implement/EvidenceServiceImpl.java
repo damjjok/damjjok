@@ -164,6 +164,8 @@ public class EvidenceServiceImpl implements EvidenceService {
                 evidenceDto.setCreatedBy(e.getCreatedBy());
                 evidenceDto.setImagePath(e.getImagePath());
                 evidenceDto.setImageDate(e.getImageDate());
+                UserEntity userEntity = userRepository.findByUserId(e.getCreatedBy());
+                evidenceDto.setUserName(userEntity.getUserName());
 
                 list.add(evidenceDto);
             });
@@ -193,6 +195,8 @@ public class EvidenceServiceImpl implements EvidenceService {
                 evidenceDto.setCreatedBy(e.getCreatedBy());
                 evidenceDto.setImagePath(e.getImagePath());
                 evidenceDto.setImageDate(e.getImageDate());
+                UserEntity userEntity = userRepository.findByUserId(e.getCreatedBy());
+                evidenceDto.setUserName(userEntity.getUserName());
 
                 list.add(evidenceDto);
             });
