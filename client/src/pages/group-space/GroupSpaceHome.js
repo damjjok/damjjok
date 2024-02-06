@@ -4,11 +4,35 @@ import GroupSpaceMain from "./group-space-main/GroupSpaceMain.js";
 import { Box } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
+import { getChallengeInfo, getChallengeList } from "apis/api/Group.js";
+import { useRecoilState } from "recoil";
+import { challengeListState } from "contexts/Challenge.js";
 // import StatusBar from "../statusbar/StatusBar.js";
 // import { Routes, Route } from "react-router-dom";
 // import CreateChallenge from "../create-challenge/CreateChallenge"
 
 function GroupSpaceHome() {
+    const { groupId, userId } = useParams();
+    const [currentChallengeList, setCurrentChallengeList] =
+        useRecoilState(challengeListState);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await getChallengeList(groupId);
+                setCurrentChallengeList(response); // Recoil 상태에 데이터 적용
+            } catch (error) {
+                console.error("챌린지 정보 불러오기 실패", error);
+            }
+        };
+
+        fetchData(); // fetchData 함수 호출
+    }, [groupId, setCurrentChallengeList]);
+
+    console.log(currentChallengeList);
+    // const challengeDetail = getChallengeInfo(challengeId);
+    // console.log(challengeDetail);
+
     return (
         <div>
             <Topbar />

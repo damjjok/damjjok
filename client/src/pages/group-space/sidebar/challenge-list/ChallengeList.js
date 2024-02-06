@@ -45,7 +45,7 @@ const lastChallenge = [
 function ChallengeList() {
     const { groupId } = useParams();
     useEffect(() => {
-        console.log(groupId, "그룹 아이디로 챌린지 목록을 불러 옵니다.");
+        // console.log(groupId, "그룹 아이디로 챌린지 목록을 불러 옵니다.");
         // TODO : 챌린지 목록 API
     });
     // challengeList 반복문 돌릴 예정, 아직은 안 씀.
@@ -107,7 +107,7 @@ function ChallengeList() {
                                         </li>
                                     </Flex>
                                     // 해당 챌린지 페이지로 향하는 링크 추가해야함.
-                                )
+                                ),
                             )
                         ) : (
                             <Box>
@@ -157,7 +157,7 @@ function ChallengeList() {
                                         });
                                         navigate(
                                             `/group/1/last-challenge/${challenge.challengeId}`,
-                                            { state: { challenge } }
+                                            { state: { challenge } },
                                         );
                                     }}
                                 >
