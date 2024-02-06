@@ -36,7 +36,26 @@ function GroupTab() {
     const [contentStep, setContentStep] = useState(0);
     const { groupId, challengeId } = useParams();
 
-    const currentChallenge = useRecoilValue(challengeState)
+    const [currentChallenge, setCurrentChallenge] = useRecoilState(challengeState)
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await getChallengeInfo(challengeId);
+                const updatedChallenge = response.dto
+                setCurrentChallenge(updatedChallenge); // Recoil 상태에 데이터 적용
+                // console.log(currentChallengeList);
+
+            } catch (error) {
+                console.error("챌린지 정보 불러오기 실패", error);
+            }
+        };
+
+        fetchData(); // fetchData 함수 호출
+    }, 
+    [challengeId, setCurrentChallenge]
+    );
 
 
     useEffect(() => {
