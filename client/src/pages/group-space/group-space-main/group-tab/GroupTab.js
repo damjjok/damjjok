@@ -26,7 +26,7 @@ import bgHomeTab from "assets/images/bgHomeTab.png";
 import bgArticleTab from "assets/images/bgArticleTab.jpg";
 import bgRoomofTruth from "assets/images/bgRoomofTruth.jpg";
 import bgRewardTab from "assets/images/bgRewardTab.jpg";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { challengeState } from "contexts/Challenge";
 import { useParams } from "react-router-dom";
 import { getChallengeInfo } from "apis/api/Group";
@@ -36,7 +36,25 @@ function GroupTab() {
     const [contentStep, setContentStep] = useState(0);
     const { groupId, challengeId } = useParams();
 
-    const currentChallenge = getChallengeInfo(challengeId)
+    const [currentChallenge, setCurrentChallenge] = useRecoilState(challengeState)
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await getChallengeInfo(challengeId);
+                const updatedChallenge = response
+                setCurrentChallenge(updatedChallenge); // Recoil 상태에 데이터 적용
+                // console.log(currentChallengeList);
+
+            } catch (error) {
+                console.error("챌린지 정보 불러오기 실패", error);
+            }
+        };
+
+        fetchData(); // fetchData 함수 호출
+    }, [challengeId, setCurrentChallenge]);
+
 
     useEffect(() => {
         // 조건 수정 필요
@@ -46,7 +64,7 @@ function GroupTab() {
         } else {
             setIsModalOpen(false);
         }
-    }, [currentChallenge.status]);
+    }, [ currentChallenge ]);
 
     const nextContent = () => setContentStep(contentStep + 1);
     const closeModal = () => {
