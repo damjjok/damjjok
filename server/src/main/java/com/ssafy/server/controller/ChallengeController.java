@@ -1,7 +1,9 @@
 package com.ssafy.server.controller;
 
+import com.ssafy.server.dto.request.challenge.ChallengeChangeStatusRequestDto;
 import com.ssafy.server.dto.request.challenge.ChallengeCreateRequestDto;
 import com.ssafy.server.dto.request.challenge.ChallengeProfileModifyRequestDto;
+import com.ssafy.server.dto.request.challenge.ChallengeRankRequestDto;
 import com.ssafy.server.dto.response.challenge.*;
 import com.ssafy.server.service.ChallengeService;
 import lombok.RequiredArgsConstructor;
@@ -45,15 +47,22 @@ public class ChallengeController {
         return response;
     }
 
-    @PatchMapping("/{challengeId}/end")
-    public ResponseEntity<? super ChallengeEndResponseDto> changeStatus(@PathVariable int challengeId){
-        ResponseEntity<? super ChallengeEndResponseDto> response = challengeService.changeStatus(challengeId);
+    @PatchMapping("/change/status")
+    public ResponseEntity<? super ChallengeChangeStatusResponseDto> changeStatus(@RequestBody ChallengeChangeStatusRequestDto dto){
+        ResponseEntity<? super ChallengeChangeStatusResponseDto> response = challengeService.changeStatus(dto);
         return response;
     }
 
     @PatchMapping("/{challengeId}/profile-modify")
     public ResponseEntity<? super ChallengeProfileModifyResponseDto> modifyProfile(@PathVariable int challengeId, @RequestBody ChallengeProfileModifyRequestDto dto){
         ResponseEntity<? super ChallengeProfileModifyResponseDto> response = challengeService.modifyProfile(challengeId,dto);
+        return response;
+    }
+
+    @GetMapping("/{challengeId}/ranking")
+    public ResponseEntity<? super ChallengeRankResponseDto> challengeRank(@PathVariable int challengeId){
+        ChallengeRankRequestDto dto = new ChallengeRankRequestDto(challengeId);
+        ResponseEntity<? super ChallengeRankResponseDto> response = challengeService.challengeRank(dto);
         return response;
     }
 }
