@@ -8,9 +8,11 @@ import {
 import TestimonyFrame from "./TestimonyFrame";
 import { Wrapper } from "../TabComponent.style";
 import { getTestimoniesInTruthRoom } from "apis/api/TruthRoom";
+import { useParams } from "react-router-dom";
 
 function TestimonyComponent(props) {
     // const testimonies = useRecoilValue(testimonyState);
+    const { challengeId } = useParams();
     const [testimonies, setTestimonies] = useState([]);
     // const setTestimonyIdx = useSetRecoilState(testimonyIndexState);
     const setShowingTestimony = useSetRecoilState(showingTestimonyState);
@@ -20,7 +22,7 @@ function TestimonyComponent(props) {
     }
 
     useEffect(() => {
-        getTestimoniesInTruthRoom(1, setTestimonies);
+        getTestimoniesInTruthRoom(challengeId, setTestimonies);
     }, []);
 
     return (

@@ -8,9 +8,11 @@ import {
 } from "contexts/TruthRoom";
 import EvidenceFrame from "./EvidenceFrame";
 import { getEvidenceInTruthRoom } from "apis/api/TruthRoom";
+import { useParams } from "react-router-dom";
 
 function EvidenceComponent(props) {
     // const evidences = useRecoilValue(evidenceState);
+    const { challengeId } = useParams();
     const [evidences, setEvidences] = useState([]);
     const setShowingEvidence = useSetRecoilState(showingEvidenceState);
 
@@ -20,7 +22,7 @@ function EvidenceComponent(props) {
     }
 
     useEffect(() => {
-        getEvidenceInTruthRoom(1, setEvidences);
+        getEvidenceInTruthRoom(challengeId, setEvidences);
         // setEvidences(getEvidenceInTruthRoom(1));
     }, []);
 
