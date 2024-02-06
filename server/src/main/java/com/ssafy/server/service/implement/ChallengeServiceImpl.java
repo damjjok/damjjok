@@ -140,6 +140,8 @@ public class ChallengeServiceImpl implements ChallengeService {
         try{
             ChallengeEntity entity = challengeRepository.findByChallengeId(challengeId);
             dto = new ChallengeDto(entity);
+            UserEntity userEntity = userRepository.findByUserId(entity.getUserId());
+            dto.setUserName(userEntity.getUserName());
         }catch (Exception e){
             return ResponseDto.databaseError();
         }
@@ -155,6 +157,8 @@ public class ChallengeServiceImpl implements ChallengeService {
 
             entityList.stream().forEach(e -> {
                 ChallengeMemeberDto dto = new ChallengeMemeberDto(e);
+                UserEntity userEntity = e.getUserEntity();
+                dto.setUserName(userEntity.getUserName());
                 list.add(dto);
             });
 
