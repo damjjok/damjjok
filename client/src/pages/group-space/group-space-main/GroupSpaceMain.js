@@ -14,9 +14,12 @@ import {
 // import { useRecoilValue } from "recoil";
 import GroupTab from "./group-tab/GroupTab";
 import EmptyChallenge from "./empty-challenge/EmptyChallenge";
-import { challengeListState } from "../../../contexts/Challenge";
+import {
+    challengeListState,
+    challengeState,
+} from "../../../contexts/Challenge";
 import CreateChallenge from "./empty-challenge/create-challenge/CreateChallenge";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { getChallengeList } from "apis/api/Group";
 
 // import NormalButton from "../components/button/normalbutton/NormalButton";
@@ -26,6 +29,7 @@ function GroupSpaceMain() {
     const userId = 0;
 
     const { groupId } = useParams();
+    const setChallengeState = useSetRecoilState(challengeState);
     const [currentChallengeList, setCurrentChallengeList] =
         useRecoilState(challengeListState);
     const navigate = useNavigate();
@@ -46,14 +50,17 @@ function GroupSpaceMain() {
     useEffect(() => {
         console.log(currentChallengeList);
         // if (currentChallengeList) return;
-        const myChallenge = currentChallengeList.list?.find(
+        const currentMyChallenge = currentChallengeList.list?.find(
             (challenge) =>
                 challenge.userId === userId && challenge.status === "ON",
         );
-        console.log(myChallenge);
-        if (myChallenge) {
-            navigate(`${myChallenge.challgeId}`);
-        } else if (!myChallenge && currentChallengeList) {
+
+        // currentMyChallenge가 정의되면, Recoil 업데이트
+        setChallengeState(currentMyChallenge);
+
+        if (currentMyChallenge) {
+            navigate(`${currentMyChallenge.challengeId}`);
+        } else if (!currentMyChallenge && currentChallengeList) {
             navigate("test");
         } else {
             navigate("empty-challenge");
