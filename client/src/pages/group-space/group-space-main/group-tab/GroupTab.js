@@ -8,7 +8,6 @@ import {
     ModalOverlay,
     ModalContent,
     ModalBody,
-    Flex,
     VStack,
 } from "@chakra-ui/react";
 import HomeTab from "./home-tab/HomeTab";
@@ -27,32 +26,17 @@ import bgHomeTab from "assets/images/bgHomeTab.png";
 import bgArticleTab from "assets/images/bgArticleTab.jpg";
 import bgRoomofTruth from "assets/images/bgRoomofTruth.jpg";
 import bgRewardTab from "assets/images/bgRewardTab.jpg";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { challengeState } from "contexts/Challenge";
-
-// 테스트용 더미데이터
-// const challenge = {
-//     key: "challengeState", // unique ID (with respect to other atoms/selectors)
-//     challengeId: 0,
-//     groupId: 0,
-//     duration: 30,
-//     initialMoney: "",
-//     savedPeriod: "",
-//     savedMoney: "",
-//     createdAt: new Date(),
-//     // status: "completed",
-//     status: "ing",
-//     determination: "오늘 하루도,,, 홧팅 ^^@@",
-//     profilePath: "",
-// };
 
 function GroupTab() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [contentStep, setContentStep] = useState(0);
-    const challenge = useRecoilState(challengeState);
-
+    const challenge = useRecoilValue(challengeState);
     useEffect(() => {
-        if (challenge.status === "completed") {
+        // 조건 수정 필요
+        // 모달 마지막에 navigate 하면 url이 하위 URL로 감.(/challenge/4/empty-challenge). 바꿔줘야 함.
+        if (challenge.status === "OFF") {
             setIsModalOpen(true);
         } else {
             setIsModalOpen(false);

@@ -11,6 +11,7 @@ import { challengeListState } from "contexts/Challenge.js";
 // import { Routes, Route } from "react-router-dom";
 // import CreateChallenge from "../create-challenge/CreateChallenge"
 
+// 회원 정보 Get API
 function GroupSpaceHome() {
     // const challengeDetail = getChallengeInfo(challengeId);
     // console.log(challengeDetail);

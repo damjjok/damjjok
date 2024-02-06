@@ -57,6 +57,7 @@ function GroupSpaceMain() {
 
         // currentMyChallenge가 정의되면, Recoil 업데이트
         setChallengeState(currentMyChallenge);
+        console.log(currentMyChallenge);
 
         if (currentMyChallenge) {
             navigate(`challenge/${currentMyChallenge.challengeId}`);
