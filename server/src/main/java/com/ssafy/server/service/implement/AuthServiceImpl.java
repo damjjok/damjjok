@@ -79,10 +79,15 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public ResponseEntity<? super FcmTokenResponseDto> changeFcmToken(String fcmToken) {
+    public ResponseEntity<? super FcmTokenResponseDto> changeFcmToken(String authorizationHeader, String fcmToken) {
         try{
+            String token = authorizationHeader.substring(7);
+            String email = jwtProvider.validateToken(token);
 
-            //UserEntity userEntity = userRepository.
+            UserEntity userEntity = userRepository.findByEmail(email);
+            userEntity.setFcmToken(fcmToken);
+
+            userRepository.save(userEntity);
 
         }catch (Exception e){
             return ResponseDto.databaseError();

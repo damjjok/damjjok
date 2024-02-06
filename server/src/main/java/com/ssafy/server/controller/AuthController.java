@@ -2,6 +2,7 @@ package com.ssafy.server.controller;
 
 import com.ssafy.server.dto.request.auth.SignUpRequestDto;
 import com.ssafy.server.dto.request.auth.TokenRequestDto;
+import com.ssafy.server.dto.response.auth.FcmTokenResponseDto;
 import com.ssafy.server.dto.response.auth.SignUpResponseDto;
 import com.ssafy.server.dto.response.auth.TokenResponseDto;
 import com.ssafy.server.dto.response.candy.CandyCreateResponseDto;
@@ -14,10 +15,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.temporal.ChronoUnit;
 
@@ -48,6 +46,14 @@ public class AuthController {
             @RequestBody TokenRequestDto requestBody
     ){
         ResponseEntity<? super TokenResponseDto> response = authService.createNewToken(requestBody);
+        return response;
+    }
+
+    @GetMapping("/fcmToken/{fcmToken}")
+    public ResponseEntity<? super FcmTokenResponseDto> changeFcmToken(
+            @RequestHeader(value="Authorization") String authorizationHeader,
+            @PathVariable String fcmToken){
+        ResponseEntity<? super FcmTokenResponseDto> response = authService.changeFcmToken(authorizationHeader , fcmToken);
         return response;
     }
 }

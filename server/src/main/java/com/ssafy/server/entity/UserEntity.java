@@ -39,6 +39,9 @@ public class UserEntity {
     @Column(name = "join_date", nullable = false)
     private LocalDateTime joinDate;
 
+    @Column(name = "fcm_token", nullable = false)
+    private String fcmToken;
+
     public UserEntity(SignUpRequestDto dto) {
         this.birth = dto.getBirth();
         this.sex = dto.getSex();

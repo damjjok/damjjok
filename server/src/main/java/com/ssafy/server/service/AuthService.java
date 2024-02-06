@@ -10,6 +10,6 @@ import org.springframework.http.ResponseEntity;
 public interface AuthService {
     ResponseEntity<? super SignUpResponseDto> signUp(SignUpRequestDto dto);
     ResponseEntity<? super TokenResponseDto> createNewToken(TokenRequestDto dto);
-    ResponseEntity<? super FcmTokenResponseDto> changeFcmToken(String fcmToken);
+    ResponseEntity<? super FcmTokenResponseDto> changeFcmToken(String authorizationHeader, String fcmToken);
 
 }
