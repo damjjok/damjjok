@@ -18,7 +18,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/truth-room-websocket").setAllowedOrigins("*").withSockJS();
+        registry.addEndpoint("/truth-room-websocket").setAllowedOrigins("http://localhost:3000", "https://i10e105.p.ssafy.io").withSockJS();
     }
 
 }
