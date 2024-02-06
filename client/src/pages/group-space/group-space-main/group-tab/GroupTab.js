@@ -27,26 +27,29 @@ import bgHomeTab from "assets/images/bgHomeTab.png";
 import bgArticleTab from "assets/images/bgArticleTab.jpg";
 import bgRoomofTruth from "assets/images/bgRoomofTruth.jpg";
 import bgRewardTab from "assets/images/bgRewardTab.jpg";
+import { useRecoilState } from "recoil";
+import { challengeState } from "contexts/Challenge";
 
 // 테스트용 더미데이터
-const challenge = {
-    key: "challengeState", // unique ID (with respect to other atoms/selectors)
-    challengeId: 0,
-    groupId: 0,
-    duration: 30,
-    initialMoney: "",
-    savedPeriod: "",
-    savedMoney: "",
-    createdAt: new Date(),
-    // status: "completed",
-    status: "ing",
-    determination: "오늘 하루도,,, 홧팅 ^^@@",
-    profilePath: "",
-};
+// const challenge = {
+//     key: "challengeState", // unique ID (with respect to other atoms/selectors)
+//     challengeId: 0,
+//     groupId: 0,
+//     duration: 30,
+//     initialMoney: "",
+//     savedPeriod: "",
+//     savedMoney: "",
+//     createdAt: new Date(),
+//     // status: "completed",
+//     status: "ing",
+//     determination: "오늘 하루도,,, 홧팅 ^^@@",
+//     profilePath: "",
+// };
 
 function GroupTab() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [contentStep, setContentStep] = useState(0);
+    const challenge = useRecoilState(challengeState);
 
     useEffect(() => {
         if (challenge.status === "completed") {

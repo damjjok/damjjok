@@ -59,7 +59,7 @@ function GroupSpaceMain() {
         setChallengeState(currentMyChallenge);
 
         if (currentMyChallenge) {
-            navigate(`${currentMyChallenge.challengeId}`);
+            navigate(`challenge/${currentMyChallenge.challengeId}`);
         } else if (!currentMyChallenge && currentChallengeList) {
             navigate("test");
         } else {
