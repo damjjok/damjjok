@@ -15,8 +15,8 @@ function SectionComponent({ type, members }) {
             >
                 {type}
             </Text>
-            {members.map((member) => (
-                <MemberComponent m={member} type={type} />
+            {members.map((member, index) => (
+                <MemberComponent m={member} type={type} key={index} />
             ))}
         </Wrapper>
     );
