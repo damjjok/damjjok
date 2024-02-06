@@ -3,10 +3,12 @@ import HomeTab from "../group-tab/home-tab/HomeTab";
 import TitleText from "components/TitleText";
 import bgSucceedChallenge from "assets/images/bgSucceedChallenge.png";
 import bgFailedChallenge from "assets/images/bgFailedChallenge.png";
-import { Box, VStack } from "@chakra-ui/react";
+import { Box, Heading, VStack } from "@chakra-ui/react";
 import MessageCheckModal from "../group-tab/completed-modal/message-check-modal/MessageCheckModal";
 import PiggyBankFinished from "../group-tab/completed-modal/piggy-bank/PiggyBankFinished";
 import StatusBar from "../group-tab/status-bar/StatusBar";
+import Strick from "../group-tab/home-tab/strick/Strick";
+import InfoCards from "../group-tab/home-tab/info-cards/InfoCards";
 
 function LastChallenge() {
     const location = useLocation();
@@ -21,9 +23,12 @@ function LastChallenge() {
         challenge.status === "success" ? bgSucceedChallenge : bgFailedChallenge;
     const isExpired = "True";
 
+    //더미
+    const startedDate = new Date(challenge.createdAt);
+
     return (
         <>
-            <VStack marginBottom={15} >
+            <VStack marginBottom={15}>
                 <StatusBar challenge={challenge} />
                 <TitleText
                     fontSize="2rem"
@@ -39,11 +44,25 @@ function LastChallenge() {
                     alignItems={"center"}
                     width={"80vw"}
                     overflowY={"auto"}
-                    minheight="50vh"
+                    height="50vh"
                     marginY={10}
                     // height="120vh"
                 >
-                    <HomeTab challengeId={challenge.challengeId} />
+                    <VStack spacing={"30px"} mb={20}>
+                        {challenge.status === "success" ? (
+                            <Heading>
+                                {challenge.username}님이 성공했던 금연
+                                기록이에요!
+                            </Heading>
+                        ) : (
+                            <Heading>
+                                {challenge.username}님이 금연하려 했던 노력은...
+                            </Heading>
+                        )}
+                        <Strick startedDate={startedDate} />
+                        <Heading></Heading>
+                        <InfoCards />
+                    </VStack>
                     {challenge.status === "success" ? (
                         <VStack spacing={"30px"}>
                             <MessageCheckModal isExpired={isExpired} />
