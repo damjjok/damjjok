@@ -113,7 +113,9 @@ public class ChallengeServiceImpl implements ChallengeService {
                 ChallengeDto dto = new ChallengeDto();
                 dto.setChallgeId(e.getChallengeId());
                 dto.setGroupId(e.getGroupEntity().getGroupId());
-                dto.setUserId(e.getUserId());
+
+                UserEntity userEntity = userRepository.findByUserId(e.getUserId());
+                dto.setUserName(userEntity.getUserName());
                 dto.setInitialMoney(e.getInitialMoney());
                 dto.setSavedMoney(e.getSavedMoney());
                 dto.setSavedPeriod(e.getSavedPeriod());
@@ -122,6 +124,7 @@ public class ChallengeServiceImpl implements ChallengeService {
                 dto.setStatus(e.getStatus());
                 dto.setDetermination(e.getDetermination());
                 dto.setProfilePath(e.getProfilePath());
+                dto.setCreatedAt(e.getCreatedAt());
                 list.add(dto);
             });
 
