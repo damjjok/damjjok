@@ -18,6 +18,9 @@ import {
 import { useEffect, useState } from "react";
 import challengeIcon from "assets/images/currentChallengeIcon.png";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { useRecoilState } from "recoil";
+import { challengeListState } from "contexts/Challenge";
+import { getChallengeList } from "apis/api/Group";
 // import { useRecoilValue } from "recoil";
 // import { challengeListState } from "../../../../context/Challenge";
 
@@ -44,10 +47,27 @@ const lastChallenge = [
 
 function ChallengeList() {
     const { groupId } = useParams();
+    const [currentChallengeList, setCurrentChallengeList] =
+        useRecoilState(challengeListState);
+
     useEffect(() => {
-        console.log(groupId, "그룹 아이디로 챌린지 목록을 불러 옵니다.");
-        // TODO : 챌린지 목록 API
-    });
+        const fetchData = async () => {
+            try {
+                const response = await getChallengeList(groupId);
+                setCurrentChallengeList(response); // Recoil 상태에 데이터 적용
+            } catch (error) {
+                console.error("챌린지 정보 불러오기 실패", error);
+            }
+        };
+
+        fetchData(); // fetchData 함수 호출
+    }, [groupId, setCurrentChallengeList]);
+
+    // console.log(currentChallengeList);
+    // useEffect(() => {
+    // console.log(groupId, "그룹 아이디로 챌린지 목록을 불러 옵니다.");
+    // TODO : 챌린지 목록 API
+    // });
     // challengeList 반복문 돌릴 예정, 아직은 안 씀.
     // const challengeList = useRecoilValue(challengeListState);
     //선택된 챌린지 표시를 위한 상태
@@ -107,7 +127,7 @@ function ChallengeList() {
                                         </li>
                                     </Flex>
                                     // 해당 챌린지 페이지로 향하는 링크 추가해야함.
-                                )
+                                ),
                             )
                         ) : (
                             <Box>
@@ -157,7 +177,7 @@ function ChallengeList() {
                                         });
                                         navigate(
                                             `/group/1/last-challenge/${challenge.challengeId}`,
-                                            { state: { challenge } }
+                                            { state: { challenge } },
                                         );
                                     }}
                                 >

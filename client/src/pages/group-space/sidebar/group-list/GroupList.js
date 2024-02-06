@@ -10,7 +10,7 @@ const groupItems = ["우리끼리만든그룹", "E106", "E107"];
 
 function GroupList() {
     useEffect(() => {
-        console.log("userId 로 그룹 목록을 불러 옵니다.");
+        // console.log("userId 로 그룹 목록을 불러 옵니다.");
         // TODO : 지호가 로그인 완성하면 Token에서 사용자 정보 알아내서 그걸로 그룹 목록 불러오기
     });
     // react-select 활용을 위한 option 배열 만들기

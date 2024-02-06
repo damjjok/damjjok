@@ -4,11 +4,18 @@ import GroupSpaceMain from "./group-space-main/GroupSpaceMain.js";
 import { Box } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
+import { getChallengeInfo, getChallengeList } from "apis/api/Group.js";
+import { useRecoilState } from "recoil";
+import { challengeListState } from "contexts/Challenge.js";
 // import StatusBar from "../statusbar/StatusBar.js";
 // import { Routes, Route } from "react-router-dom";
 // import CreateChallenge from "../create-challenge/CreateChallenge"
 
+// 회원 정보 Get API
 function GroupSpaceHome() {
+    // const challengeDetail = getChallengeInfo(challengeId);
+    // console.log(challengeDetail);
+
     return (
         <div>
             <Topbar />
