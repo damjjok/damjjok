@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class ChallengeDto {
-    private int challgeId;
+    private int challengeId;
     private int groupId;
     private int userId;
     private String userName; // 담쪽이
@@ -27,7 +27,7 @@ public class ChallengeDto {
     }
 
     public ChallengeDto(ChallengeEntity entity){
-        this.challgeId = entity.getChallengeId();
+        this.challengeId = entity.getChallengeId();
         this.groupId = entity.getGroupEntity().getGroupId();
         this.userId = entity.getUserId();
         this.initialMoney = entity.getInitialMoney();
