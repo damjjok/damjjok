@@ -3,6 +3,7 @@ package com.ssafy.server.controller;
 import com.ssafy.server.dto.request.group.GroupCreateRequestDto;
 import com.ssafy.server.dto.request.group.GroupMemberCreateRequestDto;
 import com.ssafy.server.dto.response.group.*;
+import com.ssafy.server.provider.JwtProvider;
 import com.ssafy.server.service.GroupService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class GroupController {
 
     private final GroupService groupService;
+    private final JwtProvider jwtProvider;
 
     @PostMapping("/create")
     public ResponseEntity<? super GroupCreateResponseDto> createGroup(@RequestBody GroupCreateRequestDto requestBody){
@@ -45,9 +47,10 @@ public class GroupController {
         return response;
     }
 
-    @GetMapping("/{userId}/group-list")
-    public ResponseEntity<? super GroupListByUserResponseDto> groupListByUser(@PathVariable int userId){
-        ResponseEntity<? super GroupListByUserResponseDto> response = groupService.groupListByUser(userId);
+    @GetMapping("/user/group-list")
+    public ResponseEntity<? super GroupListByUserResponseDto> groupListByUser
+            (@RequestHeader(value="Authorization") String authorizationHeader){
+        ResponseEntity<? super GroupListByUserResponseDto> response = groupService.groupListByUser(authorizationHeader);
         return response;
     }
 

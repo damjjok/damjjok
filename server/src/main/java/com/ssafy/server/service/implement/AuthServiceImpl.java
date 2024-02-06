@@ -3,6 +3,7 @@ package com.ssafy.server.service.implement;
 import com.ssafy.server.dto.ResponseDto;
 import com.ssafy.server.dto.request.auth.SignUpRequestDto;
 import com.ssafy.server.dto.request.auth.TokenRequestDto;
+import com.ssafy.server.dto.response.auth.FcmTokenResponseDto;
 import com.ssafy.server.dto.response.auth.SignUpResponseDto;
 import com.ssafy.server.dto.response.auth.TokenResponseDto;
 import com.ssafy.server.entity.UserEntity;
@@ -75,5 +76,17 @@ public class AuthServiceImpl implements AuthService {
             throw new CustomJwtException(e.getMessage(),e);
         }
         return TokenResponseDto.success(accessToken,refreshToken);
+    }
+
+    @Override
+    public ResponseEntity<? super FcmTokenResponseDto> changeFcmToken(String fcmToken) {
+        try{
+
+            //UserEntity userEntity = userRepository.
+
+        }catch (Exception e){
+            return ResponseDto.databaseError();
+        }
+        return FcmTokenResponseDto.success();
     }
 }
