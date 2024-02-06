@@ -18,10 +18,10 @@ function HomeTab() {
 
     // 이하 내용은 createdAt 데이터 있는 더미 데이터로 테스트할 것.
 
-    // const startedDate = new Date(currentChallenge.createdAt);
+    const startedDate = new Date(currentChallenge.createdAt);
     // 두 날짜 사이의 밀리초 차이를 계산
-    // const diffMilliseconds = today.getTime() - startedDate.getTime();
-    // const diffDays = Math.floor(diffMilliseconds / (24 * 60 * 60 * 1000));
+    const diffMilliseconds = today.getTime() - startedDate.getTime();
+    const diffDays = Math.floor(diffMilliseconds / (24 * 60 * 60 * 1000));
 
     return (
         <Box
@@ -34,12 +34,10 @@ function HomeTab() {
         >
             <div>
                 <p className="text-xl font-bold">
-                    {currentChallenge.userName}님! 오늘은 금연 
-                    {/* {diffDays} */}
-                    일차예요!
+                    {currentChallenge.userName}님! 오늘은 금연 {diffDays}일차예요!
                 </p>
                 <div className="flex flex-wrap justify-center">
-                    {/* <Strick startedDate={startedDate} /> */}
+                    <Strick startedDate={startedDate} />
                 </div>
             </div>
             <div className="py-8">

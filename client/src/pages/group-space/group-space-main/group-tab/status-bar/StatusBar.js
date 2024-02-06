@@ -11,6 +11,8 @@ import avatar4 from "assets/images/avatar4.png";
 import { challengeState } from "contexts/Challenge";
 // import { challengeState } from "../../../../../contexts/Challenge";
 
+
+// profilePath 올바르게 설정될 필요성
 function StatusBar() {
     // const { groupId, challengeId } = useParams();
 

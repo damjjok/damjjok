@@ -45,7 +45,7 @@ function GroupTab() {
                 const response = await getChallengeInfo(challengeId);
                 const updatedChallenge = response.dto
                 setCurrentChallenge(updatedChallenge); // Recoil 상태에 데이터 적용
-                // console.log(currentChallengeList);
+                console.log(updatedChallenge);
 
             } catch (error) {
                 console.error("챌린지 정보 불러오기 실패", error);
