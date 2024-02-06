@@ -4,12 +4,21 @@ import LandingMain from "./landing-main/LandingMain";
 import LoginModal from "./landing-main/landing-modal/LoginModal";
 import FormModal from "./landing-main/landing-modal/FormModal";
 import landingBg from "assets/images/bgimg.png";
+import { userState } from "contexts/Sns";
+import { useRecoilValue } from "recoil";
+import { useEffect } from "react";
 
 const Landing = () => {
     // const { isOpen, onOpen, onClose } = useDisclosure();
     // 만약 api연결한다면 회원가입 버튼을 눌렀을때 같은 아이디가 db에 있는지 이메
     // 이메일 형식이 맞는지 조건을 걸어줘야함
     // 그리고 state 값 axios로 회원가입 할 때 보내줘야함
+
+    const user = useRecoilValue(userState);
+
+    useEffect(() => {
+        console.log(user);
+    }, []);
 
     const {
         isOpen: LoginisOpen,
@@ -27,6 +36,11 @@ const Landing = () => {
         FormonOpen(); // 두 번째 모달 열기
     };
 
+    useEffect(() => {
+        if (user.email) {
+            FormonOpen();
+        }
+    }, [user]);
     return (
         <div
             className="Landing"
