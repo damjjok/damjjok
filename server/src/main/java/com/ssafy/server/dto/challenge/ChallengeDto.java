@@ -11,7 +11,8 @@ import java.time.LocalDateTime;
 public class ChallengeDto {
     private int challgeId;
     private int groupId;
-    private int userId; // 담쪽이
+    private int userId;
+    private String userName; // 담쪽이
     private int initialMoney;
     private int savedMoney;
     private int savedPeriod;
@@ -20,6 +21,7 @@ public class ChallengeDto {
     private String status;
     private String determination;
     private String profilePath;
+    private LocalDateTime createdAt;
 
     public ChallengeDto() {
     }
@@ -36,7 +38,6 @@ public class ChallengeDto {
         this.status = entity.getStatus();
         this.determination = entity.getDetermination();
         this.profilePath = entity.getProfilePath();
-
     }
 
 }
