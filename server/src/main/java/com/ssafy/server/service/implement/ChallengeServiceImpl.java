@@ -7,6 +7,7 @@ import com.ssafy.server.dto.challenge.ImageDto;
 import com.ssafy.server.dto.request.challenge.ChallengeChangeStatusRequestDto;
 import com.ssafy.server.dto.request.challenge.ChallengeCreateRequestDto;
 import com.ssafy.server.dto.request.challenge.ChallengeProfileModifyRequestDto;
+import com.ssafy.server.dto.request.challenge.ChallengeRankRequestDto;
 import com.ssafy.server.dto.response.challenge.*;
 import com.ssafy.server.entity.*;
 import com.ssafy.server.repository.*;
@@ -16,8 +17,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 @RequiredArgsConstructor
@@ -200,5 +203,34 @@ public class ChallengeServiceImpl implements ChallengeService {
             return ResponseDto.databaseError();
         }
         return ChallengeProfileModifyResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super ChallengeRankResponseDto> challengeRank(ChallengeRankRequestDto dto) {
+        int ranking;
+
+        try{
+            ChallengeEntity cur = challengeRepository.findByChallengeId(dto.getChallengeId());
+            List<ChallengeEntity> list = challengeRepository.findAll();
+
+            AtomicInteger rank = new AtomicInteger(1);
+            AtomicInteger count = new AtomicInteger();
+            int cur_day = (int) ChronoUnit.DAYS.between(cur.getCreatedAt().toLocalDate() , LocalDateTime.now());
+            System.out.println(cur_day);
+            list.stream().forEach(challenge-> {
+                if(challenge.getStatus().equals("ON")){
+                    count.addAndGet(1);
+                    int nxt_day = (int) ChronoUnit.DAYS.between(challenge.getCreatedAt().toLocalDate() , LocalDateTime.now());
+                    if(cur_day > nxt_day) rank.getAndIncrement();
+                    System.out.println(nxt_day);
+                }
+            });
+
+            ranking = (int)(( (double)rank.get() / (double) count.get() ) * 100);
+
+        }catch (Exception e){
+            return ResponseDto.databaseError();
+        }
+        return ChallengeRankResponseDto.success(ranking);
     }
 }

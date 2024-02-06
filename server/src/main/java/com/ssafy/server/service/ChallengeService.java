@@ -4,6 +4,7 @@ import com.ssafy.server.dto.ResponseDto;
 import com.ssafy.server.dto.request.challenge.ChallengeChangeStatusRequestDto;
 import com.ssafy.server.dto.request.challenge.ChallengeCreateRequestDto;
 import com.ssafy.server.dto.request.challenge.ChallengeProfileModifyRequestDto;
+import com.ssafy.server.dto.request.challenge.ChallengeRankRequestDto;
 import com.ssafy.server.dto.response.challenge.*;
 import org.springframework.http.ResponseEntity;
 
@@ -15,4 +16,5 @@ public interface ChallengeService {
     ResponseEntity<? super ChallengeMemberListResponseDto> challengeMemberList(int challengeId);
     ResponseEntity<? super ChallengeChangeStatusResponseDto> changeStatus(ChallengeChangeStatusRequestDto dto);
     ResponseEntity<? super ChallengeProfileModifyResponseDto> modifyProfile(int challengeId, ChallengeProfileModifyRequestDto dto);
+    ResponseEntity<? super ChallengeRankResponseDto> challengeRank(ChallengeRankRequestDto dto);
 }
