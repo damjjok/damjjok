@@ -9,8 +9,7 @@ import { sessionKeyState, userNameState } from "contexts/OpenVidu";
 import { Wrapper } from "./RtcComponent.style";
 import RtcFrameComponent from "./RtcFrameComponent";
 
-const APPLICATION_SERVER_URL =
-    process.env.NODE_ENV === "production" ? "" : "https://i10e105.p.ssafy.io/";
+const APPLICATION_SERVER_URL = "https://i10e105.p.ssafy.io/";
 
 export default function OpenViduComponent() {
     const [sessionKey, setSessionKey] = useRecoilState(sessionKeyState);
@@ -59,21 +58,21 @@ export default function OpenViduComponent() {
                             frameRate: 30,
                             insertMode: "APPEND",
                             mirror: false,
-                        }
+                        },
                     );
 
                     session.publish(publisher);
 
                     const devices = await OV.current.getDevices();
                     const videoDevices = devices.filter(
-                        (device) => device.kind === "videoinput"
+                        (device) => device.kind === "videoinput",
                     );
                     const currentVideoDeviceId = publisher.stream
                         .getMediaStream()
                         .getVideoTracks()[0]
                         .getSettings().deviceId;
                     const currentVideoDevice = videoDevices.find(
-                        (device) => device.deviceId === currentVideoDeviceId
+                        (device) => device.deviceId === currentVideoDeviceId,
                     );
 
                     setPublisher(publisher);
@@ -82,7 +81,7 @@ export default function OpenViduComponent() {
                     console.log(
                         "There was an error connecting to the session:",
                         error.code,
-                        error.message
+                        error.message,
                     );
                 }
             });
@@ -150,7 +149,7 @@ export default function OpenViduComponent() {
     const createSession = async () => {
         const response = await axios.post(
             APPLICATION_SERVER_URL + "api/v1/sessions",
-            { sessionKey: sessionKey }
+            { sessionKey: sessionKey },
         );
         return response.data; // The sessionId
     };
@@ -160,7 +159,7 @@ export default function OpenViduComponent() {
             APPLICATION_SERVER_URL +
                 "api/v1/sessions/" +
                 sessionId +
-                "/connections"
+                "/connections",
         );
         return response.data.token; // The token
     };
@@ -181,7 +180,7 @@ export default function OpenViduComponent() {
                         {subscribers.map(
                             (
                                 sub,
-                                i // 나머지 참가자들 화면
+                                i, // 나머지 참가자들 화면
                             ) => (
                                 <RtcFrameComponent
                                     content={
@@ -190,7 +189,7 @@ export default function OpenViduComponent() {
                                         />
                                     }
                                 ></RtcFrameComponent>
-                            )
+                            ),
                         )}
                     </Wrapper>
                 </div>
