@@ -113,8 +113,9 @@ public class GroupServiceImpl implements GroupService {
 
             userEntityList.stream().forEach(e -> {
                 UserDto dto = new UserDto();
-                dto.setEmail(e.getEmail());
+                dto.setUserId(e.getUserId());
                 dto.setUserName(e.getUserName());
+                dto.setEmail(e.getEmail());
                 list.add(dto);
             });
 
