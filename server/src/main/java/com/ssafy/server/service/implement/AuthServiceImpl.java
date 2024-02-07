@@ -1,6 +1,8 @@
 package com.ssafy.server.service.implement;
 
 import com.ssafy.server.dto.ResponseDto;
+import com.ssafy.server.dto.auth.CustomUserDetails;
+import com.ssafy.server.dto.request.alarm.FCMTokenRequestDto;
 import com.ssafy.server.dto.request.auth.SignUpRequestDto;
 import com.ssafy.server.dto.request.auth.TokenRequestDto;
 import com.ssafy.server.dto.response.auth.FcmTokenResponseDto;
@@ -17,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
@@ -82,14 +85,16 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public ResponseEntity<? super FcmTokenResponseDto> changeFcmToken(String authorizationHeader, String fcmToken) {
+    public ResponseEntity<? super FcmTokenResponseDto> savedFcmToken(FCMTokenRequestDto dto) {
         try{
-            String token = authorizationHeader.substring(7);
-            Jws<Claims> parsedToken = jwtProvider.validateToken(token);
-            String email = parsedToken.getBody().get("email", String.class);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+
+            String email = customUserDetails.getEmail();
+            System.out.println(email + "@@@@@@@");
 
             UserEntity userEntity = userRepository.findByEmail(email);
-            userEntity.setFcmToken(fcmToken);
+            userEntity.setFcmToken(dto.getFcmToken());
 
             userRepository.save(userEntity);
 
