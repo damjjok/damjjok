@@ -1,15 +1,18 @@
 import React from "react";
 import { Wrapper } from "./EvidenceFrame.style";
-import { evidenceIndexState, evidenceState } from "contexts/TruthRoom";
+import {
+    evidenceIndexState,
+    evidenceState,
+    showingEvidenceState,
+} from "contexts/TruthRoom";
 import { useRecoilValue } from "recoil";
 
-function EvidenceFrame(props) {
-    const evidences = useRecoilValue(evidenceState);
-    const evidenceIdx = useRecoilValue(evidenceIndexState);
+function EvidenceFrame() {
+    const evidence = useRecoilValue(showingEvidenceState);
 
     return (
         <Wrapper>
-            <img src={evidences[evidenceIdx].img} alt="test" />
+            <img src={evidence.imagePath} alt="사진이 없어용" />
         </Wrapper>
     );
 }

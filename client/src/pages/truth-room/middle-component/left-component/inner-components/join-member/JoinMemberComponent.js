@@ -5,23 +5,35 @@ import { groupState } from "contexts/TruthRoom";
 import SectionComponent from "./section/SectionComponent";
 import { Box, Flex, Text, Wrap } from "@chakra-ui/react";
 import { ChatIcon } from "@chakra-ui/icons";
+import { useParams } from "react-router-dom";
+import { getChallengeMembers, getGroupMembers } from "apis/api/TruthRoom";
 
 function JoinMemberComponent() {
+    const { challengeId } = useParams();
+    const [members, setMembers] = useState([]);
+
     const joinMember = useRecoilValue(groupState);
     const [damJJok, setDamJJok] = useState([]);
     const [phDs, setPhDs] = useState([]);
+
     useEffect(() => {
-        let tempDamJJok = [];
-        let tempPhDs = [];
-        for (var i = 0; i < joinMember.length; i++) {
-            // 담쪽이와 박사님들 구분
-            if (joinMember[i].role === "damJJok")
-                tempDamJJok.push(joinMember[i]);
-            else if (joinMember[i].role === "phD") tempPhDs.push(joinMember[i]);
-        }
-        setDamJJok(tempDamJJok);
-        setPhDs(tempPhDs);
-    }, [joinMember]);
+        getChallengeMembers(challengeId, setMembers);
+    }, []);
+
+    useEffect(() => {
+        // let tempDamJJok = [];
+        // let tempPhDs = [];
+        // for (var i = 0; i < joinMember.length; i++) {
+        //     // 담쪽이와 박사님들 구분
+        //     if (joinMember[i].role === "damJJok")
+        //         tempDamJJok.push(joinMember[i]);
+        //     else if (joinMember[i].role === "phD") tempPhDs.push(joinMember[i]);
+        // }
+        // setDamJJok(tempDamJJok);
+        // setPhDs(tempPhDs);
+        setDamJJok(members.filter((m) => m.role === "Damjjok"));
+        setPhDs(members.filter((m) => m.role !== "Damjjok"));
+    }, [members]);
 
     return (
         // 지금은 임시 코드입니다.

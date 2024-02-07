@@ -14,15 +14,6 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { challengeState, challengeEndDate, challengeListState } from "../../../../../../contexts/Challenge";
 import { currentGroupState } from "../../../../../../contexts/User";
 
-function saveChallengeListToLocalStorage(challengeList) {
-  localStorage.setItem("challengeList", JSON.stringify(challengeList));
-}
-
-// 로컬 스토리지 내 챌린지 리스트 불러오는 함수인데, 일단 여기서 안 써서 주석처리
-// function loadChallengeListFromLocalStorage() {
-//   const storedChallengeList = localStorage.getItem("challengeList");
-//   return storedChallengeList ? JSON.parse(storedChallengeList) : [];
-// }
 
 function ChallengeCreateModal() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -35,6 +26,7 @@ function ChallengeCreateModal() {
   return (
       <div>
           <BasicButton onClick={onOpen} buttonName={"생성하기"} />
+          {/* onClick에 API 연결 => POST실행 후에 데이터 받아와서 그 값들을 하단 출력에 활용해서 넣어줄 것.  */}
           <Modal isOpen={isOpen} onClose={onClose}>
               <ModalOverlay />
               <ModalContent>
@@ -68,17 +60,9 @@ function ChallengeCreateModal() {
                   <ModalFooter>
                       <BasicButton
                           className="flex justify-center"
-                          onClick={() => {
-                              const newChallengeList = [
-                                  ...challengeList,
-                                  challenge,
-                              ];
-                              setChallengeList(newChallengeList);
-                              saveChallengeListToLocalStorage(
-                                  newChallengeList,
-                              );
-                              navigate(`/group/${currentGroup.groupId}`);
-                          }}
+                          onClick={
+                              navigate(`/group/${currentGroup.groupId}`)
+                          }
                           buttonName={"챌린지 시작하기"}
                           variant={"bigbtn"}
                       />

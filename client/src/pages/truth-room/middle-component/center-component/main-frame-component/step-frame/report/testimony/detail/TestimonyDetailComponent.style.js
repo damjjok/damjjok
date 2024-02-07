@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const Wrapper = styled.div`
     .card-container {
         width: 460px;
-        height: 552px;
+        height: 50vh;
     }
 
     .title-container {
