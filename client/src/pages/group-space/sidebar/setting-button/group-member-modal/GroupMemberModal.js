@@ -11,10 +11,7 @@ import {
     VStack,
     useDisclosure,
 } from "@chakra-ui/react";
-import phDIcon from "assets/images/phDIcon.png";
 import damJJokIcon from "assets/images/damJJokIcon.png";
-import { useRecoilValue } from "recoil";
-import { currentGroupMemberState } from "contexts/Group";
 
 function GroupMemberModal({ currentGroupMember }) {
     const { isOpen, onOpen, onClose } = useDisclosure();

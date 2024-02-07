@@ -1,17 +1,8 @@
 import { SettingsIcon } from "@chakra-ui/icons";
-import {
-    Box,
-    Menu,
-    MenuButton,
-    MenuDivider,
-    MenuItem,
-    MenuList,
-} from "@chakra-ui/react";
+import { Box, Menu, MenuButton, MenuDivider, MenuList } from "@chakra-ui/react";
 import GroupMemberModal from "./group-member-modal/GroupMemberModal";
 import GroupInviteModal from "./group-invite-modal/GroupInviteModal";
 import { useParams } from "react-router-dom";
-import { useRecoilState } from "recoil";
-import { currentGroupMemberState, currentGroupState } from "contexts/Group";
 import { useEffect, useState } from "react";
 import { getGroupInfo, getGroupMember } from "apis/api/Group";
 

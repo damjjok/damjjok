@@ -53,7 +53,9 @@ function GroupSpaceMain() {
                 if (currentMyChallenge) {
                     navigate(`challenge/${currentMyChallenge.challengeId}`);
                 } else if (!currentMyChallenge && currentChallengeList) {
-                    navigate("test");
+                    navigate(
+                        `challenge/${updatedChallengeList[0].challengeId}`,
+                    );
                 } else {
                     navigate("empty-challenge");
                 }

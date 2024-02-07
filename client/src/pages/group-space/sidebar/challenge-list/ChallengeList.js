@@ -17,9 +17,7 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import challengeIcon from "assets/images/currentChallengeIcon.png";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { useRecoilState } from "recoil";
-import { challengeListState } from "contexts/Challenge";
+import { useNavigate, useParams } from "react-router-dom";
 import { getChallengeList } from "apis/api/Group";
 // import { useRecoilValue } from "recoil";
 // import { challengeListState } from "../../../../context/Challenge";
@@ -94,6 +92,7 @@ function ChallengeList() {
                             currentGroupChallengeList.map(
                                 (challenge, index) => (
                                     <Flex
+                                        key={index}
                                         alignItems="center"
                                         className={`py-2 px-4 rounded-lg ${
                                             selectedChallenge.index === index &&
