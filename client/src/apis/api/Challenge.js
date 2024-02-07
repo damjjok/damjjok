@@ -16,8 +16,6 @@ const getAttendanceList = async (challengeId, setAttendanceList) => {
     }
     return;
 };
-
-export { getAttendanceList };
 const createChallenge = async ({
     groupId,
     userId,
@@ -39,4 +37,16 @@ const createChallenge = async ({
     } catch (error) {}
 };
 
-export { createChallenge };
+const getTestimonies = async (challengeId, setTestimonies) => {
+    try {
+        const response = await axiosInstance.get(
+            `/v1/proof/testimony/${challengeId}`
+        );
+        const list = await response.data.list;
+        setTestimonies(list);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export { createChallenge, getTestimonies, getAttendanceList };

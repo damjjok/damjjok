@@ -11,9 +11,18 @@ import { testimonyList } from "contexts/Article";
 import TestimonyCreateModal from "./testimony-modal/TestimonyCreateModal";
 import TestimonyItems from "./testimony-items/TestimonyItems";
 import { EditIcon } from "@chakra-ui/icons";
+import { useEffect, useState } from "react";
+import { getTestimonies } from "apis/api/Challenge";
+import { useParams } from "react-router-dom";
 
 const Testimony = () => {
     const [testimony, setTestimony] = useRecoilState(testimonyList);
+    const [testimonies, setTestimonies] = useState([]);
+    const { challengeId } = useParams();
+
+    useEffect(() => {
+        getTestimonies(challengeId, setTestimonies);
+    }, []);
 
     const handleSaveTestimony = (newTestimony) => {
         setTestimony([...testimony, newTestimony]);
@@ -28,7 +37,7 @@ const Testimony = () => {
             </Text>
             <Box overflowX={"auto"} width={"75vw"}>
                 <HStack spacing={4} align="stretch">
-                    {testimony.map((item, index) => (
+                    {testimonies.map((item, index) => (
                         <TestimonyItems key={index} {...item} />
                     ))}
                     <Box>
