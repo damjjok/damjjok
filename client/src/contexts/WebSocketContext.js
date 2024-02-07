@@ -55,6 +55,7 @@ export const WebSocketProvider = ({ children }) => {
                 (message) => {
                     console.log("hi");
                     console.log(JSON.parse(message.body));
+                    setJoinMemberList(message.body);
                 },
             );
             stompClient.current.subscribe(
@@ -147,6 +148,16 @@ export const WebSocketProvider = ({ children }) => {
         stompClient.current.publish({
             // 진실의 방에 입장했음을 소켓에 발행
             destination: "/app/enter/" + roomId + "/" + userName + "/" + role,
+            headers: {},
+            body: JSON.stringify({}),
+        });
+    }, []);
+
+    const setReady = useCallback((roomId) => {
+        // 사용자가 방에 입장한 후 필요한 구독 목록 구독 시작
+        stompClient.current.publish({
+            // 진실의 방에 입장했음을 소켓에 발행
+            destination: "/app/ready/" + roomId,
             headers: {},
             body: JSON.stringify({}),
         });
