@@ -48,8 +48,8 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         UserEntity userEntity = userRepository.findByEmail(email);
 
         if(userEntity != null){ // 가입되어있음 -> 바로 토큰 발행해서 줌
-            String accessToken = jwtProvider.createToken(userEntity.getUserId(),email,userName, 5, ChronoUnit.DAYS);
-            String refreshToken = jwtProvider.createToken(userEntity.getUserId(),email,userName, 5, ChronoUnit.DAYS);
+            String accessToken = jwtProvider.createToken(userEntity.getUserId(),email,userName, 180, ChronoUnit.DAYS);
+            String refreshToken = jwtProvider.createToken(userEntity.getUserId(),email,userName, 180, ChronoUnit.DAYS);
 
             // redis 에 저장 ( refreshToken, email )
             ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();

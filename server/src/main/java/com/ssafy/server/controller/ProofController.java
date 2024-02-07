@@ -26,7 +26,8 @@ public class ProofController {
     @Operation(summary = "증언 생성", description = "증언을 생성합니다.",
             responses = { @ApiResponse(responseCode = "200", description = "증언 생성 성공",
                     content = @Content(schema = @Schema(implementation = TestimonyCreateResponseDto.class)))})
-    public ResponseEntity<? super TestimonyCreateResponseDto> createTestimony(@RequestBody TestimonyCreateRequestDto requestBody){
+    public ResponseEntity<? super TestimonyCreateResponseDto> createTestimony(
+            @RequestBody TestimonyCreateRequestDto requestBody){
         ResponseEntity<? super TestimonyCreateResponseDto> response = testimonyService.create(requestBody);
         return response;
     }

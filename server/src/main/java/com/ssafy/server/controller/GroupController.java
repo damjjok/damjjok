@@ -72,8 +72,8 @@ public class GroupController {
             responses = { @ApiResponse(responseCode = "200", description = "특정 유저의 참여 그룹들 반환 성공",
                     content = @Content(schema = @Schema(implementation = GroupListByUserResponseDto.class)))})
     public ResponseEntity<? super GroupListByUserResponseDto> groupListByUser
-            (@RequestHeader(value="Authorization") String authorizationHeader){
-        ResponseEntity<? super GroupListByUserResponseDto> response = groupService.groupListByUser(authorizationHeader);
+            (){
+        ResponseEntity<? super GroupListByUserResponseDto> response = groupService.groupListByUser();
         return response;
     }
 
