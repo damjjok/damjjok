@@ -63,6 +63,7 @@ function StatusBar() {
                 bg={"dam.gray"}
                 borderRadius={"30px"}
                 paddingX={".5rem"}
+                height={'3vw'}
             >
                 <Wrap>
                     <Flex alignItems={"center"}>
@@ -82,10 +83,12 @@ function StatusBar() {
                         <p className="mx-2">{challenge.determination}</p>
                         {/* EditModal axios 적용해야 함 */}
                         {/* 요청 API : /api/v1/challenge/{challengeId}/profile-modify */}
+                        {challenge.userId === currentUser.userId ? (                        
                         <StatusEditModal
                             currentChallenge={challenge}
                             avatars={avatars}
-                        />
+                        />): null}
+
                     </Flex>
                 </Wrap>
                 <div className="flex items-center">
