@@ -2,11 +2,9 @@ import { Card, CardBody, Stack, Heading, Text, useDisclosure, Image, CardHeader,
 
 import EvidenceDetailModal from "../evidence-modal/EvidenceDetailModal";
 
-const EvidenceItems = ({ title, img }) => {
+const EvidenceItems = ({ title, imagePath, evidenceTitle, imageDate, userName }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     // 나중에 바꿔야함
-    const person = "문지호";
-    const day = "2024-03-04 14:22";
 
     return (
         <div className="EvidenceItmes">
@@ -21,29 +19,29 @@ const EvidenceItems = ({ title, img }) => {
                 borderColor={"dam.lightgray"}
                 display={"flex"}
             >
-                <Image width={"7.5vw"} src={img} alt={title} objectFit="cover" />
+                <Image width={"7.5vw"} src={`https://i10e105.p.ssafy.io` + imagePath} alt={title} objectFit="cover" />
                 <Stack justifyContent={"center"} alignItems={"center"} flex={1}>
-                    <CardHeader isTruncated bg="#ffd100" display="flex" justifyContent="space-between" alignItems="center" width={"100%"}>
-                        <Text fontSize="lg" fontWeight="bold" isTruncated flex={1} textAlign={"center"}>
-                            {title}
+                    <CardHeader w={"7.5vw"} bg="#ffd100" display="flex" justifyContent="space-between" alignItems="center" width={"100%"}>
+                        <Text fontSize="md" fontWeight="bold" isTruncated flex={1} textAlign={"center"} w={"3vw"}>
+                            {evidenceTitle}
                         </Text>
                     </CardHeader>
                     <CardFooter p={2} width={"100%"}>
                         <Stack justifyContent={"center"} alignItems={"center"} width={"100%"}>
                             <Box bg="black" borderRadius="lg" p={1}>
                                 <Text fontSize="xs" fontWeight="bold" color="#fdd100">
-                                    {person}
+                                    {userName}
                                 </Text>
                             </Box>
                             <Text fontSize="12px" fontWeight="bold">
-                                {day}
+                                {new Date(imageDate).toLocaleDateString()}
                             </Text>
                         </Stack>
                     </CardFooter>
                 </Stack>
             </Card>
 
-            <EvidenceDetailModal isOpen={isOpen} onClose={onClose} title={title} img={img} />
+            <EvidenceDetailModal isOpen={isOpen} onClose={onClose} title={title} img={""} />
         </div>
     );
 };
