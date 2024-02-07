@@ -34,6 +34,9 @@ public class TruthRoomController {
         // 방에 남아 있는 멤버들의 이름 목록 가져오기
         Map<String, MemberInfoDto> remainingMembers = enterRoomService.getRoomMembers(roomId);
         //입장 목록 보내주기
+        System.out.println("gege");
+        System.out.println(remainingMembers);
+        System.out.println(remainingMembers.values());
         messagingTemplate.convertAndSend("/topic/member/" + roomId, remainingMembers.values());
     }
 

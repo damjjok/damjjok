@@ -41,7 +41,7 @@ public class ScheduleController {
     @Operation(summary = "일정 생성", description = "해당 챌린지의 진실의 방 일정을 생성합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "VF", description = "Validation Fail : 담쪽이가 아님", content = @Content(schema = @Schema(implementation = ScheduleCreateResponseDto.class))),
-            @ApiResponse(responseCode = "SU", description = "성공", content = @Content(schema = @Schema(implementation = ScheduleCreateResponseDto.class)))
+            @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = ScheduleCreateResponseDto.class)))
     })
     @PostMapping
     public ResponseEntity<? super ScheduleCreateResponseDto> createSchedule(@RequestBody @Valid ScheduleCreateRequestDto requestBody) {

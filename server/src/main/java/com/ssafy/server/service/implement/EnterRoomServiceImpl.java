@@ -1,5 +1,6 @@
 package com.ssafy.server.service.implement;
 
+import com.google.firebase.auth.UserInfo;
 import com.ssafy.server.dto.websocket.MemberInfoDto;
 import com.ssafy.server.dto.websocket.TruthRoomDto;
 import com.ssafy.server.service.EnterRoomService;
@@ -29,10 +30,10 @@ public class EnterRoomServiceImpl implements EnterRoomService {
     @Override
     public void addMember(Integer roomId, String sessionId, String userName, String role) {
         TruthRoomDto room = createOrGetRoom(roomId);
-        MemberInfoDto info = new MemberInfoDto();
-        info.setName(userName);
-        info.setRole(role);
-        room.setMembers(sessionId, info);
+        Map<String, MemberInfoDto> members = room.getMembers();
+        MemberInfoDto dto = new MemberInfoDto(userName, role);
+        members.put(sessionId, dto);
+        System.out.println(members);
         room.getReadyState().put(sessionId, false);
         room.getEvidenceNextStage().put(sessionId, false);
         room.getFinalArgumentReadyState().put(sessionId, false);

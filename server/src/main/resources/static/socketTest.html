@@ -40,7 +40,7 @@
     function subscribeToTopics() {
         if (roomId) {
             stompClient.subscribe('/topic/member/' + roomId, function(message){
-                console.log("Room Members: ", message.body);
+                console.log("Room Members: ", message.body.name);
             });
             stompClient.subscribe('/topic/readyState/' + roomId, function(message){
                 console.log("Ready State: ", message.body);
@@ -88,6 +88,7 @@
     function enterRoom() {
         var userNameInput = document.getElementById("userName");
         var roomIdInput = document.getElementById("roomId");
+        var role = "담쪽";
         if (userNameInput.value && roomIdInput.value) {
             userName = userNameInput.value;
             roomId = parseInt(roomIdInput.value);
@@ -98,7 +99,7 @@
                 roomId: parseInt(roomIdInput.value),
                 userName: userNameInput.value
             };
-            stompClient.send("/app/enter/" + message.roomId + "/" + message.userName, {}, JSON.stringify({}));
+            stompClient.send("/app/enter/" + message.roomId + "/" + message.userName + "/" + role, {}, JSON.stringify({}));
         } else {
             alert("Please enter your name and room ID.");
         }
