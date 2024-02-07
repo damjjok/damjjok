@@ -136,7 +136,7 @@ function ChallengeList({onClick}) {
                                   ),
                               )
                             : null}
-                        {!currentGroupChallengeList.some(
+                        {currentGroupChallengeList.length > 0 && !currentGroupChallengeList.some(
                             (challenge) => challenge.userId === userId,
                         ) && (
                             <Box px={3} py={2} display={"flex"}>
@@ -240,11 +240,14 @@ function ChallengeList({onClick}) {
 
                                     <li key={index}>
                                         <p className=" font-semibold">
-                                            {challenge.username} 챌린지
+                                            {challenge.userName} 챌린지
                                         </p>
                                         <p className="text-xs">
-                                            {challenge.createdAt} 진행
-                                        </p>
+                                                  {new Date(
+                                                      challenge.createdAt,
+                                                  ).toLocaleDateString()}{" "}
+                                                  진행
+                                              </p>
                                     </li>
                                 </Flex>
                             ))
