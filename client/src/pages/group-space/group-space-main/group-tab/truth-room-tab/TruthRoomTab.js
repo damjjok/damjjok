@@ -65,7 +65,7 @@ function TruthRoomTab() {
                             color={"white"}
                         >
                             진실의 방 오픈 :
-                            {new Date(schedule.date).toLocaleDateString()}
+                            {/* {new Date(schedule.date).toLocaleDateString()} */}
                         </Text>
                         <Text
                             fontWeight={"700"}
