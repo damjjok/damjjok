@@ -1,47 +1,17 @@
-// 오픈비두 연결에 쓰일 테스트 컴포넌트
+import React, { useContext } from "react";
 import { Button } from "@chakra-ui/react";
-import {
-    closeOpenviduSession,
-    getOpenviduToken,
-    getSessionId,
-} from "apis/api/TruthRoom";
-import React, { useState } from "react";
-import OpenViduTest from "../middle-component/right-component/rtc-component/OpenViduComponent";
-import { Link } from "react-router-dom";
-import { useRecoilValue } from "recoil";
-import { challengeIdState } from "contexts/TruthRoom";
+import { WebSocketContext } from "contexts/WebSocketContext";
 
-function ConnectionTest(props) {
-    const [sessionId, setSessionId] = useState("d");
-    const [openviduToken, setOpenviduToken] = useState("d");
-    const challengeId = useRecoilValue(challengeIdState);
-
-    async function getSessionIdAndSave() {
-        const gotSessionId = await getSessionId(5);
-        setSessionId(gotSessionId);
-    }
-
-    async function getOpenviduTokenAndSave() {
-        const gotOpenviduToken = await getOpenviduToken(sessionId);
-        setOpenviduToken(gotOpenviduToken);
-    }
+const ConnectionButton = () => {
+    const { connect, disconnect, isConnected } = useContext(WebSocketContext);
 
     return (
         <div>
-            <Button onClick={() => getSessionIdAndSave()}>
-                세션 id 받아오기
+            <Button onClick={isConnected ? disconnect : connect}>
+                {isConnected ? "Disconnect" : "Connect"}
             </Button>
-            <Button onClick={() => getOpenviduTokenAndSave()}>
-                토큰 받아오기
-            </Button>
-            <Button onClick={() => closeOpenviduSession(5)}>
-                세션 삭제하기
-            </Button>
-            <Link to="/truth-room">
-                <Button>오픈비두 연결하기</Button>
-            </Link>
         </div>
     );
-}
+};
 
-export default ConnectionTest;
+export default ConnectionButton;

@@ -1,24 +1,16 @@
 // import { CircularProgress, CircularProgressLabel } from "@chakra-ui/react";
 import piggybanklogo from "assets/images/piggybanklogo.png";
+import { challengeState } from "contexts/Challenge";
+import { useRecoilValue } from "recoil";
 // import { challengeState } from "contexts/Challenge";
 // import { useRecoilValue } from "recoil";
 // import { css } from "twin.macro";
 
 function PiggyBank(progress = 0.2) {
     const processPercentage = progress * 100;
-    const challengeList = localStorage.getItem("challengeList");
-    let currentChallenge = {};
+    const currentChallenge = useRecoilValue(challengeState)
     let today = new Date();
 
-    if (challengeList) {
-        // 가져온 값이 있으면 JSON.parse를 사용해서 문자열을 객체로 변환합니다.
-        const myChallenge = JSON.parse(challengeList);
-
-        // 이후 myObject를 원하는대로 사용할 수 있습니다.
-        currentChallenge = myChallenge[0];
-    } else {
-        console.log("No data in localStorage");
-    }
 
     const startedDate = new Date(currentChallenge.createdAt);
     // 두 날짜 사이의 밀리초 차이를 계산합니다.

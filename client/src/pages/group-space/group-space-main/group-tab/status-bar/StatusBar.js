@@ -1,4 +1,4 @@
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { currentUserState } from "../../../../../contexts/User";
 import candyImg from "assets/images/candylogo.png";
 import StatusBarToast from "./status-bar-toast/StatusBarToast";
@@ -8,36 +8,16 @@ import avatar1 from "assets/images/avatar1.png";
 import avatar2 from "assets/images/avatar2.png";
 import avatar3 from "assets/images/avatar3.png";
 import avatar4 from "assets/images/avatar4.png";
-import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 import { challengeState } from "contexts/Challenge";
 // import { challengeState } from "../../../../../contexts/Challenge";
 
-// 백엔드 물어볼 거
-// /api/v1/challenge/{challengeId}/detail API관련
-// 더미데이터에 profilePath는 임시로 넣어둔 건가용?
-// 혹시 수정 가능하다면, 챌린지 생성할 때 기본값을 "assets/images/avatar1.png" 로 잡아줄 수 있나요?
-// 기본 값이 있고, 수정하면 적용하기 위함
-// determination 기본 값도 '챌린지 각오를 적어주세요' 로 기본값을 잡아주면 좋을 것 같습니다,,,
-// create challenge 시에 설정해주시면 좋을 것 같읍니다,,,
-// 기본값이 비면 프로필 수정창에서 UI가 수정이 안되더라구요...
+// profilePath 올바르게 설정될 필요성
 function StatusBar() {
-    let challenge = useRecoilValue(challengeState);
+    const challenge = useRecoilValue(challengeState);
     const currentUser = challenge.userName;
     // let navigate = useNavigate();
 
     let today = new Date();
-    // if (currentChallenge) {
-    //     // 가져온 값이 있으면 JSON.parse를 사용해서 문자열을 객체로 변환합니다.
-    //     const myChallenge = JSON.parse(currentChallenge);
-
-    //     // 이후 myObject를 원하는대로 사용할 수 있습니다.
-    //     currentChallenge = myChallenge[0];
-    // } else {
-    //     console.log("No data in localStorage");
-    //     navigate("./empty-challenge");
-    //     return <></>;
-    // }
 
     const startedDate = new Date(challenge.createdAt);
 
