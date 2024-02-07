@@ -22,6 +22,7 @@ import EvidenceCreateAlert from "../evidence-alert/EvidenceCreateAlert";
 
 const EvidenceCreateModal = ({ isOpen, onClose, onSave }) => {
     const [data, setData] = useRecoilState(evidenceData);
+    const [newEvidence, setNewEvidence] = useState({});
     const [isAlertOpen, setIsAlertOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState(""); // 미리보기 이미지 상태
 
@@ -30,8 +31,8 @@ const EvidenceCreateModal = ({ isOpen, onClose, onSave }) => {
     };
 
     const handleConfirmSave = () => {
-        onSave(data); // 실제 저장 로직 실행
-        setData({ title: "", img: null }); // 데이터 초기화
+        onSave(newEvidence); // 실제 저장 로직 실행
+        setNewEvidence({ title: "", image: null }); // 데이터 초기화
         onClose(); // 모달 닫기
         setIsAlertOpen(false); // Alert 대화 상자 닫기
         setPreviewImage(""); // 미리보기 이미지 초기화
@@ -45,10 +46,15 @@ const EvidenceCreateModal = ({ isOpen, onClose, onSave }) => {
             reader.onloadend = () => {
                 // 미리보기 이미지 상태를 업데이트하고
                 // 파일 데이터를 data.img에도 저장합니다.
-                setData({
-                    ...data,
-                    img: reader.result, // 여기서 reader.result를 data.img에 저장합니다.
-                    title: data.title,
+                // setData({
+                //     ...data,
+                //     img: reader.result, // 여기서 reader.result를 data.img에 저장합니다.
+                //     title: data.title,
+                // });
+
+                setNewEvidence({
+                    ...newEvidence,
+                    image: file,
                 });
                 setPreviewImage(reader.result); // 미리보기 이미지 상태를 업데이트
             };
@@ -68,10 +74,8 @@ const EvidenceCreateModal = ({ isOpen, onClose, onSave }) => {
                             <Input
                                 variant="flushed"
                                 placeholder="제목"
-                                value={data.title}
-                                onChange={(e) =>
-                                    setData({ ...data, title: e.target.value })
-                                }
+                                value={newEvidence.title}
+                                onChange={(e) => setNewEvidence({ ...newEvidence, title: e.target.value })}
                                 _focus={{
                                     borderBottom: "2px solid #ffd110", // 포커스 시 선 색상 변경
                                     boxShadow: "none", // 기본 테마의 포커스 boxShadow 제거
@@ -104,11 +108,7 @@ const EvidenceCreateModal = ({ isOpen, onClose, onSave }) => {
                                         m="auto"
                                     />
                                 ) : (
-                                    <Text
-                                        fontSize="lg"
-                                        fontWeight="bold"
-                                        color="gray.500"
-                                    >
+                                    <Text fontSize="lg" fontWeight="bold" color="gray.500">
                                         + 사진 추가
                                     </Text>
                                 )}
@@ -124,11 +124,7 @@ const EvidenceCreateModal = ({ isOpen, onClose, onSave }) => {
                     </ModalBody>
                     <ModalFooter>
                         <Flex justifyContent="center" width="full">
-                            <Button
-                                colorScheme="yellow"
-                                mr={3}
-                                onClick={handleSaveClick}
-                            >
+                            <Button colorScheme="yellow" mr={3} onClick={handleSaveClick}>
                                 저장
                             </Button>
                             <Button variant="ghost" onClick={onClose}>
@@ -138,11 +134,7 @@ const EvidenceCreateModal = ({ isOpen, onClose, onSave }) => {
                     </ModalFooter>
                 </ModalContent>
 
-                <EvidenceCreateAlert
-                    isOpen={isAlertOpen}
-                    onClose={() => setIsAlertOpen(false)}
-                    onConfirm={handleConfirmSave}
-                />
+                <EvidenceCreateAlert isOpen={isAlertOpen} onClose={() => setIsAlertOpen(false)} onConfirm={handleConfirmSave} />
             </Modal>
         </div>
     );

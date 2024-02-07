@@ -1,23 +1,19 @@
 import { useRecoilState } from "recoil";
-import {
-    useDisclosure,
-    Button,
-    HStack,
-    Text,
-    VStack,
-    Box,
-} from "@chakra-ui/react";
+import { useDisclosure, Button, HStack, Text, VStack, Box } from "@chakra-ui/react";
 import { evidenceList } from "contexts/Article";
 import EvidenceItems from "./evidence-items/EvidenceItems";
 import EvidenceCreateModal from "./evidence-modal/EvidenceCreateModal";
 import { ViewIcon } from "@chakra-ui/icons";
+import { useParams } from "react-router-dom";
+import { postEvidence } from "apis/api/Challenge";
 
 const Evidence = () => {
     const [evidence, setEvidence] = useRecoilState(evidenceList);
-
+    const { challengeId } = useParams();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const handleSaveEvidence = (newEvidence) => {
-        setEvidence([...evidence, newEvidence]);
+        postEvidence({ ...newEvidence, challengeId });
+        // getEvidences(challengeId)
     };
     return (
         <div className="Evidence mt-3">
@@ -50,11 +46,7 @@ const Evidence = () => {
                 </HStack>
             </Box>
 
-            <EvidenceCreateModal
-                isOpen={isOpen}
-                onClose={onClose}
-                onSave={handleSaveEvidence}
-            />
+            <EvidenceCreateModal isOpen={isOpen} onClose={onClose} onSave={handleSaveEvidence} />
         </div>
     );
 };
