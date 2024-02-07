@@ -1,7 +1,8 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Text, useBreakpointValue } from "@chakra-ui/react";
 
 const TitleText = (props) => {
     const { children, description, img, ...rest } = props;
+    const isMobile = useBreakpointValue({ base: true, md: false });
     return (
         <>
             <Box
@@ -12,7 +13,7 @@ const TitleText = (props) => {
                 bgPosition="left"
                 bgRepeat="no-repeat"
                 bgSize="cover"
-                paddingLeft={8}
+                paddingX={ isMobile ? 4 : 8}
                 paddingY={8}
                 backdropContrast={"30%"}
             >
@@ -23,6 +24,7 @@ const TitleText = (props) => {
                 >
                     <Text {...rest}>{children}</Text>
                     <Text
+                    fontSize={isMobile ? "xs" : "md"}
                     // color={"#c0c0c0"}
                     >
                         {description}
