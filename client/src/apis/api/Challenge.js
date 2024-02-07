@@ -80,10 +80,23 @@ const postTestimony = async (testimony, challengeId) => {
     } catch (error) {}
 };
 
+const getChallengeRanking = async (challengeId) => {
+    try {
+        const response = await axiosInstance.get(
+            `/v1/challenge/${challengeId}/ranking`
+        );
+        if (response.status === 200) {
+            return response.data
+        }
+    } catch (error) {}
+}
+
+
 export {
     createChallenge,
     getTestimonies,
     getAttendanceList,
     getTestimonyDetail,
     postTestimony,
+    getChallengeRanking,
 };
