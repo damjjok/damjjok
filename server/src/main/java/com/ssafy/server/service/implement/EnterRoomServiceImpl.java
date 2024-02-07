@@ -1,5 +1,6 @@
 package com.ssafy.server.service.implement;
 
+import com.ssafy.server.dto.websocket.MemberInfoDto;
 import com.ssafy.server.dto.websocket.TruthRoomDto;
 import com.ssafy.server.service.EnterRoomService;
 import org.springframework.stereotype.Service;
@@ -28,8 +29,10 @@ public class EnterRoomServiceImpl implements EnterRoomService {
     @Override
     public void addMember(Integer roomId, String sessionId, String userName, String role) {
         TruthRoomDto room = createOrGetRoom(roomId);
-        room.getMembers().put(sessionId, userName);
-        room.getMembersRole().put(sessionId, role);
+        MemberInfoDto info = new MemberInfoDto();
+        info.setName(userName);
+        info.setRole(role);
+        room.setMembers(sessionId, info);
         room.getReadyState().put(sessionId, false);
         room.getEvidenceNextStage().put(sessionId, false);
         room.getFinalArgumentReadyState().put(sessionId, false);
@@ -37,7 +40,7 @@ public class EnterRoomServiceImpl implements EnterRoomService {
     }
 
     @Override
-    public Map<String, String> getRoomMembers(Integer roomId) {
+    public Map<String, MemberInfoDto> getRoomMembers(Integer roomId) {
         TruthRoomDto room = truthRooms.get(roomId);
         if (room != null) {
             return room.getMembers();
