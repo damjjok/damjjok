@@ -4,6 +4,7 @@ import com.ssafy.server.dto.ResponseDto;
 import com.ssafy.server.dto.auth.CustomUserDetails;
 import com.ssafy.server.dto.group.GroupDto;
 import com.ssafy.server.dto.group.UserDto;
+import com.ssafy.server.dto.group.UserInviteDto;
 import com.ssafy.server.dto.request.group.GroupCreateRequestDto;
 import com.ssafy.server.dto.request.group.GroupMemberCreateRequestDto;
 import com.ssafy.server.dto.response.group.*;
@@ -131,17 +132,21 @@ public class GroupServiceImpl implements GroupService {
     public ResponseEntity<? super GroupMemberCreateResponseDto> joinGroupMember(GroupMemberCreateRequestDto dto) {
         try{
 
+            List<UserInviteDto> usersList = dto.getList();
             GroupEntity groupEntity = groupRepository.findByGroupId(dto.getGroupId());
-            UserEntity userEntity = userRepository.findByUserId(dto.getUserId());
 
-            GroupMemberId groupMemberId = new GroupMemberId(dto.getGroupId(), dto.getUserId());
+            usersList.stream().forEach(user -> {
+                UserEntity userEntity = userRepository.findByUserId(user.getUserId());
 
-            GroupMemberEntity entity = new GroupMemberEntity();
-            entity.setGroupEntity(groupEntity);
-            entity.setUserEntity(userEntity);
-            entity.setId(groupMemberId);
+                GroupMemberId groupMemberId = new GroupMemberId(dto.getGroupId(), user.getUserId());
 
-            groupMemberRepository.save(entity);
+                GroupMemberEntity entity = new GroupMemberEntity();
+                entity.setGroupEntity(groupEntity);
+                entity.setUserEntity(userEntity);
+                entity.setId(groupMemberId);
+
+                groupMemberRepository.save(entity);
+            });
 
         }catch(Exception e){
             return ResponseDto.databaseError();
