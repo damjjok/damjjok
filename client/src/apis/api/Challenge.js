@@ -54,11 +54,30 @@ const getTestimonyDetail = async (testimonyId, setTestimony) => {
         const response = await axiosInstance.get(
             `/v1/proof/testimony/detail/${testimonyId}`
         );
-        const { testimony } = await response.data;
-        setTestimony(testimony);
+        if (response.status === 200) {
+            const { testimony } = await response.data;
+            setTestimony(testimony);
+        }
     } catch (error) {
         console.log(error);
     }
+};
+
+const postTestimony = async (testimony, challengeId) => {
+    try {
+        const requestBody = {
+            title: testimony.title,
+            content: testimony.content,
+            challengeId: challengeId,
+        };
+        const response = await axiosInstance.post(
+            `/v1/proof/testimony`,
+            requestBody
+        );
+        if (response.status === 200) {
+            console.log("증언 추가 됨");
+        }
+    } catch (error) {}
 };
 
 export {
@@ -66,4 +85,5 @@ export {
     getTestimonies,
     getAttendanceList,
     getTestimonyDetail,
+    postTestimony,
 };

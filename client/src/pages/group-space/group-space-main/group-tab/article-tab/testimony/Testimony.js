@@ -1,4 +1,3 @@
-import { useRecoilState } from "recoil";
 import {
     useDisclosure,
     Button,
@@ -7,27 +6,25 @@ import {
     VStack,
     Box,
 } from "@chakra-ui/react";
-import { testimonyList } from "contexts/Article";
 import TestimonyCreateModal from "./testimony-modal/TestimonyCreateModal";
 import TestimonyItems from "./testimony-items/TestimonyItems";
 import { EditIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
-import { getTestimonies } from "apis/api/Challenge";
+import { getTestimonies, postTestimony } from "apis/api/Challenge";
 import { useParams } from "react-router-dom";
 
 const Testimony = () => {
-    const [testimony, setTestimony] = useRecoilState(testimonyList);
     const [testimonies, setTestimonies] = useState([]);
     const { challengeId } = useParams();
+
+    const saveTestimony = async (testimony) => {
+        await postTestimony(testimony, challengeId);
+        await getTestimonies(challengeId, setTestimonies);
+    };
 
     useEffect(() => {
         getTestimonies(challengeId, setTestimonies);
     }, []);
-
-    const handleSaveTestimony = (newTestimony) => {
-        setTestimony([...testimony, newTestimony]);
-        console.log(testimony);
-    };
 
     const { isOpen, onOpen, onClose } = useDisclosure();
     return (
@@ -66,7 +63,7 @@ const Testimony = () => {
             <TestimonyCreateModal
                 isOpen={isOpen}
                 onClose={onClose}
-                onSave={handleSaveTestimony}
+                onSave={saveTestimony}
             />
         </div>
     );

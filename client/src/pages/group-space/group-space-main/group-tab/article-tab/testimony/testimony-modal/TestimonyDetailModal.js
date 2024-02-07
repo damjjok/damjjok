@@ -13,20 +13,12 @@ import {
 } from "@chakra-ui/react";
 import { getTestimonyDetail } from "apis/api/Challenge";
 
-const TestimonyDetailModal = ({
-    isOpen,
-    onClose,
-    content,
-    title,
-    testimonyId,
-}) => {
-    const [testimony, setTestimony] = useState();
+const TestimonyDetailModal = ({ isOpen, onClose, testimonyId }) => {
+    const [testimony, setTestimony] = useState({});
     useEffect(() => {
         getTestimonyDetail(testimonyId, setTestimony);
-    });
+    }, []);
     // 추후에 데이터 연결되면 바꿀 예정
-    const person = "문지호";
-    const day = "2024년 2월 11일 13:00";
 
     return (
         <div className="TestimonyDetailModal">

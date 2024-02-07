@@ -15,9 +15,13 @@ import {
     Flex,
 } from "@chakra-ui/react";
 import TestimonyCreateAlert from "../testimony-alert/TestimonyCreateAlert";
+import { postTestimony } from "apis/api/Challenge";
+import { useParams } from "react-router-dom";
 
 const TestimonyCreateModal = ({ isOpen, onClose, onSave }) => {
-    const [data, setData] = useRecoilState(testimonyData);
+    const { challengeId } = useParams();
+
+    const [newTestimony, setNewTestimony] = useState({});
 
     const [isAlertOpen, setIsAlertOpen] = useState(false);
 
@@ -26,8 +30,8 @@ const TestimonyCreateModal = ({ isOpen, onClose, onSave }) => {
     };
 
     const handleConfirmSave = () => {
-        onSave(data); // 실제 저장 로직 실행
-        setData({ title: "", content: "" }); // 데이터 초기화
+        onSave(newTestimony);
+        setNewTestimony({});
         onClose(); // 모달 닫기
         setIsAlertOpen(false); // Alert 대화 상자 닫기
     };
@@ -43,9 +47,12 @@ const TestimonyCreateModal = ({ isOpen, onClose, onSave }) => {
                         <Input
                             variant="flushed"
                             placeholder="제목"
-                            value={data.title}
+                            value={newTestimony.title}
                             onChange={(e) =>
-                                setData({ ...data, title: e.target.value })
+                                setNewTestimony({
+                                    ...newTestimony,
+                                    title: e.target.value,
+                                })
                             }
                             _focus={{
                                 borderBottom: "2px solid #ffd110", // 포커스 시 선 색상 변경
@@ -54,9 +61,12 @@ const TestimonyCreateModal = ({ isOpen, onClose, onSave }) => {
                         />
                         <Textarea
                             placeholder="내용을 입력해주세요"
-                            value={data.content}
+                            value={newTestimony.content}
                             onChange={(e) =>
-                                setData({ ...data, content: e.target.value })
+                                setNewTestimony({
+                                    ...newTestimony,
+                                    content: e.target.value,
+                                })
                             }
                             mt={4}
                             size="lg"
