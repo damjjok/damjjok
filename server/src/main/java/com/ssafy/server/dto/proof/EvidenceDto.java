@@ -17,4 +17,5 @@ public class EvidenceDto {
     private String imagePath;
     private LocalDateTime imageDate;
     private int createdBy;
+    private String userName;
 }

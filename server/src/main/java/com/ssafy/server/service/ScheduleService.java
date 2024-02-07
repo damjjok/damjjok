@@ -2,8 +2,8 @@ package com.ssafy.server.service;
 
 import com.ssafy.server.dto.request.schedule.ScheduleCreateRequestDto;
 import com.ssafy.server.dto.request.schedule.ScheduleDetailRequestDto;
-import com.ssafy.server.dto.response.ScheduleCreateResponseDto;
-import com.ssafy.server.dto.response.ScheduleDetailResponseDto;
+import com.ssafy.server.dto.response.schedule.ScheduleCreateResponseDto;
+import com.ssafy.server.dto.response.schedule.ScheduleDetailResponseDto;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Optional;

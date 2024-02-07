@@ -10,11 +10,16 @@ import com.ssafy.server.entity.GroupEntity;
 import com.ssafy.server.entity.GroupMemberEntity;
 import com.ssafy.server.entity.GroupMemberId;
 import com.ssafy.server.entity.UserEntity;
+import com.ssafy.server.exception.CustomJwtException;
+import com.ssafy.server.provider.JwtProvider;
 import com.ssafy.server.repository.GroupMemberRepository;
 import com.ssafy.server.repository.GroupRepository;
 import com.ssafy.server.repository.UserRepository;
 import com.ssafy.server.service.GroupService;
+import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +35,7 @@ public class GroupServiceImpl implements GroupService {
     private final GroupRepository groupRepository;
     private final UserRepository userRepository;
     private final GroupMemberRepository groupMemberRepository;
+    private final JwtProvider jwtProvider;
 
     @Override
     public ResponseEntity<? super GroupCreateResponseDto> create(GroupCreateRequestDto dto) {
@@ -105,8 +111,9 @@ public class GroupServiceImpl implements GroupService {
 
             userEntityList.stream().forEach(e -> {
                 UserDto dto = new UserDto();
-                dto.setEmail(e.getEmail());
+                dto.setUserId(e.getUserId());
                 dto.setUserName(e.getUserName());
+                dto.setEmail(e.getEmail());
                 list.add(dto);
             });
 
@@ -140,11 +147,17 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public ResponseEntity<? super GroupListByUserResponseDto> groupListByUser(int userId) {
+    public ResponseEntity<? super GroupListByUserResponseDto> groupListByUser(String authorizationHeader) {
 
         List<GroupDto> list = new ArrayList<>();
 
-        try{
+        try {
+            String token = authorizationHeader.substring(7);
+            Jws<Claims> parsedToken = jwtProvider.validateToken(token);
+
+            String email = parsedToken.getBody().get("email", String.class);
+            int userId = parsedToken.getBody().get("userId", Integer.class);
+            String userName = parsedToken.getBody().get("userName", String.class);
 
             List<GroupEntity> entityList = groupMemberRepository.findGroupsByUserId(userId);
 
@@ -162,8 +175,15 @@ public class GroupServiceImpl implements GroupService {
                 list.add(dto);
             });
 
-        }catch (Exception e){
-            return ResponseDto.databaseError();
+//        }catch (Exception e){
+//            return ResponseDto.databaseError();
+//        }
+        }catch (ExpiredJwtException e) { // 액세스 토큰 만료 시
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        } catch (UnsupportedJwtException | SignatureException | MalformedJwtException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        } catch (CustomJwtException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
         return GroupListByUserResponseDto.success(list);
     }

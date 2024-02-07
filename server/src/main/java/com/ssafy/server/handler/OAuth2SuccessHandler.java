@@ -44,7 +44,6 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String encodedEmail = URLEncoder.encode(email, StandardCharsets.UTF_8.toString());
         String encodedName = URLEncoder.encode(userName, StandardCharsets.UTF_8.toString());
 
-
         //boolean isExist = userRepository.existsByEmail(email);
         UserEntity userEntity = userRepository.findByEmail(email);
 
@@ -56,14 +55,14 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
             valueOperations.set(refreshToken, email);
             response.sendRedirect("http://localhost:8080/auth/oauth-response?" +
-                    "accessToken = " + accessToken + "&" +
-                    "refreshToken = " + refreshToken
+                    "accessToken=" + accessToken + "&" +
+                    "refreshToken=" + refreshToken
             );
         }
         else{
             response.sendRedirect("http://localhost:8080/auth/oauth-response?" +
-                    "email = " +encodedEmail + "&" +
-                    "name = " + encodedName
+                    "email=" +email + "&" +
+                    "name=" + encodedName
             );
         }
     }

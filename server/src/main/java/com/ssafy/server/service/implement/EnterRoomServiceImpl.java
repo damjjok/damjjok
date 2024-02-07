@@ -1,5 +1,7 @@
 package com.ssafy.server.service.implement;
 
+import com.google.firebase.auth.UserInfo;
+import com.ssafy.server.dto.websocket.MemberInfoDto;
 import com.ssafy.server.dto.websocket.TruthRoomDto;
 import com.ssafy.server.service.EnterRoomService;
 import org.springframework.stereotype.Service;
@@ -26,9 +28,12 @@ public class EnterRoomServiceImpl implements EnterRoomService {
         return truthRooms.get(roomId); // roomId에 해당하는 방을 반환, 없으면 null 반환
     }
     @Override
-    public void addMember(Integer roomId, String sessionId, String userName) {
+    public void addMember(Integer roomId, String sessionId, String userName, String role) {
         TruthRoomDto room = createOrGetRoom(roomId);
-        room.getMembers().put(sessionId, userName);
+        Map<String, MemberInfoDto> members = room.getMembers();
+        MemberInfoDto dto = new MemberInfoDto(userName, role);
+        members.put(sessionId, dto);
+        System.out.println(members);
         room.getReadyState().put(sessionId, false);
         room.getEvidenceNextStage().put(sessionId, false);
         room.getFinalArgumentReadyState().put(sessionId, false);
@@ -36,7 +41,7 @@ public class EnterRoomServiceImpl implements EnterRoomService {
     }
 
     @Override
-    public Map<String, String> getRoomMembers(Integer roomId) {
+    public Map<String, MemberInfoDto> getRoomMembers(Integer roomId) {
         TruthRoomDto room = truthRooms.get(roomId);
         if (room != null) {
             return room.getMembers();
