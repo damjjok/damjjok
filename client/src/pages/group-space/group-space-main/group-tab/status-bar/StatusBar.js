@@ -11,18 +11,15 @@ import avatar4 from "assets/images/avatar4.png";
 import { challengeState } from "contexts/Challenge";
 // import { challengeState } from "../../../../../contexts/Challenge";
 
-
 // profilePath 올바르게 설정될 필요성
 function StatusBar() {
-    // const { groupId, challengeId } = useParams();
+    const challenge = useRecoilValue(challengeState);
+    const currentUser = challenge.userName;
+    // let navigate = useNavigate();
 
-
-    const currentChallenge = useRecoilValue(challengeState)
-    const currentUser = currentChallenge.userName;
-    // console.log(currentChallenge);
     let today = new Date();
 
-    const startedDate = new Date(currentChallenge.createdAt);
+    const startedDate = new Date(challenge.createdAt);
 
     // 두 날짜 사이의 밀리초 차이를 계산합니다.
     const diffMilliseconds = today.getTime() - startedDate.getTime();
@@ -59,9 +56,11 @@ function StatusBar() {
                         <div className="bg-damblack rounded-xl max-h-8 px-2 text-damyellow">
                             D+{diffDays}
                         </div>
-                        <p className="mx-2">{currentChallenge.determination}</p>
+                        <p className="mx-2">{challenge.determination}</p>
+                        {/* EditModal axios 적용해야 함 */}
+                        {/* 요청 API : /api/v1/challenge/{challengeId}/profile-modify */}
                         <StatusEditModal
-                            currentChallenge={currentChallenge}
+                            currentChallenge={challenge}
                             avatars={avatars}
                         />
                     </Flex>

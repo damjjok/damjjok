@@ -1,5 +1,4 @@
 import { useRecoilValue } from "recoil";
-import { currentGroupState } from "../../../../contexts/User";
 import { useEffect, useState } from "react";
 import Select from "react-select";
 import { Box } from "@chakra-ui/react";
@@ -18,7 +17,7 @@ function GroupList() {
         value: item,
         label: item,
     }));
-    const currentGroup = useRecoilValue(currentGroupState);
+    const currentGroup = { groupId: "1", groupName: "E105" };
     // 더미데이터이므로 더미데이터[0]으로 초기값 설정, 이후 props나 recoilstate 기반으로 선택한 그룹명이 표시될 수 있도록 수정해야 함
     const [selectedGroup, setSelectedGroup] = useState(options[0]);
 
