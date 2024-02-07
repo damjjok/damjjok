@@ -1,10 +1,17 @@
 import React, { createContext, useRef, useState, useCallback } from "react";
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
+import { useRecoilState } from "recoil";
+import { joinMemberListState } from "./TruthRoomSocket";
 
 const WebSocketContext = createContext({});
 
 export const WebSocketProvider = ({ children }) => {
+    // recoil로 관리할 전역 상태들
+    const [joinMemberList, setJoinMemberList] =
+        useRecoilState(joinMemberListState); // 참여 유저 목록
+
+    // 여기부터는 소켓 연결, 통신 관련 내용들
     const [isConnected, setIsConnected] = useState(false);
     const stompClient = useRef(null);
 
@@ -135,21 +142,14 @@ export const WebSocketProvider = ({ children }) => {
     }
 
     const enterRoom = useCallback((roomId, userName, role) => {
-        // 사용자가 방에 입장한 후 구독 시작
+        // 사용자가 방에 입장한 후 필요한 구독 목록 구독 시작
         subscribeToTopics(roomId);
-        // var message = {
-        //     roomId: parseInt(roomId),
-        //     userName: userName,
-        // };
         stompClient.current.publish({
+            // 진실의 방에 입장했음을 소켓에 발행
             destination: "/app/enter/" + roomId + "/" + userName + "/" + role,
             headers: {},
             body: JSON.stringify({}),
         });
-
-        console.log(
-            roomId + "번 방 입장, 유저 이름: " + userName + ", 역할: " + role,
-        );
     }, []);
 
     // 연결 상태, 연결 및 연결 해제 함수를 컨텍스트 값으로 제공
