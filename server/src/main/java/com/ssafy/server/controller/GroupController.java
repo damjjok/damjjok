@@ -59,7 +59,7 @@ public class GroupController {
     }
 
     @PostMapping("/{groupId}/join")
-    @Operation(summary = "특정 그룹 가입", description = "특정 그룹 가입",
+    @Operation(summary = "특정 그룹 가입", description = "특정 그룹 가입(초대된 사람들 한번에 가입 시킴)",
             responses = { @ApiResponse(responseCode = "200", description = "특정 그룹 가입 성공",
                     content = @Content(schema = @Schema(implementation = GroupMemberCreateResponseDto.class)))})
     public ResponseEntity<? super GroupMemberCreateResponseDto> joinGroup(
