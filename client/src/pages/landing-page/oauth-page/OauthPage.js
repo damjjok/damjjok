@@ -2,9 +2,12 @@ import React, { useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { userState } from "contexts/Sns";
 import { useNavigate } from "react-router-dom";
+import { currentUser } from "contexts/User";
 
 const OauthPage = () => {
     const [user, setUser] = useRecoilState(userState);
+
+    const [currentUserInfo, setCurrentUserInfo] = useRecoilState(currentUser);
 
     const navigate = useNavigate();
 
