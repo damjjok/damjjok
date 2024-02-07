@@ -63,7 +63,7 @@ function StatusBar() {
                 bg={"dam.gray"}
                 borderRadius={"30px"}
                 paddingX={".5rem"}
-                height={'3vw'}
+                height={'40px'}
             >
                 <Wrap>
                     <Flex alignItems={"center"}>
