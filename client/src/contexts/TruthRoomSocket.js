@@ -1,6 +1,12 @@
 import { atom } from "recoil";
 // 진실의 방에서 소켓으로 관리할 전역 상태들
 
+export const stepState = atom({
+    // 대기 중, 제보 판별, 투표, PASS/FAIL, 최후 변론, 벌금 결정, 종료
+    key: "step",
+    default: 0,
+});
+
 export const joinMemberListState = atom({
     // 진실의 방 입장 유저 목록
     key: "joinMemberList",

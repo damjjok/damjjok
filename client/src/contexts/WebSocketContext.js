@@ -4,6 +4,7 @@ import { Client } from "@stomp/stompjs";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import {
     allUserReadyState,
+    fineStepState,
     joinMemberListState,
     readyMemberCountState,
     stepReadyCountState,
@@ -20,12 +21,17 @@ export const WebSocketProvider = ({ children }) => {
         useRecoilState(joinMemberListState); // 참여 유저 목록
     const [stepReadyCount, setStepReadyCount] =
         useRecoilState(stepReadyCountState); // 각 단계에서 다음 상태로 갈 준비가 된 유저 수 카운트(모든 단계에서 사용 / 각 단계에서 모든 유저가 준비 완료될 때마다 0으로 초기화)
+
     // 1. 준비 단계
     const [readyMemberCount, setReadyMemberCount] = useRecoilState(
         readyMemberCountState
     ); // 준비 단계에서 준비가 된 유저의 수
     const setAllUserReady = useSetRecoilState(allUserReadyState); // 모든 유저가 준비 완료인지 여부, 이건 false였다가 true가 되기만해도 끝이므로 setRecoilState로 호출
     // 2. 증거 판별 단계
+    // 3. PASS/FAIl 투표 단계
+    // 4. 최후 변론 단계
+    // 5. 벌금 결정 단계
+    const [fineStepState, setFineStepState] = useRecoilState(fineStepState); // 벌금 결정 단계에서
 
     // 여기부터는 소켓 연결, 통신 관련 내용들
     const [isConnected, setIsConnected] = useState(false);
@@ -149,19 +155,23 @@ export const WebSocketProvider = ({ children }) => {
                 "/topic/startMoenyVote/" + roomId,
                 (message) => {
                     console.log("Start Money Vote: ", message.body);
-                    setStepReadyCount(0);
+                    setStepReadyCount(0); // 모든 멤버가 벌금을 입력 완료, 단계 별 준비 상황 0으로 초기화
+                    setFineStepState(1); // 벌금 입력(0) -> 벌금 투표(1) 단계로
                 }
             );
             stompClient.current.subscribe(
                 "/topic/fineVoteCount/" + roomId,
                 (message) => {
                     console.log("Fine Vote Count: ", message.body);
+                    setStepReadyCount(stepReadyCount + 1); // 벌금 투표한 멤버 수 카운트 용으로 사용
                 }
             );
             stompClient.current.subscribe(
                 "/topic/fineVoteResulte/" + roomId,
                 (message) => {
                     console.log("Fine Vote Result: ", message.body);
+                    stepReadyCount(0); // 단계 별 준비 멤버 수 0으로 초기화
+                    setFineStepState(2); // 벌금 투표(1) -> 벌금 발표(2) 단계로
                 }
             );
             stompClient.current.subscribe(
