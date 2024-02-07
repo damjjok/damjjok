@@ -72,6 +72,7 @@ public class EnterRoomServiceImpl implements EnterRoomService {
         }
     }
 
+    @Override
     public Integer countMemberReady(Integer roomId) {
         TruthRoomDto room = truthRooms.get(roomId);
         long count = room.getReadyState().values().stream()
@@ -94,16 +95,19 @@ public class EnterRoomServiceImpl implements EnterRoomService {
         return room != null && room.getMembers().isEmpty();
     }
 
+    @Override
     // 세션 ID와 방 ID를 매핑하는 메소드
     public void mapSessionToRoom(String sessionId, Integer roomId) {
         sessionRoomMap.put(sessionId, roomId);
     }
 
+    @Override
     // 세션 ID로 방 ID를 조회하는 메소드
     public Integer getRoomIdFromSession(String sessionId) {
         return sessionRoomMap.get(sessionId);
     }
 
+    @Override
     // 세션 ID에 해당하는 매핑을 제거하는 메소드
     public void removeSessionFromRoomMap(String sessionId) {
         sessionRoomMap.remove(sessionId);
