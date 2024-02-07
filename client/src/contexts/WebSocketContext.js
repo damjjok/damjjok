@@ -9,6 +9,7 @@ import {
     stepReadyCountState,
 } from "./TruthRoomSocket";
 import { stepState } from "./TruthRoom";
+import { closeOpenviduSession } from "apis/api/TruthRoom";
 
 const WebSocketContext = createContext({});
 
@@ -216,16 +217,6 @@ export const WebSocketProvider = ({ children }) => {
         });
     }, []);
 
-    const afterPass = useCallback((roomId) => {
-        // 결과가 PASS일 때 방에서 나가는 함수
-        stompClient.current.publish({
-            // 방에서 나가겠다는 메세지를 서버에 전달
-            destination: "/app/afterPass/" + roomId,
-            headers: {},
-            body: {},
-        });
-    }, []);
-
     const finalArgumentReady = useCallback((roomId) => {
         // 투표 결과가 FAIL일 경우 최후 변론으로 버튼을 눌렀을 때의 동작
         var message = {
@@ -275,7 +266,24 @@ export const WebSocketProvider = ({ children }) => {
             headers: {},
             body: JSON.stringify({ message }),
         });
-    });
+    }, []);
+
+    const leaveRoom = useCallback(
+        (roomId, isLastMember) => {
+            // 진실의 방에서 나갈 때 동작하는 함수, 마지막 나가는 멤버일 경우 오픈비두와의 세션도 끊어 줌.
+            if (isLastMember) closeOpenviduSession();
+            // 서버에 나감을 알리고 소켓과 연결을 끊어 줌.
+            disconnect();
+
+            stompClient.current.publish({
+                // 진실의 방에서 나감을 서버에 알림
+                destination: "/app/leaveRoom/" + roomId,
+                headers: {},
+                body: {},
+            });
+        },
+        [disconnect]
+    );
 
     // 연결 상태, 연결 및 연결 해제 함수를 컨텍스트 값으로 제공
     const value = {
@@ -286,11 +294,11 @@ export const WebSocketProvider = ({ children }) => {
         setReady,
         evidenceNextStage,
         passFailVote,
-        afterPass,
         finalArgumentReady,
         finishFinalArgument,
         submitFine,
         voteFine,
+        leaveRoom,
     };
 
     return (
