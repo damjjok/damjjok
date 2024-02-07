@@ -1,8 +1,12 @@
 import React, { createContext, useRef, useState, useCallback } from "react";
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
-import { useRecoilState } from "recoil";
-import { joinMemberListState } from "./TruthRoomSocket";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import {
+    allUserReadyState,
+    joinMemberListState,
+    readyMemberCountState,
+} from "./TruthRoomSocket";
 
 const WebSocketContext = createContext({});
 
@@ -10,6 +14,10 @@ export const WebSocketProvider = ({ children }) => {
     // recoil로 관리할 전역 상태들
     const [joinMemberList, setJoinMemberList] =
         useRecoilState(joinMemberListState); // 참여 유저 목록
+    const [readyMemberCount, setReadyMemberCount] = useRecoilState(
+        readyMemberCountState,
+    ); // 준비 단계에서 준비가 된 유저의 수
+    const setAllUserReady = useSetRecoilState(allUserReadyState); // 모든 유저가 준비 완료인지 여부, 이건 false였다가 true가 되기만해도 끝이므로 setRecoilState로 호출
 
     // 여기부터는 소켓 연결, 통신 관련 내용들
     const [isConnected, setIsConnected] = useState(false);
@@ -55,19 +63,26 @@ export const WebSocketProvider = ({ children }) => {
                 (message) => {
                     console.log("hi");
                     console.log(JSON.parse(message.body));
-                    setJoinMemberList(message.body);
+                    setJoinMemberList(JSON.parse(message.body));
                 },
             );
             stompClient.current.subscribe(
                 "/topic/readyState/" + roomId,
-                function (message) {
-                    console.log("Ready State: ", message.body);
+                (message) => {
+                    console.log("raw message: " + message);
+                    console.log("raw message body: " + message.body);
+                    console.log("준비한 유저 수: ", JSON.parse(message.body));
+                    setReadyMemberCount(JSON.parse(message.body));
                 },
             );
             stompClient.current.subscribe(
                 "/topic/readyResult/" + roomId,
-                function (message) {
-                    console.log("Ready State: ", message.body);
+                (message) => {
+                    console.log(
+                        "모든 유저가 준비했나요?",
+                        JSON.parse(message.body),
+                    );
+                    setAllUserReady(JSON.parse(message.body)); // 반환값이 false이든 true이든 효과는 똑같아서 그냥 set
                 },
             );
             stompClient.current.subscribe(
@@ -155,11 +170,15 @@ export const WebSocketProvider = ({ children }) => {
 
     const setReady = useCallback((roomId) => {
         // 사용자가 방에 입장한 후 필요한 구독 목록 구독 시작
+        var message = {
+            ready: true,
+        };
+        console.log(JSON.stringify(true));
         stompClient.current.publish({
             // 진실의 방에 입장했음을 소켓에 발행
             destination: "/app/ready/" + roomId,
             headers: {},
-            body: JSON.stringify({}),
+            body: JSON.stringify(message),
         });
     }, []);
 
@@ -169,6 +188,7 @@ export const WebSocketProvider = ({ children }) => {
         connect,
         disconnect,
         enterRoom,
+        setReady,
     };
 
     return (
