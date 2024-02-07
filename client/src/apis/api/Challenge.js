@@ -91,6 +91,16 @@ const getChallengeRanking = async (challengeId) => {
     } catch (error) {}
 }
 
+const getChallengeCandyCount = async (challengeId) => {
+    try {
+        const response = await axiosInstance.get(
+            `/v1/candy/${challengeId}`
+        );
+        if (response.status === 200) {
+            return response.data
+        }
+    } catch (error) {}
+}
 
 export {
     createChallenge,
@@ -99,4 +109,5 @@ export {
     getTestimonyDetail,
     postTestimony,
     getChallengeRanking,
+    getChallengeCandyCount
 };

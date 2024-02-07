@@ -14,7 +14,8 @@ import { challengeState } from "contexts/Challenge";
 // profilePath 올바르게 설정될 필요성
 function StatusBar() {
     const challenge = useRecoilValue(challengeState);
-    const currentUser = challenge.userName;
+    const challengeUserId = challenge.userId;
+    const currentUser = useRecoilValue(currentUserState)
     // let navigate = useNavigate();
 
     let today = new Date();
@@ -50,7 +51,7 @@ function StatusBar() {
                             bg="dam.white"
                         />
                         <p className="px-3 text-lg font-bold">
-                            {currentUser} 챌린지 -{" "}
+                            {challenge.userName} 챌린지 -{" "}
                             {startedDate.toLocaleDateString()}
                         </p>
                         <div className="bg-damblack rounded-xl max-h-8 px-2 text-damyellow">
@@ -66,7 +67,7 @@ function StatusBar() {
                     </Flex>
                 </Wrap>
                 <div className="flex items-center">
-                    <StatusBarToast />
+                    <StatusBarToast challenge={challenge} />
                     <Box
                         position="relative"
                         display="flex"

@@ -6,7 +6,7 @@ import { useRecoilValue } from "recoil";
 
 
 // 유저 확인 API 들어온 다음에 작업할 것
-function StatusBarToast() {
+function StatusBarToast({challenge}) {
     const [isClicked, setIsClicked] = useState(false); // 버튼 클릭 여부 확인
     const toast = useToast();
     const currentUser = useRecoilValue(currentUserState);
@@ -14,7 +14,7 @@ function StatusBarToast() {
     // 버튼이 클릭되면, 클릭 감지하는 함수
     const handleButtonClick = () => {
         setIsClicked(true);
-        if (currentUser.role === "damJJok") {
+        if (currentUser.userId === challenge.userId) {
             toast({
                 title: "출석 완료!",
                 description: "오늘의 금연도 화이팅이에요!",
@@ -58,7 +58,7 @@ function StatusBarToast() {
             onClick={handleButtonClick}
             isDisabled={isClicked}
             buttonName={
-                currentUser.role === "damJJok" ? "출석하기" : "응원하기"
+                currentUser.userId === challenge.userId ? "출석하기" : "응원하기"
             }
             variant={"smbtn"}
         ></BasicButton>
