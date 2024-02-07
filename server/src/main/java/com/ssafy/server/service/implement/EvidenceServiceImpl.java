@@ -40,8 +40,9 @@ public class EvidenceServiceImpl implements EvidenceService {
             int userId = dto.getUserId();
             String title = dto.getTitle();
 
-            String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\files";
+//            String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\files";
 
+            String projectPath = "/var/www/html/images";
             String fileName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
 
             File saveFile = new File(projectPath, fileName);
@@ -54,7 +55,7 @@ public class EvidenceServiceImpl implements EvidenceService {
             evidenceEntity.setEvidenceTitle(title);
             evidenceEntity.setChallengeEntity(challengeEntity);
             evidenceEntity.setImageDate(LocalDateTime.now()); // TODO : 나중에 메타데이터로 바꿔주기
-            evidenceEntity.setImagePath("/files/" + fileName);
+            evidenceEntity.setImagePath("/images/" + fileName);
             evidenceEntity.setUpdatedBy(userId);
 
             evidenceRepository.save(evidenceEntity);
@@ -79,9 +80,10 @@ public class EvidenceServiceImpl implements EvidenceService {
             EvidenceEntity evidenceEntity = evidenceRepository.findByEvidenceId(evidenceId);
             if(userId != evidenceEntity.getCreatedBy()) return ResponseDto.validationFail();
 
-            String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\files";
+//            String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\files";
+            String projectPath = "/var/www/html/images";
             // TODO : 원래 있던 파일 제거
-            File oldFile = new File(projectPath, evidenceEntity.getImagePath().substring(6));
+            File oldFile = new File(projectPath, evidenceEntity.getImagePath().substring(7));
             if(oldFile.exists()){
                 if(oldFile.delete()){
                     System.out.println("파일 삭제 됨");
