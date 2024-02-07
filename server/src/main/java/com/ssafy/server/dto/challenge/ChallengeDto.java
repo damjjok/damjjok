@@ -38,6 +38,7 @@ public class ChallengeDto {
         this.status = entity.getStatus();
         this.determination = entity.getDetermination();
         this.profilePath = entity.getProfilePath();
+        this.createdAt = entity.getCreatedAt();
     }
 
 }
