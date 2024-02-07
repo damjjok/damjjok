@@ -8,6 +8,9 @@ import {
     Text,
     Flex,
     Heading,
+    ModalContent,
+    ModalHeader,
+    ModalBody,
 } from "@chakra-ui/react";
 
 function TestimonyDeatilComponent({ testimony }) {
@@ -20,23 +23,34 @@ function TestimonyDeatilComponent({ testimony }) {
                 {testimony.content}
             </div> */}
             <Card className="card-container">
-                <CardHeader>
-                    <Flex spacing="4">
-                        <Flex
-                            flex="1"
-                            gap="4"
-                            alignItems="center"
-                            flexWrap="wrap"
-                        >
-                            <Box>
-                                <Heading size="md">{testimony.title}</Heading>
-                                <Text>{testimony.writer}</Text>
-                            </Box>
-                        </Flex>
-                    </Flex>
+                <CardHeader
+                    sx={{
+                        fontSize: "4xl", // 글씨 크기를 2xl로 설정
+                        fontWeight: "bold", // 글씨를 굵게 설정
+                    }}
+                    paddingBottom={0}
+                >
+                    {testimony.testimonyTitle}
                 </CardHeader>
                 <CardBody>
-                    <Text>{testimony.content}</Text>
+                    <Box
+                        textAlign="right"
+                        mb={2}
+                        borderBottom="2px"
+                        borderColor="#ffd100"
+                    >
+                        <Text fontSize="xl" fontWeight="bold">
+                            제보자 : {testimony.createdBy}
+                        </Text>
+                        <Text>
+                            작성 시각 :
+                            {" " +
+                                new Date(
+                                    testimony.createdAt
+                                ).toLocaleDateString()}
+                        </Text>
+                    </Box>
+                    <Box>{testimony.testimonyContent}</Box>
                 </CardBody>
             </Card>
         </Wrapper>

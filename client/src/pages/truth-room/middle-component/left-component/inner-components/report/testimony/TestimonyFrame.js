@@ -12,11 +12,11 @@ function TestimonyFrame({ testimony, onClick }) {
                 borderColor={"dam.yellow"}
                 marginY={2}
             >
-                {testimony.title}
+                {testimony.testimonyTitle}
             </Box>
             <Box borderBottomColor={"dam.gray"} paddingBottom={2}>
                 <Text isTruncated color={"dam.yellow"}>
-                    {testimony.content}
+                    {testimony.testimonyContent}
                 </Text>
             </Box>
         </Box>

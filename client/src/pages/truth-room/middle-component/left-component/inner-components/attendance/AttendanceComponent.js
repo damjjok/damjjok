@@ -8,31 +8,15 @@ import AttendanceStrick from "./AttendanceStrick";
 function AttendanceComponent(props) {
     return (
         <Wrapper>
-            <Flex
-                justifyContent={"center"}
-                alignItems={"center"}
-                marginTop={"1rem"}
-            >
-                <Flex
-                    borderRadius={"50%"}
-                    backgroundColor={"dam.yellow"}
-                    width={"2rem"}
-                    height={"2rem"}
-                    justifyContent={"center"}
-                    alignItems={"center"}
-                >
+            <Flex justifyContent={"center"} alignItems={"center"} marginTop={"1rem"}>
+                <Flex borderRadius={"50%"} backgroundColor={"dam.yellow"} width={"2rem"} height={"2rem"} justifyContent={"center"} alignItems={"center"}>
                     <CheckIcon></CheckIcon>
                 </Flex>
-                <Text
-                    color={"dam.yellow"}
-                    marginX={"0.5rem"}
-                    fontWeight={700}
-                    fontSize={"24px"}
-                >
+                <Text color={"dam.yellow"} marginX={"0.5rem"} fontWeight={700} fontSize={"24px"}>
                     출석 현황
                 </Text>
             </Flex>
-            <AttendanceStrick startedDate={new Date()} />
+            <AttendanceStrick startedDate={new Date(2024, 0, 28)} />
         </Wrapper>
     );
 }
