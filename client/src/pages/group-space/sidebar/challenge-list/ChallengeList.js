@@ -24,44 +24,25 @@ import { getChallengeList } from "apis/api/Group";
 // import { useRecoilValue } from "recoil";
 // import { challengeListState } from "../../../../context/Challenge";
 
-//더미데이터
-// const currentGroupChallengeList = [
-//     { username: "손종민", createdAt: "2024.02.02" },
-//     { username: "김싸피", createdAt: "2023.12.01" },
-// ];
-// // const currentGroupChallengeList = []
-// const lastChallenge = [
-//     {
-//         challengeId: "10",
-//         username: "손종민",
-//         createdAt: "2023.11.01",
-//         status: "success",
-//     },
-//     {
-//         challengeId: "12",
-//         username: "김종민",
-//         createdAt: "2023.10.01",
-//         status: "failed",
-//     },
-// ];
-
 function ChallengeList() {
     const userId = 0;
 
     const { groupId } = useParams();
     // const setChallengeState = useSetRecoilState(challengeState);
     const [currentChallengeList, setCurrentChallengeList] = useState([]);
-    const [currentGroupChallengeList, setCurrentGroupChallengeList] = useState([]);
+    const [currentGroupChallengeList, setCurrentGroupChallengeList] = useState(
+        [],
+    );
     const [lastChallenge, setLastChallenge] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await getChallengeList(groupId);
-                const updatedChallengeList = response.list
+                const updatedChallengeList = response.list;
                 setCurrentChallengeList(updatedChallengeList); // currentChallengeList 업데이트
 
-                 // 반복문을 돌면서 각 요소의 status에 따라 currentGroupChallengeList와 lastChallenge 배열에 추가
+                // 반복문을 돌면서 각 요소의 status에 따라 currentGroupChallengeList와 lastChallenge 배열에 추가
                 const updatedCurrentGroupChallengeList = [];
                 const updatedLastChallenge = [];
                 for (let i = 0; i < updatedChallengeList.length; i++) {
@@ -73,8 +54,8 @@ function ChallengeList() {
                     }
                 }
 
-            setCurrentGroupChallengeList(updatedCurrentGroupChallengeList);
-            setLastChallenge(updatedLastChallenge);
+                setCurrentGroupChallengeList(updatedCurrentGroupChallengeList);
+                setLastChallenge(updatedLastChallenge);
             } catch (error) {
                 console.error("챌린지 정보 불러오기 실패", error);
             }
@@ -124,12 +105,11 @@ function ChallengeList() {
                                             setSelectedChallenge({
                                                 index,
                                                 list: "current",
-                                            })
+                                            });
                                             navigate(
                                                 `/group/${groupId}/challenge/${challenge.challengeId}`,
                                                 { state: { challenge } },
                                             );
-                                            
                                         }}
                                     >
                                         <Circle
@@ -142,7 +122,10 @@ function ChallengeList() {
                                                 {challenge.userName} 챌린지
                                             </p>
                                             <p className="text-xs">
-                                                {new Date(challenge.createdAt).toLocaleDateString()} 시작
+                                                {new Date(
+                                                    challenge.createdAt,
+                                                ).toLocaleDateString()}{" "}
+                                                시작
                                             </p>
                                         </li>
                                     </Flex>
