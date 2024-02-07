@@ -218,7 +218,7 @@ function ChallengeList({onClick}) {
                                             list: "last",
                                         });
                                         navigate(
-                                            `/group/1/last-challenge/${challenge.challengeId}`,
+                                            `/group/${groupId}}/last-challenge/${challenge.challengeId}`,
                                             { state: { challenge } },
                                         );
                                         if (onClick) onClick()
