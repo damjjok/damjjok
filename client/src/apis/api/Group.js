@@ -1,4 +1,4 @@
-const { axiosInstance } = require("apis/instance/AxiosInstance");
+import { axiosInstance } from "apis/instance/AxiosInstance";
 
 const postTest = async () => {
     try {
