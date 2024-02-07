@@ -105,7 +105,7 @@ export const WebSocketProvider = ({ children }) => {
                 "/topic/voteStart/" + roomId,
                 (message) => {
                     console.log("Vote Start Notification: ", message.body);
-                    setStepReadyCount(0); // (다음 단계로 넘어가므로 단계 별 준비된 유저 수 0으로 초기화)
+                    setStepReadyCount(0); // 다음 단계로 넘어가므로 단계 별 준비된 유저 수 0으로 초기화
                     setStep(2); // 증거 판별 단계에서 투표(PASS/FAIL) 단계로
                 }
             );
@@ -113,24 +113,29 @@ export const WebSocketProvider = ({ children }) => {
                 "/topic/passFailVoteState/" + roomId,
                 (message) => {
                     console.log("Current Vote Count: ", message.body);
+                    setStepReadyCount(stepReadyCount + 1); // 현재 단계에서 투표 완료한 사람 카운트
                 }
             );
             stompClient.current.subscribe(
                 "/topic/voteResult/" + roomId,
                 (message) => {
                     console.log("Vote Result: ", message.body);
+                    setStepReadyCount(0); // 투표 결과 나왔으므로 준비된 유저 수 0으로 초기화
                 }
             );
             stompClient.current.subscribe(
                 "/topic/finalArgumentReadyState/" + roomId,
                 (message) => {
                     console.log("Final Argument Ready State: ", message.body);
+                    setStepReadyCount(stepReadyCount + 1); // 투표 단계에서 최후 변론으로 갈 준비 완료한 사람 카운트
                 }
             );
             stompClient.current.subscribe(
                 "/topic/startFinalArgument/" + roomId,
                 (message) => {
                     console.log("Start Final Argument: ", message.body);
+                    setStepReadyCount(0);
+                    setStep(3);
                 }
             );
             stompClient.current.subscribe(

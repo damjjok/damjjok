@@ -24,3 +24,7 @@ export const stepReadyCountState = atom({
     key: "stepReadyMemberCount",
     default: 0,
 });
+
+export const votedMemberCountState = atom({
+    // pass, fail 투표 완료한 멤버 수 카운트
+});
