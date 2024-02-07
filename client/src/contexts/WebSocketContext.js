@@ -249,6 +249,20 @@ export const WebSocketProvider = ({ children }) => {
         });
     }, []);
 
+    const submitFine = useCallback((roomId, fine) => {
+        // 사용자가 벌금으로 생각하는 금액을 입력하면 전달하는 함수
+        var message = {
+            fineAmount: fine, // fine: 입력한 벌금
+        };
+
+        stompClient.current.publish({
+            // 사용자가 입력한 벌금을 서버에 전달
+            destination: "/app/submitFine/" + roomId,
+            headers: {},
+            body: JSON.stringify({ message }),
+        });
+    }, []);
+
     // 연결 상태, 연결 및 연결 해제 함수를 컨텍스트 값으로 제공
     const value = {
         isConnected,
@@ -261,6 +275,7 @@ export const WebSocketProvider = ({ children }) => {
         afterPass,
         finalArgumentReady,
         finishFinalArgument,
+        submitFine,
     };
 
     return (
