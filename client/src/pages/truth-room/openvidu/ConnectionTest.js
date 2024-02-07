@@ -39,6 +39,7 @@ const ConnectionButton = () => {
                     방 입장
                 </Button>
                 <Button onClick={() => setReady(testRoomId)}>준비하기</Button>
+                <Button>다음 단계로 </Button>
             </div>
         </div>
     );

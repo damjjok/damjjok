@@ -14,10 +14,12 @@ export const WebSocketProvider = ({ children }) => {
     // recoil로 관리할 전역 상태들
     const [joinMemberList, setJoinMemberList] =
         useRecoilState(joinMemberListState); // 참여 유저 목록
+    // 1. 준비 단계
     const [readyMemberCount, setReadyMemberCount] = useRecoilState(
         readyMemberCountState,
     ); // 준비 단계에서 준비가 된 유저의 수
     const setAllUserReady = useSetRecoilState(allUserReadyState); // 모든 유저가 준비 완료인지 여부, 이건 false였다가 true가 되기만해도 끝이므로 setRecoilState로 호출
+    // 2. 증거 판별 단계
 
     // 여기부터는 소켓 연결, 통신 관련 내용들
     const [isConnected, setIsConnected] = useState(false);
