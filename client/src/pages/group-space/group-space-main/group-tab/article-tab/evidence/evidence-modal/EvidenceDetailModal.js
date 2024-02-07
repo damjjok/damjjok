@@ -2,38 +2,20 @@ import React, { useState, useEffect } from "react";
 
 // 사진 메타데이터 라이브러리
 import EXIF from "exif-js";
-import {
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalFooter,
-    ModalBody,
-    ModalCloseButton,
-    Button,
-    Box,
-    Text,
-} from "@chakra-ui/react";
+import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Button, Box, Text, Flex } from "@chakra-ui/react";
+import { getEvidenceDetail } from "apis/api/Challenge";
 
-const EvidenceDetailModal = ({ isOpen, onClose, title, img }) => {
+const EvidenceDetailModal = ({ isOpen, onClose, evidenceId }) => {
+    const [evidence, setEvidence] = useState({});
     // 추후에 데이터 연결되면 바꿀 예정
     const person = "문지호";
     const day = "2024년 2월 11일 13:00";
-    const pictureday = "";
 
     const [pictureDate, setPictureDate] = useState("");
+
     useEffect(() => {
-        if (img) {
-            const imgObj = new Image();
-            imgObj.src = img;
-            imgObj.onload = function () {
-                EXIF.getData(imgObj, function () {
-                    const date = EXIF.getTag(this, "DateTimeOriginal");
-                    setPictureDate(date);
-                });
-            };
-        }
-    }, [img]);
+        getEvidenceDetail(evidenceId, setEvidence);
+    }, []);
 
     return (
         <div className="EvidenceDetailModal">
@@ -46,26 +28,22 @@ const EvidenceDetailModal = ({ isOpen, onClose, title, img }) => {
                             fontWeight: "bold", // 글씨를 굵게 설정
                         }}
                     >
-                        {title}
-                    </ModalHeader>{" "}
-                    {/* 제목 */}
+                        {evidence.evidenceTitle}
+                    </ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
-                        <Box
-                            textAlign="right"
-                            mb={10}
-                            borderBottom="2px"
-                            borderColor="#ffd100"
-                        >
+                        <Box textAlign="right" mb={10} borderBottom="2px" borderColor="#ffd100">
                             <Text fontSize="xl" fontWeight="bold">
-                                제보자: {person}
+                                제보자: {evidence.userName}
                             </Text>
-                            <Text>작성 시각: {day}</Text>
-                            {pictureDate && (
-                                <Text>사진 촬영 날짜: {pictureDate}</Text>
-                            )}
+
+                            {evidence && <Text>사진 촬영 날짜: {evidence.imageDate}</Text>}
                         </Box>
-                        <Box>{img && <img src={img} alt={title} />} </Box>
+                        <Box w={"100%"}>
+                            <Flex justifyContent={"center"} alignItems={"center"}>
+                                {evidence && <img src={`https://i10e105.p.ssafy.io` + evidence.imagePath} alt={evidence.evidenceTitle} />}{" "}
+                            </Flex>
+                        </Box>
                     </ModalBody>
                     <ModalFooter>
                         <Button colorScheme="yellow" mr={3} onClick={onClose}>
