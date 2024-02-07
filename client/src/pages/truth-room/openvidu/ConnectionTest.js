@@ -1,41 +1,48 @@
-// 오픈비두 연결에 쓰일 테스트 컴포넌트
+import React, { useContext } from "react";
 import { Button } from "@chakra-ui/react";
+import { WebSocketContext } from "contexts/WebSocketContext";
+import { useRecoilValue } from "recoil";
 import {
-    closeOpenviduSession,
-    getOpenviduToken,
-    getSessionId,
-} from "apis/api/TruthRoom";
-import React, { useState } from "react";
-import OpenViduTest from "./OpenViduTest";
+    joinMemberListState,
+    readyMemberCountState,
+} from "contexts/TruthRoomSocket";
+import { allUserReadyState } from "./../../../contexts/TruthRoomSocket";
 
-function ConnectionTest(props) {
-    const [sessionId, setSessionId] = useState("d");
-    const [openviduToken, setOpenviduToken] = useState("d");
+const ConnectionButton = () => {
+    const { connect, disconnect, isConnected, enterRoom, setReady } =
+        useContext(WebSocketContext);
+    const joinMemberList = useRecoilValue(joinMemberListState);
+    const readyMemberCount = useRecoilValue(readyMemberCountState);
+    const allUserReady = useRecoilValue(allUserReadyState);
 
-    async function getSessionIdAndSave() {
-        const gotSessionId = await getSessionId(5);
-        setSessionId(gotSessionId);
-    }
-
-    async function getOpenviduTokenAndSave() {
-        const gotOpenviduToken = await getOpenviduToken(sessionId);
-        setOpenviduToken(gotOpenviduToken);
-    }
+    const testRoomId = 1;
 
     return (
         <div>
-            {/* <Button onClick={() => getSessionIdAndSave()}>
-                세션 id 받아오기
-            </Button>
-            <Button onClick={() => getOpenviduTokenAndSave()}>
-                토큰 받아오기
-            </Button>
-            <Button onClick={() => closeOpenviduSession(5)}>
-                세션 삭제하기
-            </Button> */}
-            <OpenViduTest></OpenViduTest>
+            <div>
+                참여 유저 목록:{" "}
+                {joinMemberList
+                    .map((member) => `${member.name} (${member.role})`)
+                    .join(", ")}
+            </div>
+            <div>
+                준비 완료 유저 수: {readyMemberCount} / {joinMemberList.length}
+            </div>
+            {allUserReady && <div>모든 유저 준비 완료!</div>}
+            <div>
+                <Button onClick={isConnected ? disconnect : connect}>
+                    {isConnected ? "Disconnect" : "Connect"}
+                </Button>
+                <Button
+                    onClick={() => enterRoom(testRoomId, "김영후", "담쪽이")}
+                >
+                    방 입장
+                </Button>
+                <Button onClick={() => setReady(testRoomId)}>준비하기</Button>
+                <Button>다음 단계로 </Button>
+            </div>
         </div>
     );
-}
+};
 
-export default ConnectionTest;
+export default ConnectionButton;

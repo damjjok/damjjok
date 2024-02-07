@@ -13,6 +13,11 @@ import {
 import logo from "assets/images/logo.png";
 
 const LoginModal = ({ LoginisOpen, LoginonClose, handleLogintoForm }) => {
+    const handleNaverLogin = () => {
+        window.location.href =
+            "https://i10e105.p.ssafy.io/api/v1/auth/oauth2/naver";
+    };
+
     return (
         <div className="LoginModal">
             <Modal isOpen={LoginisOpen} onClose={LoginonClose} isCentered>
@@ -33,17 +38,32 @@ const LoginModal = ({ LoginisOpen, LoginonClose, handleLogintoForm }) => {
                                 소셜 ID로 시작하기
                             </Text>
                             <Button
-                                colorScheme="yellow"
+                                bg="#03C75A"
+                                size="md"
+                                w="full"
+                                onClick={handleNaverLogin}
+                                color="white"
+                            >
+                                네이버로 로그인
+                            </Button>
+                            <Button
+                                bg="#ffd100"
                                 size="md"
                                 w="full"
                                 onClick={handleLogintoForm}
+                                color="white"
                             >
                                 카카오톡으로 로그인
                             </Button>
-                            <Button colorScheme="blue" size="md" w="full">
-                                구글 아이디로 로그인
+
+                            <Button
+                                bg="#4285F4"
+                                size="md"
+                                w="full"
+                                color="white"
+                            >
+                                구글로 로그인
                             </Button>
-                            {/* 다른 소셜 로그인 버튼들 추가 */}
                         </VStack>
                     </ModalBody>
                 </ModalContent>

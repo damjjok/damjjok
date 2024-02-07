@@ -3,6 +3,11 @@ import logo from "assets/images/logo.png";
 import piggyBankLogo from "assets/images/piggybanklogo.png";
 import testImg1 from "logo.svg";
 
+export const challengeIdState = atom({
+    key: "challengeId",
+    default: 0,
+});
+
 export const stepState = atom({
     // 대기 중, 제보 판별, 투표, PASS/FAIL, 최후 변론, 벌금 결정, 종료
     key: "step",
@@ -138,4 +143,14 @@ export const inputFineListState = atom({
 export const decidedFineState = atom({
     key: "decidedFine", // 결정된 벌금
     default: 18000,
+});
+
+export const showingEvidenceState = atom({
+    key: "showingEvidence",
+    default: {},
+});
+
+export const showingTestimonyState = atom({
+    key: "showingTestimony",
+    default: {},
 });

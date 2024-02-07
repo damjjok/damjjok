@@ -4,6 +4,8 @@ import { currentUserState } from "contexts/User";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 
+
+// 유저 확인 API 들어온 다음에 작업할 것
 function StatusBarToast() {
     const [isClicked, setIsClicked] = useState(false); // 버튼 클릭 여부 확인
     const toast = useToast();
@@ -36,15 +38,31 @@ function StatusBarToast() {
     useEffect(() => {
         // 자정에 상태를 초기화하는 함수를 실행하는 타이머를 설정합니다.
         const now = new Date();
-        const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+        const tomorrow = new Date(
+            now.getFullYear(),
+            now.getMonth(),
+            now.getDate() + 1,
+        );
         const timeUntilTomorrow = tomorrow - now;
 
-        const timerId = setTimeout(() => setIsClicked(false), timeUntilTomorrow);
+        const timerId = setTimeout(
+            () => setIsClicked(false),
+            timeUntilTomorrow,
+        );
 
         return () => clearTimeout(timerId); // 컴포넌트가 언마운트되면 타이머를 취소합니다.
     }, [isClicked]); // 상태가 변경될 때마다 타이머를 재설정합니다.
 
-    return <BasicButton onClick={handleButtonClick} isDisabled={isClicked} buttonName={currentUser.role === "damJJok" ? "출석하기" : "응원하기"}></BasicButton>;
+    return (
+        <BasicButton
+            onClick={handleButtonClick}
+            isDisabled={isClicked}
+            buttonName={
+                currentUser.role === "damJJok" ? "출석하기" : "응원하기"
+            }
+            variant={"smbtn"}
+        ></BasicButton>
+    );
 }
 
 export default StatusBarToast;

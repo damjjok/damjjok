@@ -4,28 +4,68 @@
 
 // 수정해야 할 것 : Route 설정
 import { useEffect } from "react";
-import { Routes, Route, Outlet, useNavigate } from "react-router-dom";
+import {
+    Routes,
+    Route,
+    Outlet,
+    useNavigate,
+    useParams,
+} from "react-router-dom";
 // import { useRecoilValue } from "recoil";
 import GroupTab from "./group-tab/GroupTab";
 import EmptyChallenge from "./empty-challenge/EmptyChallenge";
-import { challengeListState } from "../../../contexts/Challenge";
+import {
+    challengeListState,
+    challengeState,
+} from "../../../contexts/Challenge";
 import CreateChallenge from "./empty-challenge/create-challenge/CreateChallenge";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { getChallengeList } from "apis/api/Group";
 
 // import NormalButton from "../components/button/normalbutton/NormalButton";
 
 function GroupSpaceMain() {
-    const [challengeList, setChallengeList] = useRecoilState(challengeListState);
+    // 더미데이터
+    const userId = 0;
+
+    const { groupId } = useParams();
+    // console.log(groupId);
+    // const setChallengeState = useSetRecoilState(challengeState);
+    const [currentChallengeList, setCurrentChallengeList] =
+        useRecoilState(challengeListState);
     const navigate = useNavigate();
 
     useEffect(() => {
-        const storedChallengeList = localStorage.getItem("challengeList");
-        if (storedChallengeList) {
-            setChallengeList(JSON.parse(storedChallengeList));
-        } else {
-            navigate("empty-challenge");
-        }
-    }, []);
+        const fetchData = async () => {
+            try {
+                const response = await getChallengeList(groupId);
+                const updatedChallengeList = response.list;
+                setCurrentChallengeList(updatedChallengeList); // Recoil 상태에 데이터 적용
+                // console.log(currentChallengeList);
+                const currentMyChallenge = updatedChallengeList.find(
+                    (challenge) =>
+                        challenge.userId === userId &&
+                        challenge.status === "ON",
+                );
+                // setChallengeState(currentMyChallenge);
+                // console.log(currentMyChallenge);
+
+                if (currentMyChallenge) {
+                    navigate(`challenge/${currentMyChallenge.challengeId}`);
+                } else if (!currentMyChallenge && currentChallengeList) {
+                    navigate(
+                        `challenge/${updatedChallengeList[0].challengeId}`,
+                    );
+                } else {
+                    navigate("empty-challenge");
+                }
+            } catch (error) {
+                console.error("챌린지 정보 불러오기 실패", error);
+            }
+        };
+
+        fetchData(); // fetchData 함수 호출
+    }, [groupId]);
 
     return (
         <>

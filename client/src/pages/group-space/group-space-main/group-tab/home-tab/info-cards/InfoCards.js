@@ -1,6 +1,6 @@
 import getMoneyGif from "assets/gifs/getMoney.gif";
 import gradeGif from "assets/gifs/grade.gif";
-import { Box, HStack, Image, Text, VStack } from "@chakra-ui/react";
+import { Box, Flex, HStack, Image, Select, Text, VStack } from "@chakra-ui/react";
 import lv1 from "assets/gifs/lv1blood-pressure.gif";
 import lv2 from "assets/gifs/lv2blood-oxygen.gif";
 import lv3 from "assets/gifs/lv3beating-heart.gif";
@@ -10,6 +10,7 @@ import lv6 from "assets/gifs/lv6healthlvup.gif";
 import lv7 from "assets/gifs/lv7strong-heart.gif";
 import lv8 from "assets/gifs/lv8lung-half.gif";
 import lv9 from "assets/gifs/lv9lung-perfect.gif";
+import { useState } from "react";
 
 const levelData = [
     {
@@ -70,67 +71,122 @@ const levelData = [
 
 const currentLevel = 1;
 
-// Box에 들어갈 데이터 배열
-// 박스 내에 세로로 긴 이미지 가로 폭 줄어드는 문제 해결하고 싶음..
-const boxData = [
-    {
-        gifSrc: getMoneyGif,
-        altText: "getMoneyGif",
-        text1: "하루 1갑 기준",
-        text2: "4500원을 아꼈어요!",
-    },
-    {
-        gifSrc: gradeGif,
-        altText: "gradeGif",
-        text1: "전체 챌린저 중",
-        text2: "상위 n%에요!",
-    },
-    {
-        gifSrc: levelData[currentLevel - 1].img,
-        altText: `"${levelData[currentLevel - 1].img}"`,
-        text1: `금연 건강 레벨 ${levelData[currentLevel - 1].key}!`,
-        text2: `${levelData[currentLevel - 1].text}`,
-    },
-];
-
 function InfoCards() {
+    // 셀렉터 감지를 위해
+    const [dailyState, setDailyState] = useState(1)
     return (
         <HStack>
-            {boxData.map((data, index) => (
-                <Box
-                    key={index}
-                    w="60"
-                    h="60"
-                    className="flex flex-col items-center justify-center rounded-3xl border-4 p-8 mx-4 border-damyellow transition-shadow hover:shadow-xl"
-                >
-                    <VStack spacing={2} alignItems="center">
-                        <Box w="20" h="20" className="overflow-hidden">
-                            <Image
-                                src={data.gifSrc}
-                                alt={data.altText}
-                                boxSize="100%"
-                                className=" rounded-xl"
-                            />
-                        </Box>
-                        <Box
-                            h="4" // 텍스트 박스의 높이를 조절합니다.
-                            className="overflow-hidden"
-                        >
+            <Box
+                w="60"
+                h="60"
+                className="flex flex-col items-center justify-center rounded-3xl border-4 p-8 mx-4 border-damyellow transition-shadow hover:shadow-xl"
+            >
+                <VStack spacing={2} alignItems="center">
+                    <Box w="20" h="20" className="overflow-hidden">
+                        <Image
+                            src={getMoneyGif}
+                            alt="getMoneyGif"
+                            boxSize="100%"
+                            className=" rounded-xl"
+                        />
+                    </Box>
+                    <Box
+                        h="4" // 텍스트 박스의 높이를 조절합니다.
+                        // className="overflow-hidden"
+                    >
+                        <Flex alignItems={'center'}>
                             <Text className="text-xs text-center font-semibold">
-                                {data.text1}
+                                하루
                             </Text>
-                        </Box>
-                        <Box
-                            h="8" // 텍스트 박스의 높이를 조절합니다.
-                            className="overflow-visible"
-                        >
-                            <Text className="text-center font-semibold">
-                                {data.text2}
+                            <Select size='xs' borderColor='dam.yellow' width={'50px'} marginX={2}
+                                value={dailyState}  // 현재 선택된 값을 표시
+                                onChange={(e) => setDailyState(e.target.value)} >
+                                <option value='1'>1</option>
+                                <option value='2'>2</option>
+                                <option value='3'>3</option>
+                            </Select>
+                            <Text className="text-xs text-center font-semibold">
+                                갑 기준
                             </Text>
-                        </Box>
-                    </VStack>
-                </Box>
-            ))}
+                        </Flex>
+                    </Box>
+                    <Box
+                        h="8" // 텍스트 박스의 높이를 조절합니다.
+                        className="overflow-visible"
+                    >
+                        <Text className="text-center font-semibold">
+                            {/* 현재 챌린지의 진행 일수도 받아와서 곱해줘야 함 */}
+                            {dailyState * 4500} 원을 아꼈어요!
+                        </Text>
+                    </Box>
+                </VStack>
+            </Box>
+            <Box
+                w="60"
+                h="60"
+                className="flex flex-col items-center justify-center rounded-3xl border-4 p-8 mx-4 border-damyellow transition-shadow hover:shadow-xl"
+            >
+                <VStack spacing={2} alignItems="center">
+                    <Box w="30" h="20" className="overflow-visible">
+                        <Image
+                            src={gradeGif}
+                            alt="gradeGif"
+                            boxSize="100%"
+                            className=" rounded-xl"
+                            objectFit='cover'
+                        />
+                    </Box>
+                    <Box
+                        h="4" // 텍스트 박스의 높이를 조절합니다.
+                        className="overflow-hidden"
+                    >                            
+                        <Text className="text-xs text-center font-semibold">
+                            전체 챌린저 중
+                        </Text>
+                    </Box>
+                    <Box
+                        h="8" // 텍스트 박스의 높이를 조절합니다.
+                        className="overflow-visible"
+                    >
+                        <Text className="text-center font-semibold">
+                            상위 n%에요!
+                        </Text>
+                    </Box>
+                </VStack>
+            </Box>
+            <Box
+                w="60"
+                h="60"
+                className="flex flex-col items-center justify-center rounded-3xl border-4 p-8 mx-4 border-damyellow transition-shadow hover:shadow-xl"
+            >
+                <VStack spacing={2} alignItems="center">
+                    <Box w="20" h="20" className="overflow-hidden">
+                        <Image
+                            src={levelData[currentLevel - 1].img}
+                            alt="currentlvimg"
+                            boxSize="100%"
+                            className=" rounded-xl"
+                            objectFit='cover'
+                        />
+                    </Box>
+                    <Box
+                        h="4" // 텍스트 박스의 높이를 조절합니다.
+                        className="overflow-hidden"
+                    >
+                        <Text className="text-xs text-center font-semibold">
+                            {`금연 건강 레벨 ${levelData[currentLevel - 1].key}!`}
+                        </Text>
+                    </Box>
+                    <Box
+                        h="8" // 텍스트 박스의 높이를 조절합니다.
+                        className="overflow-visible"
+                    >
+                        <Text className="text-center font-semibold">
+                            {`${levelData[currentLevel - 1].text}`}
+                        </Text>
+                    </Box>
+                </VStack>
+            </Box>
         </HStack>
     );
 }

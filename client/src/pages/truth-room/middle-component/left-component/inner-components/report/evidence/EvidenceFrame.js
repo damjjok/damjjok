@@ -12,11 +12,11 @@ function EvidenceFrame({ evidence, onClick }) {
                 borderColor={"dam.yellow"}
                 marginY={2}
             >
-                {evidence.title}
+                {evidence.evidenceTitle}
             </Box>
             <Box borderBottomColor={"dam.gray"} paddingBottom={2}>
                 <Image
-                    src={evidence.img}
+                    src={evidence.imagePath}
                     alt="에러"
                     w={"10rem"}
                     h={"6rem"}

@@ -1,36 +1,40 @@
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import Strick from "./strick/Strick";
 import { challengeState } from "../../../../../contexts/Challenge";
 import { currentUserState } from "../../../../../contexts/User";
 import InfoCards from "./info-cards/InfoCards";
+import { Box } from "@chakra-ui/react";
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { getChallengeInfo } from "apis/api/Group";
 
+// 받아오는 Status에 따라 표출되는 텍스트 달라져야 함
 function HomeTab() {
-    const currentUser = useRecoilValue(currentUserState);
-    let currentChallenge = localStorage.getItem("challengeList");
+    // axios = challengeId 기반으로 challenge 불러오기. (수정해야 함)
+    const { groupId, challengeId } = useParams();
+    // const setChallengeState = useSetRecoilState(challengeState);
+    const currentChallenge = useRecoilValue(challengeState);
     let today = new Date();
-    if (currentChallenge) {
-        // 가져온 값이 있으면 JSON.parse를 사용해서 문자열을 객체로 변환합니다.
-        const myChallenge = JSON.parse(currentChallenge);
 
-        // 이후 myObject를 원하는대로 사용할 수 있습니다.
-        currentChallenge = myChallenge[0];
-    } else {
-        console.log("No data in localStorage");
-        return <></>;
-    }
+    // 이하 내용은 createdAt 데이터 있는 더미 데이터로 테스트할 것.
 
     const startedDate = new Date(currentChallenge.createdAt);
-
-    // 두 날짜 사이의 밀리초 차이를 계산합니다.
+    // 두 날짜 사이의 밀리초 차이를 계산
     const diffMilliseconds = today.getTime() - startedDate.getTime();
     const diffDays = Math.floor(diffMilliseconds / (24 * 60 * 60 * 1000));
 
     return (
-        <div className="flex flex-col flex-wrap max-w-7xl">
+        <Box
+            display={"flex"}
+            flexFlow="column"
+            overflowY={"auto"}
+            height="50vh"
+            className="flex flex-col flex-wrap max-w-7xl"
+            my={6}
+        >
             <div>
                 <p className="text-xl font-bold">
-                    {currentUser.userName}님! 오늘은 금연 {diffDays}
-                    일차예요!
+                    {currentChallenge.userName}님! 오늘은 금연 {diffDays}일차예요!
                 </p>
                 <div className="flex flex-wrap justify-center">
                     <Strick startedDate={startedDate} />
@@ -38,13 +42,13 @@ function HomeTab() {
             </div>
             <div className="py-8">
                 <p className="text-xl font-bold">
-                    오늘의 {currentUser.userName}님은...
+                    오늘의 {currentChallenge.userName}님은...
                 </p>
                 <div className="flex flex-wrap my-4 justify-center">
                     <InfoCards />
                 </div>
             </div>
-        </div>
+        </Box>
     );
 }
 
