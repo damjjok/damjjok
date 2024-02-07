@@ -5,7 +5,6 @@ import { Routes, Route } from "react-router-dom";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 // import GroupHome from "./pages/groupspace/group-home/GroupHome.js";
 import { useRecoilValue } from "recoil";
-import { currentGroupState } from "./contexts/User.js";
 import { Suspense } from "react";
 import Landing from "./pages/landing-page/Landig.js";
 import CreateGroup from "./pages/landing-page/create-group/CreateGroup.js";
@@ -60,7 +59,6 @@ const theme = extendTheme({
 });
 
 function App() {
-    const currentGroup = useRecoilValue(currentGroupState);
     return (
         <>
             <GlobalStyle />

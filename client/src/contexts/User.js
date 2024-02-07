@@ -16,7 +16,7 @@ export const currentUserState = atom({
     },
 });
 //
-export const currentGroupState = atom({
-    key: "currentGroupState",
-    default: { groupId: "1", groupName: "E105" },
-});
+// export const currentGroupState = atom({
+//     key: "currentGroupState",
+//     default: { groupId: "1", groupName: "E105" },
+// });

@@ -13,23 +13,25 @@ import {
 } from "@chakra-ui/react";
 import phDIcon from "assets/images/phDIcon.png";
 import damJJokIcon from "assets/images/damJJokIcon.png";
+import { useRecoilValue } from "recoil";
+import { currentGroupMemberState } from "contexts/Group";
 
-const currentGroupMember = [
-    { name: "손종민", role: "damJJok" },
-    { name: "최명성", role: "phD" },
-    { name: "박서현", role: "phD" },
-    { name: "김다희", role: "phD" },
-    { name: "김영후", role: "phD" },
-    { name: "문지호", role: "phD" },
-];
+// const currentGroupMember = [
+//     { name: "손종민", role: "damJJok" },
+//     { name: "최명성", role: "phD" },
+//     { name: "박서현", role: "phD" },
+//     { name: "김다희", role: "phD" },
+//     { name: "김영후", role: "phD" },
+//     { name: "문지호", role: "phD" },
+// ];
 
 function GroupMemberModal() {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
+    const currentGroupMember = useRecoilValue(currentGroupMemberState);
+
     // find 메서드로 담쪽이 찾기
-    const damJJok = currentGroupMember.find(
-        (member) => member.role === "damJJok",
-    );
+
     return (
         <>
             <MenuItem onClick={onOpen}>그룹원 보기</MenuItem>
