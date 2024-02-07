@@ -26,9 +26,10 @@ public class EnterRoomServiceImpl implements EnterRoomService {
         return truthRooms.get(roomId); // roomId에 해당하는 방을 반환, 없으면 null 반환
     }
     @Override
-    public void addMember(Integer roomId, String sessionId, String userName) {
+    public void addMember(Integer roomId, String sessionId, String userName, String role) {
         TruthRoomDto room = createOrGetRoom(roomId);
         room.getMembers().put(sessionId, userName);
+        room.getMembersRole().put(sessionId, role);
         room.getReadyState().put(sessionId, false);
         room.getEvidenceNextStage().put(sessionId, false);
         room.getFinalArgumentReadyState().put(sessionId, false);

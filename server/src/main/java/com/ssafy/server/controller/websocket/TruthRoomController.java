@@ -26,10 +26,10 @@ public class TruthRoomController {
     private final VoteService voteService;
 
     // 방에 입장
-    @MessageMapping("/enter/{roomId}/{userName}")
-    public void enter(@DestinationVariable Integer roomId, @DestinationVariable String userName, SimpMessageHeaderAccessor headerAccessor) {
+    @MessageMapping("/enter/{roomId}/{userName}/{role}")
+    public void enter(@DestinationVariable Integer roomId, @DestinationVariable String userName, @DestinationVariable String role, SimpMessageHeaderAccessor headerAccessor) {
         String sessionId = headerAccessor.getSessionId();
-        enterRoomService.addMember(roomId, sessionId, userName);
+        enterRoomService.addMember(roomId, sessionId, userName, role);
         // 방에 남아 있는 멤버들의 이름 목록 가져오기
         Map<String, String> remainingMembers = enterRoomService.getRoomMembers(roomId);
         //입장 목록 보내주기
