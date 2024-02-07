@@ -11,9 +11,7 @@ import com.ssafy.server.exception.CustomJwtException;
 import com.ssafy.server.provider.JwtProvider;
 import com.ssafy.server.repository.UserRepository;
 import com.ssafy.server.service.AuthService;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -61,13 +59,18 @@ public class AuthServiceImpl implements AuthService {
              */
             ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
 
-            String email = jwtProvider.validateToken(dto.getRefreshToken());
+            Jws<Claims> parsedToken = jwtProvider.validateToken(dto.getRefreshToken());
+
+            int userId = parsedToken.getBody().get("userId", Integer.class);
+            String email = parsedToken.getBody().get("email", String.class);
+            String userName = parsedToken.getBody().get("userName", String.class);
+
             if(!email.equals(valueOperations.get(dto.getRefreshToken()))){
                 return TokenResponseDto.expiredAndNotExistToken();
             }
 
-            accessToken = jwtProvider.createToken(email, 5, ChronoUnit.SECONDS);
-            refreshToken = jwtProvider.createToken(email, 5, ChronoUnit.SECONDS);
+            accessToken = jwtProvider.createToken(userId, email, userName, 5, ChronoUnit.DAYS);
+            refreshToken = jwtProvider.createToken(userId, email, userName, 5, ChronoUnit.DAYS);
 
             redisTemplate.opsForHash().delete(dto.getRefreshToken());
             valueOperations.set(refreshToken, email);
@@ -82,7 +85,8 @@ public class AuthServiceImpl implements AuthService {
     public ResponseEntity<? super FcmTokenResponseDto> changeFcmToken(String authorizationHeader, String fcmToken) {
         try{
             String token = authorizationHeader.substring(7);
-            String email = jwtProvider.validateToken(token);
+            Jws<Claims> parsedToken = jwtProvider.validateToken(token);
+            String email = parsedToken.getBody().get("email", String.class);
 
             UserEntity userEntity = userRepository.findByEmail(email);
             userEntity.setFcmToken(fcmToken);

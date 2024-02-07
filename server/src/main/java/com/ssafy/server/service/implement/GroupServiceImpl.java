@@ -16,9 +16,7 @@ import com.ssafy.server.repository.GroupMemberRepository;
 import com.ssafy.server.repository.GroupRepository;
 import com.ssafy.server.repository.UserRepository;
 import com.ssafy.server.service.GroupService;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -155,9 +153,11 @@ public class GroupServiceImpl implements GroupService {
 
         try {
             String token = authorizationHeader.substring(7);
-            String email = jwtProvider.validateToken(token);
+            Jws<Claims> parsedToken = jwtProvider.validateToken(token);
 
-            int userId = userRepository.findByEmail(email).getUserId();
+            String email = parsedToken.getBody().get("email", String.class);
+            int userId = parsedToken.getBody().get("userId", Integer.class);
+            String userName = parsedToken.getBody().get("userName", String.class);
 
             List<GroupEntity> entityList = groupMemberRepository.findGroupsByUserId(userId);
 

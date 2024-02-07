@@ -4,6 +4,8 @@ import com.ssafy.server.entity.UserEntity;
 import com.ssafy.server.exception.CustomJwtException;
 import com.ssafy.server.provider.JwtProvider;
 import com.ssafy.server.repository.UserRepository;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -43,7 +45,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 return;
             }
 
-            email = jwtProvider.validateToken(token);
+            Jws<Claims> parsedToken = jwtProvider.validateToken(token);
+
+            email = parsedToken.getBody().get("email", String.class);
+
             if(email == null){
                 filterChain.doFilter(request,response);
                 return;

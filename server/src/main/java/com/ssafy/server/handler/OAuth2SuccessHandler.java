@@ -1,6 +1,7 @@
 package com.ssafy.server.handler;
 
 import com.ssafy.server.entity.TokenEntity;
+import com.ssafy.server.entity.UserEntity;
 import com.ssafy.server.provider.JwtProvider;
 import com.ssafy.server.repository.UserRepository;
 import jakarta.servlet.ServletException;
@@ -43,13 +44,13 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String encodedEmail = URLEncoder.encode(email, StandardCharsets.UTF_8.toString());
         String encodedName = URLEncoder.encode(userName, StandardCharsets.UTF_8.toString());
 
+        //boolean isExist = userRepository.existsByEmail(email);
+        UserEntity userEntity = userRepository.findByEmail(email);
 
-        String accessToken = jwtProvider.createToken(email, 1, ChronoUnit.DAYS);
-        String refreshToken = jwtProvider.createToken(email, 1, ChronoUnit.DAYS);
+        if(userEntity != null){ // 가입되어있음 -> 바로 토큰 발행해서 줌
+            String accessToken = jwtProvider.createToken(userEntity.getUserId(),email,userName, 5, ChronoUnit.DAYS);
+            String refreshToken = jwtProvider.createToken(userEntity.getUserId(),email,userName, 5, ChronoUnit.DAYS);
 
-        boolean isExist = userRepository.existsByEmail(email);
-
-        if(isExist){ // 가입되어있음 -> 바로 토큰 발행해서 줌
             // redis 에 저장 ( refreshToken, email )
             ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
             valueOperations.set(refreshToken, email);
