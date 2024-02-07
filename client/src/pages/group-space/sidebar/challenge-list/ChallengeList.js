@@ -23,7 +23,7 @@ import { getChallengeList } from "apis/api/Group";
 // import { useRecoilValue } from "recoil";
 // import { challengeListState } from "../../../../context/Challenge";
 
-function ChallengeList() {
+function ChallengeList({onClick}) {
     const userId = 0;
 
     const { groupId } = useParams();
@@ -112,6 +112,8 @@ function ChallengeList() {
                                                   `/group/${groupId}/challenge/${challenge.challengeId}`,
                                                   { state: { challenge } },
                                               );
+                                              onClick()
+                                              
                                           }}
                                       >
                                           <Circle
@@ -142,11 +144,12 @@ function ChallengeList() {
                                     alignItems="center"
                                     justifyContent={"center"}
                                     cursor="pointer"
-                                    onClick={() =>
+                                    onClick={() => {
                                         navigate(
                                             `/group/${groupId}/create-challenge`,
                                         )
-                                    }
+                                        onClick()
+                                    }}
                                 >
                                     <PlusSquareIcon marginRight="4px" />
                                     <Text fontSize={"xs"}>챌린지 생성하기</Text>
@@ -165,11 +168,12 @@ function ChallengeList() {
                                         alignItems="center"
                                         justifyContent={"center"}
                                         cursor="pointer"
-                                        onClick={() =>
+                                        onClick={() => {
                                             navigate(
                                                 `/group/${groupId}/create-challenge`,
                                             )
-                                        }
+                                        onClick()
+                                        }}
                                     >
                                         <PlusSquareIcon marginRight="4px" />
                                         <Text fontSize={"xs"}>
@@ -217,6 +221,7 @@ function ChallengeList() {
                                             `/group/1/last-challenge/${challenge.challengeId}`,
                                             { state: { challenge } },
                                         );
+                                        onClick()
                                     }}
                                 >
                                     {challenge.status === "success" ? (
