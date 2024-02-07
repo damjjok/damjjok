@@ -206,7 +206,7 @@ export const WebSocketProvider = ({ children }) => {
     const passFailVote = useCallback((roomId, vote) => {
         // 담쪽이의 PASS, FAIL 여부를 투표하는 함수
         var message = {
-            pass: vote,
+            pass: vote, // vote = true or false
         };
         stompClient.current.publish({
             // 사용자의 투표 여부를 전달
@@ -219,10 +219,23 @@ export const WebSocketProvider = ({ children }) => {
     const afterPass = useCallback((roomId) => {
         // 결과가 PASS일 때 방에서 나가는 함수
         stompClient.current.publish({
-            // 사용자의 투표 여부를 전달
+            // 방에서 나가겠다는 메세지를 서버에 전달
             destination: "/app/afterPass/" + roomId,
             headers: {},
             body: JSON.stringify({}),
+        });
+    }, []);
+
+    const finalArgumentReady = useCallback((roomId) => {
+        // 투표 결과가 FAIL일 경우 최후 변론으로 버튼을 눌렀을 때의 동작
+        var message = {
+            ready: true,
+        };
+        stompClient.current.publish({
+            // 준비했음을 서버에 전달
+            destination: "/app/finalArgumentReady/" + roomId,
+            headers: {},
+            body: JSON.stringify(message),
         });
     }, []);
 
@@ -234,6 +247,9 @@ export const WebSocketProvider = ({ children }) => {
         enterRoom,
         setReady,
         evidenceNextStage,
+        passFailVote,
+        afterPass,
+        finalArgumentReady,
     };
 
     return (
