@@ -14,6 +14,7 @@ import {
     Box,
     Flex,
     Circle,
+    Text,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import challengeIcon from "assets/images/currentChallengeIcon.png";
@@ -88,60 +89,95 @@ function ChallengeList() {
                 </AccordionButton>
                 <AccordionPanel pb={4}>
                     <ul>
-                        {currentGroupChallengeList.length > 0 ? (
-                            currentGroupChallengeList.map(
-                                (challenge, index) => (
-                                    <Flex
-                                        key={index}
-                                        alignItems="center"
-                                        className={`py-2 px-4 rounded-lg ${
-                                            selectedChallenge.index === index &&
-                                            selectedChallenge.list === "current"
-                                                ? "bg-[rgba(255,209,0,0.5)]"
-                                                : "hover:bg-damyellow"
-                                        } hover:cursor-pointer`}
-                                        onClick={() => {
-                                            setSelectedChallenge({
-                                                index,
-                                                list: "current",
-                                            });
-                                            navigate(
-                                                `/group/${groupId}/challenge/${challenge.challengeId}`,
-                                                { state: { challenge } },
-                                            );
-                                        }}
-                                    >
-                                        <Circle
-                                            size="2"
-                                            bg="green.500"
-                                            mr="2"
-                                        />
-                                        <li key={index}>
-                                            <p className=" font-semibold">
-                                                {challenge.userName} 챌린지
-                                            </p>
-                                            <p className="text-xs">
-                                                {new Date(
-                                                    challenge.createdAt,
-                                                ).toLocaleDateString()}{" "}
-                                                시작
-                                            </p>
-                                        </li>
-                                    </Flex>
-                                    // 해당 챌린지 페이지로 향하는 링크 추가해야함.
-                                ),
-                            )
-                        ) : (
-                            <Box>
-                                <p className="text-xs text-gray-400 mb-2">
-                                    활성화된 챌린지가 없습니다
-                                </p>
-                                <Flex alignItems="center" cursor="pointer">
-                                    {/* 생성하기 화면으로 가는 링크 추가해줄 것 */}
+                        {currentGroupChallengeList.length > 0
+                            ? currentGroupChallengeList.map(
+                                  (challenge, index) => (
+                                      <Flex
+                                          key={index}
+                                          alignItems="center"
+                                          className={`py-2 px-4 rounded-lg ${
+                                              selectedChallenge.index ===
+                                                  index &&
+                                              selectedChallenge.list ===
+                                                  "current"
+                                                  ? "bg-[rgba(255,209,0,0.5)]"
+                                                  : "hover:bg-damyellow"
+                                          } hover:cursor-pointer`}
+                                          onClick={() => {
+                                              setSelectedChallenge({
+                                                  index,
+                                                  list: "current",
+                                              });
+                                              navigate(
+                                                  `/group/${groupId}/challenge/${challenge.challengeId}`,
+                                                  { state: { challenge } },
+                                              );
+                                          }}
+                                      >
+                                          <Circle
+                                              size="2"
+                                              bg="green.500"
+                                              mr="2"
+                                          />
+                                          <li key={index}>
+                                              <p className=" font-semibold">
+                                                  {challenge.userName} 챌린지
+                                              </p>
+                                              <p className="text-xs">
+                                                  {new Date(
+                                                      challenge.createdAt,
+                                                  ).toLocaleDateString()}{" "}
+                                                  시작
+                                              </p>
+                                          </li>
+                                      </Flex>
+                                  ),
+                              )
+                            : null}
+                        {!currentGroupChallengeList.some(
+                            (challenge) => challenge.userId === userId,
+                        ) && (
+                            <Box px={3} py={2} display={"flex"}>
+                                <Flex
+                                    alignItems="center"
+                                    justifyContent={"center"}
+                                    cursor="pointer"
+                                    onClick={() =>
+                                        navigate(
+                                            `/group/${groupId}/create-challenge`,
+                                        )
+                                    }
+                                >
                                     <PlusSquareIcon marginRight="4px" />
-                                    <p>챌린지 생성하기</p>
+                                    <Text fontSize={"xs"}>챌린지 생성하기</Text>
                                 </Flex>
                             </Box>
+                        )}
+                        {currentGroupChallengeList.length === 0 && (
+                            <>
+                                <Box>
+                                    <p className="text-xs text-gray-400 mb-2">
+                                        활성화된 챌린지가 없습니다
+                                    </p>
+                                </Box>
+                                <Box px={3} py={2} display={"flex"}>
+                                    <Flex
+                                        alignItems="center"
+                                        justifyContent={"center"}
+                                        cursor="pointer"
+                                        onClick={() =>
+                                            navigate(
+                                                `/group/${groupId}/create-challenge`,
+                                            )
+                                        }
+                                    >
+                                        <PlusSquareIcon marginRight="4px" />
+                                        <Text fontSize={"xs"}>
+                                            챌린지 생성하기
+                                        </Text>
+                                    </Flex>
+                                </Box>
+                            </>
                         )}
                     </ul>
                 </AccordionPanel>
@@ -206,7 +242,6 @@ function ChallengeList() {
                                         </p>
                                     </li>
                                 </Flex>
-                                // 해당 챌린지 페이지로 향하는 링크 추가해야함.
                             ))
                         ) : (
                             <p className="text-xs text-gray-400 mb-2">
