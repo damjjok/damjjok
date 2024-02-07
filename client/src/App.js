@@ -5,7 +5,7 @@ import { Routes, Route } from "react-router-dom";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 // import GroupHome from "./pages/groupspace/group-home/GroupHome.js";
 import { useRecoilValue } from "recoil";
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 import Landing from "./pages/landing-page/Landig.js";
 import CreateGroup from "./pages/landing-page/create-group/CreateGroup.js";
 import GroupSpaceHome from "./pages/group-space/GroupSpaceHome.js";
@@ -18,6 +18,9 @@ import EmptyChallenge from "pages/group-space/group-space-main/empty-challenge/E
 import LastChallenge from "pages/group-space/group-space-main/last-challenge/LastChallenge";
 import { createGlobalStyle } from "styled-components";
 import OauthPage from "pages/landing-page/oauth-page/OauthPage";
+import "./pages/firebase/firebaseConfig";
+
+import { getMessaging, onMessage } from "firebase/messaging";
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -79,6 +82,14 @@ const theme = extendTheme({
 });
 
 function App() {
+    useEffect(() => {
+        const messaging = getMessaging();
+        onMessage(messaging, (payload) => {
+            console.log("Message received. ", payload);
+            // 여기서 포그라운드 알림을 처리할 로직을 구현합니다.
+            // 예를 들어, 사용자에게 메시지를 표시하는 다이얼로그나 알림을 띄울 수 있습니다.
+        });
+    }, []);
     return (
         <>
             <GlobalStyle />

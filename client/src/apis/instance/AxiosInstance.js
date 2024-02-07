@@ -22,4 +22,40 @@ axiosInstance.interceptors.request.use(
     },
 );
 
+axiosInstance.interceptors.response.use(
+    (response) => {
+        // 정상 응답 바로 반환
+        return response;
+    },
+    async (error) => {
+        const originalRequest = error.config;
+        if (error.response.status === 403 && !originalRequest._retry) {
+            originalRequest._retry = true; // 재시도 표시
+            const refreshToken = localStorage.getItem("refreshToken");
+
+            // refreshToken으로 새 accessToken 요청
+            try {
+                const response = await axios.post(
+                    "https://i10e105.p.ssafy.io/api/v1/auth/refresh-token",
+                    {
+                        refreshToken,
+                    },
+                );
+                const { accessToken } = response.data;
+                localStorage.setItem("accessToken", accessToken);
+                // 원래 요청에 새 토큰 설정하고 재시도
+                axios.defaults.headers.common[
+                    "Authorization"
+                ] = `Bearer ${accessToken}`;
+                return axiosInstance(originalRequest);
+            } catch (refreshError) {
+                console.error("Unable to refresh token:", refreshError);
+                // 토큰 갱신 실패 시 로그인 페이지로 이동 등의 처리를 할 수 있습니다.
+                return Promise.reject(refreshError);
+            }
+        }
+        return Promise.reject(error);
+    },
+);
+
 export { axiosInstance };
