@@ -7,7 +7,7 @@ import {
     readyMemberCountState,
 } from "contexts/TruthRoomSocket";
 import { allUserReadyState } from "./../../../contexts/TruthRoomSocket";
-import { stepState } from "contexts/TruthRoom";
+import { stepState } from "contexts/TruthRoomSocket";
 
 const ConnectionButton = () => {
     const {

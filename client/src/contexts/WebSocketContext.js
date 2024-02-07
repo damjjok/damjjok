@@ -3,13 +3,13 @@ import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import {
+    stepState,
     allUserReadyState,
     fineStepState,
     joinMemberListState,
     readyMemberCountState,
     stepReadyCountState,
 } from "./TruthRoomSocket";
-import { stepState } from "./TruthRoom";
 import { closeOpenviduSession } from "apis/api/TruthRoom";
 
 const WebSocketContext = createContext({});
@@ -31,7 +31,7 @@ export const WebSocketProvider = ({ children }) => {
     // 3. PASS/FAIl 투표 단계
     // 4. 최후 변론 단계
     // 5. 벌금 결정 단계
-    const [fineStepState, setFineStepState] = useRecoilState(fineStepState); // 벌금 결정 단계에서
+    const [fineStep, setFineStep] = useRecoilState(fineStepState); // 벌금 결정 단계에서
 
     // 여기부터는 소켓 연결, 통신 관련 내용들
     const [isConnected, setIsConnected] = useState(false);
@@ -156,7 +156,7 @@ export const WebSocketProvider = ({ children }) => {
                 (message) => {
                     console.log("Start Money Vote: ", message.body);
                     setStepReadyCount(0); // 모든 멤버가 벌금을 입력 완료, 단계 별 준비 상황 0으로 초기화
-                    setFineStepState(1); // 벌금 입력(0) -> 벌금 투표(1) 단계로
+                    setFineStep(1); // 벌금 입력(0) -> 벌금 투표(1) 단계로
                 }
             );
             stompClient.current.subscribe(
@@ -171,7 +171,7 @@ export const WebSocketProvider = ({ children }) => {
                 (message) => {
                     console.log("Fine Vote Result: ", message.body);
                     stepReadyCount(0); // 단계 별 준비 멤버 수 0으로 초기화
-                    setFineStepState(2); // 벌금 투표(1) -> 벌금 발표(2) 단계로
+                    setFineStep(2); // 벌금 투표(1) -> 벌금 발표(2) 단계로
                 }
             );
             stompClient.current.subscribe(

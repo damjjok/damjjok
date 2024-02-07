@@ -4,7 +4,7 @@ import { Text } from "@chakra-ui/react";
 import BasicButton from "components/button/BasicButton";
 import { failText, passText } from "./PassFailText";
 import { useRecoilState } from "recoil";
-import { stepState } from "contexts/TruthRoom";
+import { stepState } from "contexts/TruthRoomSocket";
 
 function PassFailResultComponent({ result }) {
     // result: PASS or FAIL
