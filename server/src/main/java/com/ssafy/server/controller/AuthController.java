@@ -50,6 +50,9 @@ public class AuthController {
     }
 
     @GetMapping("/fcmToken/{fcmToken}")
+    @Operation(summary = "fcmToken 디비에 저장", description = "fcmToken 으로 알림 보내기때문에 user 테이블에 fcmToken 저장해야함",
+            responses = { @ApiResponse(responseCode = "200", description = "토큰 저장 성공",
+                    content = @Content(schema = @Schema(implementation = FcmTokenResponseDto.class)))})
     public ResponseEntity<? super FcmTokenResponseDto> changeFcmToken(
             @RequestHeader(value="Authorization") String authorizationHeader,
             @PathVariable String fcmToken){
