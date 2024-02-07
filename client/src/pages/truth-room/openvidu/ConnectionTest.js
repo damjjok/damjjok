@@ -10,8 +10,14 @@ import { allUserReadyState } from "./../../../contexts/TruthRoomSocket";
 import { stepState } from "contexts/TruthRoom";
 
 const ConnectionButton = () => {
-    const { connect, disconnect, isConnected, enterRoom, setReady } =
-        useContext(WebSocketContext);
+    const {
+        connect,
+        disconnect,
+        isConnected,
+        enterRoom,
+        setReady,
+        evidenceNextStage,
+    } = useContext(WebSocketContext);
     const step = useRecoilValue(stepState);
     const joinMemberList = useRecoilValue(joinMemberListState);
     const readyMemberCount = useRecoilValue(readyMemberCountState);
@@ -32,6 +38,7 @@ const ConnectionButton = () => {
             </div>
             {allUserReady && <div>모든 유저 준비 완료!</div>}
             {step === 1 && <div>증거 판별 단계</div>}
+            {step === 2 && <div>투표 단계</div>}
             <div>
                 <Button onClick={isConnected ? disconnect : connect}>
                     {isConnected ? "Disconnect" : "Connect"}
@@ -42,7 +49,9 @@ const ConnectionButton = () => {
                     방 입장
                 </Button>
                 <Button onClick={() => setReady(testRoomId)}>준비하기</Button>
-                <Button>다음 단계로 </Button>
+                <Button onClick={() => evidenceNextStage(testRoomId)}>
+                    증거 다음 단계로
+                </Button>
             </div>
         </div>
     );

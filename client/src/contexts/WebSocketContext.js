@@ -6,6 +6,7 @@ import {
     allUserReadyState,
     joinMemberListState,
     readyMemberCountState,
+    stepReadyCountState,
 } from "./TruthRoomSocket";
 import { stepState } from "./TruthRoom";
 
@@ -16,6 +17,8 @@ export const WebSocketProvider = ({ children }) => {
     const [step, setStep] = useRecoilState(stepState); // 진실의 방 전체 단계
     const [joinMemberList, setJoinMemberList] =
         useRecoilState(joinMemberListState); // 참여 유저 목록
+    const [stepReadyCount, setStepReadyCount] =
+        useRecoilState(stepReadyCountState); // 각 단계에서 다음 상태로 갈 준비가 된 유저 수 카운트(모든 단계에서 사용 / 각 단계에서 모든 유저가 준비 완료될 때마다 0으로 초기화)
     // 1. 준비 단계
     const [readyMemberCount, setReadyMemberCount] = useRecoilState(
         readyMemberCountState,
@@ -87,22 +90,22 @@ export const WebSocketProvider = ({ children }) => {
                         JSON.parse(message.body),
                     );
                     setAllUserReady(JSON.parse(message.body)); // 반환값이 false이든 true이든 효과는 똑같아서 그냥 set
-                    setStep(step + 1); // 모든 유저 준비되면 다음 단계(증거 판별)로 전환
+                    setStep(1); // 모든 유저 준비되면 다음 단계(증거 판별)로 전환
                 },
             );
             stompClient.current.subscribe(
                 "/topic/evidenceNextStageState/" + roomId,
-                function (message) {
-                    console.log(
-                        "Evidence Next Stage Ready Count: ",
-                        message.body,
-                    );
+                (message) => {
+                    setStepReadyCount(stepReadyCount + 1);
                 },
             );
             stompClient.current.subscribe(
+                // 증거 판별 단계에서 모든 유저가 준비됐을 때 받는 알림
                 "/topic/voteStart/" + roomId,
-                function (message) {
+                (message) => {
                     console.log("Vote Start Notification: ", message.body);
+                    setStepReadyCount(0); // (다음 단계로 넘어가므로 단계 별 준비된 유저 수 0으로 초기화)
+                    setStep(2); // 증거 판별 단계에서 투표(PASS/FAIL) 단계로
                 },
             );
             stompClient.current.subscribe(
@@ -187,6 +190,19 @@ export const WebSocketProvider = ({ children }) => {
         });
     }, []);
 
+    const evidenceNextStage = useCallback((roomId) => {
+        // 사용자가 방에 입장한 후 필요한 구독 목록 구독 시작
+        var message = {
+            next: true,
+        };
+        stompClient.current.publish({
+            // 진실의 방에 입장했음을 소켓에 발행
+            destination: "/app/evidenceNextStage/" + roomId,
+            headers: {},
+            body: JSON.stringify(message),
+        });
+    }, []);
+
     // 연결 상태, 연결 및 연결 해제 함수를 컨텍스트 값으로 제공
     const value = {
         isConnected,
@@ -194,6 +210,7 @@ export const WebSocketProvider = ({ children }) => {
         disconnect,
         enterRoom,
         setReady,
+        evidenceNextStage,
     };
 
     return (

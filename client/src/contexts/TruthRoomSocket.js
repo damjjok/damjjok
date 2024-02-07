@@ -18,3 +18,9 @@ export const allUserReadyState = atom({
     key: "allUserReady",
     default: false,
 });
+
+export const stepReadyCountState = atom({
+    // 단계 별 준비된 멤버 수 카운트
+    key: "stepReadyMemberCount",
+    default: 0,
+});
