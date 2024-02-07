@@ -44,8 +44,8 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String encodedName = URLEncoder.encode(userName, StandardCharsets.UTF_8.toString());
 
 
-        String accessToken = jwtProvider.createToken(email, 5, ChronoUnit.DAYS);
-        String refreshToken = jwtProvider.createToken(email, 5, ChronoUnit.DAYS);
+        String accessToken = jwtProvider.createToken(email, 1, ChronoUnit.DAYS);
+        String refreshToken = jwtProvider.createToken(email, 1, ChronoUnit.DAYS);
 
         boolean isExist = userRepository.existsByEmail(email);
 
