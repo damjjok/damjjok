@@ -14,7 +14,10 @@ import {
     Stack,
     Radio,
     RadioGroup,
+    useToast,
+    Box,
 } from "@chakra-ui/react";
+import { CheckCircleIcon } from "@chakra-ui/icons";
 
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -32,6 +35,8 @@ const FormModal = ({ FormisOpen, FormonClose }) => {
         birth: "",
         sex: "",
     });
+
+    const toast = useToast();
 
     // 컴포넌트 마운트 시 전역 상태 값을 로컬 상태에 할당
     useEffect(() => {
@@ -70,6 +75,32 @@ const FormModal = ({ FormisOpen, FormonClose }) => {
             setUser((prevUser) => ({ ...prevUser, name: "", email: "" }));
 
             FormonClose();
+
+            // 토스트 메시지 표시
+            toast({
+                status: "success",
+                duration: 5000,
+                isClosable: true,
+                position: "bottom", // 토스트 메시지 위치 지정
+                render: () => (
+                    <Box
+                        color="white"
+                        p={5}
+                        bg="#fdd100"
+                        borderRadius="md"
+                        textAlign="center"
+                        fontWeight="bold"
+                    >
+                        <CheckCircleIcon
+                            boxSize={6}
+                            color="white"
+                            margin="0 auto 12px"
+                        />
+                        <Text mb={1}>회원가입 성공</Text>
+                        <Text>로그인 버튼을 눌러주세요!</Text>
+                    </Box>
+                ),
+            });
             // 3. 랜딩 페이지로 리디렉션
             navigate("/");
         } catch (error) {
@@ -100,27 +131,42 @@ const FormModal = ({ FormisOpen, FormonClose }) => {
 
                             <FormControl>
                                 <Input
+                                    variant="flushed"
                                     mb={3}
                                     placeholder="이름"
                                     name="user_name"
                                     value={state.user_name}
                                     onChange={handleChangeState}
                                     isReadOnly
+                                    _focus={{
+                                        borderBottom: "2px solid #ffd110", // 포커스 시 선 색상 변경
+                                        boxShadow: "none", // 기본 테마의 포커스 boxShadow 제거
+                                    }}
                                 />
                                 <Input
+                                    variant="flushed"
                                     mb={3}
                                     placeholder="이메일"
                                     name="email"
                                     value={state.email}
                                     onChange={handleChangeState}
                                     isReadOnly
+                                    _focus={{
+                                        borderBottom: "2px solid #ffd110", // 포커스 시 선 색상 변경
+                                        boxShadow: "none", // 기본 테마의 포커스 boxShadow 제거
+                                    }}
                                 />
                                 <Input
+                                    variant="flushed"
                                     mb={3}
                                     placeholder="생년월일"
                                     name="birth"
                                     value={state.birth}
                                     onChange={handleChangeState}
+                                    _focus={{
+                                        borderBottom: "2px solid #ffd110", // 포커스 시 선 색상 변경
+                                        boxShadow: "none", // 기본 테마의 포커스 boxShadow 제거
+                                    }}
                                 />
 
                                 <RadioGroup
@@ -136,7 +182,9 @@ const FormModal = ({ FormisOpen, FormonClose }) => {
                                         justifyContent="center"
                                         mb={3}
                                     >
-                                        <Radio value="male">남성</Radio>
+                                        <Radio value="male" mr={5}>
+                                            남성
+                                        </Radio>
                                         <Radio value="female">여성</Radio>
                                     </Stack>
                                 </RadioGroup>
