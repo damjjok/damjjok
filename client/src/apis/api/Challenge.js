@@ -49,4 +49,21 @@ const getTestimonies = async (challengeId, setTestimonies) => {
     }
 };
 
-export { createChallenge, getTestimonies, getAttendanceList };
+const getTestimonyDetail = async (testimonyId, setTestimony) => {
+    try {
+        const response = await axiosInstance.get(
+            `/v1/proof/testimony/detail/${testimonyId}`
+        );
+        const { testimony } = await response.data;
+        setTestimony(testimony);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export {
+    createChallenge,
+    getTestimonies,
+    getAttendanceList,
+    getTestimonyDetail,
+};

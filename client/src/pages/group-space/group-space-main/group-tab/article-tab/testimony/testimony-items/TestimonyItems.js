@@ -11,7 +11,12 @@ import {
 } from "@chakra-ui/react";
 import TestimonyDetailModal from "../testimony-modal/TestimonyDetailModal";
 
-const TestimonyItems = ({ testimonyTitle, testimonyContent, userName }) => {
+const TestimonyItems = ({
+    testimonyTitle,
+    testimonyContent,
+    userName,
+    testimonyId,
+}) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     // 나중에 바꿔야함
     return (
@@ -54,6 +59,7 @@ const TestimonyItems = ({ testimonyTitle, testimonyContent, userName }) => {
                 onClose={onClose}
                 title={testimonyTitle}
                 content={testimonyContent}
+                testimonyId={testimonyId}
             />
         </div>
     );
