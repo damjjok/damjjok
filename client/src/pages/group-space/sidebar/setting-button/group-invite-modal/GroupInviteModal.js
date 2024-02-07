@@ -19,14 +19,18 @@ import {
 } from "@chakra-ui/react";
 import SearchBar from "pages/landing-page/create-group/create-group-modal/searchbar/SearchBar";
 import { useClipboard } from "@chakra-ui/react";
+import { useRecoilValue } from "recoil";
+import { currentGroupState } from "contexts/Group";
 
 // 초대코드는 임의대로?
 // API에 입력 API는 있는데, 생성 API는 없음
 
-function GroupInviteModal() {
+function GroupInviteModal({ currentGroupInfo }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const inviteCode = "초대 코드";
-    const { hasCopied, onCopy } = useClipboard(inviteCode);
+    // const currentGroupInfo = useRecoilValue(currentGroupState);
+    // console.log(currentGroupInfo);
+    const inviteLink = currentGroupInfo.invitationLink;
+    const { hasCopied, onCopy } = useClipboard(inviteLink);
 
     return (
         <>
@@ -62,7 +66,7 @@ function GroupInviteModal() {
                                         onClick={onCopy}
                                         cursor={"pointer"}
                                     >
-                                        {inviteCode}
+                                        {inviteLink}
                                     </Text>
                                     <IconButton>
                                         <CopyIcon onClick={onCopy} />

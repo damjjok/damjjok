@@ -64,7 +64,7 @@ function ChallengeList() {
         fetchData(); // fetchData 함수 호출
     }, [groupId]);
 
-    console.log(currentChallengeList);
+    // console.log(currentChallengeList);
 
     //선택된 챌린지 표시를 위한 상태
     const [selectedChallenge, setSelectedChallenge] = useState({

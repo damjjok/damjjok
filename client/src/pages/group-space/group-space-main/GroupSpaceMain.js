@@ -29,6 +29,7 @@ function GroupSpaceMain() {
     const userId = 0;
 
     const { groupId } = useParams();
+    // console.log(groupId);
     // const setChallengeState = useSetRecoilState(challengeState);
     const [currentChallengeList, setCurrentChallengeList] =
         useRecoilState(challengeListState);
@@ -38,14 +39,16 @@ function GroupSpaceMain() {
         const fetchData = async () => {
             try {
                 const response = await getChallengeList(groupId);
-                const updatedChallengeList = response.list
+                const updatedChallengeList = response.list;
                 setCurrentChallengeList(updatedChallengeList); // Recoil 상태에 데이터 적용
                 // console.log(currentChallengeList);
                 const currentMyChallenge = updatedChallengeList.find(
                     (challenge) =>
-                        challenge.userId === userId && challenge.status === "ON",
+                        challenge.userId === userId &&
+                        challenge.status === "ON",
                 );
                 // setChallengeState(currentMyChallenge);
+                // console.log(currentMyChallenge);
 
                 if (currentMyChallenge) {
                     navigate(`challenge/${currentMyChallenge.challengeId}`);
@@ -54,15 +57,13 @@ function GroupSpaceMain() {
                 } else {
                     navigate("empty-challenge");
                 }
-
             } catch (error) {
                 console.error("챌린지 정보 불러오기 실패", error);
             }
         };
 
         fetchData(); // fetchData 함수 호출
-    }, [groupId]
-    );
+    }, [groupId]);
 
     return (
         <>

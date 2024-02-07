@@ -16,10 +16,10 @@ import damJJokIcon from "assets/images/damJJokIcon.png";
 import { useRecoilValue } from "recoil";
 import { currentGroupMemberState } from "contexts/Group";
 
-function GroupMemberModal() {
+function GroupMemberModal({ currentGroupMember }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
-    const currentGroupMember = useRecoilValue(currentGroupMemberState);
+    // const currentGroupMember = useRecoilValue(currentGroupMemberState);
 
     // find 메서드로 담쪽이 찾기
 
