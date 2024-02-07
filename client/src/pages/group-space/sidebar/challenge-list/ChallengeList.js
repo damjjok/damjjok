@@ -112,7 +112,7 @@ function ChallengeList({onClick}) {
                                                   `/group/${groupId}/challenge/${challenge.challengeId}`,
                                                   { state: { challenge } },
                                               );
-                                              onClick()
+                                              if (onClick) onClick()
                                               
                                           }}
                                       >
@@ -148,7 +148,7 @@ function ChallengeList({onClick}) {
                                         navigate(
                                             `/group/${groupId}/create-challenge`,
                                         )
-                                        onClick()
+                                        if (onClick) onClick()
                                     }}
                                 >
                                     <PlusSquareIcon marginRight="4px" />
@@ -172,7 +172,7 @@ function ChallengeList({onClick}) {
                                             navigate(
                                                 `/group/${groupId}/create-challenge`,
                                             )
-                                        onClick()
+                                        if (onClick) onClick()
                                         }}
                                     >
                                         <PlusSquareIcon marginRight="4px" />
@@ -221,7 +221,7 @@ function ChallengeList({onClick}) {
                                             `/group/1/last-challenge/${challenge.challengeId}`,
                                             { state: { challenge } },
                                         );
-                                        onClick()
+                                        if (onClick) onClick()
                                     }}
                                 >
                                     {challenge.status === "success" ? (

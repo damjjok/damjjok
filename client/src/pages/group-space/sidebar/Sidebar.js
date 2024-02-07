@@ -29,7 +29,7 @@ function Sidebar() {
                         <SettingButton />
                     </Flex>
                     <div className="my-8">
-                        <ChallengeList />
+                        <ChallengeList onClick={undefined} />
                     </div>
                 </div>
             </Box>)}
