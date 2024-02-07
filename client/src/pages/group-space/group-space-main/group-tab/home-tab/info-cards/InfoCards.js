@@ -13,6 +13,7 @@ import lv9 from "assets/gifs/lv9lung-perfect.gif";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { challengeState } from "contexts/Challenge";
+import { getChallengeRanking } from "apis/api/Challenge";
 
 const levelData = [
     {
@@ -73,10 +74,11 @@ const levelData = [
 
 // const currentLevel = 1;
 
-function InfoCards({diffDays, diffMilliseconds}) {
+function InfoCards({diffDays, diffMilliseconds, challengeId}) {
     // 셀렉터 감지를 위해
     const [dailyState, setDailyState] = useState(1)
     const [currentLevel, setCurrentLevel] = useState(1)
+    const [currentRank, setCurrentRank] = useState(0)
     // console.log(currentLevel);
     useEffect(() => {
         const sortedLevelData = [...levelData].sort((a, b) => b.duration - a.duration);
@@ -89,6 +91,26 @@ function InfoCards({diffDays, diffMilliseconds}) {
           setCurrentLevel(level?.key);
         }
       }, [diffMilliseconds, levelData, setCurrentLevel]);
+
+
+    useEffect(() => {
+    const fetchData = async () => {
+        try {
+            const response = await getChallengeRanking(challengeId);
+            const updatedRank = response.rank
+            setCurrentRank(updatedRank); // Recoil 상태에 데이터 적용
+            console.log(response);
+
+        } catch (error) {
+            console.error("챌린지 정보 불러오기 실패", error);
+        }
+            };
+
+            fetchData(); // fetchData 함수 호출
+        }, 
+        [challengeId, setCurrentRank]
+        );
+    
 
     return (
         <HStack>
@@ -165,7 +187,7 @@ function InfoCards({diffDays, diffMilliseconds}) {
                         className="overflow-visible"
                     >
                         <Text className="text-center font-semibold">
-                            상위 n%에요!
+                            상위 { currentRank }%에요!
                         </Text>
                     </Box>
                 </VStack>
