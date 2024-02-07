@@ -1,5 +1,6 @@
 package com.ssafy.server.filter;
 
+import com.ssafy.server.dto.auth.CustomUserDetails;
 import com.ssafy.server.entity.UserEntity;
 import com.ssafy.server.exception.CustomJwtException;
 import com.ssafy.server.provider.JwtProvider;
@@ -38,7 +39,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try{
             String token = parseBearerToken(request);
-            String email = null;
 
             if(token == null) {
                 filterChain.doFilter(request,response);
@@ -47,7 +47,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             Jws<Claims> parsedToken = jwtProvider.validateToken(token);
 
-            email = parsedToken.getBody().get("email", String.class);
+            int userId = parsedToken.getBody().get("userId", Integer.class);
+            String email = parsedToken.getBody().get("email", String.class);
+            String userName = parsedToken.getBody().get("userName", String.class);
 
             if(email == null){
                 filterChain.doFilter(request,response);
@@ -63,10 +65,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             //List<GrantedAuthority> authorities = new ArrayList<>();
             //authorities.add(new SimpleGrantedAuthority(role));
 
+            CustomUserDetails customUserDetails = new CustomUserDetails(userId,email,userName);
+
             SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
 
             AbstractAuthenticationToken authenticationToken =
-                    new UsernamePasswordAuthenticationToken(email, null, Collections.emptyList());// 1: 유저정보
+                    new UsernamePasswordAuthenticationToken(customUserDetails, null, Collections.emptyList());// 1: 유저정보
             authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
             securityContext.setAuthentication(authenticationToken);

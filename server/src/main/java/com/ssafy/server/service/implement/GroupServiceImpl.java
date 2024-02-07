@@ -1,6 +1,7 @@
 package com.ssafy.server.service.implement;
 
 import com.ssafy.server.dto.ResponseDto;
+import com.ssafy.server.dto.auth.CustomUserDetails;
 import com.ssafy.server.dto.group.GroupDto;
 import com.ssafy.server.dto.group.UserDto;
 import com.ssafy.server.dto.request.group.GroupCreateRequestDto;
@@ -21,6 +22,8 @@ import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -147,17 +150,22 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public ResponseEntity<? super GroupListByUserResponseDto> groupListByUser(String authorizationHeader) {
+    public ResponseEntity<? super GroupListByUserResponseDto> groupListByUser() {
 
         List<GroupDto> list = new ArrayList<>();
 
         try {
-            String token = authorizationHeader.substring(7);
-            Jws<Claims> parsedToken = jwtProvider.validateToken(token);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
 
-            String email = parsedToken.getBody().get("email", String.class);
-            int userId = parsedToken.getBody().get("userId", Integer.class);
-            String userName = parsedToken.getBody().get("userName", String.class);
+//            String token = authorizationHeader.substring(7);
+//            Jws<Claims> parsedToken = jwtProvider.validateToken(token);
+//
+//            String email = parsedToken.getBody().get("email", String.class);
+//            int userId = parsedToken.getBody().get("userId", Integer.class);
+//            String userName = parsedToken.getBody().get("userName", String.class);
+
+            int userId = customUserDetails.getUserId();
 
             List<GroupEntity> entityList = groupMemberRepository.findGroupsByUserId(userId);
 
