@@ -1,5 +1,6 @@
 package com.ssafy.server.controller;
 
+import com.ssafy.server.dto.request.alarm.FCMTokenRequestDto;
 import com.ssafy.server.dto.request.auth.SignUpRequestDto;
 import com.ssafy.server.dto.request.auth.TokenRequestDto;
 import com.ssafy.server.dto.response.auth.FcmTokenResponseDto;
@@ -49,14 +50,14 @@ public class AuthController {
         return response;
     }
 
-    @GetMapping("/fcmToken/{fcmToken}")
+    @PostMapping("/fcmToken")
     @Operation(summary = "fcmToken 디비에 저장", description = "fcmToken 으로 알림 보내기때문에 user 테이블에 fcmToken 저장해야함",
             responses = { @ApiResponse(responseCode = "200", description = "토큰 저장 성공",
                     content = @Content(schema = @Schema(implementation = FcmTokenResponseDto.class)))})
     public ResponseEntity<? super FcmTokenResponseDto> changeFcmToken(
-            @RequestHeader(value="Authorization") String authorizationHeader,
-            @PathVariable String fcmToken){
-        ResponseEntity<? super FcmTokenResponseDto> response = authService.changeFcmToken(authorizationHeader , fcmToken);
+            @RequestBody FCMTokenRequestDto dto
+            ){
+        ResponseEntity<? super FcmTokenResponseDto> response = authService.savedFcmToken(dto);
         return response;
     }
 }
