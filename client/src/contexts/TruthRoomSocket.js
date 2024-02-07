@@ -14,7 +14,7 @@ export const readyMemberCountState = atom({
 });
 
 export const allUserReadyState = atom({
-    // 모든 유저가 준비 완료 됐는지 여부
+    // 모든 유저가 준비 완료 됐는지 여부 => 이거 사실상 있을 필요 없을 듯?
     key: "allUserReady",
     default: false,
 });
@@ -25,6 +25,8 @@ export const stepReadyCountState = atom({
     default: 0,
 });
 
-export const votedMemberCountState = atom({
-    // pass, fail 투표 완료한 멤버 수 카운트
+export const fineStepState = atom({
+    // 투표 단계는 입력, 벌금 투표, 벌금 결정의 3단계로 나뉘므로 따로 저장
+    key: "fineStep",
+    default: 0,
 });
