@@ -111,55 +111,55 @@ export const WebSocketProvider = ({ children }) => {
             );
             stompClient.current.subscribe(
                 "/topic/passFailVoteState/" + roomId,
-                function (message) {
+                (message) => {
                     console.log("Current Vote Count: ", message.body);
                 }
             );
             stompClient.current.subscribe(
                 "/topic/voteResult/" + roomId,
-                function (message) {
+                (message) => {
                     console.log("Vote Result: ", message.body);
                 }
             );
             stompClient.current.subscribe(
                 "/topic/finalArgumentReadyState/" + roomId,
-                function (message) {
+                (message) => {
                     console.log("Final Argument Ready State: ", message.body);
                 }
             );
             stompClient.current.subscribe(
                 "/topic/startFinalArgument/" + roomId,
-                function (message) {
+                (message) => {
                     console.log("Start Final Argument: ", message.body);
                 }
             );
             stompClient.current.subscribe(
                 "/topic/remainingMembers/" + roomId,
-                function (message) {
+                (message) => {
                     console.log("Remaining Members: ", message.body);
                 }
             );
             stompClient.current.subscribe(
                 "/topic/fineSubmittedCount/" + roomId,
-                function (message) {
+                (message) => {
                     console.log("Fine Submitted Count: ", message.body);
                 }
             );
             stompClient.current.subscribe(
                 "/topic/startMoenyVote/" + roomId,
-                function (message) {
+                (message) => {
                     console.log("Start Money Vote: ", message.body);
                 }
             );
             stompClient.current.subscribe(
                 "/topic/fineVoteCount/" + roomId,
-                function (message) {
+                (message) => {
                     console.log("Fine Vote Count: ", message.body);
                 }
             );
             stompClient.current.subscribe(
                 "/topic/fineVoteResulte/" + roomId,
-                function (message) {
+                (message) => {
                     console.log("Fine Vote Result: ", message.body);
                 }
             );
