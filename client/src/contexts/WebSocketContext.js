@@ -172,7 +172,7 @@ export const WebSocketProvider = ({ children }) => {
             // 진실의 방에 입장했음을 소켓에 발행
             destination: "/app/enter/" + roomId + "/" + userName + "/" + role,
             headers: {},
-            body: JSON.stringify({}),
+            body: {},
         });
     }, []);
 
@@ -222,7 +222,7 @@ export const WebSocketProvider = ({ children }) => {
             // 방에서 나가겠다는 메세지를 서버에 전달
             destination: "/app/afterPass/" + roomId,
             headers: {},
-            body: JSON.stringify({}),
+            body: {},
         });
     }, []);
 
@@ -239,6 +239,16 @@ export const WebSocketProvider = ({ children }) => {
         });
     }, []);
 
+    const finishFinalArgument = useCallback((roomId) => {
+        // 최후 변론이 끝났을 때(타이머 1분 종료 시)의 동작
+        stompClient.current.publish({
+            // 최후 변론이 끝났음을 서버에 전달
+            destination: "/app/finishFinalArgument/" + roomId,
+            headers: {},
+            body: {},
+        });
+    }, []);
+
     // 연결 상태, 연결 및 연결 해제 함수를 컨텍스트 값으로 제공
     const value = {
         isConnected,
@@ -250,6 +260,7 @@ export const WebSocketProvider = ({ children }) => {
         passFailVote,
         afterPass,
         finalArgumentReady,
+        finishFinalArgument,
     };
 
     return (
