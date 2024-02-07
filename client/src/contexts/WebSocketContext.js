@@ -263,6 +263,20 @@ export const WebSocketProvider = ({ children }) => {
         });
     }, []);
 
+    const voteFine = useCallback((roomId, votedFine) => {
+        // 사용자가 벌금으로 투표한 금액을 전달하는 함수
+        var message = {
+            fineAmount: votedFine, // voteFine: 투표한 벌금
+        };
+
+        stompClient.current.publish({
+            // 사용자가 투표한 벌금을 서버에 전달
+            destination: "/app/voteFine/" + roomId,
+            headers: {},
+            body: JSON.stringify({ message }),
+        });
+    });
+
     // 연결 상태, 연결 및 연결 해제 함수를 컨텍스트 값으로 제공
     const value = {
         isConnected,
@@ -276,6 +290,7 @@ export const WebSocketProvider = ({ children }) => {
         finalArgumentReady,
         finishFinalArgument,
         submitFine,
+        voteFine,
     };
 
     return (
