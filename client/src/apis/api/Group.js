@@ -39,4 +39,16 @@ const getChallengeInfo = async (challengeId) => {
     }
 };
 
-export { getChallengeList, getChallengeInfo };
+const getGroupMember = async (groupId) => {
+    try {
+        const response = await axiosInstance.get(
+            `/v1/group/${groupId}/user-list`,
+        );
+        if (response.status === 200) return response.data;
+        else console.log("통신 실패" + response.status);
+    } catch (error) {
+        console.log("그룹 멤버 정보 불러오기 실패" + error);
+    }
+};
+
+export { getChallengeList, getChallengeInfo, getGroupMember };
