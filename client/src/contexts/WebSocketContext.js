@@ -12,7 +12,7 @@ export const WebSocketProvider = ({ children }) => {
         if (!stompClient.current) {
             // SockJS 인스턴스 생성(소켓 연결을 위함)
             const socket = new SockJS(
-                "https://i10e105.p.ssafy.io/truth-room-websocket"
+                "https://i10e105.p.ssafy.io/truth-room-websocket",
             );
 
             // Client 인스턴스 생성
@@ -22,15 +22,6 @@ export const WebSocketProvider = ({ children }) => {
                 onConnect: (frame) => {
                     console.log("Connected: " + frame);
                     setIsConnected(true);
-
-                    // 서버로부터 메시지 수신 구독
-                    stompClient.current.subscribe(
-                        "/topic/messages",
-                        (message) => {
-                            // 수신 메시지 처리
-                            console.log(JSON.parse(message.body).content);
-                        }
-                    );
                 },
                 // 연결 해제 및 오류 처리에 대한 콜백도 여기에 추가 가능
             });
@@ -50,11 +41,123 @@ export const WebSocketProvider = ({ children }) => {
         }
     }, []);
 
+    function subscribeToTopics(roomId) {
+        if (roomId) {
+            stompClient.current.subscribe(
+                "/topic/member/" + roomId,
+                (message) => {
+                    console.log("hi");
+                    console.log(JSON.parse(message.body));
+                },
+            );
+            stompClient.current.subscribe(
+                "/topic/readyState/" + roomId,
+                function (message) {
+                    console.log("Ready State: ", message.body);
+                },
+            );
+            stompClient.current.subscribe(
+                "/topic/readyResult/" + roomId,
+                function (message) {
+                    console.log("Ready State: ", message.body);
+                },
+            );
+            stompClient.current.subscribe(
+                "/topic/evidenceNextStageState/" + roomId,
+                function (message) {
+                    console.log(
+                        "Evidence Next Stage Ready Count: ",
+                        message.body,
+                    );
+                },
+            );
+            stompClient.current.subscribe(
+                "/topic/voteStart/" + roomId,
+                function (message) {
+                    console.log("Vote Start Notification: ", message.body);
+                },
+            );
+            stompClient.current.subscribe(
+                "/topic/passFailVoteState/" + roomId,
+                function (message) {
+                    console.log("Current Vote Count: ", message.body);
+                },
+            );
+            stompClient.current.subscribe(
+                "/topic/voteResult/" + roomId,
+                function (message) {
+                    console.log("Vote Result: ", message.body);
+                },
+            );
+            stompClient.current.subscribe(
+                "/topic/finalArgumentReadyState/" + roomId,
+                function (message) {
+                    console.log("Final Argument Ready State: ", message.body);
+                },
+            );
+            stompClient.current.subscribe(
+                "/topic/startFinalArgument/" + roomId,
+                function (message) {
+                    console.log("Start Final Argument: ", message.body);
+                },
+            );
+            stompClient.current.subscribe(
+                "/topic/remainingMembers/" + roomId,
+                function (message) {
+                    console.log("Remaining Members: ", message.body);
+                },
+            );
+            stompClient.current.subscribe(
+                "/topic/fineSubmittedCount/" + roomId,
+                function (message) {
+                    console.log("Fine Submitted Count: ", message.body);
+                },
+            );
+            stompClient.current.subscribe(
+                "/topic/startMoenyVote/" + roomId,
+                function (message) {
+                    console.log("Start Money Vote: ", message.body);
+                },
+            );
+            stompClient.current.subscribe(
+                "/topic/fineVoteCount/" + roomId,
+                function (message) {
+                    console.log("Fine Vote Count: ", message.body);
+                },
+            );
+            stompClient.current.subscribe(
+                "/topic/fineVoteResulte/" + roomId,
+                function (message) {
+                    console.log("Fine Vote Result: ", message.body);
+                },
+            );
+        }
+    }
+
+    const enterRoom = useCallback((roomId, userName, role) => {
+        // 사용자가 방에 입장한 후 구독 시작
+        subscribeToTopics(roomId);
+        // var message = {
+        //     roomId: parseInt(roomId),
+        //     userName: userName,
+        // };
+        stompClient.current.publish({
+            destination: "/app/enter/" + roomId + "/" + userName + "/" + role,
+            headers: {},
+            body: JSON.stringify({}),
+        });
+
+        console.log(
+            roomId + "번 방 입장, 유저 이름: " + userName + ", 역할: " + role,
+        );
+    }, []);
+
     // 연결 상태, 연결 및 연결 해제 함수를 컨텍스트 값으로 제공
     const value = {
         isConnected,
         connect,
         disconnect,
+        enterRoom,
     };
 
     return (
