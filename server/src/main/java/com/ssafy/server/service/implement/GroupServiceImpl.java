@@ -44,17 +44,33 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public ResponseEntity<? super GroupCreateResponseDto> create(GroupCreateRequestDto dto) {
         try{
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
 
+            int userId = customUserDetails.getUserId();
+
+            // 그룹 생성
             GroupEntity groupEntity = new GroupEntity();
             groupEntity.setGroupName(dto.getName());
-            groupEntity.setCreatedBy(dto.getCreated_by());
+            groupEntity.setCreatedBy(userId);
             groupEntity.setCreatedAt(LocalDateTime.now());
             groupEntity.setEndDate(LocalDateTime.now().plusMonths(1));
 
             String invitationLink = UUID.randomUUID().toString();
             groupEntity.setInvitationLink(invitationLink);
 
-            groupRepository.save(groupEntity);
+            GroupEntity savedGroupEntity = groupRepository.save(groupEntity);
+
+            // 그룹 만든 사람 그룹 멤버 테이블에 추가
+            UserEntity userEntity = userRepository.findByUserId(userId);
+            GroupMemberId groupMemberId = new GroupMemberId(savedGroupEntity.getGroupId(),userId);
+
+            GroupMemberEntity groupMemberEntity = new GroupMemberEntity();
+            groupMemberEntity.setId(groupMemberId);
+            groupMemberEntity.setGroupEntity(savedGroupEntity);
+            groupMemberEntity.setUserEntity(userEntity);
+
+            groupMemberRepository.save(groupMemberEntity);
 
         }catch (Exception e){
             e.printStackTrace();
