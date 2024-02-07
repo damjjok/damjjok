@@ -1,19 +1,27 @@
 package com.ssafy.server.service.implement;
 
 import com.ssafy.server.dto.ResponseDto;
+import com.ssafy.server.dto.auth.CustomUserDetails;
 import com.ssafy.server.dto.proof.TestimonyDto;
 import com.ssafy.server.dto.request.proof.*;
 import com.ssafy.server.dto.response.proof.*;
 import com.ssafy.server.entity.ChallengeEntity;
 import com.ssafy.server.entity.EvidenceEntity;
 import com.ssafy.server.entity.TestimonyEntity;
+import com.ssafy.server.entity.UserEntity;
+import com.ssafy.server.provider.JwtProvider;
 import com.ssafy.server.repository.ChallengeRepository;
 import com.ssafy.server.repository.EvidenceRepository;
 import com.ssafy.server.repository.TestimonyRepository;
+import com.ssafy.server.repository.UserRepository;
 import com.ssafy.server.service.TestimonyService;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,6 +39,9 @@ public class TestimonyServiceImpl implements TestimonyService {
     private final TestimonyRepository testimonyRepository;
     private final ChallengeRepository challengeRepository;
     private final EvidenceRepository evidenceRepository;
+    private final UserRepository userRepository;
+    private final JwtProvider jwtProvider;
+
     public ResponseEntity<? super TestimonyCreateResponseDto> create(TestimonyCreateRequestDto dto){
         try {
             String title = dto.getTitle();
@@ -47,7 +58,13 @@ public class TestimonyServiceImpl implements TestimonyService {
             testimonyEntity.setUpdatedBy(0);
 
             // TODO : 여기 나중에 유저정보 받아와서 넣어줘야함
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
 
+            int userId = customUserDetails.getUserId();
+
+            testimonyEntity.setCreatedBy(userId);
+            testimonyEntity.setUpdatedBy(userId);
 
             testimonyRepository.save(testimonyEntity);
 
@@ -80,6 +97,9 @@ public class TestimonyServiceImpl implements TestimonyService {
                 testimonyDto.setUpdatedAt(e.getUpdatedAt());
                 testimonyDto.setUpdatedBy(e.getUpdatedBy());
 
+                UserEntity userEntity = userRepository.findByUserId(e.getCreatedBy());
+                testimonyDto.setUserName(userEntity.getUserName());
+
                 list.add(testimonyDto);
             });
 
@@ -106,6 +126,8 @@ public class TestimonyServiceImpl implements TestimonyService {
             testimony.setCreatedBy(e.getCreatedBy());
             testimony.setUpdatedAt(e.getUpdatedAt());
             testimony.setUpdatedBy(e.getUpdatedBy());
+            UserEntity userEntity = userRepository.findByUserId(e.getCreatedBy());
+            testimony.setUserName(userEntity.getUserName());
 
         }catch (Exception exception){
             exception.printStackTrace();
@@ -156,6 +178,9 @@ public class TestimonyServiceImpl implements TestimonyService {
                 testimonyDto.setCreatedBy(e.getCreatedBy());
                 testimonyDto.setUpdatedAt(e.getUpdatedAt());
                 testimonyDto.setUpdatedBy(e.getUpdatedBy());
+
+                UserEntity userEntity = userRepository.findByUserId(e.getCreatedBy());
+                testimonyDto.setUserName(userEntity.getUserName());
 
                 list.add(testimonyDto);
             });

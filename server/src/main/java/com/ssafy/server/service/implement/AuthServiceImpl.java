@@ -1,8 +1,11 @@
 package com.ssafy.server.service.implement;
 
 import com.ssafy.server.dto.ResponseDto;
+import com.ssafy.server.dto.auth.CustomUserDetails;
+import com.ssafy.server.dto.request.alarm.FCMTokenRequestDto;
 import com.ssafy.server.dto.request.auth.SignUpRequestDto;
 import com.ssafy.server.dto.request.auth.TokenRequestDto;
+import com.ssafy.server.dto.response.auth.FcmTokenResponseDto;
 import com.ssafy.server.dto.response.auth.SignUpResponseDto;
 import com.ssafy.server.dto.response.auth.TokenResponseDto;
 import com.ssafy.server.entity.UserEntity;
@@ -10,14 +13,13 @@ import com.ssafy.server.exception.CustomJwtException;
 import com.ssafy.server.provider.JwtProvider;
 import com.ssafy.server.repository.UserRepository;
 import com.ssafy.server.service.AuthService;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
@@ -60,13 +62,18 @@ public class AuthServiceImpl implements AuthService {
              */
             ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
 
-            String email = jwtProvider.validateToken(dto.getRefreshToken());
+            Jws<Claims> parsedToken = jwtProvider.validateToken(dto.getRefreshToken());
+
+            int userId = parsedToken.getBody().get("userId", Integer.class);
+            String email = parsedToken.getBody().get("email", String.class);
+            String userName = parsedToken.getBody().get("userName", String.class);
+
             if(!email.equals(valueOperations.get(dto.getRefreshToken()))){
                 return TokenResponseDto.expiredAndNotExistToken();
             }
 
-            accessToken = jwtProvider.createToken(email, 5, ChronoUnit.SECONDS);
-            refreshToken = jwtProvider.createToken(email, 5, ChronoUnit.SECONDS);
+            accessToken = jwtProvider.createToken(userId, email, userName, 5, ChronoUnit.DAYS);
+            refreshToken = jwtProvider.createToken(userId, email, userName, 5, ChronoUnit.DAYS);
 
             redisTemplate.opsForHash().delete(dto.getRefreshToken());
             valueOperations.set(refreshToken, email);
@@ -75,5 +82,25 @@ public class AuthServiceImpl implements AuthService {
             throw new CustomJwtException(e.getMessage(),e);
         }
         return TokenResponseDto.success(accessToken,refreshToken);
+    }
+
+    @Override
+    public ResponseEntity<? super FcmTokenResponseDto> savedFcmToken(FCMTokenRequestDto dto) {
+        try{
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+
+            String email = customUserDetails.getEmail();
+            System.out.println(email + "@@@@@@@");
+
+            UserEntity userEntity = userRepository.findByEmail(email);
+            userEntity.setFcmToken(dto.getFcmToken());
+
+            userRepository.save(userEntity);
+
+        }catch (Exception e){
+            return ResponseDto.databaseError();
+        }
+        return FcmTokenResponseDto.success();
     }
 }

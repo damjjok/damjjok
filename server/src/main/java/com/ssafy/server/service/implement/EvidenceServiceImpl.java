@@ -13,6 +13,7 @@ import com.ssafy.server.repository.UserRepository;
 import com.ssafy.server.service.EvidenceService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,8 +40,9 @@ public class EvidenceServiceImpl implements EvidenceService {
             int userId = dto.getUserId();
             String title = dto.getTitle();
 
-            String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\files";
+//            String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\files";
 
+            String projectPath = "/var/www/html/images";
             String fileName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
 
             File saveFile = new File(projectPath, fileName);
@@ -53,7 +55,7 @@ public class EvidenceServiceImpl implements EvidenceService {
             evidenceEntity.setEvidenceTitle(title);
             evidenceEntity.setChallengeEntity(challengeEntity);
             evidenceEntity.setImageDate(LocalDateTime.now()); // TODO : 나중에 메타데이터로 바꿔주기
-            evidenceEntity.setImagePath("/files/" + fileName);
+            evidenceEntity.setImagePath("/images/" + fileName);
             evidenceEntity.setUpdatedBy(userId);
 
             evidenceRepository.save(evidenceEntity);
@@ -78,9 +80,10 @@ public class EvidenceServiceImpl implements EvidenceService {
             EvidenceEntity evidenceEntity = evidenceRepository.findByEvidenceId(evidenceId);
             if(userId != evidenceEntity.getCreatedBy()) return ResponseDto.validationFail();
 
-            String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\files";
+//            String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\files";
+            String projectPath = "/var/www/html/images";
             // TODO : 원래 있던 파일 제거
-            File oldFile = new File(projectPath, evidenceEntity.getImagePath().substring(6));
+            File oldFile = new File(projectPath, evidenceEntity.getImagePath().substring(7));
             if(oldFile.exists()){
                 if(oldFile.delete()){
                     System.out.println("파일 삭제 됨");
@@ -128,7 +131,9 @@ public class EvidenceServiceImpl implements EvidenceService {
 
             if(evidenceEntity == null) return ResponseDto.validationFail();
 
+            UserEntity userEntity = userRepository.findByUserId(evidenceEntity.getCreatedBy());
             evidence = new EvidenceDto();
+            evidence.setUserName(userEntity.getUserName());
             evidence.setEvidenceId(evidenceEntity.getEvidenceId());
             evidence.setEvidenceTitle(evidenceEntity.getEvidenceTitle());
             evidence.setImagePath(evidenceEntity.getImagePath());
@@ -161,6 +166,8 @@ public class EvidenceServiceImpl implements EvidenceService {
                 evidenceDto.setCreatedBy(e.getCreatedBy());
                 evidenceDto.setImagePath(e.getImagePath());
                 evidenceDto.setImageDate(e.getImageDate());
+                UserEntity userEntity = userRepository.findByUserId(e.getCreatedBy());
+                evidenceDto.setUserName(userEntity.getUserName());
 
                 list.add(evidenceDto);
             });
@@ -190,6 +197,8 @@ public class EvidenceServiceImpl implements EvidenceService {
                 evidenceDto.setCreatedBy(e.getCreatedBy());
                 evidenceDto.setImagePath(e.getImagePath());
                 evidenceDto.setImageDate(e.getImageDate());
+                UserEntity userEntity = userRepository.findByUserId(e.getCreatedBy());
+                evidenceDto.setUserName(userEntity.getUserName());
 
                 list.add(evidenceDto);
             });

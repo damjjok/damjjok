@@ -13,6 +13,7 @@ public class ChallengeMemeberDto {
     private int userId;
     private LocalDateTime challengeJoinDate;
     private String role;
+    private String userName;
 
     public ChallengeMemeberDto(ChallengeMemberEntity entity){
         this.userId = entity.getUserEntity().getUserId();

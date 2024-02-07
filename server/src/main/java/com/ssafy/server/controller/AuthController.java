@@ -1,7 +1,9 @@
 package com.ssafy.server.controller;
 
+import com.ssafy.server.dto.request.alarm.FCMTokenRequestDto;
 import com.ssafy.server.dto.request.auth.SignUpRequestDto;
 import com.ssafy.server.dto.request.auth.TokenRequestDto;
+import com.ssafy.server.dto.response.auth.FcmTokenResponseDto;
 import com.ssafy.server.dto.response.auth.SignUpResponseDto;
 import com.ssafy.server.dto.response.auth.TokenResponseDto;
 import com.ssafy.server.dto.response.candy.CandyCreateResponseDto;
@@ -14,10 +16,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.temporal.ChronoUnit;
 
@@ -48,6 +47,17 @@ public class AuthController {
             @RequestBody TokenRequestDto requestBody
     ){
         ResponseEntity<? super TokenResponseDto> response = authService.createNewToken(requestBody);
+        return response;
+    }
+
+    @PostMapping("/fcmToken")
+    @Operation(summary = "fcmToken 디비에 저장", description = "fcmToken 으로 알림 보내기때문에 user 테이블에 fcmToken 저장해야함",
+            responses = { @ApiResponse(responseCode = "200", description = "토큰 저장 성공",
+                    content = @Content(schema = @Schema(implementation = FcmTokenResponseDto.class)))})
+    public ResponseEntity<? super FcmTokenResponseDto> changeFcmToken(
+            @RequestBody FCMTokenRequestDto dto
+            ){
+        ResponseEntity<? super FcmTokenResponseDto> response = authService.savedFcmToken(dto);
         return response;
     }
 }

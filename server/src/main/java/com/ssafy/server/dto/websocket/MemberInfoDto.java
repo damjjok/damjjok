@@ -3,11 +3,13 @@ package com.ssafy.server.dto.websocket;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Setter
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
-public class Greeting {
-    private String content;
+@NoArgsConstructor
+public class MemberInfoDto {
+    private String name;
+    private String role;
 }
-

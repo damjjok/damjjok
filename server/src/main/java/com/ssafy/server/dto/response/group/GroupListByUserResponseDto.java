@@ -23,4 +23,5 @@ public class GroupListByUserResponseDto extends ResponseDto {
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
 
+
 }

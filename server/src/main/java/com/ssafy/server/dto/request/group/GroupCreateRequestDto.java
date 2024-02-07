@@ -15,7 +15,4 @@ public class GroupCreateRequestDto {
     @NotBlank
     private String name;
 
-    @NotBlank
-    private Integer created_by;
-
 }
