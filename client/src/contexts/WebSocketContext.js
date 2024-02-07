@@ -7,11 +7,13 @@ import {
     joinMemberListState,
     readyMemberCountState,
 } from "./TruthRoomSocket";
+import { stepState } from "./TruthRoom";
 
 const WebSocketContext = createContext({});
 
 export const WebSocketProvider = ({ children }) => {
     // recoil로 관리할 전역 상태들
+    const [step, setStep] = useRecoilState(stepState); // 진실의 방 전체 단계
     const [joinMemberList, setJoinMemberList] =
         useRecoilState(joinMemberListState); // 참여 유저 목록
     // 1. 준비 단계
@@ -85,6 +87,7 @@ export const WebSocketProvider = ({ children }) => {
                         JSON.parse(message.body),
                     );
                     setAllUserReady(JSON.parse(message.body)); // 반환값이 false이든 true이든 효과는 똑같아서 그냥 set
+                    setStep(step + 1); // 모든 유저 준비되면 다음 단계(증거 판별)로 전환
                 },
             );
             stompClient.current.subscribe(
