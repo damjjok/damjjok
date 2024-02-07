@@ -15,9 +15,9 @@ import {
     Radio,
     RadioGroup,
     useToast,
-    Box,
+    Alert,
+    AlertIcon,
 } from "@chakra-ui/react";
-import { CheckCircleIcon } from "@chakra-ui/icons";
 
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -55,8 +55,18 @@ const FormModal = ({ FormisOpen, FormonClose }) => {
     };
 
     const navigate = useNavigate();
+    const [isFormValid, setIsFormValid] = useState(true); // 폼 유효성 상태
 
     const handleSignUp = async () => {
+        // 필수 입력 필드가 비어 있는지 확인
+        if (!state.user_name || !state.email || !state.birth || !state.sex) {
+            setIsFormValid(false); // 유효성 검사 실패
+            // 유효하지 않은 경우 여기서 함수를 종료하고 더 이상 진행하지 않음
+            return;
+        } else {
+            setIsFormValid(true); // 유효성 검사 성공
+        }
+
         try {
             // 1. axios를 사용해서 API에 데이터 POST 요청
             const response = await axios.post(
@@ -70,43 +80,25 @@ const FormModal = ({ FormisOpen, FormonClose }) => {
             );
 
             console.log(response.data); // 응답 로그 출력
-
-            // 2. 전역변수 user의 name과 email 삭제
-            setUser((prevUser) => ({ ...prevUser, name: "", email: "" }));
-
-            FormonClose();
-
-            // 토스트 메시지 표시
-            toast({
-                status: "success",
-                duration: 5000,
-                isClosable: true,
-                position: "bottom", // 토스트 메시지 위치 지정
-                render: () => (
-                    <Box
-                        color="white"
-                        p={5}
-                        bg="#fdd100"
-                        borderRadius="md"
-                        textAlign="center"
-                        fontWeight="bold"
-                    >
-                        <CheckCircleIcon
-                            boxSize={6}
-                            color="white"
-                            margin="0 auto 12px"
-                        />
-                        <Text mb={1}>회원가입 성공</Text>
-                        <Text>로그인 버튼을 눌러주세요!</Text>
-                    </Box>
-                ),
-            });
-            // 3. 랜딩 페이지로 리디렉션
-            navigate("/");
         } catch (error) {
             console.error("회원가입 실패:", error);
             // 에러 처리 로직 추가...
         }
+        // 2. 전역변수 user의 name과 email 삭제
+        setUser((prevUser) => ({ ...prevUser, name: "", email: "" }));
+
+        FormonClose();
+
+        // 토스트 메시지 표시
+        toast({
+            title: "회원 가입 완료!",
+            description: `로그인 버튼을 눌러주세요!`,
+            status: "success",
+            duration: 9000,
+            isClosable: true,
+        });
+        // 3. 랜딩 페이지로 리디렉션
+        navigate("/");
     };
 
     return (
@@ -159,10 +151,11 @@ const FormModal = ({ FormisOpen, FormonClose }) => {
                                 <Input
                                     variant="flushed"
                                     mb={3}
-                                    placeholder="생년월일"
+                                    placeholder="생년월일 ex)19971231"
                                     name="birth"
                                     value={state.birth}
                                     onChange={handleChangeState}
+                                    maxLength={8}
                                     _focus={{
                                         borderBottom: "2px solid #ffd110", // 포커스 시 선 색상 변경
                                         boxShadow: "none", // 기본 테마의 포커스 boxShadow 제거
@@ -201,6 +194,12 @@ const FormModal = ({ FormisOpen, FormonClose }) => {
 
                             {/* 다른 소셜 로그인 버튼들 추가 */}
                         </VStack>
+                        {!isFormValid && (
+                            <Alert status="error" mt={4}>
+                                <AlertIcon />
+                                모든 필드를 채워주세요.
+                            </Alert>
+                        )}
                     </ModalBody>
                 </ModalContent>
             </Modal>

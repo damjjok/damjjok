@@ -55,6 +55,7 @@ const LoginModal = ({ LoginisOpen, LoginonClose, handleLogintoForm }) => {
                             >
                                 카카오톡으로 로그인
                             </Button>
+
                             <Button
                                 bg="#4285F4"
                                 size="md"
