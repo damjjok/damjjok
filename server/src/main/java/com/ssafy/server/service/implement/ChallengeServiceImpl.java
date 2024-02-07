@@ -228,7 +228,7 @@ public class ChallengeServiceImpl implements ChallengeService {
                 if(challenge.getStatus().equals("ON")){
                     count.addAndGet(1);
                     int nxt_day = (int) ChronoUnit.DAYS.between(challenge.getCreatedAt().toLocalDate() , LocalDateTime.now());
-                    if(cur_day > nxt_day) rank.getAndIncrement();
+                    if(cur_day < nxt_day) rank.getAndIncrement();
                     System.out.println(nxt_day);
                 }
             });
