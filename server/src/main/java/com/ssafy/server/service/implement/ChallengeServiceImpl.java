@@ -1,6 +1,7 @@
 package com.ssafy.server.service.implement;
 
 import com.ssafy.server.dto.ResponseDto;
+import com.ssafy.server.dto.auth.CustomUserDetails;
 import com.ssafy.server.dto.challenge.ChallengeDto;
 import com.ssafy.server.dto.challenge.ChallengeMemeberDto;
 import com.ssafy.server.dto.challenge.ImageDto;
@@ -14,6 +15,8 @@ import com.ssafy.server.repository.*;
 import com.ssafy.server.service.ChallengeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -36,12 +39,16 @@ public class ChallengeServiceImpl implements ChallengeService {
     @Override
     public ResponseEntity<? super ChallengeCreateResponseDto> create(ChallengeCreateRequestDto dto) {
         try{
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+
+            int userId = customUserDetails.getUserId();
 
             GroupEntity groupEntity = groupRepository.findByGroupId(dto.getGroupId());
 
             ChallengeEntity challengeEntity = new ChallengeEntity();
             challengeEntity.setGroupEntity(groupEntity);
-            challengeEntity.setUserId(dto.getUserId());
+            challengeEntity.setUserId(userId);
             challengeEntity.setInitialMoney(dto.getInitialMoney());
             challengeEntity.setSavedMoney(dto.getSavedMoney());
             challengeEntity.setSavedPeriod(dto.getSavedPeriod());
@@ -71,7 +78,7 @@ public class ChallengeServiceImpl implements ChallengeService {
                 entity.setId(challengeMemberId);
                 entity.setChallengeEntity(savedChallengeEntity);
                 entity.setUserEntity(e);
-                if(e.getUserId() == dto.getUserId()) entity.setRole("Damjjok");
+                if(e.getUserId() == userId) entity.setRole("Damjjok");
                 else entity.setRole("Doctor");
 
                 challengeMemeberRepository.save(entity);
@@ -221,7 +228,7 @@ public class ChallengeServiceImpl implements ChallengeService {
                 if(challenge.getStatus().equals("ON")){
                     count.addAndGet(1);
                     int nxt_day = (int) ChronoUnit.DAYS.between(challenge.getCreatedAt().toLocalDate() , LocalDateTime.now());
-                    if(cur_day > nxt_day) rank.getAndIncrement();
+                    if(cur_day < nxt_day) rank.getAndIncrement();
                     System.out.println(nxt_day);
                 }
             });
