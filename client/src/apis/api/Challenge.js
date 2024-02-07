@@ -65,6 +65,43 @@ const postTestimony = async (testimony, challengeId) => {
     } catch (error) {}
 };
 
+const getChallengeRanking = async (challengeId) => {
+    try {
+        const response = await axiosInstance.get(
+            `/v1/challenge/${challengeId}/ranking`
+        );
+        if (response.status === 200) {
+            return response.data
+        }
+    } catch (error) {}
+}
+
+const getChallengeCandyCount = async (challengeId) => {
+    try {
+        const response = await axiosInstance.get(
+            `/v1/candy/${challengeId}`
+        );
+        if (response.status === 200) {
+            return response.data
+        }
+    } catch (error) {}
+}
+
+const postChallengeCandyCount = async (challengeId, userId) => {
+    try {
+        const requestBody = {
+            challengeId: challengeId,
+            userId: userId,
+        };
+        const response = await axiosInstance.post(
+            '/v1/candy', requestBody
+        );
+        if (response.status === 200) {
+            console.log("응원하기 성공!");
+        }
+    } catch (error) {}
+}
+
 const postEvidence = async (evidence) => {
     try {
         const formData = new FormData();
@@ -112,4 +149,7 @@ const getEvidenceDetail = async (evidenceId, setEvidence) => {
     }
 };
 
-export { getEvidenceDetail, getEvidences, postEvidence, createChallenge, getTestimonies, getAttendanceList, getTestimonyDetail, postTestimony };
+export { getEvidenceDetail, getEvidences, postEvidence, createChallenge, getTestimonies, getAttendanceList, getTestimonyDetail, postTestimony,     getChallengeRanking,
+    getChallengeCandyCount,
+    postChallengeCandyCount,
+};

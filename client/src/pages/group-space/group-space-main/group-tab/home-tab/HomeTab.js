@@ -45,7 +45,7 @@ function HomeTab() {
                     오늘의 {currentChallenge.userName}님은...
                 </p>
                 <div className="flex flex-wrap my-4 justify-center">
-                    <InfoCards />
+                    <InfoCards diffDays={diffDays} diffMilliseconds={diffMilliseconds} challengeId={currentChallenge.challengeId} />
                 </div>
             </div>
         </Box>

@@ -8,13 +8,18 @@ import avatar1 from "assets/images/avatar1.png";
 import avatar2 from "assets/images/avatar2.png";
 import avatar3 from "assets/images/avatar3.png";
 import avatar4 from "assets/images/avatar4.png";
-import { challengeState } from "contexts/Challenge";
+import { challengeCandyCount, challengeState } from "contexts/Challenge";
+import { useEffect } from "react";
+import { getChallengeCandyCount } from "apis/api/Challenge";
 // import { challengeState } from "../../../../../contexts/Challenge";
 
 // profilePath 올바르게 설정될 필요성
 function StatusBar() {
     const challenge = useRecoilValue(challengeState);
-    const currentUser = challenge.userName;
+    const challengeUserId = challenge.userId;
+    const currentUser = useRecoilValue(currentUserState)
+    const [candyCount, setCandyCount] = useRecoilState(challengeCandyCount)
+    const currentCandyCount = useRecoilValue(challengeCandyCount)
     // let navigate = useNavigate();
 
     let today = new Date();
@@ -32,6 +37,24 @@ function StatusBar() {
         { name: "dog2", src: avatar4 },
     ];
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await getChallengeCandyCount(challenge.challengeId);
+                const updatedCount = response.count
+                setCandyCount(updatedCount); // Recoil 상태에 데이터 적용
+                // console.log(response);
+    
+            } catch (error) {
+                console.error("챌린지 정보 불러오기 실패", error);
+            }
+                };
+    
+                fetchData(); // fetchData 함수 호출
+            }, 
+            [challenge, setCandyCount]
+            );
+
     return (
         <Box width={"80vw"} marginY={"0.5rem"}>
             <Flex
@@ -40,6 +63,7 @@ function StatusBar() {
                 bg={"dam.gray"}
                 borderRadius={"30px"}
                 paddingX={".5rem"}
+                height={'40px'}
             >
                 <Wrap>
                     <Flex alignItems={"center"}>
@@ -50,7 +74,7 @@ function StatusBar() {
                             bg="dam.white"
                         />
                         <p className="px-3 text-lg font-bold">
-                            {currentUser} 챌린지 -{" "}
+                            {challenge.userName} 챌린지 -{" "}
                             {startedDate.toLocaleDateString()}
                         </p>
                         <div className="bg-damblack rounded-xl max-h-8 px-2 text-damyellow">
@@ -59,14 +83,16 @@ function StatusBar() {
                         <p className="mx-2">{challenge.determination}</p>
                         {/* EditModal axios 적용해야 함 */}
                         {/* 요청 API : /api/v1/challenge/{challengeId}/profile-modify */}
+                        {challenge.userId === currentUser.userId ? (                        
                         <StatusEditModal
                             currentChallenge={challenge}
                             avatars={avatars}
-                        />
+                        />): null}
+
                     </Flex>
                 </Wrap>
                 <div className="flex items-center">
-                    <StatusBarToast />
+                    <StatusBarToast challenge={challenge} />
                     <Box
                         position="relative"
                         display="flex"
@@ -100,7 +126,7 @@ function StatusBar() {
                             transition="opacity 0.2s"
                             textColor={"white"}
                         >
-                            1
+                            {candyCount}
                         </Flex>
                     </Box>
                 </div>

@@ -10,70 +10,108 @@ import lv6 from "assets/gifs/lv6healthlvup.gif";
 import lv7 from "assets/gifs/lv7strong-heart.gif";
 import lv8 from "assets/gifs/lv8lung-half.gif";
 import lv9 from "assets/gifs/lv9lung-perfect.gif";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
+import { challengeState } from "contexts/Challenge";
+import { getChallengeRanking } from "apis/api/Challenge";
 
 const levelData = [
     {
         key: 1,
         img: lv1,
-        duration: "20분",
+        duration: 1200,
         text: "혈압과 맥박이 정상으로 돌아왔어요!",
     },
     {
         key: 2,
         img: lv2,
-        duration: "8시간",
+        duration: 28800,
         text: "혈중 일산화탄소량이 정상으로 돌아왔어요!",
     },
     {
         key: 3,
         img: lv3,
-        duration: "12시간",
+        duration: 43200,
         text: "심장마비 위험이 감소해요!",
     },
     {
         key: 4,
         img: lv4,
-        duration: "48시간",
+        duration: 172800,
         text: "말초신경이 되살아납니다!",
     },
     {
         key: 5,
         img: lv5,
-        duration: "2-3주",
+        duration: 1209600,
         text: "폐기능이 30% 이상 증가했어요!",
     },
     {
         key: 6,
         img: lv6,
-        duration: "1-9개월",
+        duration: 2592000, //
         text: "기침, 코막힘, 피로, 호흡곤란이 감소해요!",
     },
     {
         key: 7,
         img: lv7,
-        duration: "1년",
+        duration: 31536000,//1년
         text: "심장마비 위험이 절반으로 줄었어요!",
     },
     {
         key: 8,
         img: lv8,
-        duration: "5년",
+        duration: 157680000, //5년
         text: "폐암으로 사망할 확률이 절반으로 줄었어요!",
     },
     {
         key: 9,
         img: lv9,
-        duration: "10년",
+        duration: 315360000, //10년
         text: "폐암으로 사망할 확률이 비흡연자와 같아요!",
     },
 ];
 
-const currentLevel = 1;
+// const currentLevel = 1;
 
-function InfoCards() {
+function InfoCards({diffDays, diffMilliseconds, challengeId}) {
     // 셀렉터 감지를 위해
     const [dailyState, setDailyState] = useState(1)
+    const [currentLevel, setCurrentLevel] = useState(1)
+    const [currentRank, setCurrentRank] = useState(0)
+    // console.log(currentLevel);
+    useEffect(() => {
+        const sortedLevelData = [...levelData].sort((a, b) => b.duration - a.duration);
+        const level = sortedLevelData.find((level) => {
+          const durationMilliseconds = level.duration * 1000;
+          return diffMilliseconds >= durationMilliseconds;
+        });
+    
+        if (level) {
+          setCurrentLevel(level?.key);
+        }
+      }, [diffMilliseconds, levelData, setCurrentLevel]);
+
+
+    useEffect(() => {
+    const fetchData = async () => {
+        try {
+            const response = await getChallengeRanking(challengeId);
+            const updatedRank = response.rank
+            setCurrentRank(updatedRank); // Recoil 상태에 데이터 적용
+            // console.log(response);
+
+        } catch (error) {
+            console.error("챌린지 정보 불러오기 실패", error);
+        }
+            };
+
+            fetchData(); // fetchData 함수 호출
+        }, 
+        [challengeId, setCurrentRank]
+        );
+    
+
     return (
         <HStack>
             <Box
@@ -116,7 +154,7 @@ function InfoCards() {
                     >
                         <Text className="text-center font-semibold">
                             {/* 현재 챌린지의 진행 일수도 받아와서 곱해줘야 함 */}
-                            {dailyState * 4500} 원을 아꼈어요!
+                            {dailyState * 4500 * diffDays} 원을 아꼈어요!
                         </Text>
                     </Box>
                 </VStack>
@@ -149,7 +187,7 @@ function InfoCards() {
                         className="overflow-visible"
                     >
                         <Text className="text-center font-semibold">
-                            상위 n%에요!
+                            상위 { currentRank }%에요!
                         </Text>
                     </Box>
                 </VStack>

@@ -36,3 +36,8 @@ export const challengeEndDate = selector({
         );
     },
 });
+
+export const challengeCandyCount = atom({
+    key: "challengeCandyCount",
+    default: 0,
+})
