@@ -38,22 +38,30 @@ const LoginModal = ({ LoginisOpen, LoginonClose, handleLogintoForm }) => {
                                 소셜 ID로 시작하기
                             </Text>
                             <Button
-                                colorScheme="green"
+                                bg="#03C75A"
                                 size="md"
                                 w="full"
                                 onClick={handleNaverLogin}
+                                color="white"
                             >
                                 네이버로 로그인
                             </Button>
                             <Button
-                                colorScheme="yellow"
+                                bg="#ffd100"
                                 size="md"
                                 w="full"
                                 onClick={handleLogintoForm}
+                                color="white"
                             >
                                 카카오톡으로 로그인
                             </Button>
-                            <Button colorScheme="blue" size="md" w="full">
+
+                            <Button
+                                bg="#4285F4"
+                                size="md"
+                                w="full"
+                                color="white"
+                            >
                                 구글로 로그인
                             </Button>
                         </VStack>
