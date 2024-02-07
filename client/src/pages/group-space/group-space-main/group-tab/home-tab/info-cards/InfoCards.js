@@ -1,6 +1,6 @@
 import getMoneyGif from "assets/gifs/getMoney.gif";
 import gradeGif from "assets/gifs/grade.gif";
-import { Box, Flex, HStack, Image, Select, Text, VStack } from "@chakra-ui/react";
+import { Box, Flex, HStack, Image, Select, Text, VStack, useBreakpointValue } from "@chakra-ui/react";
 import lv1 from "assets/gifs/lv1blood-pressure.gif";
 import lv2 from "assets/gifs/lv2blood-oxygen.gif";
 import lv3 from "assets/gifs/lv3beating-heart.gif";
@@ -80,6 +80,9 @@ function InfoCards({diffDays, diffMilliseconds, challengeId}) {
     const [currentLevel, setCurrentLevel] = useState(1)
     const [currentRank, setCurrentRank] = useState(0)
     // console.log(currentLevel);
+
+    const isMobile = useBreakpointValue({ base: true, md: false });
+
     useEffect(() => {
         const sortedLevelData = [...levelData].sort((a, b) => b.duration - a.duration);
         const level = sortedLevelData.find((level) => {
@@ -113,11 +116,11 @@ function InfoCards({diffDays, diffMilliseconds, challengeId}) {
     
 
     return (
-        <HStack>
+        <Flex flexFlow={isMobile ? "column" : "row"}>
             <Box
                 w="60"
                 h="60"
-                className="flex flex-col items-center justify-center rounded-3xl border-4 p-8 mx-4 border-damyellow transition-shadow hover:shadow-xl"
+                className="flex flex-col items-center justify-center rounded-3xl border-4 p-8 m-4 border-damyellow transition-shadow hover:shadow-xl"
             >
                 <VStack spacing={2} alignItems="center">
                     <Box w="20" h="20" className="overflow-hidden">
@@ -162,7 +165,7 @@ function InfoCards({diffDays, diffMilliseconds, challengeId}) {
             <Box
                 w="60"
                 h="60"
-                className="flex flex-col items-center justify-center rounded-3xl border-4 p-8 mx-4 border-damyellow transition-shadow hover:shadow-xl"
+                className="flex flex-col items-center justify-center rounded-3xl border-4 p-8 m-4 border-damyellow transition-shadow hover:shadow-xl"
             >
                 <VStack spacing={2} alignItems="center">
                     <Box w="30" h="20" className="overflow-visible">
@@ -195,7 +198,7 @@ function InfoCards({diffDays, diffMilliseconds, challengeId}) {
             <Box
                 w="60"
                 h="60"
-                className="flex flex-col items-center justify-center rounded-3xl border-4 p-8 mx-4 border-damyellow transition-shadow hover:shadow-xl"
+                className="flex flex-col items-center justify-center rounded-3xl border-4 p-8 m-4 border-damyellow transition-shadow hover:shadow-xl"
             >
                 <VStack spacing={2} alignItems="center">
                     <Box w="20" h="20" className="overflow-hidden">
@@ -225,7 +228,7 @@ function InfoCards({diffDays, diffMilliseconds, challengeId}) {
                     </Box>
                 </VStack>
             </Box>
-        </HStack>
+        </Flex>
     );
 }
 

@@ -9,6 +9,8 @@ import {
     ModalContent,
     ModalBody,
     VStack,
+    Box,
+    useBreakpointValue,
 } from "@chakra-ui/react";
 import HomeTab from "./home-tab/HomeTab";
 import TruthRoomTab from "./truth-room-tab/TruthRoomTab";
@@ -38,6 +40,7 @@ function GroupTab() {
 
     const [currentChallenge, setCurrentChallenge] = useRecoilState(challengeState)
 
+    const isMobile = useBreakpointValue({ base: true, md: false });
 
     useEffect(() => {
         const fetchData = async () => {
@@ -92,7 +95,7 @@ function GroupTab() {
     // 1. Create the component
     function DataTabs({ data }) {
         return (
-            <div className="min-w-[70vw] max-w-[70vw]">
+            <Box >
                 <Tabs
                     isFitted
                     colorScheme="yellow"
@@ -107,12 +110,15 @@ function GroupTab() {
                     <TabPanels>
                         {data.map((tab, index) => (
                             <TabPanel p={0} key={index}>
+                                <Box width={ isMobile ? '90vw' : '70vw'}>
                                 {tab.content}
+
+                                </Box>
                             </TabPanel>
                         ))}
                     </TabPanels>
                 </Tabs>
-            </div>
+            </Box>
         );
     }
 
@@ -130,7 +136,7 @@ function GroupTab() {
             content: <ArticleTab />,
             img: bgArticleTab,
             description:
-                "담쪽이가 흡연하는 장면을 목격했다면 증언이나 증거를 제출해주세요! 제보가 발생하면 진실의 방이 생성됩니다.",
+                "담쪽이가 흡연하는 장면을 목격했다면 제보하세요. 진실의 방이 생성됩니다.",
         },
         {
             label: "진실의 방",

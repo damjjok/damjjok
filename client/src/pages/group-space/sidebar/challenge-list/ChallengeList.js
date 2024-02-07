@@ -23,7 +23,7 @@ import { getChallengeList } from "apis/api/Group";
 // import { useRecoilValue } from "recoil";
 // import { challengeListState } from "../../../../context/Challenge";
 
-function ChallengeList() {
+function ChallengeList({onClick}) {
     const userId = 0;
 
     const { groupId } = useParams();
@@ -112,6 +112,8 @@ function ChallengeList() {
                                                   `/group/${groupId}/challenge/${challenge.challengeId}`,
                                                   { state: { challenge } },
                                               );
+                                              if (onClick) onClick()
+                                              
                                           }}
                                       >
                                           <Circle
@@ -134,7 +136,7 @@ function ChallengeList() {
                                   ),
                               )
                             : null}
-                        {!currentGroupChallengeList.some(
+                        {currentGroupChallengeList.length > 0 && !currentGroupChallengeList.some(
                             (challenge) => challenge.userId === userId,
                         ) && (
                             <Box px={3} py={2} display={"flex"}>
@@ -142,11 +144,12 @@ function ChallengeList() {
                                     alignItems="center"
                                     justifyContent={"center"}
                                     cursor="pointer"
-                                    onClick={() =>
+                                    onClick={() => {
                                         navigate(
                                             `/group/${groupId}/create-challenge`,
                                         )
-                                    }
+                                        if (onClick) onClick()
+                                    }}
                                 >
                                     <PlusSquareIcon marginRight="4px" />
                                     <Text fontSize={"xs"}>챌린지 생성하기</Text>
@@ -165,11 +168,12 @@ function ChallengeList() {
                                         alignItems="center"
                                         justifyContent={"center"}
                                         cursor="pointer"
-                                        onClick={() =>
+                                        onClick={() => {
                                             navigate(
                                                 `/group/${groupId}/create-challenge`,
                                             )
-                                        }
+                                        if (onClick) onClick()
+                                        }}
                                     >
                                         <PlusSquareIcon marginRight="4px" />
                                         <Text fontSize={"xs"}>
@@ -214,9 +218,10 @@ function ChallengeList() {
                                             list: "last",
                                         });
                                         navigate(
-                                            `/group/1/last-challenge/${challenge.challengeId}`,
+                                            `/group/${groupId}}/last-challenge/${challenge.challengeId}`,
                                             { state: { challenge } },
                                         );
+                                        if (onClick) onClick()
                                     }}
                                 >
                                     {challenge.status === "success" ? (
@@ -235,11 +240,14 @@ function ChallengeList() {
 
                                     <li key={index}>
                                         <p className=" font-semibold">
-                                            {challenge.username} 챌린지
+                                            {challenge.userName} 챌린지
                                         </p>
                                         <p className="text-xs">
-                                            {challenge.createdAt} 진행
-                                        </p>
+                                                  {new Date(
+                                                      challenge.createdAt,
+                                                  ).toLocaleDateString()}{" "}
+                                                  진행
+                                              </p>
                                     </li>
                                 </Flex>
                             ))

@@ -23,8 +23,13 @@ function LastChallenge() {
         challenge.status === "success" ? bgSucceedChallenge : bgFailedChallenge;
     const isExpired = "True";
 
+    console.log(challenge);
+
     //더미
+    const endDate = new Date(challenge.endDate)
     const startedDate = new Date(challenge.createdAt);
+    const diffMilliseconds = endDate.getTime() - startedDate.getTime();
+    const diffDays = Math.floor(diffMilliseconds / (24 * 60 * 60 * 1000));
 
     return (
         <>
@@ -51,17 +56,17 @@ function LastChallenge() {
                     <VStack spacing={"30px"} mb={20}>
                         {challenge.status === "success" ? (
                             <Heading>
-                                {challenge.username}님이 성공했던 금연
+                                {challenge.userName}님이 성공했던 금연
                                 기록이에요!
                             </Heading>
                         ) : (
                             <Heading>
-                                {challenge.username}님이 금연하려 했던 노력은...
+                                {challenge.userName}님이 금연하려 했던 노력은...
                             </Heading>
                         )}
                         <Strick startedDate={startedDate} />
                         <Heading></Heading>
-                        <InfoCards />
+                        <InfoCards diffDays={diffDays} diffMilliseconds={diffMilliseconds} challengeId={challenge.challengeId}/>
                     </VStack>
                     {challenge.status === "success" ? (
                         <VStack spacing={"30px"}>

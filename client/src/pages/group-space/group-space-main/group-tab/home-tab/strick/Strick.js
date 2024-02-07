@@ -3,6 +3,7 @@ import { challengeState } from "../../../../../../contexts/Challenge";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getAttendanceList } from "apis/api/Challenge";
+import { Box } from "@chakra-ui/react";
 
 // 테스트용 챌린지 객체
 const currentChallenge = {
@@ -61,16 +62,16 @@ function Strick({ startedDate }) {
 
     return (
         // css 150~80일인 경우 오른쪽으로 쏠림
-        <div className="flex flex-col over">
+        <Box display={'flex'} flexFlow={'column'}>
             <div className="mt-4 max-w-2xl grid grid-flow-col grid-rows-5 grid-cols-39 gap-1">
                 {attendanceData.map((attended, i) => (
-                    <div key={i} className={`w-3 h-3 rounded ${attended ? "bg-damyellow" : "bg-damlightgray"}`} />
+                    <div key={i} className={`w-3 h-3 rounded ${attended ? "bg-damyellow" : "bg-damlightgray"}` } />
                 ))}
             </div>
             <p className="text-xs text-right">
                 금연 시작일 : {startedDate.toLocaleDateString()} | 목표일 수 : {currentChallenge.duration}일
             </p>
-        </div>
+        </Box>
     );
 }
 

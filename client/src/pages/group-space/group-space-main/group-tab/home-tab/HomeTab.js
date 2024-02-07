@@ -3,7 +3,7 @@ import Strick from "./strick/Strick";
 import { challengeState } from "../../../../../contexts/Challenge";
 import { currentUserState } from "../../../../../contexts/User";
 import InfoCards from "./info-cards/InfoCards";
-import { Box } from "@chakra-ui/react";
+import { Box, useBreakpointValue, useMediaQuery } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getChallengeInfo } from "apis/api/Group";
@@ -15,6 +15,8 @@ function HomeTab() {
     // const setChallengeState = useSetRecoilState(challengeState);
     const currentChallenge = useRecoilValue(challengeState);
     let today = new Date();
+
+    const isMobile = useBreakpointValue({ base: true, md: false });
 
     // 이하 내용은 createdAt 데이터 있는 더미 데이터로 테스트할 것.
 
@@ -36,9 +38,9 @@ function HomeTab() {
                 <p className="text-xl font-bold">
                     {currentChallenge.userName}님! 오늘은 금연 {diffDays}일차예요!
                 </p>
-                <div className="flex flex-wrap justify-center">
+                <Box display={'flex'} flexWrap={'wrap'} justifyContent={'center'} sx={{transform : isMobile ? 'scale(0.8)' : 'none'}}>
                     <Strick startedDate={startedDate} />
-                </div>
+                </Box>
             </div>
             <div className="py-8">
                 <p className="text-xl font-bold">

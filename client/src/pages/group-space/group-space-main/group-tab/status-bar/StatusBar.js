@@ -3,7 +3,7 @@ import { currentUserState } from "../../../../../contexts/User";
 import candyImg from "assets/images/candylogo.png";
 import StatusBarToast from "./status-bar-toast/StatusBarToast";
 import StatusEditModal from "./status-edit-modal/StatusEditModal";
-import { Avatar, Box, Flex, Image, Wrap } from "@chakra-ui/react";
+import { Avatar, Box, Flex, Image, Text, Wrap, useBreakpointValue } from "@chakra-ui/react";
 import avatar1 from "assets/images/avatar1.png";
 import avatar2 from "assets/images/avatar2.png";
 import avatar3 from "assets/images/avatar3.png";
@@ -21,6 +21,8 @@ function StatusBar() {
     const [candyCount, setCandyCount] = useRecoilState(challengeCandyCount)
     const currentCandyCount = useRecoilValue(challengeCandyCount)
     // let navigate = useNavigate();
+
+    const isMobile = useBreakpointValue({ base: true, md: false });
 
     let today = new Date();
 
@@ -73,14 +75,15 @@ function StatusBar() {
                             size="sm"
                             bg="dam.white"
                         />
-                        <p className="px-3 text-lg font-bold">
+                        <Text fontSize={isMobile ? "md" : "lg"} className="px-3 font-bold">
                             {challenge.userName} 챌린지 -{" "}
                             {startedDate.toLocaleDateString()}
-                        </p>
+                        </Text>
                         <div className="bg-damblack rounded-xl max-h-8 px-2 text-damyellow">
                             D+{diffDays}
                         </div>
-                        <p className="mx-2">{challenge.determination}</p>
+                        {isMobile ? null : <p className="mx-2">{challenge.determination}</p> }
+                        
                         {/* EditModal axios 적용해야 함 */}
                         {/* 요청 API : /api/v1/challenge/{challengeId}/profile-modify */}
                         {challenge.userId === currentUser.userId ? (                        
