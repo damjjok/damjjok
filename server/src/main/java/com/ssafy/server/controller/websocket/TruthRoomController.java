@@ -1,5 +1,6 @@
 package com.ssafy.server.controller.websocket;
 
+import com.ssafy.server.dto.websocket.MemberInfoDto;
 import com.ssafy.server.dto.websocket.TruthRoomDto;
 import com.ssafy.server.dto.websocket.websocketDto;
 import com.ssafy.server.service.EnterRoomService;
@@ -26,12 +27,12 @@ public class TruthRoomController {
     private final VoteService voteService;
 
     // 방에 입장
-    @MessageMapping("/enter/{roomId}/{userName}")
-    public void enter(@DestinationVariable Integer roomId, @DestinationVariable String userName, SimpMessageHeaderAccessor headerAccessor) {
+    @MessageMapping("/enter/{roomId}/{userName}/{role}")
+    public void enter(@DestinationVariable Integer roomId, @DestinationVariable String userName, @DestinationVariable String role, SimpMessageHeaderAccessor headerAccessor) {
         String sessionId = headerAccessor.getSessionId();
-        enterRoomService.addMember(roomId, sessionId, userName);
+        enterRoomService.addMember(roomId, sessionId, userName, role);
         // 방에 남아 있는 멤버들의 이름 목록 가져오기
-        Map<String, String> remainingMembers = enterRoomService.getRoomMembers(roomId);
+        Map<String, MemberInfoDto> remainingMembers = enterRoomService.getRoomMembers(roomId);
         //입장 목록 보내주기
         messagingTemplate.convertAndSend("/topic/member/" + roomId, remainingMembers.values());
     }
@@ -87,7 +88,7 @@ public class TruthRoomController {
             enterRoomService.removeSessionFromRoomMap(sessionId);
 
             // 방에 남아 있는 멤버들의 이름 목록 가져오기
-            Map<String, String> remainingMembers = enterRoomService.getRoomMembers(roomId);
+            Map<String, MemberInfoDto> remainingMembers = enterRoomService.getRoomMembers(roomId);
             // 남은 멤버들의 이름 목록을 웹소켓을 통해 전송
             messagingTemplate.convertAndSend("/topic/remainingMembers/" + roomId, remainingMembers.values());
             if(enterRoomService.isRoomEmpty(roomId)) {
@@ -152,7 +153,7 @@ public class TruthRoomController {
             enterRoomService.removeSessionFromRoomMap(sessionId);
 
             // 방에 남아 있는 멤버들의 이름 목록 가져오기
-            Map<String, String> remainingMembers = enterRoomService.getRoomMembers(roomId);
+            Map<String, MemberInfoDto> remainingMembers = enterRoomService.getRoomMembers(roomId);
             // 남은 멤버들의 이름 목록을 웹소켓을 통해 전송
             messagingTemplate.convertAndSend("/topic/remainingMembers/" + roomId, remainingMembers.values());
             if(enterRoomService.isRoomEmpty(roomId)) {
@@ -170,7 +171,7 @@ public class TruthRoomController {
         enterRoomService.removeSessionFromRoomMap(sessionId); // 세션 매핑 제거
 
         // 방에 남아 있는 멤버들의 이름 목록 가져오기
-        Map<String, String> remainingMembers = enterRoomService.getRoomMembers(roomId);
+        Map<String, MemberInfoDto> remainingMembers = enterRoomService.getRoomMembers(roomId);
         // 남은 멤버들의 이름 목록을 웹소켓을 통해 전송
         messagingTemplate.convertAndSend("/topic/remainingMembers/" + roomId, remainingMembers.values());
 
