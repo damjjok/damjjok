@@ -94,7 +94,22 @@ const getEvidences = async (challengeId, setEvidences) => {
             const list = response.data.list;
             setEvidences(list);
         }
-    } catch (error) {}
+    } catch (error) {
+        console.log(error);
+    }
 };
 
-export { getEvidences, postEvidence, createChallenge, getTestimonies, getAttendanceList, getTestimonyDetail, postTestimony };
+const getEvidenceDetail = async (evidenceId, setEvidence) => {
+    try {
+        const response = await axiosInstance.get(`/v1/proof/evidence/detail/${evidenceId}`);
+
+        if (response.status === 200) {
+            const { evidence } = response.data;
+            setEvidence(evidence);
+        }
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export { getEvidenceDetail, getEvidences, postEvidence, createChallenge, getTestimonies, getAttendanceList, getTestimonyDetail, postTestimony };

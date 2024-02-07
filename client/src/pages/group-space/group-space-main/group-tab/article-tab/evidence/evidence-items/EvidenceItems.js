@@ -2,7 +2,7 @@ import { Card, CardBody, Stack, Heading, Text, useDisclosure, Image, CardHeader,
 
 import EvidenceDetailModal from "../evidence-modal/EvidenceDetailModal";
 
-const EvidenceItems = ({ title, imagePath, evidenceTitle, imageDate, userName }) => {
+const EvidenceItems = ({ title, imagePath, evidenceTitle, imageDate, userName, evidenceId }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     // 나중에 바꿔야함
 
@@ -41,7 +41,7 @@ const EvidenceItems = ({ title, imagePath, evidenceTitle, imageDate, userName })
                 </Stack>
             </Card>
 
-            <EvidenceDetailModal isOpen={isOpen} onClose={onClose} title={title} img={""} />
+            <EvidenceDetailModal isOpen={isOpen} onClose={onClose} evidenceId={evidenceId} />
         </div>
     );
 };
