@@ -99,7 +99,7 @@ function InfoCards({diffDays, diffMilliseconds, challengeId}) {
             const response = await getChallengeRanking(challengeId);
             const updatedRank = response.rank
             setCurrentRank(updatedRank); // Recoil 상태에 데이터 적용
-            console.log(response);
+            // console.log(response);
 
         } catch (error) {
             console.error("챌린지 정보 불러오기 실패", error);

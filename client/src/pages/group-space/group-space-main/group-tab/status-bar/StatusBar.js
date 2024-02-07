@@ -8,7 +8,9 @@ import avatar1 from "assets/images/avatar1.png";
 import avatar2 from "assets/images/avatar2.png";
 import avatar3 from "assets/images/avatar3.png";
 import avatar4 from "assets/images/avatar4.png";
-import { challengeState } from "contexts/Challenge";
+import { challengeCandyCount, challengeState } from "contexts/Challenge";
+import { useEffect } from "react";
+import { getChallengeCandyCount } from "apis/api/Challenge";
 // import { challengeState } from "../../../../../contexts/Challenge";
 
 // profilePath 올바르게 설정될 필요성
@@ -16,6 +18,8 @@ function StatusBar() {
     const challenge = useRecoilValue(challengeState);
     const challengeUserId = challenge.userId;
     const currentUser = useRecoilValue(currentUserState)
+    const [candyCount, setCandyCount] = useRecoilState(challengeCandyCount)
+    const currentCandyCount = useRecoilValue(challengeCandyCount)
     // let navigate = useNavigate();
 
     let today = new Date();
@@ -32,6 +36,24 @@ function StatusBar() {
         { name: "dog1", src: avatar3 },
         { name: "dog2", src: avatar4 },
     ];
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await getChallengeCandyCount(challenge.challengeId);
+                const updatedCount = response.count
+                setCandyCount(updatedCount); // Recoil 상태에 데이터 적용
+                // console.log(response);
+    
+            } catch (error) {
+                console.error("챌린지 정보 불러오기 실패", error);
+            }
+                };
+    
+                fetchData(); // fetchData 함수 호출
+            }, 
+            [challenge, setCandyCount]
+            );
 
     return (
         <Box width={"80vw"} marginY={"0.5rem"}>
@@ -101,7 +123,7 @@ function StatusBar() {
                             transition="opacity 0.2s"
                             textColor={"white"}
                         >
-                            1
+                            {candyCount}
                         </Flex>
                     </Box>
                 </div>

@@ -102,6 +102,21 @@ const getChallengeCandyCount = async (challengeId) => {
     } catch (error) {}
 }
 
+const postChallengeCandyCount = async (challengeId, userId) => {
+    try {
+        const requestBody = {
+            challengeId: challengeId,
+            userId: userId,
+        };
+        const response = await axiosInstance.post(
+            '/v1/candy', requestBody
+        );
+        if (response.status === 200) {
+            console.log("응원하기 성공!");
+        }
+    } catch (error) {}
+}
+
 export {
     createChallenge,
     getTestimonies,
@@ -109,5 +124,6 @@ export {
     getTestimonyDetail,
     postTestimony,
     getChallengeRanking,
-    getChallengeCandyCount
+    getChallengeCandyCount,
+    postChallengeCandyCount,
 };
