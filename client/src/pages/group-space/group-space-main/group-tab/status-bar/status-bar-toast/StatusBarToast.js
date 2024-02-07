@@ -4,6 +4,8 @@ import { currentUserState } from "contexts/User";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 
+
+// 유저 확인 API 들어온 다음에 작업할 것
 function StatusBarToast() {
     const [isClicked, setIsClicked] = useState(false); // 버튼 클릭 여부 확인
     const toast = useToast();
