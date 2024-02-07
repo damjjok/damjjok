@@ -11,6 +11,5 @@ public class CustomUserDetails {
     private int userId;
     private String email;
     private String userName;
-
 }
 
