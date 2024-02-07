@@ -9,8 +9,10 @@ import ChallengeMoney from "./challenge-money/ChallengeMoney";
 // import ChallengeCreateModal from "./challenge-create-modal/ChallengeCreateModal";
 import ChallengeCreateAlert from "./challenge-create-modal/ChallengeCreateAlert";
 import TitleText from "components/TitleText";
+import { useParams } from "react-router-dom";
 
 function CreateChallenge() {
+    const { groupId } = useParams()
     const { isOpen, onClose } = useDisclosure();
     // const [challenge, setChallenge] = useRecoilState(challengeState);
 

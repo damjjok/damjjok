@@ -1,4 +1,4 @@
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { currentUserState } from "../../../../../contexts/User";
 import candyImg from "assets/images/candylogo.png";
 import StatusBarToast from "./status-bar-toast/StatusBarToast";
@@ -8,28 +8,19 @@ import avatar1 from "assets/images/avatar1.png";
 import avatar2 from "assets/images/avatar2.png";
 import avatar3 from "assets/images/avatar3.png";
 import avatar4 from "assets/images/avatar4.png";
-import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 import { challengeState } from "contexts/Challenge";
 // import { challengeState } from "../../../../../contexts/Challenge";
 
+
+// profilePath 올바르게 설정될 필요성
 function StatusBar() {
-    let currentChallenge = useRecoilValue(challengeState);
+    // const { groupId, challengeId } = useParams();
+
+
+    const currentChallenge = useRecoilValue(challengeState)
     const currentUser = currentChallenge.userName;
-    let navigate = useNavigate();
-
+    // console.log(currentChallenge);
     let today = new Date();
-    // if (currentChallenge) {
-    //     // 가져온 값이 있으면 JSON.parse를 사용해서 문자열을 객체로 변환합니다.
-    //     const myChallenge = JSON.parse(currentChallenge);
-
-    //     // 이후 myObject를 원하는대로 사용할 수 있습니다.
-    //     currentChallenge = myChallenge[0];
-    // } else {
-    //     console.log("No data in localStorage");
-    //     navigate("./empty-challenge");
-    //     return <></>;
-    // }
 
     const startedDate = new Date(currentChallenge.createdAt);
 
