@@ -36,9 +36,9 @@ function HomeTab() {
                 <p className="text-xl font-bold">
                     {currentChallenge.userName}님! 오늘은 금연 {diffDays}일차예요!
                 </p>
-                <div className="flex flex-wrap justify-center">
+                <Box display={'flex'} flexWrap={'wrap'} justifyContent={'center'}>
                     <Strick startedDate={startedDate} />
-                </div>
+                </Box>
             </div>
             <div className="py-8">
                 <p className="text-xl font-bold">
