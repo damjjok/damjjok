@@ -19,8 +19,18 @@ import {
     Wrap,
     useDisclosure,
 } from "@chakra-ui/react";
+import { getScheduleByChallengeId } from "apis/api/Schedule";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 function TruthRoomTab() {
+    const { challengeId } = useParams();
+    const [schedule, getSchedule] = useState("");
+
+    useEffect(() => {
+        getScheduleByChallengeId(challengeId, getSchedule);
+    }, []);
+
     const { isOpen, onOpen, onClose } = useDisclosure();
     return (
         <>
@@ -54,7 +64,8 @@ function TruthRoomTab() {
                             fontSize={"1.5rem"}
                             color={"white"}
                         >
-                            진실의 방 오픈 : 2024년 2월 16일
+                            진실의 방 오픈 :
+                            {new Date(schedule.date).toLocaleDateString()}
                         </Text>
                         <Text
                             fontWeight={"700"}

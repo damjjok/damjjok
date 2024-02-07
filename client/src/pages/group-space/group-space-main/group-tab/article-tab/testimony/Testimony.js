@@ -1,4 +1,3 @@
-import { useRecoilState } from "recoil";
 import {
     useDisclosure,
     Button,
@@ -7,18 +6,25 @@ import {
     VStack,
     Box,
 } from "@chakra-ui/react";
-import { testimonyList } from "contexts/Article";
 import TestimonyCreateModal from "./testimony-modal/TestimonyCreateModal";
 import TestimonyItems from "./testimony-items/TestimonyItems";
 import { EditIcon } from "@chakra-ui/icons";
+import { useEffect, useState } from "react";
+import { getTestimonies, postTestimony } from "apis/api/Challenge";
+import { useParams } from "react-router-dom";
 
 const Testimony = () => {
-    const [testimony, setTestimony] = useRecoilState(testimonyList);
+    const [testimonies, setTestimonies] = useState([]);
+    const { challengeId } = useParams();
 
-    const handleSaveTestimony = (newTestimony) => {
-        setTestimony([...testimony, newTestimony]);
-        console.log(testimony);
+    const saveTestimony = async (testimony) => {
+        await postTestimony(testimony, challengeId);
+        await getTestimonies(challengeId, setTestimonies);
     };
+
+    useEffect(() => {
+        getTestimonies(challengeId, setTestimonies);
+    }, []);
 
     const { isOpen, onOpen, onClose } = useDisclosure();
     return (
@@ -28,7 +34,7 @@ const Testimony = () => {
             </Text>
             <Box overflowX={"auto"} width={"75vw"}>
                 <HStack spacing={4} align="stretch">
-                    {testimony.map((item, index) => (
+                    {testimonies.map((item, index) => (
                         <TestimonyItems key={index} {...item} />
                     ))}
                     <Box>
@@ -57,7 +63,7 @@ const Testimony = () => {
             <TestimonyCreateModal
                 isOpen={isOpen}
                 onClose={onClose}
-                onSave={handleSaveTestimony}
+                onSave={saveTestimony}
             />
         </div>
     );

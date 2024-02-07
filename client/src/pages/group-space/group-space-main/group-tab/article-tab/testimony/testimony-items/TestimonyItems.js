@@ -1,11 +1,24 @@
-import { Card, CardBody, Stack, Text, useDisclosure, CardHeader, Flex, CardFooter, Box } from "@chakra-ui/react";
+import {
+    Card,
+    CardBody,
+    Stack,
+    Text,
+    useDisclosure,
+    CardHeader,
+    Flex,
+    CardFooter,
+    Box,
+} from "@chakra-ui/react";
 import TestimonyDetailModal from "../testimony-modal/TestimonyDetailModal";
 
-const TestimonyItems = ({ title, content }) => {
+const TestimonyItems = ({
+    testimonyTitle,
+    testimonyContent,
+    userName,
+    testimonyId,
+}) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     // 나중에 바꿔야함
-    const person = "문지호";
-    const day = "2024-03-04 14:22";
     return (
         <div className="TestimonyItems">
             <Card
@@ -17,33 +30,37 @@ const TestimonyItems = ({ title, content }) => {
                 overflow="hidden" // 내용이 넘칠 경우 숨김 처리
                 onClick={onOpen}
             >
-                <CardHeader isTruncated bg="#ffd100" display="flex" justifyContent="space-between" alignItems="center">
+                <CardHeader
+                    isTruncated
+                    bg="#ffd100"
+                    display="flex"
+                    justifyContent="space-between"
+                    alignItems="center"
+                >
                     <Text fontSize="lg" fontWeight="bold" isTruncated>
-                        {title}
+                        {testimonyTitle}
                     </Text>
                     <Box bg="black" borderRadius="lg" p={1}>
                         <Text fontSize="xs" fontWeight="bold" color="#fdd100">
-                            {person}
+                            {userName}
                         </Text>
                     </Box>
                 </CardHeader>
                 <CardBody>
                     <Stack mt="" spacing="3">
-                        <Text isTruncated>{content}</Text>
+                        <Text isTruncated>{testimonyContent}</Text>
                         {/* 내용이 넘치면 말줄임표로 처리 */}
                     </Stack>
                 </CardBody>
-
-                <CardFooter p={2}>
-                    <Flex justifyContent="flex-end" width="100%">
-                        <Text fontSize="12px" fontWeight="bold">
-                            {day}
-                        </Text>
-                    </Flex>
-                </CardFooter>
             </Card>
 
-            <TestimonyDetailModal isOpen={isOpen} onClose={onClose} title={title} content={content} />
+            <TestimonyDetailModal
+                isOpen={isOpen}
+                onClose={onClose}
+                title={testimonyTitle}
+                content={testimonyContent}
+                testimonyId={testimonyId}
+            />
         </div>
     );
 };

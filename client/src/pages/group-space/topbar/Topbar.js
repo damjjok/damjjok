@@ -23,7 +23,7 @@ function Topbar() {
             height={"8vh"}
         >
             <Flex justifyContent={"center"} alignItems={"center"}>
-                <Link to={""}>
+                <Link to={`/create-group`}>
                     <img src={logo} className="max-h-12 px-4" alt="logo" />
                 </Link>
             </Flex>
