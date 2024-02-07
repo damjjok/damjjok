@@ -2,11 +2,6 @@ import Topbar from "./topbar/Topbar.js";
 import Sidebar from "./sidebar/Sidebar.js";
 import GroupSpaceMain from "./group-space-main/GroupSpaceMain.js";
 import { Box } from "@chakra-ui/react";
-import { useParams } from "react-router-dom";
-import { useEffect } from "react";
-import { getChallengeInfo, getChallengeList } from "apis/api/Group.js";
-import { useRecoilState } from "recoil";
-import { challengeListState } from "contexts/Challenge.js";
 // import StatusBar from "../statusbar/StatusBar.js";
 // import { Routes, Route } from "react-router-dom";
 // import CreateChallenge from "../create-challenge/CreateChallenge"
