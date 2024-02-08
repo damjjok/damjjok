@@ -6,6 +6,7 @@ import {
     joinMemberListState,
     readyMemberCountState,
     stepReadyCountState,
+    voteResultState,
 } from "contexts/TruthRoomSocket";
 import { allUserReadyState } from "./../../../contexts/TruthRoomSocket";
 import { stepState } from "contexts/TruthRoomSocket";
@@ -20,6 +21,7 @@ const ConnectionButton = () => {
         setReady,
         evidenceNextStage,
         passFailVote,
+        finalArgumentReady,
     } = useContext(WebSocketContext);
     const step = useRecoilValue(stepState);
     const joinMemberList = useRecoilValue(joinMemberListState);
@@ -27,6 +29,7 @@ const ConnectionButton = () => {
     const allUserReady = useRecoilValue(allUserReadyState);
     const stepReadyCount = useRecoilValue(stepReadyCountState);
     const isVoted = useRecoilValue(isVotedState);
+    const voteResult = useRecoilValue(voteResultState);
 
     const testRoomId = 1;
 
@@ -54,8 +57,9 @@ const ConnectionButton = () => {
             {step === 2 && (
                 <div>
                     투표 단계
-                    {!isVoted && <div>투표 한 인원 수: {stepReadyCount}</div>}
+                    <div>투표 한 인원 수: {stepReadyCount}</div>
                     {isVoted && <div>기다려 주십쇼</div>}
+                    {voteResult !== "" && <div>투표 결과: {voteResult}</div>}
                 </div>
             )}
             <div>
@@ -79,6 +83,9 @@ const ConnectionButton = () => {
                         FAIL
                     </Button>
                 </div>
+                <Button onClick={() => finalArgumentReady(testRoomId)}>
+                    최후 변론으로
+                </Button>
             </div>
         </div>
     );
