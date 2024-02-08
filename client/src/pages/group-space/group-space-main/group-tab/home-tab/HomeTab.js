@@ -36,9 +36,15 @@ function HomeTab() {
         >
             <div>
                 <p className="text-xl font-bold">
-                    {currentChallenge.userName}님! 오늘은 금연 {diffDays}일차예요!
+                    {currentChallenge.userName}님! 오늘은 금연 {diffDays}
+                    일차예요!
                 </p>
-                <Box display={'flex'} flexWrap={'wrap'} justifyContent={'center'} sx={{transform : isMobile ? 'scale(0.8)' : 'none'}}>
+                <Box
+                    display={"flex"}
+                    flexWrap={"wrap"}
+                    justifyContent={"center"}
+                    sx={{ transform: isMobile ? "scale(0.5)" : "none" }}
+                >
                     <Strick startedDate={startedDate} />
                 </Box>
             </div>
@@ -47,7 +53,11 @@ function HomeTab() {
                     오늘의 {currentChallenge.userName}님은...
                 </p>
                 <div className="flex flex-wrap my-4 justify-center">
-                    <InfoCards diffDays={diffDays} diffMilliseconds={diffMilliseconds} challengeId={currentChallenge.challengeId} />
+                    <InfoCards
+                        diffDays={diffDays}
+                        diffMilliseconds={diffMilliseconds}
+                        challengeId={currentChallenge.challengeId}
+                    />
                 </div>
             </div>
         </Box>

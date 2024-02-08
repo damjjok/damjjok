@@ -6,14 +6,14 @@ const TitleText = (props) => {
     return (
         <>
             <Box
-                width={"80vw"}
-                // height={"100px"}
+                width={isMobile ? "90vw" : "80vw"}
+                height={isMobile ? "40vw" : "None"}
                 borderRadius={"xl"}
                 bgImage={`linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url(${img})`}
                 bgPosition="left"
                 bgRepeat="no-repeat"
                 bgSize="cover"
-                paddingX={ isMobile ? 4 : 8}
+                paddingX={isMobile ? 4 : 8}
                 paddingY={8}
                 backdropContrast={"30%"}
             >
@@ -24,8 +24,8 @@ const TitleText = (props) => {
                 >
                     <Text {...rest}>{children}</Text>
                     <Text
-                    fontSize={isMobile ? "xs" : "md"}
-                    // color={"#c0c0c0"}
+                        fontSize={isMobile ? "xs" : "md"}
+                        // color={"#c0c0c0"}
                     >
                         {description}
                     </Text>

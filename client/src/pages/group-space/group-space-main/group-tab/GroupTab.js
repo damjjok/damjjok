@@ -38,7 +38,8 @@ function GroupTab() {
     const [contentStep, setContentStep] = useState(0);
     const { groupId, challengeId } = useParams();
 
-    const [currentChallenge, setCurrentChallenge] = useRecoilState(challengeState)
+    const [currentChallenge, setCurrentChallenge] =
+        useRecoilState(challengeState);
 
     const isMobile = useBreakpointValue({ base: true, md: false });
 
@@ -46,30 +47,26 @@ function GroupTab() {
         const fetchData = async () => {
             try {
                 const response = await getChallengeInfo(challengeId);
-                const updatedChallenge = response.dto
+                const updatedChallenge = response.dto;
                 setCurrentChallenge(updatedChallenge); // Recoil 상태에 데이터 적용
                 console.log(updatedChallenge);
-
             } catch (error) {
                 console.error("챌린지 정보 불러오기 실패", error);
             }
         };
 
         fetchData(); // fetchData 함수 호출
-    }, 
-    [challengeId, setCurrentChallenge]
-    );
-
+    }, [challengeId, setCurrentChallenge]);
 
     useEffect(() => {
         // 조건 수정 필요
         // 모달 마지막에 navigate 하면 url이 하위 URL로 감.(/challenge/4/empty-challenge). 바꿔줘야 함.
-        if ( currentChallenge.status === "OFF") {
+        if (currentChallenge.status === "OFF") {
             setIsModalOpen(true);
         } else {
             setIsModalOpen(false);
         }
-    }, [ currentChallenge ]);
+    }, [currentChallenge]);
 
     const nextContent = () => setContentStep(contentStep + 1);
     const closeModal = () => {
@@ -95,7 +92,7 @@ function GroupTab() {
     // 1. Create the component
     function DataTabs({ data }) {
         return (
-            <Box >
+            <Box>
                 <Tabs
                     isFitted
                     colorScheme="yellow"
@@ -104,15 +101,20 @@ function GroupTab() {
                 >
                     <TabList>
                         {data.map((tab, index) => (
-                            <Tab key={index}>{tab.label}</Tab>
+                            <Tab
+                                key={index}
+                                fontSize={isMobile ? "xs" : "none"}
+                                fontWeight={"semibold"}
+                            >
+                                {tab.label}
+                            </Tab>
                         ))}
                     </TabList>
                     <TabPanels>
                         {data.map((tab, index) => (
                             <TabPanel p={0} key={index}>
-                                <Box width={ isMobile ? '90vw' : '70vw'}>
-                                {tab.content}
-
+                                <Box width={isMobile ? "90vw" : "70vw"}>
+                                    {tab.content}
                                 </Box>
                             </TabPanel>
                         ))}

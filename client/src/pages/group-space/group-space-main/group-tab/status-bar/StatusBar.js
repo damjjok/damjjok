@@ -3,7 +3,16 @@ import { currentUserState } from "../../../../../contexts/User";
 import candyImg from "assets/images/candylogo.png";
 import StatusBarToast from "./status-bar-toast/StatusBarToast";
 import StatusEditModal from "./status-edit-modal/StatusEditModal";
-import { Avatar, Box, Flex, Image, Text, Wrap, useBreakpointValue } from "@chakra-ui/react";
+import {
+    Avatar,
+    Box,
+    Flex,
+    Image,
+    Text,
+    VStack,
+    Wrap,
+    useBreakpointValue,
+} from "@chakra-ui/react";
 import avatar1 from "assets/images/avatar1.png";
 import avatar2 from "assets/images/avatar2.png";
 import avatar3 from "assets/images/avatar3.png";
@@ -17,9 +26,9 @@ import { getChallengeCandyCount } from "apis/api/Challenge";
 function StatusBar() {
     const challenge = useRecoilValue(challengeState);
     const challengeUserId = challenge.userId;
-    const currentUser = useRecoilValue(currentUserState)
-    const [candyCount, setCandyCount] = useRecoilState(challengeCandyCount)
-    const currentCandyCount = useRecoilValue(challengeCandyCount)
+    const currentUser = useRecoilValue(currentUserState);
+    const [candyCount, setCandyCount] = useRecoilState(challengeCandyCount);
+    const currentCandyCount = useRecoilValue(challengeCandyCount);
     // let navigate = useNavigate();
 
     const isMobile = useBreakpointValue({ base: true, md: false });
@@ -42,30 +51,29 @@ function StatusBar() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await getChallengeCandyCount(challenge.challengeId);
-                const updatedCount = response.count
+                const response = await getChallengeCandyCount(
+                    challenge.challengeId,
+                );
+                const updatedCount = response.count;
                 setCandyCount(updatedCount); // Recoil 상태에 데이터 적용
                 // console.log(response);
-    
             } catch (error) {
                 console.error("챌린지 정보 불러오기 실패", error);
             }
-                };
-    
-                fetchData(); // fetchData 함수 호출
-            }, 
-            [challenge, setCandyCount]
-            );
+        };
+
+        fetchData(); // fetchData 함수 호출
+    }, [challenge, setCandyCount]);
 
     return (
-        <Box width={"80vw"} marginY={"0.5rem"}>
+        <Box width={isMobile ? "90vw" : "80vw"} marginY={"0.5rem"}>
             <Flex
                 justifyContent={"space-between"}
                 alignItems={"center"}
                 bg={"dam.gray"}
                 borderRadius={"30px"}
                 paddingX={".5rem"}
-                height={'40px'}
+                height={"40px"}
             >
                 <Wrap>
                     <Flex alignItems={"center"}>
@@ -75,23 +83,37 @@ function StatusBar() {
                             size="sm"
                             bg="dam.white"
                         />
-                        <Text fontSize={isMobile ? "md" : "lg"} className="px-3 font-bold">
-                            {challenge.userName} 챌린지 -{" "}
-                            {startedDate.toLocaleDateString()}
-                        </Text>
+                        {isMobile ? (
+                            <Flex flexFlow={"column"} px={3}>
+                                <Text fontSize={"sm"} fontWeight={"bold"}>
+                                    {challenge.userName} 챌린지
+                                </Text>
+                                <Text fontSize={"xx-small"}>
+                                    {startedDate.toLocaleDateString()}
+                                </Text>
+                            </Flex>
+                        ) : (
+                            <Text fontSize={"lg"} className="px-3 font-bold">
+                                {challenge.userName} 챌린지 -{" "}
+                                {startedDate.toLocaleDateString()}
+                            </Text>
+                        )}
+
                         <div className="bg-damblack rounded-xl max-h-8 px-2 text-damyellow">
                             D+{diffDays}
                         </div>
-                        {isMobile ? null : <p className="mx-2">{challenge.determination}</p> }
-                        
+                        {isMobile ? null : (
+                            <p className="mx-2">{challenge.determination}</p>
+                        )}
+
                         {/* EditModal axios 적용해야 함 */}
                         {/* 요청 API : /api/v1/challenge/{challengeId}/profile-modify */}
-                        {challenge.userId === currentUser.userId ? (                        
-                        <StatusEditModal
-                            currentChallenge={challenge}
-                            avatars={avatars}
-                        />): null}
-
+                        {challenge.userId === currentUser.userId ? (
+                            <StatusEditModal
+                                currentChallenge={challenge}
+                                avatars={avatars}
+                            />
+                        ) : null}
                     </Flex>
                 </Wrap>
                 <div className="flex items-center">

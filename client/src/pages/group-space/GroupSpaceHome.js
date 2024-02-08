@@ -1,14 +1,14 @@
 import Topbar from "./topbar/Topbar.js";
 import Sidebar from "./sidebar/Sidebar.js";
 import GroupSpaceMain from "./group-space-main/GroupSpaceMain.js";
-import { Box, useMediaQuery } from "@chakra-ui/react";
+import { Box, useBreakpointValue } from "@chakra-ui/react";
 // import StatusBar from "../statusbar/StatusBar.js";
 // import { Routes, Route } from "react-router-dom";
 // import CreateChallenge from "../create-challenge/CreateChallenge"
 
 // 회원 정보 Get API
 function GroupSpaceHome() {
-    const [isSmallerThan768] = useMediaQuery("(max-width: 768px)");
+    const isMobile = useBreakpointValue({ base: true, md: false });
     // const challengeDetail = getChallengeInfo(challengeId);
     // console.log(challengeDetail);
 
@@ -17,9 +17,10 @@ function GroupSpaceHome() {
             <Topbar />
             <div className="flex">
                 <Box
-                position={isSmallerThan768 ? "fixed" : "static"}
-                bottom={isSmallerThan768 ? "10px" : "auto"}
-                left={isSmallerThan768 ? "10px" : "auto"}
+                    position={isMobile ? "fixed" : "static"}
+                    bottom={isMobile ? "10px" : "auto"}
+                    left={isMobile ? "10px" : "auto"}
+                    zIndex={"docked"}
                 >
                     <Sidebar />
                 </Box>

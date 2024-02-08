@@ -8,21 +8,30 @@ import {
     Flex,
     Icon,
     IconButton,
+    Text,
     Wrap,
     WrapItem,
     theme,
+    useBreakpointValue,
 } from "@chakra-ui/react";
 import { BellIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
 
 function Topbar() {
     const currentUser = useRecoilValue(currentUserState);
+
+    const isMobile = useBreakpointValue({ base: true, md: false });
+
     return (
         <Box
             className="flex justify-between py-4 border-b border-damlightgray/25"
-            height={"8vh"}
+            height={isMobile ? "6vh" : "8vh"}
         >
-            <Flex justifyContent={"center"} alignItems={"center"}>
+            <Flex
+                width={isMobile ? "25vw" : "none"}
+                justifyContent={"center"}
+                alignItems={"center"}
+            >
                 <Link to={`/create-group`}>
                     <img src={logo} className="max-h-12 px-4" alt="logo" />
                 </Link>
@@ -33,12 +42,21 @@ function Topbar() {
                     justifyContent={"center"}
                     alignItems={"center"}
                     backgroundColor={"#D9D9D9"}
-                    padding={"0.5em"}
+                    padding={isMobile ? "0.2em" : "0.5em"}
                     borderRadius={"30px"}
                 >
-                    <p className="font-semibold px-2">
-                        안녕하세요! {currentUser.userName} 님!
-                    </p>
+                    {isMobile ? (
+                        <Text fontSize="xs" className="font-semibold px-2">
+                            {currentUser.userName} 님
+                        </Text>
+                    ) : (
+                        <Text
+                            fontSize={isMobile ? "sm" : "md"}
+                            className="font-semibold px-2"
+                        >
+                            안녕하세요! {currentUser.userName} 님!
+                        </Text>
+                    )}
                     <BasicButton
                         // rounded={"20px"}
                         // backgroundColor={"#FFD100"}
@@ -49,9 +67,9 @@ function Topbar() {
                         로그아웃
                     </BasicButton>
                 </Flex>
-                <Wrap>
+                <Wrap sx={{ transform: isMobile ? "scale(0.6)" : "none" }}>
                     <Button
-                        marginX={"1em"}
+                        marginX={isMobile ? "0.1em" : "1em"}
                         backgroundColor={"#FFD100"}
                         borderRadius={"50%"}
                         width={"50%"}
@@ -60,15 +78,15 @@ function Topbar() {
                         <BellIcon></BellIcon>
                         <Wrap
                             position={"absolute"}
-                            right={"-10%"}
-                            top={"-10%"}
+                            right={isMobile ? "0" : "-10%"}
+                            top={isMobile ? "0" : "-10%"}
                             backgroundColor={"red"}
-                            width={"50%"}
-                            height={"50%"}
+                            width={isMobile ? "30%" : "50%"}
+                            height={isMobile ? "30%" : "50%"}
                             borderRadius={"50%"}
                             justify={"center"}
                         >
-                            <WrapItem>1</WrapItem>
+                            {isMobile ? null : <WrapItem>1</WrapItem>}
                         </Wrap>
                     </Button>
                 </Wrap>
