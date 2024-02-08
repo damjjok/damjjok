@@ -1,14 +1,26 @@
-import { Slider, SliderTrack, SliderFilledTrack, SliderThumb, SliderMark, Text } from "@chakra-ui/react";
+import {
+    Slider,
+    SliderTrack,
+    SliderFilledTrack,
+    SliderThumb,
+    SliderMark,
+    Text,
+    Box,
+    useBreakpointValue,
+} from "@chakra-ui/react";
 import { useRecoilState } from "recoil";
-import { challengeState } from "../../../../../../contexts/Challenge";
+import { createChallengeState } from "../../../../../../contexts/Challenge";
 
 function ChallengeDuration() {
     const labelStyles = {
-        mt: "2",
-        ml: "-7.5",
+        mt: "4",
+        ml: "-4",
         fontSize: "sm",
     };
-    const [challenge, setChallenge] = useRecoilState(challengeState);
+
+    const isMobile = useBreakpointValue({ base: true, md: false });
+
+    const [challenge, setChallenge] = useRecoilState(createChallengeState);
     const handleSliderChange = (value) => {
         setChallenge((oldChallenge) => ({
             ...oldChallenge,
@@ -17,11 +29,18 @@ function ChallengeDuration() {
     };
 
     return (
-        <div className="my-16 min-w-96">
-            <Text textAlign={"center"} fontWeight={700}>
+        <Box my={4}>
+            <Text fontSize={"x-large"} mb={8} fontWeight={700}>
                 챌린지 기한 설정
             </Text>
-            <Slider onChange={handleSliderChange} defaultValue={challenge.duration} min={30} max={180} step={30}>
+            <Slider
+                onChange={handleSliderChange}
+                defaultValue={challenge.duration}
+                min={30}
+                max={180}
+                step={30}
+                width={isMobile ? "70vw" : "60vw"}
+            >
                 <SliderMark value={30} {...labelStyles}>
                     30일
                 </SliderMark>
@@ -37,7 +56,11 @@ function ChallengeDuration() {
                 <SliderMark value={150} {...labelStyles}>
                     150일
                 </SliderMark>
-                <SliderMark value={180} {...labelStyles} className="whitespace-nowrap">
+                <SliderMark
+                    value={180}
+                    {...labelStyles}
+                    className="whitespace-nowrap"
+                >
                     180일
                 </SliderMark>
                 <SliderTrack bg="dam.lightgray">
@@ -45,7 +68,7 @@ function ChallengeDuration() {
                 </SliderTrack>
                 <SliderThumb boxSize={6} />
             </Slider>
-        </div>
+        </Box>
     );
 }
 
