@@ -1,5 +1,6 @@
 package com.ssafy.server.service;
 
+import com.ssafy.server.dto.request.alarm.FCMTokenRequestDto;
 import com.ssafy.server.dto.request.auth.SignUpRequestDto;
 import com.ssafy.server.dto.request.auth.TokenRequestDto;
 import com.ssafy.server.dto.response.auth.FcmTokenResponseDto;
@@ -10,6 +11,6 @@ import org.springframework.http.ResponseEntity;
 public interface AuthService {
     ResponseEntity<? super SignUpResponseDto> signUp(SignUpRequestDto dto);
     ResponseEntity<? super TokenResponseDto> createNewToken(TokenRequestDto dto);
-    ResponseEntity<? super FcmTokenResponseDto> changeFcmToken(String authorizationHeader, String fcmToken);
+    ResponseEntity<? super FcmTokenResponseDto> savedFcmToken(FCMTokenRequestDto dto);
 
 }

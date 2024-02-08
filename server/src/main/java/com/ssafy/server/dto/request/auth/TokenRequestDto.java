@@ -12,10 +12,6 @@ import lombok.Setter;
 public class TokenRequestDto {
 
     @NotBlank
-    @Schema(description = "accessToken")
-    private String accessToken;
-
-    @NotBlank
     @Schema(description = "refreshToken")
     private String refreshToken;
 
