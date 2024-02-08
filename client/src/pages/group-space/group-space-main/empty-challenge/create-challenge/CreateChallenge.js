@@ -59,10 +59,11 @@ function CreateChallenge() {
             <Flex
                 flexFlow={"column"}
                 alignItems={"center"}
+                justifyContent={"center"}
                 my={6}
                 overflowY={"auto"}
                 height="60vh"
-                width={isMobile ? "90vw" : "50vw"}
+                // width={isMobile ? "90vw" : "none"}
             >
                 <VStack>
                     <ChallengeDuration />

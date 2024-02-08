@@ -40,6 +40,7 @@ function ChallengeMoney() {
             <Flex
                 flexFlow={"column"}
                 alignItems={"center"}
+                justifyContent={"center"}
                 width={isMobile ? "80vw" : "60vw"}
             >
                 <FormControl
