@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface NotificationRepository extends JpaRepository<NotificationEntity, Integer> {
     List<NotificationEntity> findByUserEntity(UserEntity userEntity);
+    NotificationEntity findByNotificationId(int notificationId);
 }

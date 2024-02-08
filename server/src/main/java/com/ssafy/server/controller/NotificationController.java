@@ -1,7 +1,9 @@
 package com.ssafy.server.controller;
 
+import com.ssafy.server.dto.request.notification.NotificationCheckReadRequestDto;
 import com.ssafy.server.dto.request.notification.NotificationCreateRequestDto;
 import com.ssafy.server.dto.request.notification.NotificationListRequestDto;
+import com.ssafy.server.dto.response.notification.NotificationCheckReadResponseDto;
 import com.ssafy.server.dto.response.notification.NotificationCreateResponseDto;
 import com.ssafy.server.dto.response.notification.NotificationListResponseDto;
 import com.ssafy.server.service.NotificationService;
@@ -28,6 +30,12 @@ public class NotificationController {
     @PostMapping("/")
     public ResponseEntity<? super NotificationCreateResponseDto> create (@RequestBody NotificationCreateRequestDto dto) {
         ResponseEntity<? super NotificationCreateResponseDto> response = notificationService.create(dto);
+        return response;
+    }
+
+    @PatchMapping("/")
+    public ResponseEntity<? super NotificationCheckReadResponseDto> checkRead(@RequestBody NotificationCheckReadRequestDto dto) {
+        ResponseEntity<? super NotificationCheckReadResponseDto> response = notificationService.checkRead(dto);
         return response;
     }
 }

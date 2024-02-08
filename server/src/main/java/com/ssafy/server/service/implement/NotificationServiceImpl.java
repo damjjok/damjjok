@@ -3,8 +3,10 @@ package com.ssafy.server.service.implement;
 import com.ssafy.server.dto.ResponseDto;
 import com.ssafy.server.dto.auth.CustomUserDetails;
 import com.ssafy.server.dto.notification.NotificationDto;
+import com.ssafy.server.dto.request.notification.NotificationCheckReadRequestDto;
 import com.ssafy.server.dto.request.notification.NotificationCreateRequestDto;
 import com.ssafy.server.dto.request.notification.NotificationListRequestDto;
+import com.ssafy.server.dto.response.notification.NotificationCheckReadResponseDto;
 import com.ssafy.server.dto.response.notification.NotificationCreateResponseDto;
 import com.ssafy.server.dto.response.notification.NotificationListResponseDto;
 import com.ssafy.server.entity.CommonCodeEntity;
@@ -142,5 +144,20 @@ public class NotificationServiceImpl implements NotificationService {
         }
 
         return NotificationCreateResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super NotificationCheckReadResponseDto> checkRead(NotificationCheckReadRequestDto dto) {
+        try{
+            int notificationId = dto.getNotificationId();
+            NotificationEntity notificationEntity = notificationRepository.findByNotificationId(notificationId);
+
+            notificationEntity.setReadOrNot(true);
+            notificationRepository.save(notificationEntity);
+        }catch (Exception exception){
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return NotificationCheckReadResponseDto.success();
     }
 }
