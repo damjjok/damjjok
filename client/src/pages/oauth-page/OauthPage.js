@@ -4,11 +4,10 @@ import { userState } from "contexts/Sns";
 import { useNavigate } from "react-router-dom";
 import { currentUser } from "contexts/User";
 import { jwtDecode } from "jwt-decode";
-import { requestForToken } from "pages/firebase/firebaseMessaging";
+import { requestForToken } from "util/firebase/firebaseMessaging";
 
 const OauthPage = () => {
     const [user, setUser] = useRecoilState(userState);
-
     const [currentUserInfo, setCurrentUserInfo] = useRecoilState(currentUser);
 
     const navigate = useNavigate();

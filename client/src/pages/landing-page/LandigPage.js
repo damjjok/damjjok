@@ -1,14 +1,14 @@
 import { Button, useDisclosure } from "@chakra-ui/react";
 
 import LandingMain from "./landing-main/LandingMain";
-import LoginModal from "./landing-main/landing-modal/LoginModal";
-import FormModal from "./landing-main/landing-modal/FormModal";
+import LoginModal from "./modal/LoginModal";
+import FormModal from "./modal/FormModal";
 import landingBg from "assets/images/bgimg.png";
 import { userState } from "contexts/Sns";
 import { useRecoilValue } from "recoil";
 import { useEffect } from "react";
 
-const Landing = () => {
+const LandingPage = () => {
     // const { isOpen, onOpen, onClose } = useDisclosure();
     // 만약 api연결한다면 회원가입 버튼을 눌렀을때 같은 아이디가 db에 있는지 이메
     // 이메일 형식이 맞는지 조건을 걸어줘야함
@@ -97,4 +97,4 @@ const Landing = () => {
     );
 };
 
-export default Landing;
+export default LandingPage;

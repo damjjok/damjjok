@@ -25,20 +25,20 @@ export const requestForToken = (accessToken) => {
                             headers: {
                                 Authorization: `Bearer ${accessToken}`, // 헤더에 액세스 토큰 추가
                             },
-                        },
+                        }
                     )
                     .then((response) =>
                         console.log(
                             "FCM Token sent successfully:",
-                            response.data,
-                        ),
+                            response.data
+                        )
                     )
                     .catch((error) =>
-                        console.error("Error sending FCM Token:", error),
+                        console.error("Error sending FCM Token:", error)
                     );
             } else {
                 console.log(
-                    "No registration token available. Request permission to generate one.",
+                    "No registration token available. Request permission to generate one."
                 );
                 // 사용자에게 알림 권한 요청
             }

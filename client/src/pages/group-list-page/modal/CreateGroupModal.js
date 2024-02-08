@@ -15,7 +15,7 @@ import {
     Text,
 } from "@chakra-ui/react";
 import logo from "assets/images/logo.png";
-import SearchBar from "./searchbar/SearchBar";
+import SearchBar from "../search-bar/SearchBar";
 
 const CreateGroupModal = ({
     isOpen,

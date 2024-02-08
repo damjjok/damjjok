@@ -6,8 +6,8 @@ import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 // import GroupHome from "./pages/groupspace/group-home/GroupHome.js";
 import { useRecoilValue } from "recoil";
 import { Suspense, useEffect } from "react";
-import Landing from "./pages/landing-page/Landig.js";
-import CreateGroup from "./pages/landing-page/create-group/CreateGroup.js";
+import LandingPage from "./pages/landing-page/LandigPage.js";
+import GroupListPage from "./pages/group-list-page/GroupListPage.js";
 import GroupSpaceHome from "./pages/group-space/GroupSpaceHome.js";
 import TruthRoom from "pages/truth-room/TruthRoom";
 import HomeTab from "pages/group-space/group-space-main/group-tab/home-tab/HomeTab";
@@ -17,8 +17,8 @@ import CreateChallenge from "pages/group-space/group-space-main/empty-challenge/
 import EmptyChallenge from "pages/group-space/group-space-main/empty-challenge/EmptyChallenge";
 import LastChallenge from "pages/group-space/group-space-main/last-challenge/LastChallenge";
 import { createGlobalStyle } from "styled-components";
-import OauthPage from "pages/landing-page/oauth-page/OauthPage";
-import "./pages/firebase/firebaseConfig";
+import OauthPage from "pages/oauth-page/OauthPage";
+import "./util/firebase/firebaseConfig";
 
 import { getMessaging, onMessage } from "firebase/messaging";
 
@@ -102,8 +102,11 @@ function App() {
             <Suspense>
                 <ChakraProvider theme={theme}>
                     <Routes>
-                        <Route path="/" element={<Landing />} />
-                        <Route path="/create-group" element={<CreateGroup />} />
+                        <Route path="/" element={<LandingPage />} />
+                        <Route
+                            path="/create-group"
+                            element={<GroupListPage />}
+                        />
                         <Route
                             path={`/group/:groupId/*`}
                             element={<GroupSpaceHome />}

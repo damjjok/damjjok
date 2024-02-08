@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Button, useDisclosure, HStack } from "@chakra-ui/react";
-import CreateGroupModal from "./create-group-modal/CreateGroupModal";
+import CreateGroupModal from "./modal/CreateGroupModal";
 import logo from "assets/images/logo.png";
 import landingBg from "assets/images/bgimg.png";
 
-const CreateGroup = () => {
+const GroupListPage = () => {
     const [groupData, setGroupData] = useState([]);
     const [groupName, setGroupName] = useState(""); // 그룹 이름 상태 추가
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -142,4 +142,4 @@ const CreateGroup = () => {
     );
 };
 
-export default CreateGroup;
+export default GroupListPage;

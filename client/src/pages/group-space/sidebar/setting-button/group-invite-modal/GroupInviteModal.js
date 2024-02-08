@@ -17,7 +17,7 @@ import {
     Text,
     useDisclosure,
 } from "@chakra-ui/react";
-import SearchBar from "pages/landing-page/create-group/create-group-modal/searchbar/SearchBar";
+import SearchBar from "pages/group-list-page/search-bar/SearchBar";
 import { useClipboard } from "@chakra-ui/react";
 
 // 초대코드는 임의대로?
