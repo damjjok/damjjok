@@ -72,7 +72,7 @@
             stompClient.subscribe('/topic/fineSubmittedCount/' + roomId, function(message) {
                 console.log("Fine Submitted Count: ", message.body);
             });
-            stompClient.subscribe('/topic/startMoenyVote/' + roomId, function(message) {
+            stompClient.subscribe('/topic/startMoneyVote/' + roomId, function(message) {
                 console.log("Start Money Vote: ", message.body);
             });
             stompClient.subscribe('/topic/fineVoteCount/' + roomId, function(message) {

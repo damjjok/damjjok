@@ -126,9 +126,10 @@ public class TruthRoomController {
         Integer cnt = voteService.submitFine(roomId, sessionId, fineAmount);
         // 벌금 입력 완료된 멤버 수 알려주기
         messagingTemplate.convertAndSend("/topic/fineSubmittedCount/" + roomId, cnt);
-        // 모든 멤버가 벌금 입력을 완료했다면 투표 시작하기
+
+        // 모든 멤버가 벌금 입력을 완료했다면 투표 시작하기 -> 벌금 리스트 함께 보내주기
         if(cnt == enterRoomService.getRoomMembers(roomId).size() - 1) {
-            messagingTemplate.convertAndSend("/topic/startMoenyVote/" + roomId, "START");
+            messagingTemplate.convertAndSend("/topic/startMoneyVote/" + roomId, voteService.getMoneyList(roomId));
         }
     }
 
