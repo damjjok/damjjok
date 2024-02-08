@@ -1,4 +1,4 @@
-import { axiosInstance } from "apis/instance/AxiosInstance";
+import { axiosInstance } from "util/axios/AxiosInstance";
 
 const getScheduleByChallengeId = async (challengeId, setSchdule) => {
     try {

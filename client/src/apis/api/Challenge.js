@@ -1,20 +1,12 @@
-const { axiosInstance } = require("apis/instance/AxiosInstance");
+const { axiosInstance } = require("util/axios/AxiosInstance");
 
-const getAttendanceList = async (challengeId, setAttendanceList) => {
-    try {
-        const response = await axiosInstance.get(`/v1/attendance/${challengeId}`);
-        const data = response.data;
-
-        if (response.status === 200) {
-            console.log(data.list);
-            setAttendanceList(data.list);
-        }
-    } catch (error) {
-        console.log(error);
-    }
-    return;
-};
-const createChallenge = async ({ groupId, userId, initialMoney, savedMoney, savedPeriod }) => {
+const createChallenge = async ({
+    groupId,
+    userId,
+    initialMoney,
+    savedMoney,
+    savedPeriod,
+}) => {
     const body = {
         groupId: groupId,
         userId: userId,
@@ -29,127 +21,60 @@ const createChallenge = async ({ groupId, userId, initialMoney, savedMoney, save
     } catch (error) {}
 };
 
-const getTestimonies = async (challengeId, setTestimonies) => {
-    try {
-        const response = await axiosInstance.get(`/v1/proof/testimony/${challengeId}`);
-        const list = await response.data.list;
-        setTestimonies(list);
-    } catch (error) {
-        console.log(error);
-    }
-};
-
-const getTestimonyDetail = async (testimonyId, setTestimony) => {
-    try {
-        const response = await axiosInstance.get(`/v1/proof/testimony/detail/${testimonyId}`);
-        if (response.status === 200) {
-            const { testimony } = await response.data;
-            setTestimony(testimony);
-        }
-    } catch (error) {
-        console.log(error);
-    }
-};
-
-const postTestimony = async (testimony, challengeId) => {
-    try {
-        const requestBody = {
-            title: testimony.title,
-            content: testimony.content,
-            challengeId: challengeId,
-        };
-        const response = await axiosInstance.post(`/v1/proof/testimony`, requestBody);
-        if (response.status === 200) {
-            console.log("증언 추가 됨");
-        }
-    } catch (error) {}
-};
-
 const getChallengeRanking = async (challengeId) => {
     try {
         const response = await axiosInstance.get(
             `/v1/challenge/${challengeId}/ranking`
         );
         if (response.status === 200) {
-            return response.data
+            return response.data;
         }
     } catch (error) {}
-}
-
-const getChallengeCandyCount = async (challengeId) => {
+};
+const getChallengeList = async (groupId) => {
     try {
         const response = await axiosInstance.get(
-            `/v1/candy/${challengeId}`
+            `/v1/challenge/list/${groupId}`
         );
-        if (response.status === 200) {
-            return response.data
-        }
-    } catch (error) {}
-}
+        if (response.status === 200) return response.data;
+        else console.log("통신 실패" + response.status);
+    } catch (error) {
+        console.log("챌린지 정보 불러오기 실패" + error);
+    }
+};
 
-const postChallengeCandyCount = async (challengeId, userId) => {
+const getChallengeInfo = async (challengeId) => {
     try {
-        const requestBody = {
-            challengeId: challengeId,
-            userId: userId,
-        };
-        const response = await axiosInstance.post(
-            '/v1/candy', requestBody
+        const response = await axiosInstance.get(
+            `/v1/challenge/${challengeId}/detail`
         );
-        if (response.status === 200) {
-            console.log("응원하기 성공!");
-        }
-    } catch (error) {}
-}
-
-const postEvidence = async (evidence) => {
+        if (response.status === 200) return response.data;
+        else console.log("통신 실패" + response.status);
+    } catch (error) {
+        console.log("챌린지 정보 불러오기 실패" + error);
+    }
+};
+const getChallengeMembers = async (challengeId, setGroupMembers) => {
     try {
-        const formData = new FormData();
-        formData.append("challengeId", evidence.challengeId);
-        formData.append("title", evidence.title);
-        formData.append("image", evidence.image);
-
-        const response = await axiosInstance.postForm(`/v1/proof/evidence`, formData, {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
-        });
-
+        const response = await axiosInstance.get(
+            `v1/challenge/${challengeId}/member-list`
+        );
+        const data = await response.data;
         if (response.status === 200) {
-            console.log("증거 생성 완료");
+            console.log(data.list);
+            setGroupMembers(data.list);
         }
     } catch (error) {
         console.log(error);
     }
+
+    return null;
 };
 
-const getEvidences = async (challengeId, setEvidences) => {
-    try {
-        const response = await axiosInstance.get(`/v1/proof/evidence/${challengeId}`);
-
-        if (response.status === 200) {
-            const list = response.data.list;
-            setEvidences(list);
-        }
-    } catch (error) {
-        console.log(error);
-    }
-};
-
-const getEvidenceDetail = async (evidenceId, setEvidence) => {
-    try {
-        const response = await axiosInstance.get(`/v1/proof/evidence/detail/${evidenceId}`);
-
-        if (response.status === 200) {
-            const { evidence } = response.data;
-            setEvidence(evidence);
-        }
-    } catch (error) {
-        console.log(error);
-    }
-};
-
-export { getEvidenceDetail, getEvidences, postEvidence, createChallenge, getTestimonies, getAttendanceList, getTestimonyDetail, postTestimony,     getChallengeRanking,
-    getChallengeCandyCount,
-    postChallengeCandyCount,
+export {
+    createChallenge,
+    getChallengeRanking,
+    getChallengeInfo,
+    getChallengeList,
+    getChallengeMembers,
 };
