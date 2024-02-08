@@ -7,8 +7,8 @@ import {
     showingEvidenceState,
 } from "contexts/TruthRoom";
 import EvidenceFrame from "./EvidenceFrame";
-import { getEvidenceInTruthRoom } from "apis/api/TruthRoom";
 import { useParams } from "react-router-dom";
+import { getEvidenceInTruthRoom } from "apis/api/Proof";
 
 function EvidenceComponent(props) {
     // const evidences = useRecoilValue(evidenceState);
@@ -23,7 +23,6 @@ function EvidenceComponent(props) {
 
     useEffect(() => {
         getEvidenceInTruthRoom(challengeId, setEvidences);
-        // setEvidences(getEvidenceInTruthRoom(1));
     }, []);
 
     return (

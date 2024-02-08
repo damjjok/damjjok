@@ -19,7 +19,7 @@ import avatar3 from "assets/images/avatar3.png";
 import avatar4 from "assets/images/avatar4.png";
 import { challengeCandyCount, challengeState } from "contexts/Challenge";
 import { useEffect } from "react";
-import { getChallengeCandyCount } from "apis/api/Challenge";
+import { getChallengeCandyCount } from "apis/api/Candy";
 // import { challengeState } from "../../../../../contexts/Challenge";
 
 // profilePath 올바르게 설정될 필요성

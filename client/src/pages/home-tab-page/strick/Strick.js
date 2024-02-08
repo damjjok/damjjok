@@ -2,8 +2,8 @@ import { useRecoilValue } from "recoil";
 import { challengeState } from "../../../contexts/Challenge";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getAttendanceList } from "apis/api/Challenge";
 import { Box } from "@chakra-ui/react";
+import { getAttendanceList } from "apis/api/Attendance";
 
 // 테스트용 챌린지 객체
 const currentChallenge = {

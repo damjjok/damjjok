@@ -19,18 +19,18 @@ import {
 import { useEffect, useState } from "react";
 import challengeIcon from "assets/images/currentChallengeIcon.png";
 import { useNavigate, useParams } from "react-router-dom";
-import { getChallengeList } from "apis/api/Group";
+import { getChallengeList } from "apis/api/Challenge";
 // import { useRecoilValue } from "recoil";
 // import { challengeListState } from "../../../../context/Challenge";
 
-function ChallengeList({onClick}) {
+function ChallengeList({ onClick }) {
     const userId = 0;
 
     const { groupId } = useParams();
     // const setChallengeState = useSetRecoilState(challengeState);
     const [currentChallengeList, setCurrentChallengeList] = useState([]);
     const [currentGroupChallengeList, setCurrentGroupChallengeList] = useState(
-        [],
+        []
     );
     const [lastChallenge, setLastChallenge] = useState([]);
 
@@ -110,10 +110,9 @@ function ChallengeList({onClick}) {
                                               });
                                               navigate(
                                                   `/group/${groupId}/challenge/${challenge.challengeId}`,
-                                                  { state: { challenge } },
+                                                  { state: { challenge } }
                                               );
-                                              if (onClick) onClick()
-                                              
+                                              if (onClick) onClick();
                                           }}
                                       >
                                           <Circle
@@ -127,35 +126,38 @@ function ChallengeList({onClick}) {
                                               </p>
                                               <p className="text-xs">
                                                   {new Date(
-                                                      challenge.createdAt,
+                                                      challenge.createdAt
                                                   ).toLocaleDateString()}{" "}
                                                   시작
                                               </p>
                                           </li>
                                       </Flex>
-                                  ),
+                                  )
                               )
                             : null}
-                        {currentGroupChallengeList.length > 0 && !currentGroupChallengeList.some(
-                            (challenge) => challenge.userId === userId,
-                        ) && (
-                            <Box px={3} py={2} display={"flex"}>
-                                <Flex
-                                    alignItems="center"
-                                    justifyContent={"center"}
-                                    cursor="pointer"
-                                    onClick={() => {
-                                        navigate(
-                                            `/group/${groupId}/create-challenge`,
-                                        )
-                                        if (onClick) onClick()
-                                    }}
-                                >
-                                    <PlusSquareIcon marginRight="4px" />
-                                    <Text fontSize={"xs"}>챌린지 생성하기</Text>
-                                </Flex>
-                            </Box>
-                        )}
+                        {currentGroupChallengeList.length > 0 &&
+                            !currentGroupChallengeList.some(
+                                (challenge) => challenge.userId === userId
+                            ) && (
+                                <Box px={3} py={2} display={"flex"}>
+                                    <Flex
+                                        alignItems="center"
+                                        justifyContent={"center"}
+                                        cursor="pointer"
+                                        onClick={() => {
+                                            navigate(
+                                                `/group/${groupId}/create-challenge`
+                                            );
+                                            if (onClick) onClick();
+                                        }}
+                                    >
+                                        <PlusSquareIcon marginRight="4px" />
+                                        <Text fontSize={"xs"}>
+                                            챌린지 생성하기
+                                        </Text>
+                                    </Flex>
+                                </Box>
+                            )}
                         {currentGroupChallengeList.length === 0 && (
                             <>
                                 <Box>
@@ -170,9 +172,9 @@ function ChallengeList({onClick}) {
                                         cursor="pointer"
                                         onClick={() => {
                                             navigate(
-                                                `/group/${groupId}/create-challenge`,
-                                            )
-                                        if (onClick) onClick()
+                                                `/group/${groupId}/create-challenge`
+                                            );
+                                            if (onClick) onClick();
                                         }}
                                     >
                                         <PlusSquareIcon marginRight="4px" />
@@ -219,9 +221,9 @@ function ChallengeList({onClick}) {
                                         });
                                         navigate(
                                             `/group/${groupId}}/last-challenge/${challenge.challengeId}`,
-                                            { state: { challenge } },
+                                            { state: { challenge } }
                                         );
-                                        if (onClick) onClick()
+                                        if (onClick) onClick();
                                     }}
                                 >
                                     {challenge.status === "success" ? (
@@ -243,11 +245,11 @@ function ChallengeList({onClick}) {
                                             {challenge.userName} 챌린지
                                         </p>
                                         <p className="text-xs">
-                                                  {new Date(
-                                                      challenge.createdAt,
-                                                  ).toLocaleDateString()}{" "}
-                                                  진행
-                                              </p>
+                                            {new Date(
+                                                challenge.createdAt
+                                            ).toLocaleDateString()}{" "}
+                                            진행
+                                        </p>
                                     </li>
                                 </Flex>
                             ))

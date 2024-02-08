@@ -31,7 +31,7 @@ import bgRewardTab from "assets/images/bgRewardTab.jpg";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { challengeState } from "contexts/Challenge";
 import { useParams } from "react-router-dom";
-import { getChallengeInfo } from "apis/api/Group";
+import { getChallengeInfo } from "apis/api/Challenge";
 
 function ChallengePage() {
     const [isModalOpen, setIsModalOpen] = useState(false);

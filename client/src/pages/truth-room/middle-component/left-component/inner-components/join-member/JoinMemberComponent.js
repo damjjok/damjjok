@@ -6,7 +6,7 @@ import SectionComponent from "./section/SectionComponent";
 import { Box, Flex, Text, Wrap } from "@chakra-ui/react";
 import { ChatIcon } from "@chakra-ui/icons";
 import { useParams } from "react-router-dom";
-import { getChallengeMembers, getGroupMembers } from "apis/api/TruthRoom";
+import { getChallengeMembers } from "apis/api/Challenge";
 
 function JoinMemberComponent() {
     const { challengeId } = useParams();

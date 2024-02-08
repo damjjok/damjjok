@@ -8,7 +8,7 @@ import { useRecoilValue } from "recoil";
 import { Suspense, useEffect } from "react";
 import LandingPage from "./pages/landing-page/LandigPage.js";
 import GroupListPage from "./pages/group-list-page/GroupListPage.js";
-import GroupSpacePage from "./pages/group-space/GroupSpacePage.js";
+import GroupSpacePage from "./pages/group-space-page/GroupSpacePage.js";
 import TruthRoom from "pages/truth-room/TruthRoom";
 import HomeTabPage from "pages/home-tab-page/HomeTabPage";
 import ProofTabPage from "pages/proof-tap-page/ProofTabPage";

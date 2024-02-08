@@ -15,15 +15,11 @@ import {
     Text,
     Flex,
 } from "@chakra-ui/react";
-import { getEvidenceDetail } from "apis/api/Challenge";
+import { getEvidenceDetail } from "apis/api/Proof";
 
 const EvidenceDetailModal = ({ isOpen, onClose, evidenceId }) => {
     const [evidence, setEvidence] = useState({});
     // 추후에 데이터 연결되면 바꿀 예정
-    const person = "문지호";
-    const day = "2024년 2월 11일 13:00";
-
-    const [pictureDate, setPictureDate] = useState("");
 
     useEffect(() => {
         getEvidenceDetail(evidenceId, setEvidence);

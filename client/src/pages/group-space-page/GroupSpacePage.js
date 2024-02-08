@@ -1,10 +1,7 @@
 import Topbar from "./topbar/Topbar.js";
 import Sidebar from "./sidebar/Sidebar.js";
-import GroupSpaceMain from "./group-space-main/GroupSpaceMain.js";
 import { Box, useBreakpointValue } from "@chakra-ui/react";
-// import StatusBar from "../statusbar/StatusBar.js";
-// import { Routes, Route } from "react-router-dom";
-// import CreateChallenge from "../create-challenge/CreateChallenge"
+import GroupSpaceMain from "./group-space-main/GroupSpaceMain.js";
 
 // 회원 정보 Get API
 function GroupSpacePage() {

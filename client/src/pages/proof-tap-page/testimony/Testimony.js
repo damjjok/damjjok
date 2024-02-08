@@ -10,8 +10,8 @@ import TestimonyCreateModal from "../modal/TestimonyCreateModal";
 import TestimonyItems from "./TestimonyItems";
 import { EditIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
-import { getTestimonies, postTestimony } from "apis/api/Challenge";
 import { useParams } from "react-router-dom";
+import { getTestimonies, postTestimony } from "apis/api/Proof";
 
 const Testimony = () => {
     const [testimonies, setTestimonies] = useState([]);

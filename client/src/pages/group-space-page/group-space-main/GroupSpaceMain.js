@@ -20,7 +20,7 @@ import {
 } from "../../../contexts/Challenge";
 import CreateChallengePage from "../../create-challenge-page/CreateChallengePage";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { getChallengeList } from "apis/api/Group";
+import { getChallengeList } from "apis/api/Challenge";
 
 // import NormalButton from "../components/button/normalbutton/NormalButton";
 

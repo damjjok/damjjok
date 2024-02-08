@@ -1,5 +1,5 @@
 import { Box, Text } from "@chakra-ui/react";
-import { getAttendanceList } from "apis/api/Challenge";
+import { getAttendanceList } from "apis/api/Attendance";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -47,9 +47,18 @@ function AttendanceStrick({ startedDate }) {
     return (
         // css 150~80일인 경우 오른쪽으로 쏠림
         <Box className="flex flex-col over">
-            <Box className="mt-4 max-w-2xl grid grid-flow-row grid-rows-32 grid-cols-7 gap-1 place-items-center" overflowY={"scroll"} h={"47vh"}>
+            <Box
+                className="mt-4 max-w-2xl grid grid-flow-row grid-rows-32 grid-cols-7 gap-1 place-items-center"
+                overflowY={"scroll"}
+                h={"47vh"}
+            >
                 {attendanceData.map((attended, i) => (
-                    <div key={i} className={`w-3 h-3 rounded ${attended ? "bg-damyellow" : "bg-damlightgray"}`}></div>
+                    <div
+                        key={i}
+                        className={`w-3 h-3 rounded ${
+                            attended ? "bg-damyellow" : "bg-damlightgray"
+                        }`}
+                    ></div>
                 ))}
             </Box>
             <Text className="text-xs text-right" color={"dam.yellow"} p={1}>

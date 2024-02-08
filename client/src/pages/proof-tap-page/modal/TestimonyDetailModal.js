@@ -11,7 +11,7 @@ import {
     Box,
     Text,
 } from "@chakra-ui/react";
-import { getTestimonyDetail } from "apis/api/Challenge";
+import { getTestimonyDetail } from "apis/api/Proof";
 
 const TestimonyDetailModal = ({ isOpen, onClose, testimonyId }) => {
     const [testimony, setTestimony] = useState({});

@@ -12,8 +12,8 @@ import EvidenceItems from "./EvidenceItems";
 import EvidenceCreateModal from "../modal/EvidenceCreateModal";
 import { ViewIcon } from "@chakra-ui/icons";
 import { useParams } from "react-router-dom";
-import { getEvidences, postEvidence } from "apis/api/Challenge";
 import { useEffect, useState } from "react";
+import { getEvidences, postEvidence } from "apis/api/Proof";
 
 const Evidence = () => {
     const [evidences, setEvidences] = useState([]);
