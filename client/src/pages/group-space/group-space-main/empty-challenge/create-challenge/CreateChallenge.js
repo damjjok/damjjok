@@ -1,5 +1,12 @@
 // import NormalButton from "../../../components/button/normalbutton";
-import { Text, useDisclosure } from "@chakra-ui/react";
+import {
+    Flex,
+    Text,
+    VStack,
+    useBreakpointValue,
+    useDisclosure,
+} from "@chakra-ui/react";
+import bgCreateChallenge from "assets/images/bgCreateChallenge.jpg";
 
 // import { useRecoilState, useRecoilValue } from "recoil";
 // import { challengeState } from "../../../context/Challenge";
@@ -12,7 +19,7 @@ import TitleText from "components/TitleText";
 import { useParams } from "react-router-dom";
 
 function CreateChallenge() {
-    const { groupId } = useParams()
+    const { groupId } = useParams();
     const { isOpen, onClose } = useDisclosure();
     // const [challenge, setChallenge] = useRecoilState(challengeState);
 
@@ -20,14 +27,21 @@ function CreateChallenge() {
 
     return (
         <div>
-            <TitleText className="mt-4" fontSize="3rem">
+            <TitleText
+                className="mt-4"
+                fontSize="2rem"
+                img={bgCreateChallenge}
+                description="새로운 금연 챌린지를 생성해보세요!"
+            >
                 챌린지 생성하기
             </TitleText>
-            <div className="flex flex-col items-center">
-                <ChallengeDuration />
-                <ChallengeMoney />
+            <Flex flexFlow={"column"} alignItems={"center"}>
+                <VStack>
+                    <ChallengeDuration />
+                    <ChallengeMoney />
+                </VStack>
                 <ChallengeCreateAlert isOpen={isOpen} onClose={onClose} />
-            </div>
+            </Flex>
         </div>
     );
 }
