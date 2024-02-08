@@ -9,14 +9,8 @@ import com.ssafy.server.dto.request.notification.NotificationListRequestDto;
 import com.ssafy.server.dto.response.notification.NotificationCheckReadResponseDto;
 import com.ssafy.server.dto.response.notification.NotificationCreateResponseDto;
 import com.ssafy.server.dto.response.notification.NotificationListResponseDto;
-import com.ssafy.server.entity.CommonCodeEntity;
-import com.ssafy.server.entity.GroupEntity;
-import com.ssafy.server.entity.NotificationEntity;
-import com.ssafy.server.entity.UserEntity;
-import com.ssafy.server.repository.CommonCodeRepository;
-import com.ssafy.server.repository.GroupRepository;
-import com.ssafy.server.repository.NotificationRepository;
-import com.ssafy.server.repository.UserRepository;
+import com.ssafy.server.entity.*;
+import com.ssafy.server.repository.*;
 import com.ssafy.server.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +29,7 @@ public class NotificationServiceImpl implements NotificationService {
     private final NotificationRepository notificationRepository;
     private final CommonCodeRepository commonCodeRepository;
     private final GroupRepository groupRepository;
+    private final NotificationMessageTemplateRepository notificationMessageTemplateRepository;
     @Override
     public ResponseEntity<? super NotificationListResponseDto> list(NotificationListRequestDto dto) {
         List<NotificationDto> list = new ArrayList<>();
@@ -57,10 +52,10 @@ public class NotificationServiceImpl implements NotificationService {
                 notificationDto.setSendDate(e.getSendDate());
                 notificationDto.setUserId(userEntity.getUserId());
 
+                Integer commonCodeId = e.getCommonCodeEntity().getCommonCodeId();
 
-                CommonCodeEntity commonCodeEntity = commonCodeRepository.findByCommonCodeId(e.getCommonCodeEntity().getCommonCodeId());
-                notificationDto.setCommonCodeId(commonCodeEntity.getCommonCodeId());
-
+                NotificationMessageTemplateEntity notificationMessageTemplateEntity = notificationMessageTemplateRepository.findByCommonCodeId(commonCodeId);
+                notificationDto.setNotification_message_title(notificationMessageTemplateEntity.getNotificationMessageTitle());
 
                 list.add(notificationDto);
             });
