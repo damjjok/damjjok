@@ -3,6 +3,8 @@ import { Button } from "@chakra-ui/react";
 import { WebSocketContext } from "contexts/WebSocketContext";
 import { useRecoilValue } from "recoil";
 import {
+    fineStepState,
+    fineVoteListState,
     joinMemberListState,
     readyMemberCountState,
     stepReadyCountState,
@@ -22,6 +24,8 @@ const ConnectionButton = () => {
         evidenceNextStage,
         passFailVote,
         finalArgumentReady,
+        finishFinalArgument,
+        submitFine,
     } = useContext(WebSocketContext);
     const step = useRecoilValue(stepState);
     const joinMemberList = useRecoilValue(joinMemberListState);
@@ -30,6 +34,8 @@ const ConnectionButton = () => {
     const stepReadyCount = useRecoilValue(stepReadyCountState);
     const isVoted = useRecoilValue(isVotedState);
     const voteResult = useRecoilValue(voteResultState);
+    const fineStep = useRecoilValue(fineStepState);
+    const fineVoteList = useRecoilValue(fineVoteListState); // 서버에서 받아온 벌금 목록
 
     const testRoomId = 1;
 
@@ -62,6 +68,23 @@ const ConnectionButton = () => {
                     {voteResult !== "" && <div>투표 결과: {voteResult}</div>}
                 </div>
             )}
+            {step === 3 && <div>최후 변론 단계</div>}
+            {step === 4 && (
+                <div>
+                    벌금 투표 단계
+                    {fineStep === 0 && (
+                        <div>벌금 입력한 사람 수 : {stepReadyCount}</div>
+                    )}
+                    {fineStep === 1 && (
+                        <div>
+                            벌금 목록:{" "}
+                            {fineVoteList.map((fine, index) => (
+                                <div key={index}>{fine}</div> // key를 추가해 각 항목의 고유성 보장
+                            ))}
+                        </div>
+                    )}
+                </div>
+            )}
             <div>
                 <Button onClick={isConnected ? disconnect : connect}>
                     {isConnected ? "Disconnect" : "Connect"}
@@ -85,6 +108,12 @@ const ConnectionButton = () => {
                 </div>
                 <Button onClick={() => finalArgumentReady(testRoomId)}>
                     최후 변론으로
+                </Button>
+                <Button onClick={() => finishFinalArgument(testRoomId)}>
+                    최후 변론 종료 임시 처리 버튼
+                </Button>
+                <Button onClick={() => submitFine(testRoomId, 10000)}>
+                    벌금 입력
                 </Button>
             </div>
         </div>

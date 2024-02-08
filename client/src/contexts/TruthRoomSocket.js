@@ -48,3 +48,9 @@ export const fineStepState = atom({
     key: "fineStep",
     default: 0,
 });
+
+export const fineVoteListState = atom({
+    // 멤버들이 입력한 벌금 리스트
+    key: "fineVoteList",
+    default: [],
+});

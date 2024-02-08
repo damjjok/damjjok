@@ -10,6 +10,7 @@ import {
     readyMemberCountState,
     stepReadyCountState,
     voteResultState,
+    fineVoteListState,
 } from "./TruthRoomSocket";
 import { closeOpenviduSession } from "apis/api/TruthRoom";
 
@@ -34,6 +35,7 @@ export const WebSocketProvider = ({ children }) => {
     // 4. 최후 변론 단계
     // 5. 벌금 결정 단계
     const [fineStep, setFineStep] = useRecoilState(fineStepState); // 벌금 결정 단계에서
+    const [fineVoteList, setFineVoteList] = useRecoilState(fineVoteListState); // 서버에서 받아온 벌금 리스트
 
     // 여기부터는 소켓 연결, 통신 관련 내용들
     const [isConnected, setIsConnected] = useState(false);
@@ -145,6 +147,14 @@ export const WebSocketProvider = ({ children }) => {
                     console.log("Start Final Argument: ", message.body);
                     setStepReadyCount(0); // 다음 단계로 넘어가므로 단계 별 준비 인원 0으로 초기화
                     setStep(3); // 4단계(최후 변론)으로 단계 변경
+                },
+            );
+            stompClient.current.subscribe(
+                // 벌금 결정 단계로 넘김
+                "/topic/startSubmit/" + roomId,
+                (message) => {
+                    console.log("Start 벌금 단계: ", message.body);
+                    setStep(4); // 4단계(최후 변론)으로 단계 변경
                 },
             );
             stompClient.current.subscribe(
@@ -271,7 +281,7 @@ export const WebSocketProvider = ({ children }) => {
             // 사용자가 입력한 벌금을 서버에 전달
             destination: "/app/submitFine/" + roomId,
             headers: {},
-            body: JSON.stringify({ message }),
+            body: JSON.stringify(message),
         });
     }, []);
 
@@ -285,7 +295,7 @@ export const WebSocketProvider = ({ children }) => {
             // 사용자가 투표한 벌금을 서버에 전달
             destination: "/app/voteFine/" + roomId,
             headers: {},
-            body: JSON.stringify({ message }),
+            body: JSON.stringify(message),
         });
     }, []);
 
