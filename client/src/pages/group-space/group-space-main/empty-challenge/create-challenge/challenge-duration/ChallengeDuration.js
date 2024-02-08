@@ -29,7 +29,7 @@ function ChallengeDuration() {
     };
 
     return (
-        <Box my={4} width={isMobile ? "80vw" : "60vw"}>
+        <Box my={4}>
             <Text fontSize={"x-large"} mb={8} fontWeight={700}>
                 챌린지 기한 설정
             </Text>
@@ -39,6 +39,7 @@ function ChallengeDuration() {
                 min={30}
                 max={180}
                 step={30}
+                width={isMobile ? "70vw" : "60vw"}
             >
                 <SliderMark value={30} {...labelStyles}>
                     30일

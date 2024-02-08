@@ -1,5 +1,6 @@
 // import NormalButton from "../../../components/button/normalbutton";
 import {
+    Box,
     Flex,
     Text,
     VStack,
@@ -18,13 +19,27 @@ import ChallengeCreateAlert from "./challenge-create-modal/ChallengeCreateAlert"
 import TitleText from "components/TitleText";
 import { useParams } from "react-router-dom";
 import { createChallengeState } from "contexts/Challenge";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { useEffect } from "react";
+import { currentUserState } from "contexts/User";
 
 function CreateChallenge() {
     const { groupId } = useParams();
     const { isOpen, onClose } = useDisclosure();
+    const currentUser = useRecoilValue(currentUserState);
     const [challenge, setChallenge] = useRecoilState(createChallengeState);
+    const isMobile = useBreakpointValue({ base: true, md: false });
+    const initialState = {
+        duration: 0,
+        initialMoney: 0,
+        savedPeriod: 0,
+        savedMoney: 0,
+    };
+
+    useEffect(() => {
+        // 상태 초기화
+        setChallenge(initialState);
+    }, []);
 
     useEffect(() => {
         console.log("createChallengeState has changed:", challenge);
@@ -32,7 +47,7 @@ function CreateChallenge() {
     // const endDate = useRecoilValue(challengeEndDate);
 
     return (
-        <div>
+        <Box>
             <TitleText
                 // className="mt-4"
                 fontSize="2rem"
@@ -41,14 +56,26 @@ function CreateChallenge() {
             >
                 챌린지 생성하기
             </TitleText>
-            <Flex flexFlow={"column"} alignItems={"center"} mt={6}>
+            <Flex
+                flexFlow={"column"}
+                alignItems={"center"}
+                my={6}
+                overflowY={"auto"}
+                height="60vh"
+                width={isMobile ? "90vw" : "50vw"}
+            >
                 <VStack>
                     <ChallengeDuration />
                     <ChallengeMoney />
+                    {/* <Text>
+                        {groupId},{currentUser.userId},{challenge.duration},
+                        {challenge.savedMoney},{challenge.initialMoney},
+                        {challenge.savedPeriod}
+                    </Text> */}
                 </VStack>
                 <ChallengeCreateAlert isOpen={isOpen} onClose={onClose} />
             </Flex>
-        </div>
+        </Box>
     );
 }
 
