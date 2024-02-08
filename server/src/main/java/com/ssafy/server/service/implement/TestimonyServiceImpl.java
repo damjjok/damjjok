@@ -54,8 +54,6 @@ public class TestimonyServiceImpl implements TestimonyService {
             testimonyEntity.setChallengeEntity(challengeEntity);
             testimonyEntity.setTestimonyTitle(title);
             testimonyEntity.setTestimonyContent(content);
-            testimonyEntity.setCreatedBy(0);
-            testimonyEntity.setUpdatedBy(0);
 
             // TODO : 여기 나중에 유저정보 받아와서 넣어줘야함
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
