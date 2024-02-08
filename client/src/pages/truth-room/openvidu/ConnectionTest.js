@@ -5,9 +5,11 @@ import { useRecoilValue } from "recoil";
 import {
     joinMemberListState,
     readyMemberCountState,
+    stepReadyCountState,
 } from "contexts/TruthRoomSocket";
 import { allUserReadyState } from "./../../../contexts/TruthRoomSocket";
 import { stepState } from "contexts/TruthRoomSocket";
+import { isVotedState } from "contexts/TruthRoomSocket";
 
 const ConnectionButton = () => {
     const {
@@ -17,11 +19,14 @@ const ConnectionButton = () => {
         enterRoom,
         setReady,
         evidenceNextStage,
+        passFailVote,
     } = useContext(WebSocketContext);
     const step = useRecoilValue(stepState);
     const joinMemberList = useRecoilValue(joinMemberListState);
     const readyMemberCount = useRecoilValue(readyMemberCountState);
     const allUserReady = useRecoilValue(allUserReadyState);
+    const stepReadyCount = useRecoilValue(stepReadyCountState);
+    const isVoted = useRecoilValue(isVotedState);
 
     const testRoomId = 1;
 
@@ -37,8 +42,22 @@ const ConnectionButton = () => {
                 준비 완료 유저 수: {readyMemberCount} / {joinMemberList.length}
             </div>
             {allUserReady && <div>모든 유저 준비 완료!</div>}
-            {step === 1 && <div>증거 판별 단계</div>}
-            {step === 2 && <div>투표 단계</div>}
+            <div>현재 단계 : {step}</div>
+            {step === 1 && (
+                <div>
+                    증거 판별 단계
+                    <div>
+                        다음 단계로 넘어갈 준비가 된 인원 수: {stepReadyCount}
+                    </div>
+                </div>
+            )}
+            {step === 2 && (
+                <div>
+                    투표 단계
+                    {!isVoted && <div>투표 한 인원 수: {stepReadyCount}</div>}
+                    {isVoted && <div>기다려 주십쇼</div>}
+                </div>
+            )}
             <div>
                 <Button onClick={isConnected ? disconnect : connect}>
                     {isConnected ? "Disconnect" : "Connect"}
@@ -52,6 +71,14 @@ const ConnectionButton = () => {
                 <Button onClick={() => evidenceNextStage(testRoomId)}>
                     증거 다음 단계로
                 </Button>
+                <div>
+                    <Button onClick={() => passFailVote(testRoomId, true)}>
+                        PASS
+                    </Button>
+                    <Button onClick={() => passFailVote(testRoomId, false)}>
+                        FAIL
+                    </Button>
+                </div>
             </div>
         </div>
     );

@@ -31,6 +31,18 @@ export const stepReadyCountState = atom({
     default: 0,
 });
 
+export const isVotedState = atom({
+    // 투표 단계에서 투표했는지 여부
+    key: "isVoted",
+    default: false,
+});
+
+export const voteResultState = atom({
+    // 투표 결과
+    key: "voteResult",
+    default: "",
+});
+
 export const fineStepState = atom({
     // 투표 단계는 입력, 벌금 투표, 벌금 결정의 3단계로 나뉘므로 따로 저장
     key: "fineStep",

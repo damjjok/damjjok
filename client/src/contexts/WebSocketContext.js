@@ -9,6 +9,7 @@ import {
     joinMemberListState,
     readyMemberCountState,
     stepReadyCountState,
+    voteResultState,
 } from "./TruthRoomSocket";
 import { closeOpenviduSession } from "apis/api/TruthRoom";
 
@@ -24,11 +25,12 @@ export const WebSocketProvider = ({ children }) => {
 
     // 1. 준비 단계
     const [readyMemberCount, setReadyMemberCount] = useRecoilState(
-        readyMemberCountState
+        readyMemberCountState,
     ); // 준비 단계에서 준비가 된 유저의 수
     const setAllUserReady = useSetRecoilState(allUserReadyState); // 모든 유저가 준비 완료인지 여부, 이건 false였다가 true가 되기만해도 끝이므로 setRecoilState로 호출
     // 2. 증거 판별 단계
-    // 3. PASS/FAIl 투표 단계
+    // 3. PASS/FAIL 투표 단계
+    const setVoteResultState = useSetRecoilState(voteResultState);
     // 4. 최후 변론 단계
     // 5. 벌금 결정 단계
     const [fineStep, setFineStep] = useRecoilState(fineStepState); // 벌금 결정 단계에서
@@ -41,7 +43,7 @@ export const WebSocketProvider = ({ children }) => {
         if (!stompClient.current) {
             // SockJS 인스턴스 생성(소켓 연결을 위함)
             const socket = new SockJS(
-                "https://i10e105.p.ssafy.io/truth-room-websocket"
+                "https://i10e105.p.ssafy.io/truth-room-websocket",
             );
 
             // Client 인스턴스 생성
@@ -78,7 +80,7 @@ export const WebSocketProvider = ({ children }) => {
                     console.log("hi");
                     console.log(JSON.parse(message.body));
                     setJoinMemberList(JSON.parse(message.body));
-                }
+                },
             );
             stompClient.current.subscribe(
                 "/topic/readyState/" + roomId,
@@ -87,24 +89,24 @@ export const WebSocketProvider = ({ children }) => {
                     console.log("raw message body: " + message.body);
                     console.log("준비한 유저 수: ", JSON.parse(message.body));
                     setReadyMemberCount(JSON.parse(message.body));
-                }
+                },
             );
             stompClient.current.subscribe(
                 "/topic/readyResult/" + roomId,
                 (message) => {
                     console.log(
                         "모든 유저가 준비했나요?",
-                        JSON.parse(message.body)
+                        JSON.parse(message.body),
                     );
                     setAllUserReady(JSON.parse(message.body)); // 반환값이 false이든 true이든 효과는 똑같아서 그냥 set => 이 부분 내쪽에서 저장 처리가 굳이 필요하지 않을 듯?
                     setStep(1); // 모든 유저 준비되면 다음 단계(증거 판별)로 전환
-                }
+                },
             );
             stompClient.current.subscribe(
                 "/topic/evidenceNextStageState/" + roomId,
                 (message) => {
                     setStepReadyCount(stepReadyCount + 1); // 여기서는 다음 단계를 클릭한 사람 카운트로 사용
-                }
+                },
             );
             stompClient.current.subscribe(
                 // 증거 판별 단계에서 모든 유저가 준비됐을 때 받는 알림
@@ -113,28 +115,29 @@ export const WebSocketProvider = ({ children }) => {
                     console.log("Vote Start Notification: ", message.body);
                     setStepReadyCount(0); // 다음 단계로 넘어가므로 단계 별 준비된 유저 수 0으로 초기화
                     setStep(2); // 증거 판별 단계에서 투표(PASS/FAIL) 단계로
-                }
+                },
             );
             stompClient.current.subscribe(
                 "/topic/passFailVoteState/" + roomId,
                 (message) => {
                     console.log("Current Vote Count: ", message.body);
                     setStepReadyCount(stepReadyCount + 1); // 현재 단계에서 투표 완료한 사람 카운트 용으로 사용
-                }
+                },
             );
             stompClient.current.subscribe(
                 "/topic/voteResult/" + roomId,
                 (message) => {
                     console.log("Vote Result: ", message.body);
                     setStepReadyCount(0); // 투표 결과 나왔으므로 준비된 유저 수 0으로 초기화
-                }
+                    setVoteResultState(message.body);
+                },
             );
             stompClient.current.subscribe(
                 "/topic/finalArgumentReadyState/" + roomId,
                 (message) => {
                     console.log("Final Argument Ready State: ", message.body);
                     setStepReadyCount(stepReadyCount + 1); // 투표 단계에서 최후 변론으로 갈 준비 완료한 사람 카운트용으로 사용
-                }
+                },
             );
             stompClient.current.subscribe(
                 "/topic/startFinalArgument/" + roomId,
@@ -142,14 +145,14 @@ export const WebSocketProvider = ({ children }) => {
                     console.log("Start Final Argument: ", message.body);
                     setStepReadyCount(0); // 다음 단계로 넘어가므로 단계 별 준비 인원 0으로 초기화
                     setStep(3); // 4단계(최후 변론)으로 단계 변경
-                }
+                },
             );
             stompClient.current.subscribe(
                 "/topic/fineSubmittedCount/" + roomId,
                 (message) => {
                     console.log("Fine Submitted Count: ", message.body);
                     setStepReadyCount(stepReadyCount + 1); // 여기서는 벌금 입력한 멤버 수 카운트로 사용
-                }
+                },
             );
             stompClient.current.subscribe(
                 "/topic/startMoenyVote/" + roomId,
@@ -157,14 +160,14 @@ export const WebSocketProvider = ({ children }) => {
                     console.log("Start Money Vote: ", message.body);
                     setStepReadyCount(0); // 모든 멤버가 벌금을 입력 완료, 단계 별 준비 상황 0으로 초기화
                     setFineStep(1); // 벌금 입력(0) -> 벌금 투표(1) 단계로
-                }
+                },
             );
             stompClient.current.subscribe(
                 "/topic/fineVoteCount/" + roomId,
                 (message) => {
                     console.log("Fine Vote Count: ", message.body);
                     setStepReadyCount(stepReadyCount + 1); // 벌금 투표한 멤버 수 카운트 용으로 사용
-                }
+                },
             );
             stompClient.current.subscribe(
                 "/topic/fineVoteResulte/" + roomId,
@@ -172,14 +175,14 @@ export const WebSocketProvider = ({ children }) => {
                     console.log("Fine Vote Result: ", message.body);
                     stepReadyCount(0); // 단계 별 준비 멤버 수 0으로 초기화
                     setFineStep(2); // 벌금 투표(1) -> 벌금 발표(2) 단계로
-                }
+                },
             );
             stompClient.current.subscribe(
                 "/topic/remainingMembers/" + roomId,
                 (message) => {
                     console.log("Remaining Members: ", message.body);
                     setJoinMemberList(JSON.stringify(message.body));
-                }
+                },
             );
         }
     }
@@ -300,7 +303,7 @@ export const WebSocketProvider = ({ children }) => {
                 body: {},
             });
         },
-        [disconnect]
+        [disconnect],
     );
 
     // 연결 상태, 연결 및 연결 해제 함수를 컨텍스트 값으로 제공

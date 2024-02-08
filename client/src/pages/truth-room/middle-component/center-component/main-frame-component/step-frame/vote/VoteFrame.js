@@ -1,11 +1,11 @@
-import { voteState } from "contexts/TruthRoom";
+import { isVotedState } from "contexts/TruthRoomSocket";
 import { useRecoilValue } from "recoil";
 import SmallFrameComponent from "../../small-frame/SmallFrameComponent";
 import VoteWaitComponent from "./VoteWaitComponent";
 import DoVoteComponent from "./DoVoteComponent";
 
 function VoteFrame(props) {
-    const isVoted = useRecoilValue(voteState);
+    const isVoted = useRecoilValue(isVotedState);
     console.log("isVoted 상태: " + isVoted);
     const testUser = {
         name: "김영후",
