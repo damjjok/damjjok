@@ -46,6 +46,8 @@ public class NotificationServiceImpl implements NotificationService {
             UserEntity userEntity = userRepository.findByUserId(userId);
             List<NotificationEntity> entityList = notificationRepository.findByUserEntity(userEntity);
 
+
+
             entityList.stream().forEach((e) -> {
                 NotificationDto notificationDto = new NotificationDto();
                 notificationDto.setNotificationId(e.getNotificationId());
@@ -54,6 +56,7 @@ public class NotificationServiceImpl implements NotificationService {
                 notificationDto.setReadOrNot(e.getReadOrNot());
                 notificationDto.setSendDate(e.getSendDate());
                 notificationDto.setUserId(userEntity.getUserId());
+
 
                 CommonCodeEntity commonCodeEntity = commonCodeRepository.findByCommonCodeId(e.getCommonCodeEntity().getCommonCodeId());
                 notificationDto.setCommonCodeId(commonCodeEntity.getCommonCodeId());
