@@ -21,10 +21,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ResourceBundle;
 
+@Tag(name = "알림", description = "알림함에 알림 보내기")
 @RestController
 @RequestMapping("/api/v1/notification")
 @RequiredArgsConstructor
-@Tag(name = "알림", description = "알림함에 알림 보내기")
 public class NotificationController {
 
     private final NotificationService notificationService;
@@ -44,7 +44,6 @@ public class NotificationController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "SU", description = "성공", content = @Content(schema = @Schema(implementation = NotificationCreateResponseDto.class)))
     })
-    @GetMapping("/{userId}")
     @PostMapping("/")
     public ResponseEntity<? super NotificationCreateResponseDto> create (@RequestBody NotificationCreateRequestDto dto) {
         ResponseEntity<? super NotificationCreateResponseDto> response = notificationService.create(dto);
