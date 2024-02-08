@@ -9,6 +9,7 @@ import {
     Flex,
     Image,
     Text,
+    VStack,
     Wrap,
     useBreakpointValue,
 } from "@chakra-ui/react";
@@ -82,13 +83,22 @@ function StatusBar() {
                             size="sm"
                             bg="dam.white"
                         />
-                        <Text
-                            fontSize={isMobile ? "md" : "lg"}
-                            className="px-3 font-bold"
-                        >
-                            {challenge.userName} 챌린지 -{" "}
-                            {startedDate.toLocaleDateString()}
-                        </Text>
+                        {isMobile ? (
+                            <Flex flexFlow={"column"} px={3}>
+                                <Text fontSize={"sm"} fontWeight={"bold"}>
+                                    {challenge.userName} 챌린지
+                                </Text>
+                                <Text fontSize={"xx-small"}>
+                                    {startedDate.toLocaleDateString()}
+                                </Text>
+                            </Flex>
+                        ) : (
+                            <Text fontSize={"lg"} className="px-3 font-bold">
+                                {challenge.userName} 챌린지 -{" "}
+                                {startedDate.toLocaleDateString()}
+                            </Text>
+                        )}
+
                         <div className="bg-damblack rounded-xl max-h-8 px-2 text-damyellow">
                             D+{diffDays}
                         </div>
