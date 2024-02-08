@@ -47,7 +47,7 @@ const OauthPage = () => {
     }, [navigate, setUser, setCurrentUserInfo]); //
 
     useEffect(() => {
-        if (user.accessToken) navigate("/create-group");
+        if (user.accessToken) navigate("/group-list");
         else if (user.email != "") navigate("/");
     }, [user, navigate]);
     // currentUserInfo 상태의 변화를 감지하고 콘솔에 로그 출력

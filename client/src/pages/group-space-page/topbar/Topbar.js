@@ -32,7 +32,7 @@ function Topbar() {
                 justifyContent={"center"}
                 alignItems={"center"}
             >
-                <Link to={`/create-group`}>
+                <Link to={`/group-list`}>
                     <img src={logo} className="max-h-12 px-4" alt="logo" />
                 </Link>
             </Flex>
