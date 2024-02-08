@@ -22,4 +22,6 @@ public interface EnterRoomService {
     Integer getRoomIdFromSession(String sessionId);
     // 세션 ID에 해당하는 매핑을 제거하는 메소드
     void removeSessionFromRoomMap(String sessionId);
+    //투표 결과 챌린지 반영
+    void setChallengeState(Integer challengeId, String status);
 }

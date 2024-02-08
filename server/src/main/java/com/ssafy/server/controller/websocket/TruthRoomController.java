@@ -77,6 +77,8 @@ public class TruthRoomController {
         //투표 수가 담쪽이를 제외한 접속자 수가 되면 결과 보내주기
         if(voteService.checkVotingComplete(roomId)) {
             boolean result = voteService.calculateResult(roomId);
+            if (result) enterRoomService.setChallengeState(roomId,"SUCCESS");
+            else enterRoomService.setChallengeState(roomId, "FAIL");
             messagingTemplate.convertAndSend("/topic/voteResult/" + roomId, result ? "PASS" : "FAIL");
         }
     }
