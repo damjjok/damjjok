@@ -242,4 +242,26 @@ public class ChallengeServiceImpl implements ChallengeService {
         }
         return ChallengeRankResponseDto.success(ranking);
     }
+
+    @Override
+    public ResponseEntity<? super ChallengeSavedMoneyResponseDto> challengeSavedMoney(int challengeId) {
+
+        int returnMoney = 0;
+
+        try{
+
+            ChallengeEntity challengeEntity = challengeRepository.findByChallengeId(challengeId);
+            // 계산
+            int initialMoney = challengeEntity.getInitialMoney();
+            int savedMoney = challengeEntity.getSavedMoney();
+            int period = (int) ChronoUnit.DAYS.between(challengeEntity.getCreatedAt().toLocalDate() , LocalDateTime.now());
+            int sp = challengeEntity.getSavedPeriod();
+
+            returnMoney = initialMoney + savedMoney * (period/sp);
+
+        }catch (Exception e){
+            return ResponseDto.databaseError();
+        }
+        return ChallengeSavedMoneyResponseDto.success(returnMoney);
+    }
 }
