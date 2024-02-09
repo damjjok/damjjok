@@ -33,7 +33,7 @@ public class NotificationServiceImpl implements NotificationService {
     private final GroupRepository groupRepository;
     private final NotificationMessageTemplateRepository notificationMessageTemplateRepository;
 
-    private FCMAlarmService fcmAlarmService;
+    private final FCMAlarmService fcmAlarmService;
 
     @Override
     public ResponseEntity<? super NotificationListResponseDto> list() {
