@@ -54,7 +54,6 @@ function ChallengeMoney() {
                             onChange={handleInputChange("initialMoney")}
                             focusBorderColor="dam.yellow"
                             placeholder="단위(원)"
-                            htmlSize={16}
                             width="auto"
                         >
                             <NumberInputField
@@ -77,12 +76,12 @@ function ChallengeMoney() {
                                 적립주기
                             </FormLabel>
                             <NumberInput
-                                min={0}
+                                min={1}
+                                max={180}
                                 name="savedPeriod"
                                 type="number"
                                 onChange={handleInputChange("savedPeriod")}
                                 placeholder="단위(일)"
-                                htmlSize={16}
                                 width="auto"
                             >
                                 <NumberInputField
@@ -114,7 +113,6 @@ function ChallengeMoney() {
                             type="number"
                             onChange={handleInputChange("savedMoney")}
                             placeholder="단위(원)"
-                            htmlSize={16}
                         >
                             <NumberInputField
                                 width={isMobile ? "30vw" : "none"}
