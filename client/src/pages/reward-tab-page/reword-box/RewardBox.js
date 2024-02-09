@@ -1,18 +1,20 @@
 import React, { useState } from "react";
 import postboxMain from "assets/images/postboxMain.png";
-import { currentUserState } from "contexts/User";
+import { currentUser, currentUserState } from "contexts/User";
 import { useRecoilValue } from "recoil";
 import { useDisclosure } from "@chakra-ui/react";
 import RewardBoxModal from "../modal/RewardBoxModal";
+import { challengeState } from "contexts/Challenge";
 
 function RewardBox() {
-    const currentUser = useRecoilValue(currentUserState);
+    const loginedUser = useRecoilValue(currentUser);
+    const challenge = useRecoilValue(challengeState);
     const [isHovered, setIsHovered] = useState(false);
     const { isOpen, onClose } = useDisclosure();
 
     return (
         <div>
-            {currentUser.role === "damJJok" ? (
+            {loginedUser.userId === challenge.userId ? (
                 <div
                     className="relative flex justify-center my-8"
                     onMouseEnter={() => setIsHovered(true)}
