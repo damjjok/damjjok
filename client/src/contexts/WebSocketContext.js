@@ -10,6 +10,7 @@ import {
     stepReadyCountState,
     voteResultState,
     fineVoteListState,
+    fineDeterminedState,
 } from "./TruthRoomSocket";
 import { closeOpenviduSession } from "apis/api/TruthRoom";
 
@@ -32,6 +33,8 @@ export const WebSocketProvider = ({ children }) => {
     // 5. 벌금 결정 단계
     const [fineStep, setFineStep] = useRecoilState(fineStepState); // 벌금 결정 단계에서
     const [fineVoteList, setFineVoteList] = useRecoilState(fineVoteListState); // 서버에서 받아온 벌금 리스트
+    const [fineDetermined, setFineDetermined] =
+        useRecoilState(fineDeterminedState);
 
     // 여기부터는 소켓 연결, 통신 관련 내용들
     const [isConnected, setIsConnected] = useState(false);
@@ -180,10 +183,11 @@ export const WebSocketProvider = ({ children }) => {
                 }
             );
             stompClient.current.subscribe(
-                "/topic/fineVoteResulte/" + roomId,
+                "/topic/fineVoteResulte/" + roomId, // 김다희가 오타내놨음. 서버도 resulte라서 일단 이렇게 둠.
                 (message) => {
                     console.log("Fine Vote Result: ", message.body);
-                    stepReadyCount(0); // 단계 별 준비 멤버 수 0으로 초기화
+                    setFineDetermined(message.body);
+                    setStepReadyCount(0); // 단계 별 준비 멤버 수 0으로 초기화
                     setFineStep(2); // 벌금 투표(1) -> 벌금 발표(2) 단계로
                 }
             );
@@ -290,7 +294,8 @@ export const WebSocketProvider = ({ children }) => {
         var message = {
             fineAmount: votedFine, // voteFine: 투표한 벌금
         };
-
+        console.log(votedFine);
+        console.log("투표 완, 금액: " + votedFine);
         stompClient.current.publish({
             // 사용자가 투표한 벌금을 서버에 전달
             destination: "/app/voteFine/" + roomId,

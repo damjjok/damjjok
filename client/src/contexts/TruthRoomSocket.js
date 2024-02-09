@@ -54,3 +54,9 @@ export const fineVoteListState = atom({
     key: "fineVoteList",
     default: [],
 });
+
+export const fineDeterminedState = atom({
+    // 투표로 결정된 벌금
+    key: "fineDetermined",
+    default: 0,
+});

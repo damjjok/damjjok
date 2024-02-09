@@ -3,6 +3,7 @@ import { Button } from "@chakra-ui/react";
 import { WebSocketContext } from "contexts/WebSocketContext";
 import { useRecoilValue } from "recoil";
 import {
+    fineDeterminedState,
     fineStepState,
     fineVoteListState,
     joinMemberListState,
@@ -25,6 +26,7 @@ const ConnectionButton = () => {
         finalArgumentReady,
         finishFinalArgument,
         submitFine,
+        voteFine,
     } = useContext(WebSocketContext);
     const step = useRecoilValue(stepState);
     const joinMemberList = useRecoilValue(joinMemberListState);
@@ -34,6 +36,7 @@ const ConnectionButton = () => {
     const voteResult = useRecoilValue(voteResultState);
     const fineStep = useRecoilValue(fineStepState);
     const fineVoteList = useRecoilValue(fineVoteListState); // 서버에서 받아온 벌금 목록
+    const fineDetermined = useRecoilValue(fineDeterminedState);
 
     const testRoomId = 1;
 
@@ -78,10 +81,19 @@ const ConnectionButton = () => {
                         <div>
                             벌금 목록:{" "}
                             {fineVoteList.map((fine, index) => (
-                                <div key={index}>{fine}</div> // key를 추가해 각 항목의 고유성 보장
+                                <div key={index}>
+                                    <Button
+                                        onClick={() =>
+                                            voteFine(testRoomId, fine)
+                                        }
+                                    >
+                                        {fine}
+                                    </Button>
+                                </div> // key를 추가해 각 항목의 고유성 보장
                             ))}
                         </div>
                     )}
+                    {fineStep === 2 && <div>결정된 벌금: {fineDetermined}</div>}
                 </div>
             )}
             <div>
@@ -111,7 +123,11 @@ const ConnectionButton = () => {
                 <Button onClick={() => finishFinalArgument(testRoomId)}>
                     최후 변론 종료 임시 처리 버튼
                 </Button>
-                <Button onClick={() => submitFine(testRoomId, 10000)}>
+                <Button
+                    onClick={() =>
+                        submitFine(testRoomId, 10000 * Math.random(1, 10))
+                    }
+                >
                     벌금 입력
                 </Button>
             </div>
