@@ -14,16 +14,16 @@ function LastChallengePage() {
     const location = useLocation();
     const challenge = location.state.challenge;
     const tabName =
-        challenge.status === "success" ? "성공한 챌린지" : "실패한 챌린지";
+        challenge.status === "SUCCESS" ? "성공한 챌린지" : "실패한 챌린지";
     const description =
-        challenge.status === "success"
+        challenge.status === "SUCCESS"
             ? "이전에 성공한 챌린지 정보를 볼 수 있어요"
             : "이전에 실패한 챌린지 정보를 볼 수 있어요";
     const bgImage =
-        challenge.status === "success" ? bgSucceedChallenge : bgFailedChallenge;
+        challenge.status === "SUCCESS" ? bgSucceedChallenge : bgFailedChallenge;
     const isExpired = "True";
 
-    console.log(challenge);
+    // console.log(challenge);
 
     //더미
     const endDate = new Date(challenge.endDate);
@@ -54,7 +54,7 @@ function LastChallengePage() {
                     // height="120vh"
                 >
                     <VStack spacing={"30px"} mb={20}>
-                        {challenge.status === "success" ? (
+                        {challenge.status === "SUCCESS" ? (
                             <Heading>
                                 {challenge.userName}님이 성공했던 금연
                                 기록이에요!
@@ -72,7 +72,7 @@ function LastChallengePage() {
                             challengeId={challenge.challengeId}
                         />
                     </VStack>
-                    {challenge.status === "success" ? (
+                    {challenge.status === "SUCCESS" ? (
                         <VStack spacing={"30px"}>
                             <MessageCheckModal isExpired={isExpired} />
                             <PiggyBankFinished isExpired={isExpired} />
