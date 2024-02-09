@@ -19,6 +19,7 @@ import jakarta.persistence.PersistenceContext;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
@@ -117,6 +118,7 @@ public class SchedulerServiceImpl implements SchedulerService {
                         dto.setCommonCodeId(303);
                         UserEntity userEntity = userRepository.findByUserId(challenge.getUserId());
                         dto.setDamjjokName(userEntity.getUserName());
+                        notificationService.create(dto);
                     }
 
                 });
@@ -133,7 +135,20 @@ public class SchedulerServiceImpl implements SchedulerService {
 
                 Period period = Period.between(challenge.getCreatedAt().toLocalDate(), challenge.getEndDate().toLocalDate());
 
-                if(user.getFcmToken() != null) fcmAlarmService.sendNotification(user.getFcmToken(), "챌린지 지속일" ,period + "일 지속되고 있음");
+                if(user.getFcmToken() != null) {
+                    NotificationCreateRequestDto dto = new NotificationCreateRequestDto();
+                    GroupEntity groupEntity = groupRepository.findByGroupId(challenge.getGroupEntity().getGroupId());
+                    dto.setGroupName(groupEntity.getGroupName());
+                    dto.setReceivingMemberId(user.getUserId());
+                    dto.setCommonCodeId(303);
+                    UserEntity userEntity = userRepository.findByUserId(challenge.getUserId());
+                    dto.setDamjjokName(userEntity.getUserName());
+                    LocalDateTime challengeCreatedAt = challenge.getCreatedAt();
+                    LocalDateTime today = LocalDateTime.now();
+                    int daysBetween = (int) ChronoUnit.DAYS.between(challengeCreatedAt.toLocalDate(), today.toLocalDate());
+                    dto.setDay(Long.toString(daysBetween));
+                    notificationService.create(dto);
+                }
             }
         });
     }
