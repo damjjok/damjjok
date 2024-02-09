@@ -46,10 +46,11 @@ public class CandyController {
         return response;
     }
 
+
+    @GetMapping("/best-member/{challengeId}")
     @Operation(summary = "응원왕 조회", description = "응원왕 이름과 캔디수,메시지 수를 조회합니다.",
             responses = { @ApiResponse(responseCode = "200", description = "응원왕 조회 성공",
                     content = @Content(schema = @Schema(implementation = BestCheeringMemberResponseDto.class)))})
-    @GetMapping("/best-member/{challengeId}")
     public ResponseEntity<? super BestCheeringMemberResponseDto> bestCheeringMember(@PathVariable int challengeId) {
         BestCheeringMemberRequestDto requestBody = new BestCheeringMemberRequestDto() ;
         requestBody.setChallengeId(challengeId);
