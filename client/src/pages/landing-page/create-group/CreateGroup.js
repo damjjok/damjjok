@@ -14,20 +14,19 @@ const CreateGroup = () => {
     const groupList = useRecoilValue(myFriendState);
     // 그룹 데이터를 가져오는 함수
     useEffect(() => {
-        const fetchGroupData = async () => {
-            try {
-                // getGroupList 함수를 호출하여 데이터를 가져옵니다.
-                const response = await getGroupList();
-                // 가져온 데이터를 groupData 상태에 저장합니다.
-                setGroupData(response.list);
-            } catch (error) {
-                console.error("그룹 리스트를 불러오는 데 실패했습니다:", error);
-            }
-        };
-
         // 함수를 실행합니다.
         fetchGroupData();
     }, []); // 빈 배열을 넘겨주어 컴포넌트 마운트 시에만 실행되도록 합니다.
+    const fetchGroupData = async () => {
+        try {
+            // getGroupList 함수를 호출하여 데이터를 가져옵니다.
+            const response = await getGroupList();
+            // 가져온 데이터를 groupData 상태에 저장합니다.
+            setGroupData(response.list);
+        } catch (error) {
+            console.error("그룹 리스트를 불러오는 데 실패했습니다:", error);
+        }
+    };
 
     const handleCreateGroup = async () => {
         if (!groupName.trim()) {
@@ -40,7 +39,8 @@ const CreateGroup = () => {
         try {
             const newGroup = await postCreateGroup(groupName, userIds);
             if (newGroup) {
-                setGroupData((prevGroupData) => [...prevGroupData, newGroup]); // 서버로부터 받은 그룹 데이터를 상태에 추가
+                // setGroupData((prevGroupData) => [...prevGroupData, newGroup]);
+                fetchGroupData();
                 setGroupName(""); // 입력 필드 초기화
                 onClose(); // 모달 닫기
             }
