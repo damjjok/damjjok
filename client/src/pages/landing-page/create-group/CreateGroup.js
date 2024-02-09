@@ -4,12 +4,14 @@ import CreateGroupModal from "./create-group-modal/CreateGroupModal";
 import logo from "assets/images/logo.png";
 import landingBg from "assets/images/bgimg.png";
 import { getGroupList, postCreateGroup } from "apis/api/Landig";
+import { useRecoilValue } from "recoil";
+import { myFriendState } from "contexts/Search";
 
 const CreateGroup = () => {
     const [groupData, setGroupData] = useState([]);
     const [groupName, setGroupName] = useState(""); // 그룹 이름 상태 추가
     const { isOpen, onOpen, onClose } = useDisclosure();
-
+    const groupList = useRecoilValue(myFriendState);
     // 그룹 데이터를 가져오는 함수
     useEffect(() => {
         const fetchGroupData = async () => {
@@ -33,8 +35,10 @@ const CreateGroup = () => {
             return;
         }
 
+        const userIds = groupList.map((user) => ({ userId: user.userId }));
+
         try {
-            const newGroup = await postCreateGroup(groupName);
+            const newGroup = await postCreateGroup(groupName, userIds);
             if (newGroup) {
                 setGroupData((prevGroupData) => [...prevGroupData, newGroup]); // 서버로부터 받은 그룹 데이터를 상태에 추가
                 setGroupName(""); // 입력 필드 초기화
