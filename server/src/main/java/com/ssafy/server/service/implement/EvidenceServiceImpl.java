@@ -82,6 +82,7 @@ public class EvidenceServiceImpl implements EvidenceService {
                 NotificationCreateRequestDto ncrDto = new NotificationCreateRequestDto();
                 ncrDto.setCommonCodeId(501);
                 ncrDto.setReceivingMemberId(user.getUserId());
+                ncrDto.setSenderName(user.getUserName());
                 ncrDto.setLink("https://");
                 ncrDto.setGroupName(groupEntity.getGroupName());
 

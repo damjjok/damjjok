@@ -2,15 +2,21 @@ package com.ssafy.server.service.implement;
 
 import com.ssafy.server.dto.ResponseDto;
 import com.ssafy.server.dto.auth.CustomUserDetails;
+import com.ssafy.server.dto.request.notification.NotificationCreateRequestDto;
 import com.ssafy.server.dto.request.schedule.ScheduleCreateRequestDto;
 import com.ssafy.server.dto.request.schedule.ScheduleDetailRequestDto;
 import com.ssafy.server.dto.response.schedule.ScheduleCreateResponseDto;
 import com.ssafy.server.dto.response.schedule.ScheduleDetailResponseDto;
 import com.ssafy.server.dto.schedule.ScheduleDto;
 import com.ssafy.server.entity.ChallengeEntity;
+import com.ssafy.server.entity.GroupEntity;
 import com.ssafy.server.entity.ScheduleEntity;
+import com.ssafy.server.entity.UserEntity;
+import com.ssafy.server.repository.GroupMemberRepository;
+import com.ssafy.server.repository.GroupRepository;
 import com.ssafy.server.repository.ScheduleRepository;
 import com.ssafy.server.repository.ChallengeRepository;
+import com.ssafy.server.service.NotificationService;
 import com.ssafy.server.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,17 +27,21 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class ScheduleServiceImpl implements ScheduleService {
-    @Autowired
+
     private final ScheduleRepository scheduleRepository;
     private final ChallengeRepository challengeRepository;
 
-    @Override
+    private final GroupRepository groupRepository;
+    private final GroupMemberRepository groupMemberRepository;
+    private final NotificationService notificationService;
 
+    @Override
     public ResponseEntity<? super Optional<ScheduleDetailResponseDto>> getSchedule(ScheduleDetailRequestDto dto) {
         try {
             int challengeId = dto.getChallengeId();
@@ -82,7 +92,24 @@ public class ScheduleServiceImpl implements ScheduleService {
 
             scheduleRepository.save(newSchedule);
 
-            ScheduleCreateResponseDto responseBody = new ScheduleCreateResponseDto();
+            // 알림 보내기 - 일정을 잡았음
+            int groupId = challengeEntity.getGroupEntity().getGroupId();
+            GroupEntity groupEntity = groupRepository.findByGroupId(groupId);
+
+            List<UserEntity> userEntityList = groupMemberRepository.findUsersByGroupId(groupId);
+            userEntityList.stream()
+                    .filter(user -> user.getUserId() != damjjokId)
+                    .forEach(user -> {
+                        NotificationCreateRequestDto ncrDto = new NotificationCreateRequestDto();
+                        ncrDto.setCommonCodeId(602);
+                        ncrDto.setReceivingMemberId(user.getUserId());
+                        ncrDto.setLink("https://");
+                        ncrDto.setGroupName(groupEntity.getGroupName());
+
+                        notificationService.create(ncrDto);
+                    });
+
+            //ScheduleCreateResponseDto responseBody = new ScheduleCreateResponseDto();
             return ScheduleCreateResponseDto.success();
         }catch (Exception exception) {
             exception.printStackTrace();
