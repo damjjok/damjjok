@@ -49,6 +49,7 @@ public class ChallengeServiceImpl implements ChallengeService {
             ChallengeEntity challengeEntity = new ChallengeEntity();
             challengeEntity.setGroupEntity(groupEntity);
             challengeEntity.setUserId(userId);
+            challengeEntity.setDuration(dto.getDuration());
             challengeEntity.setInitialMoney(dto.getInitialMoney());
             challengeEntity.setSavedMoney(dto.getSavedMoney());
             challengeEntity.setSavedPeriod(dto.getSavedPeriod());
@@ -57,7 +58,7 @@ public class ChallengeServiceImpl implements ChallengeService {
             challengeEntity.setFinalTruthRoomDate(challenge_endDate);
             challengeEntity.setEndDate(challenge_endDate);
 
-            challengeEntity.setStatus("ON");
+            challengeEntity.setStatus("PROGRESS");
             challengeEntity.setDetermination("열심히 하겠습니다!");
             challengeEntity.setProfilePath("resources/profile/one.jpg");
 
@@ -127,6 +128,7 @@ public class ChallengeServiceImpl implements ChallengeService {
                 dto.setUserId(e.getUserId());
                 UserEntity userEntity = userRepository.findByUserId(e.getUserId());
                 dto.setUserName(userEntity.getUserName());
+                dto.setDuration(e.getDuration());
                 dto.setInitialMoney(e.getInitialMoney());
                 dto.setSavedMoney(e.getSavedMoney());
                 dto.setSavedPeriod(e.getSavedPeriod());
@@ -225,7 +227,7 @@ public class ChallengeServiceImpl implements ChallengeService {
             int cur_day = (int) ChronoUnit.DAYS.between(cur.getCreatedAt().toLocalDate() , LocalDateTime.now());
             System.out.println(cur_day);
             list.stream().forEach(challenge-> {
-                if(challenge.getStatus().equals("ON")){
+                if(challenge.getStatus().equals("PROGRESS")){
                     count.addAndGet(1);
                     int nxt_day = (int) ChronoUnit.DAYS.between(challenge.getCreatedAt().toLocalDate() , LocalDateTime.now());
                     if(cur_day < nxt_day) rank.getAndIncrement();
