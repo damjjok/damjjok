@@ -61,16 +61,22 @@ public class GroupServiceImpl implements GroupService {
 
             GroupEntity savedGroupEntity = groupRepository.save(groupEntity);
 
-            // 그룹 만든 사람 그룹 멤버 테이블에 추가
-            UserEntity userEntity = userRepository.findByUserId(userId);
-            GroupMemberId groupMemberId = new GroupMemberId(savedGroupEntity.getGroupId(),userId);
+            // 그룹 만든 사람 포함 + 초대받은 사람 한번에 그룹에 추가
+            List<UserInviteDto> usersList = dto.getList();
+            usersList.add(new UserInviteDto(userId)); // 담쪽이까지 추가
 
-            GroupMemberEntity groupMemberEntity = new GroupMemberEntity();
-            groupMemberEntity.setId(groupMemberId);
-            groupMemberEntity.setGroupEntity(savedGroupEntity);
-            groupMemberEntity.setUserEntity(userEntity);
+            usersList.stream().forEach(user -> {
+                UserEntity userEntity = userRepository.findByUserId(user.getUserId());
 
-            groupMemberRepository.save(groupMemberEntity);
+                GroupMemberId groupMemberId = new GroupMemberId(savedGroupEntity.getGroupId(), user.getUserId());
+
+                GroupMemberEntity entity = new GroupMemberEntity();
+                entity.setGroupEntity(savedGroupEntity);
+                entity.setUserEntity(userEntity);
+                entity.setId(groupMemberId);
+
+                groupMemberRepository.save(entity);
+            });
 
         }catch (Exception e){
             e.printStackTrace();
