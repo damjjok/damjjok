@@ -153,14 +153,14 @@ public class SchedulerServiceImpl implements SchedulerService {
         });
 
         // 챌린지가 3일 뒤에 종료되는 경우에 대한 알림
-        List<ChallengeEntity> upcomingChallengeEnds = entityManager.createQuery(
-                        "SELECT c FROM ChallengeEntity c WHERE c.endDate BETWEEN :now AND :inThreeDays",
+        List<ChallengeEntity> exactThreeDaysToEndChallenges = entityManager.createQuery(
+                        "SELECT c FROM ChallengeEntity c WHERE c.endDate = :inThreeDays",
                         ChallengeEntity.class)
-                .setParameter("now", now)
-                .setParameter("inThreeDays", now.plusDays(3))
+                .setParameter("inThreeDays", LocalDate.now().plusDays(3))
                 .getResultList();
 
-        upcomingChallengeEnds.forEach(challenge -> {
+
+        exactThreeDaysToEndChallenges.forEach(challenge -> {
             GroupEntity groupEntity = challenge.getGroupEntity();
             // 챌린지와 연관된 그룹의 모든 멤버에게 알림 전송
             List<UserEntity> userEntityList = groupMemberRepository.findUsersByGroupId(groupEntity.getGroupId());
@@ -177,20 +177,20 @@ public class SchedulerServiceImpl implements SchedulerService {
         });
 
         // 그룹이 7일 뒤에 종료되는 경우에 대한 알림
-        List<GroupEntity> upcomingGroupEnds = entityManager.createQuery(
-                        "SELECT g FROM GroupEntity g WHERE g.endDate BETWEEN :now AND :inSevenDays",
+        List<GroupEntity> exactSevenDaysToEndGroups = entityManager.createQuery(
+                        "SELECT g FROM GroupEntity g WHERE g.endDate = :inSevenDays",
                         GroupEntity.class)
-                .setParameter("now", now)
-                .setParameter("inSevenDays", now.plusDays(7))
+                .setParameter("inSevenDays", LocalDate.now().plusDays(7))
                 .getResultList();
 
-        upcomingGroupEnds.forEach(group -> {
+
+        exactSevenDaysToEndGroups.forEach(group -> {
             // 그룹의 모든 멤버에게 알림 전송
             List<UserEntity> userEntityList = groupMemberRepository.findUsersByGroupId(group.getGroupId());
             userEntityList.forEach(user -> {
                 if (user.getFcmToken() != null) {
                     NotificationCreateRequestDto dto = new NotificationCreateRequestDto();
-                    dto.setCommonCodeId(302); // 그룹 종료 알림에 해당하는 공통 코드
+                    dto.setCommonCodeId(302);
                     dto.setReceivingMemberId(user.getUserId());
                     dto.setGroupName(group.getGroupName());
                     notificationService.create(dto);
