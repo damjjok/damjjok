@@ -87,7 +87,6 @@ export const WebSocketProvider = ({ children }) => {
                     console.log("준비 버튼 클릭을 통해 갱신된 멤버 리스트");
                     console.log(JSON.parse(message.body));
                     setJoinMemberList(JSON.parse(message.body));
-                    console.log("유저 목록: " + joinMemberList);
                 }
             );
             stompClient.current.subscribe(

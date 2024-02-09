@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Button } from "@chakra-ui/react";
 import { WebSocketContext } from "contexts/WebSocketContext";
 import { useRecoilValue } from "recoil";
@@ -41,12 +41,13 @@ const ConnectionButton = () => {
         <div>
             <div>
                 참여 유저 목록:{" "}
-                {joinMemberList
-                    .map(
-                        (member) =>
-                            `${member.name} (${member.role}) (isReady: ${member.isReady})`
-                    )
-                    .join(", ")}
+                {joinMemberList.map((member, index) => (
+                    <div key={index}>
+                        {member.name}({member.role})(ready:{" "}
+                        {member.ready.toString()})
+                        {index < joinMemberList.length - 1 ? ", " : ""}
+                    </div>
+                ))}
             </div>
             {allUserReady && <div>모든 유저 준비 완료!</div>}
             <div>현재 단계 : {step}</div>
