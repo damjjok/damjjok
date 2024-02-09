@@ -9,10 +9,12 @@ import com.ssafy.server.dto.request.challenge.ChallengeChangeStatusRequestDto;
 import com.ssafy.server.dto.request.challenge.ChallengeCreateRequestDto;
 import com.ssafy.server.dto.request.challenge.ChallengeProfileModifyRequestDto;
 import com.ssafy.server.dto.request.challenge.ChallengeRankRequestDto;
+import com.ssafy.server.dto.request.notification.NotificationCreateRequestDto;
 import com.ssafy.server.dto.response.challenge.*;
 import com.ssafy.server.entity.*;
 import com.ssafy.server.repository.*;
 import com.ssafy.server.service.ChallengeService;
+import com.ssafy.server.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -36,6 +38,8 @@ public class ChallengeServiceImpl implements ChallengeService {
     private final GroupMemberRepository groupMemberRepository;
     private final ImageRespository imageRespository;
 
+    private final NotificationService notificationService;
+
     @Override
     public ResponseEntity<? super ChallengeCreateResponseDto> create(ChallengeCreateRequestDto dto) {
         try{
@@ -43,6 +47,7 @@ public class ChallengeServiceImpl implements ChallengeService {
             CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
 
             int userId = customUserDetails.getUserId();
+            String damjjokName = customUserDetails.getUserName();
 
             GroupEntity groupEntity = groupRepository.findByGroupId(dto.getGroupId());
 
@@ -82,7 +87,20 @@ public class ChallengeServiceImpl implements ChallengeService {
                 if(e.getUserId() == userId) entity.setRole("Damjjok");
                 else entity.setRole("Doctor");
 
+                // 챌린지 멤버 저장
                 challengeMemeberRepository.save(entity);
+
+                // 챌린지 멤버들에게 알림 보내기 ( 담쪽 제외 )
+                if(e.getUserId() != userId) {
+                    NotificationCreateRequestDto ncrDto = new NotificationCreateRequestDto();
+                    ncrDto.setCommonCodeId(201);
+                    ncrDto.setReceivingMemberId(e.getUserId());
+                    ncrDto.setLink("https://");
+                    ncrDto.setDamjjokName(damjjokName);
+                    ncrDto.setGroupName(groupEntity.getGroupName());
+
+                    notificationService.create(ncrDto);
+                }
 
             });
 

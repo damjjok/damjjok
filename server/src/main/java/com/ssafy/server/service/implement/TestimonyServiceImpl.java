@@ -3,17 +3,13 @@ package com.ssafy.server.service.implement;
 import com.ssafy.server.dto.ResponseDto;
 import com.ssafy.server.dto.auth.CustomUserDetails;
 import com.ssafy.server.dto.proof.TestimonyDto;
+import com.ssafy.server.dto.request.notification.NotificationCreateRequestDto;
 import com.ssafy.server.dto.request.proof.*;
 import com.ssafy.server.dto.response.proof.*;
-import com.ssafy.server.entity.ChallengeEntity;
-import com.ssafy.server.entity.EvidenceEntity;
-import com.ssafy.server.entity.TestimonyEntity;
-import com.ssafy.server.entity.UserEntity;
+import com.ssafy.server.entity.*;
 import com.ssafy.server.provider.JwtProvider;
-import com.ssafy.server.repository.ChallengeRepository;
-import com.ssafy.server.repository.EvidenceRepository;
-import com.ssafy.server.repository.TestimonyRepository;
-import com.ssafy.server.repository.UserRepository;
+import com.ssafy.server.repository.*;
+import com.ssafy.server.service.NotificationService;
 import com.ssafy.server.service.TestimonyService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -38,9 +34,11 @@ public class TestimonyServiceImpl implements TestimonyService {
 
     private final TestimonyRepository testimonyRepository;
     private final ChallengeRepository challengeRepository;
-    private final EvidenceRepository evidenceRepository;
+    private final GroupRepository groupRepository;
     private final UserRepository userRepository;
-    private final JwtProvider jwtProvider;
+    private final GroupMemberRepository groupMemberRepository;
+
+    private final NotificationService notificationService;
 
     public ResponseEntity<? super TestimonyCreateResponseDto> create(TestimonyCreateRequestDto dto){
         try {
@@ -66,6 +64,20 @@ public class TestimonyServiceImpl implements TestimonyService {
 
             testimonyRepository.save(testimonyEntity);
 
+            // 챌린지 멤버한테 모두 알림 쏘기
+            int groupId = challengeEntity.getGroupEntity().getGroupId();
+            GroupEntity groupEntity = groupRepository.findByGroupId(groupId);
+
+            List<UserEntity> userEntityList = groupMemberRepository.findUsersByGroupId(groupId);
+            userEntityList.stream().forEach(user -> {
+                NotificationCreateRequestDto ncrDto = new NotificationCreateRequestDto();
+                ncrDto.setCommonCodeId(501);
+                ncrDto.setReceivingMemberId(user.getUserId());
+                ncrDto.setLink("https://");
+                ncrDto.setGroupName(groupEntity.getGroupName());
+
+                notificationService.create(ncrDto);
+            });
 
         }catch (Exception exception){
             exception.printStackTrace();
