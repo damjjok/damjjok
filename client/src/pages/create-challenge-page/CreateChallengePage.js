@@ -61,7 +61,7 @@ function CreateChallengePage() {
                 flexFlow={"column"}
                 my={6}
                 overflowY={"auto"}
-                height="70vh"
+                height={isMobile ? "68vh" : "64vh"}
                 // width={isMobile ? "90vw" : "none"}
             >
                 <Text fontSize={"x-large"} fontWeight={700}>
@@ -93,7 +93,14 @@ function CreateChallengePage() {
                         {challenge.savedMoney},{challenge.initialMoney},
                         {challenge.savedPeriod}
                     </Text> */}
-                <ChallengeCreateAlert isOpen={isOpen} onClose={onClose} />
+                <Box
+                    display={"flex"}
+                    flexFlow={"column"}
+                    alignItems={"center"}
+                    mb={4}
+                >
+                    <ChallengeCreateAlert isOpen={isOpen} onClose={onClose} />
+                </Box>
             </Flex>
         </Box>
     );
