@@ -1,10 +1,29 @@
-import { Box, Text } from "@chakra-ui/react";
-import { getAttendanceList } from "apis/api/Attendance";
-import { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
+import { challengeState } from "../../../contexts/Challenge";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { Box } from "@chakra-ui/react";
+import { getAttendanceList } from "apis/api/Attendance";
 
-// TODO : Challenge 정보 받아와서 시작날, 기한 받아오기
-function AttendanceStrick({ startedDate }) {
+// 테스트용 챌린지 객체
+const currentChallenge = {
+    challengeId: 0,
+    createdAt: "2024-01-31T01:43:20.139Z",
+    determination: "오늘 하루도,,, 홧팅 ^^@@",
+    duration: 180,
+    groupId: 0,
+    initialMoney: 40000,
+    profilePath: "",
+    savedMoney: 3000,
+    savedPeriod: 15,
+    status: "",
+    attendance: [
+        { attendanceId: "0", attendanceDate: "2024-01-31T01:43:20.139Z" },
+        { attendanceId: "1", attendanceDate: "2024-02-01T01:43:20.139Z" },
+    ],
+};
+
+function Strick({ startedDate }) {
     const { challengeId } = useParams();
     const [attendanceList, setAttendanceList] = useState([]);
     const [attendanceData, setAttendanceData] = useState([]);
@@ -41,33 +60,25 @@ function AttendanceStrick({ startedDate }) {
         makeStrick();
     }, [attendanceList]);
 
-    // 일단 누적 출석 값으로 구현
-    // API 연결 후, 구체적으로 로직 수정 필요합니다.
-
     return (
         // css 150~80일인 경우 오른쪽으로 쏠림
-        <Box className="flex flex-col over">
-            <Box
-                className="mt-4 max-w-2xl grid grid-flow-row grid-rows-32 grid-cols-7 gap-1 place-items-center"
-                overflowY={"scroll"}
-                h={"47vh"}
-            >
+        <Box display={"flex"} flexFlow={"column"}>
+            <div className="mt-4 max-w-2xl grid grid-flow-col grid-rows-5 grid-cols-39 gap-1">
                 {attendanceData.map((attended, i) => (
                     <div
                         key={i}
                         className={`w-3 h-3 rounded ${
                             attended ? "bg-damyellow" : "bg-damlightgray"
                         }`}
-                    ></div>
+                    />
                 ))}
-            </Box>
-            <Text className="text-xs text-right" color={"dam.yellow"} p={1}>
-                금연 시작일 : {startedDate.toLocaleDateString()}
-                <br></br> 목표일 수 : {180}일<br></br>
-                출석일 수 : {attendanceList.length}일
-            </Text>
+            </div>
+            <p className="text-xs text-right">
+                금연 시작일 : {startedDate.toLocaleDateString()} | 목표일 수 :{" "}
+                {currentChallenge.duration}일
+            </p>
         </Box>
     );
 }
 
-export default AttendanceStrick;
+export default Strick;

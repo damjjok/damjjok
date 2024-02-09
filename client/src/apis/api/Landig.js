@@ -1,4 +1,4 @@
-import { axiosInstance } from "apis/instance/AxiosInstance";
+import { axiosInstance } from "util/axios/AxiosInstance";
 
 // const getChallengeList = async (groupId) => {
 //     try {
@@ -45,7 +45,7 @@ const postCreateGroup = async (groupName, userIds) => {
 const searchUserByEmail = async (email) => {
     try {
         const response = await axiosInstance.get(
-            `/v1/group/search-user/${email}`,
+            `/v1/group/search-user/${email}`
         );
         // 검색 결과를 반환합니다.
         if (response.status === 200) {

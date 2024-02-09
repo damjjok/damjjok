@@ -1,4 +1,4 @@
-import { axiosInstance } from "apis/instance/AxiosInstance";
+import { axiosInstance } from "util/axios/AxiosInstance";
 
 const postTest = async () => {
     try {
@@ -54,62 +54,4 @@ const closeOpenviduSession = async (propsSessionKey) => {
     }
 };
 
-const getEvidenceInTruthRoom = async (challengeId, setEvidences) => {
-    try {
-        const response = await axiosInstance.get(
-            `/v1/proof/evidence/truth-room/${challengeId}`
-        );
-        const data = await response.data;
-        if (response.status === 200) {
-            console.log(data.list);
-            setEvidences(data.list);
-        }
-    } catch (error) {
-        console.log(error);
-    }
-
-    return null;
-};
-
-const getTestimoniesInTruthRoom = async (challengeId, setTestimonies) => {
-    try {
-        const response = await axiosInstance.get(
-            `/v1/proof/testimony/truth-room/${challengeId}`
-        );
-        const data = await response.data;
-        if (response.status === 200) {
-            console.log(data.list);
-            setTestimonies(data.list);
-        }
-    } catch (error) {
-        console.log(error);
-    }
-
-    return null;
-};
-
-const getChallengeMembers = async (challengeId, setGroupMembers) => {
-    try {
-        const response = await axiosInstance.get(
-            `v1/challenge/${challengeId}/member-list`
-        );
-        const data = await response.data;
-        if (response.status === 200) {
-            console.log(data.list);
-            setGroupMembers(data.list);
-        }
-    } catch (error) {
-        console.log(error);
-    }
-
-    return null;
-};
-
-export {
-    getSessionId,
-    getOpenviduToken,
-    closeOpenviduSession,
-    getEvidenceInTruthRoom,
-    getTestimoniesInTruthRoom,
-    getChallengeMembers,
-};
+export { getSessionId, getOpenviduToken, closeOpenviduSession };

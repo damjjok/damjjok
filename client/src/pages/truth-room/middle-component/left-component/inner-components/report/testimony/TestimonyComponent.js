@@ -7,8 +7,8 @@ import {
 } from "contexts/TruthRoom";
 import TestimonyFrame from "./TestimonyFrame";
 import { Wrapper } from "../TabComponent.style";
-import { getTestimoniesInTruthRoom } from "apis/api/TruthRoom";
 import { useParams } from "react-router-dom";
+import { getTestimoniesInTruthRoom } from "apis/api/Proof";
 
 function TestimonyComponent(props) {
     // const testimonies = useRecoilValue(testimonyState);

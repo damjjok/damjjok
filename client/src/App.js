@@ -6,19 +6,19 @@ import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 // import GroupHome from "./pages/groupspace/group-home/GroupHome.js";
 import { useRecoilValue } from "recoil";
 import { Suspense, useEffect } from "react";
-import Landing from "./pages/landing-page/Landig.js";
-import CreateGroup from "./pages/landing-page/create-group/CreateGroup.js";
-import GroupSpaceHome from "./pages/group-space/GroupSpaceHome.js";
+import LandingPage from "./pages/landing-page/LandigPage.js";
+import GroupListPage from "./pages/group-list-page/GroupListPage.js";
+import GroupSpacePage from "./pages/group-space-page/GroupSpacePage.js";
 import TruthRoom from "pages/truth-room/TruthRoom";
-import HomeTab from "pages/group-space/group-space-main/group-tab/home-tab/HomeTab";
-import ArticleTab from "pages/group-space/group-space-main/group-tab/article-tab/ArticleTab";
-import GroupTab from "pages/group-space/group-space-main/group-tab/GroupTab";
-import CreateChallenge from "pages/group-space/group-space-main/empty-challenge/create-challenge/CreateChallenge";
-import EmptyChallenge from "pages/group-space/group-space-main/empty-challenge/EmptyChallenge";
-import LastChallenge from "pages/group-space/group-space-main/last-challenge/LastChallenge";
+import HomeTabPage from "pages/home-tab-page/HomeTabPage";
+import ProofTabPage from "pages/proof-tap-page/ProofTabPage";
+import ChallengePage from "pages/challenge-page/ChallengePage";
+import CreateChallengePage from "pages/create-challenge-page/CreateChallengePage";
+import EmptyChallengePage from "pages/empty-challenge-page/EmptyChallengePage";
+import LastChallengePage from "pages/last-challenge-page/LastChallengePage";
 import { createGlobalStyle } from "styled-components";
-import OauthPage from "pages/landing-page/oauth-page/OauthPage";
-import "./pages/firebase/firebaseConfig";
+import OauthPage from "pages/oauth-page/OauthPage";
+import "./util/firebase/firebaseConfig";
 
 import { getMessaging, onMessage } from "firebase/messaging";
 
@@ -102,27 +102,27 @@ function App() {
             <Suspense>
                 <ChakraProvider theme={theme}>
                     <Routes>
-                        <Route path="/" element={<Landing />} />
-                        <Route path="/create-group" element={<CreateGroup />} />
+                        <Route path="/" element={<LandingPage />} />
+                        <Route path="/group-list" element={<GroupListPage />} />
                         <Route
                             path={`/group/:groupId/*`}
-                            element={<GroupSpaceHome />}
+                            element={<GroupSpacePage />}
                         >
                             <Route
                                 path="create-challenge"
-                                element={<CreateChallenge />}
+                                element={<CreateChallengePage />}
                             />
                             <Route
                                 path="empty-challenge"
-                                element={<EmptyChallenge />}
+                                element={<EmptyChallengePage />}
                             />
                             <Route
                                 path="challenge/:challengeId"
-                                element={<GroupTab />}
+                                element={<ChallengePage />}
                             />
                             <Route
                                 path="last-challenge/:challengeId"
-                                element={<LastChallenge />}
+                                element={<LastChallengePage />}
                             />
                         </Route>
 
