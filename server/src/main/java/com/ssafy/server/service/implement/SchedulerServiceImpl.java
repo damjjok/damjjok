@@ -73,12 +73,14 @@ public class SchedulerServiceImpl implements SchedulerService {
         - 그룹 종료됬어요 ( 마지막 챌린지 종료된 지 + 1달 )이 지나면 바로 종료
          */
 
-
+        LocalDateTime todayStart = LocalDate.now().atStartOfDay();
+        LocalDateTime todayEnd = todayStart.plusDays(1).minusSeconds(1);
         // 1
         List<GroupEntity> groups = entityManager.createQuery(
-                        "SELECT g FROM GroupEntity g WHERE g.endDate < :now",
+                        "SELECT g FROM GroupEntity g WHERE g.endDate >= :todayStart AND g.endDate <= :todayEnd",
                         GroupEntity.class)
-                .setParameter("now", now)
+                .setParameter("todayStart", todayStart)
+                .setParameter("todayEnd", todayEnd)
                 .getResultList();
 
         groups.stream().forEach( group -> {
@@ -99,9 +101,10 @@ public class SchedulerServiceImpl implements SchedulerService {
 
         // 2 챌린지 종료
         List<ChallengeEntity> challengeEntityList = entityManager.createQuery(
-                        "SELECT g FROM ChallengeEntity g WHERE g.endDate < :now",
+                        "SELECT c FROM ChallengeEntity c WHERE c.endDate >= :todayStart AND c.endDate <= :todayEnd",
                         ChallengeEntity.class)
-                .setParameter("now", now)
+                .setParameter("todayStart", todayStart)
+                .setParameter("todayEnd", todayEnd)
                 .getResultList();
 
         challengeEntityList.stream()
@@ -206,8 +209,8 @@ public class SchedulerServiceImpl implements SchedulerService {
         });
 
         LocalDate today = now.toLocalDate();
-        LocalDateTime todayStart = LocalDateTime.of(today, LocalTime.MIN);
-        LocalDateTime todayEnd = LocalDateTime.of(today, LocalTime.MAX);
+        todayStart = LocalDateTime.of(today, LocalTime.MIN);
+        todayEnd = LocalDateTime.of(today, LocalTime.MAX);
 
         List<ScheduleEntity> todaysSchedules = entityManager.createQuery(
                         "SELECT s FROM ScheduleEntity s WHERE s.date >= :todayStart AND s.date <= :todayEnd",
