@@ -1,13 +1,31 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button, useDisclosure, HStack } from "@chakra-ui/react";
 import CreateGroupModal from "./create-group-modal/CreateGroupModal";
 import logo from "assets/images/logo.png";
 import landingBg from "assets/images/bgimg.png";
+import { getGroupList } from "apis/api/Landig";
 
 const CreateGroup = () => {
     const [groupData, setGroupData] = useState([]);
     const [groupName, setGroupName] = useState(""); // 그룹 이름 상태 추가
     const { isOpen, onOpen, onClose } = useDisclosure();
+
+    // 그룹 데이터를 가져오는 함수
+    useEffect(() => {
+        const fetchGroupData = async () => {
+            try {
+                // getGroupList 함수를 호출하여 데이터를 가져옵니다.
+                const response = await getGroupList();
+                // 가져온 데이터를 groupData 상태에 저장합니다.
+                setGroupData(response);
+            } catch (error) {
+                console.error("그룹 리스트를 불러오는 데 실패했습니다:", error);
+            }
+        };
+
+        // 함수를 실행합니다.
+        fetchGroupData();
+    }, []); // 빈 배열을 넘겨주어 컴포넌트 마운트 시에만 실행되도록 합니다.
 
     const onGroupCreate = () => {
         const newGroupData = {
