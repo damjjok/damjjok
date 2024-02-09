@@ -60,7 +60,7 @@ function TruthRoomTabPage() {
                 >
                     <Flex
                         flexDirection={"column"}
-                        justifyContent={"space-around"}
+                        justifyContent={"center"}
                         alignItems={"center"}
                         height={"100%"}
                     >
@@ -74,29 +74,46 @@ function TruthRoomTabPage() {
                             </Text>
                         )}
 
-                        {schedule.date && (
-                            <Text
-                                fontWeight={"700"}
-                                fontSize={"1.5rem"}
-                                color={"white"}
-                            >
-                                진실의 방 오픈 :
-                                {new Date(
-                                    schedule ? schedule.date : ""
-                                ).toLocaleDateString()}
-                            </Text>
+                        {schedule && (
+                            <Box paddingBottom={"12%"} textAlign={"center"}>
+                                <Text
+                                    fontWeight={"700"}
+                                    fontSize={"1.5rem"}
+                                    color={"dam.white"}
+                                >
+                                    {new Date(
+                                        schedule ? schedule.date : ""
+                                    ).toLocaleDateString()}
+                                </Text>
+                                <Text
+                                    fontWeight={"700"}
+                                    fontSize={"1.5rem"}
+                                    color={"red"}
+                                >
+                                    {challenge.userName} 진실의 방으로.
+                                </Text>
+                            </Box>
                         )}
-
-                        <Text
-                            fontWeight={"700"}
-                            fontSize={"1.5rem"}
-                            color={"white"}
-                        >
-                            진실의 방 오픈일 설정
-                        </Text>
-                        <Button onClick={onOpenScheduleModal}>
-                            일정 등록하기
-                        </Button>
+                        {!schedule && user.userId == challenge.userId && (
+                            <>
+                                {" "}
+                                <Text
+                                    fontWeight={"700"}
+                                    fontSize={"1.5rem"}
+                                    color={"white"}
+                                >
+                                    진실의 방 오픈일 설정
+                                </Text>
+                                <Button
+                                    bg={"dam.yellow"}
+                                    size={"lg"}
+                                    borderRadius={"30px"}
+                                    onClick={onOpenScheduleModal}
+                                >
+                                    일정 등록하기
+                                </Button>
+                            </>
+                        )}
                     </Flex>
                 </Box>
                 <Wrap>
