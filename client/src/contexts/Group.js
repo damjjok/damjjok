@@ -2,7 +2,7 @@ import { atom } from "recoil";
 
 export const currentGroupState = atom({
     key: "currentGroupState",
-    deafult: {},
+    default: {},
 });
 
 export const currentGroupMemberState = atom({
