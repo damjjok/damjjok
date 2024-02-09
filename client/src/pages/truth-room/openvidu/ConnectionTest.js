@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Button } from "@chakra-ui/react";
 import { WebSocketContext } from "contexts/WebSocketContext";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import {
     fineDeterminedState,
     fineStepState,
@@ -27,8 +27,9 @@ const ConnectionButton = () => {
         finishFinalArgument,
         submitFine,
         voteFine,
+        leaveRoom,
     } = useContext(WebSocketContext);
-    const step = useRecoilValue(stepState);
+    const [step, setStep] = useRecoilState(stepState);
     const joinMemberList = useRecoilValue(joinMemberListState);
     const allUserReady = useRecoilValue(allUserReadyState);
     const stepReadyCount = useRecoilValue(stepReadyCountState);
@@ -39,6 +40,15 @@ const ConnectionButton = () => {
     const fineDetermined = useRecoilValue(fineDeterminedState);
 
     const testRoomId = 1;
+    const [isLastMember, setIsLastMember] = useState(false);
+
+    useEffect(() => {
+        if (joinMemberList.length === 1) setIsLastMember(true);
+    }, [joinMemberList]);
+
+    function handleClickToFinal() {
+        setStep(6);
+    }
 
     return (
         <div>
@@ -70,8 +80,8 @@ const ConnectionButton = () => {
                     {voteResult !== "" && <div>투표 결과: {voteResult}</div>}
                 </div>
             )}
-            {step === 3 && <div>최후 변론 단계</div>}
-            {step === 4 && (
+            {step === 4 && <div>최후 변론 단계</div>}
+            {step === 5 && (
                 <div>
                     벌금 투표 단계
                     {fineStep === 0 && (
@@ -96,6 +106,7 @@ const ConnectionButton = () => {
                     {fineStep === 2 && <div>결정된 벌금: {fineDetermined}</div>}
                 </div>
             )}
+            {step === 6 && <div>종료 단계</div>}
             <div>
                 <Button onClick={isConnected ? disconnect : connect}>
                     {isConnected ? "Disconnect" : "Connect"}
@@ -129,6 +140,12 @@ const ConnectionButton = () => {
                     }
                 >
                     벌금 입력
+                </Button>
+                <Button onClick={() => handleClickToFinal()}>
+                    종료 단계로
+                </Button>
+                <Button onClick={() => leaveRoom(testRoomId, isLastMember)}>
+                    나가기
                 </Button>
             </div>
         </div>

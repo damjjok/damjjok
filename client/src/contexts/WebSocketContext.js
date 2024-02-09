@@ -131,6 +131,7 @@ export const WebSocketProvider = ({ children }) => {
                     console.log("Vote Result: ", message.body);
                     setStepReadyCount(0); // 투표 결과 나왔으므로 준비된 유저 수 0으로 초기화
                     setVoteResultState(message.body); // 이 부분은 "PASS", "FAIL" 형태로 오므로 JSON.parse() 안해줬음
+                    setStep(3); // 4단계(PASS/FAIL 표출)로 단계 변경
                 }
             );
             stompClient.current.subscribe(
@@ -145,7 +146,7 @@ export const WebSocketProvider = ({ children }) => {
                 (message) => {
                     console.log("Start Final Argument: ", message.body);
                     setStepReadyCount(0); // 다음 단계로 넘어가므로 단계 별 준비 인원 0으로 초기화
-                    setStep(3); // 4단계(최후 변론)으로 단계 변경
+                    setStep(4); // 5단계(최후 변론)으로 단계 변경
                 }
             );
             stompClient.current.subscribe(
@@ -153,7 +154,7 @@ export const WebSocketProvider = ({ children }) => {
                 "/topic/startSubmit/" + roomId,
                 (message) => {
                     console.log("Start 벌금 단계: ", message.body);
-                    setStep(4); // 4단계(최후 변론)으로 단계 변경
+                    setStep(5); // 6단계(벌금 결정)으로 단계 변경
                 }
             );
             stompClient.current.subscribe(
@@ -194,8 +195,9 @@ export const WebSocketProvider = ({ children }) => {
             stompClient.current.subscribe(
                 "/topic/remainingMembers/" + roomId,
                 (message) => {
-                    console.log("Remaining Members: ", message.body);
-                    setJoinMemberList(JSON.stringify(message.body));
+                    console.log("Remaining Members: ");
+                    console.log(JSON.parse(message.body));
+                    setJoinMemberList(JSON.parse(message.body));
                 }
             );
         }
@@ -309,7 +311,6 @@ export const WebSocketProvider = ({ children }) => {
             // 진실의 방에서 나갈 때 동작하는 함수, 마지막 나가는 멤버일 경우 오픈비두와의 세션도 끊어 줌.
             if (isLastMember) closeOpenviduSession();
             // 서버에 나감을 알리고 소켓과 연결을 끊어 줌.
-            disconnect();
 
             stompClient.current.publish({
                 // 진실의 방에서 나감을 서버에 알림
@@ -317,6 +318,7 @@ export const WebSocketProvider = ({ children }) => {
                 headers: {},
                 body: {},
             });
+            disconnect();
         },
         [disconnect]
     );
