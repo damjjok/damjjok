@@ -1,15 +1,14 @@
 package com.ssafy.server.service.implement;
 
+import com.ssafy.server.dto.request.notification.NotificationCreateRequestDto;
 import com.ssafy.server.dto.response.schedule.ScheduleDetailResponseDto;
 import com.ssafy.server.entity.ChallengeEntity;
 import com.ssafy.server.entity.GroupEntity;
 import com.ssafy.server.entity.ScheduleEntity;
 import com.ssafy.server.entity.UserEntity;
-import com.ssafy.server.repository.ChallengeMemeberRepository;
-import com.ssafy.server.repository.ChallengeRepository;
-import com.ssafy.server.repository.GroupMemberRepository;
-import com.ssafy.server.repository.UserRepository;
+import com.ssafy.server.repository.*;
 import com.ssafy.server.service.FCMAlarmService;
+import com.ssafy.server.service.NotificationService;
 import com.ssafy.server.service.SchedulerService;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +32,8 @@ public class SchedulerServiceImpl implements SchedulerService {
     private final UserRepository userRepository;
     private final ChallengeRepository challengeRepository;
     private final GroupMemberRepository groupMemberRepository;
-    private final ChallengeMemeberRepository challengeMemeberRepository;
+    private final NotificationService notificationService;
+    private final GroupRepository groupRepository;
 
     // 매일 자정에 실행되는 스케줄러
     @Scheduled(cron = "59 59 23 * * ?")
@@ -72,6 +72,7 @@ public class SchedulerServiceImpl implements SchedulerService {
         - 그룹 종료됬어요 ( 마지막 챌린지 종료된 지 + 1달 )이 지나면 바로 종료
          */
 
+
         // 1
         List<GroupEntity> groups = entityManager.createQuery(
                         "SELECT g FROM GroupEntity g WHERE g.endDate < :now",
@@ -83,8 +84,14 @@ public class SchedulerServiceImpl implements SchedulerService {
             // 해당 그룹의 멤버에게 알림 전송
             List<UserEntity> userEntityList = groupMemberRepository.findUsersByGroupId(group.getGroupId());
             userEntityList.stream().forEach( user -> {
-                if(user.getFcmToken() != null)
-                    fcmAlarmService.sendNotification(user.getFcmToken(),"그룹 종료","그룹 종료함돠");
+                if(user.getFcmToken() != null) {
+                    NotificationCreateRequestDto dto = new NotificationCreateRequestDto();
+                    GroupEntity groupEntity = groupRepository.findByGroupId(group.getGroupId());
+                    dto.setGroupName(groupEntity.getGroupName());
+                    dto.setReceivingMemberId(user.getUserId());
+                    dto.setCommonCodeId(304);
+                    notificationService.create(dto);
+                }
             });
             //entityManager.remove(group);
         });
