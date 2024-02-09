@@ -16,6 +16,7 @@ import {
     createChallengeState,
 } from "../../../contexts/Challenge";
 import { useEffect } from "react";
+import { createChallenge } from "apis/api/Challenge";
 
 function ChallengeCreateModal() {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -23,9 +24,24 @@ function ChallengeCreateModal() {
     const endDate = useRecoilValue(createChallengeEndDate);
     const navigate = useNavigate();
 
+    const handleClick = async () => {
+        try {
+            const data = await createChallenge({
+                groupId: challenge.groupId,
+                duration: challenge.duration,
+                initialMoney: challenge.initialMoney,
+                savedMoney: challenge.savedMoney,
+                savedPeriod: challenge.savedPeriod,
+            });
+            onOpen();
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     return (
         <div>
-            <BasicButton onClick={onOpen} buttonName={"생성하기"} />
+            <BasicButton onClick={handleClick} buttonName={"생성하기"} />
             {/* onClick에 API 연결 => POST실행 후에 데이터 받아와서 그 값들을 하단 출력에 활용해서 넣어줄 것.  */}
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />

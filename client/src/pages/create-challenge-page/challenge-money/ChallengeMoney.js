@@ -31,12 +31,8 @@ function ChallengeMoney() {
             [name]: numericValue,
         }));
     };
-    const isError = challenge.duration < 0;
     return (
-        <Box display={"flex"} flexFlow={"column"} mt={10} mb={4}>
-            <Text fontSize={"x-large"} fontWeight={700}>
-                금연 저금통 설정
-            </Text>
+        <Box display={"flex"} flexFlow={"column"}>
             <Flex
                 flexFlow={"column"}
                 alignItems={"center"}
@@ -47,7 +43,7 @@ function ChallengeMoney() {
                     isInvalid={isErrorInitialMoney}
                     className="flex flex-col my-4 min-w-lg max-w-lg"
                 >
-                    <div className="flex items-end px-4">
+                    <div className="flex justify-center items-end px-4">
                         <FormLabel fontSize={"md"} fontWeight={"semibold"}>
                             초기금액
                         </FormLabel>
@@ -76,7 +72,7 @@ function ChallengeMoney() {
                     className="flex flex-col my-4 min-w-lg max-w-lg"
                 >
                     <Box my={4}>
-                        <div className="flex items-end px-4">
+                        <div className="flex justify-center items-end px-4">
                             <FormLabel fontSize={"md"} fontWeight={"semibold"}>
                                 적립주기
                             </FormLabel>
@@ -106,9 +102,9 @@ function ChallengeMoney() {
                 </FormControl>
                 <FormControl
                     isInvalid={isErrorSavedMoney}
-                    className="flex flex-col justify-center my-4 min-w-lg max-w-lg"
+                    className="flex flex-col my-4 min-w-lg max-w-lg"
                 >
-                    <div className="flex items-end px-4">
+                    <div className="flex justify-center items-end px-4">
                         <FormLabel fontSize={"md"} fontWeight={"semibold"}>
                             적립금액
                         </FormLabel>
