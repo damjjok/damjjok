@@ -21,6 +21,8 @@ function TruthRoomTabPage() {
     };
 
     useEffect(() => {
+        console.log(user);
+        console.log(challenge);
         getScheduleByChallengeId(challengeId, getSchedule);
     }, []);
 

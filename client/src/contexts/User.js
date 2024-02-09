@@ -4,11 +4,11 @@ import { atom } from "recoil";
 export const currentUserState = atom({
     key: "currentUserState",
     default: {
-        email: "moonwlgh@naver.com",
-        exp: 1722844037,
-        iat: 1707292037,
-        userId: 56,
-        userName: "문지호",
+        email: "",
+        exp: 0,
+        iat: 0,
+        userId: -1,
+        userName: "",
     },
 });
 
