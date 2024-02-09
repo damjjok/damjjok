@@ -30,6 +30,7 @@ function CreateChallengePage() {
     const [challenge, setChallenge] = useRecoilState(createChallengeState);
     const isMobile = useBreakpointValue({ base: true, md: false });
     const initialState = {
+        groupId: groupId,
         duration: 0,
         initialMoney: 0,
         savedPeriod: 0,
@@ -41,9 +42,9 @@ function CreateChallengePage() {
         setChallenge(initialState);
     }, []);
 
-    useEffect(() => {
-        console.log("createChallengeState has changed:", challenge);
-    }, [challenge]);
+    // useEffect(() => {
+    //     console.log("createChallengeState has changed:", challenge);
+    // }, [challenge]);
     // const endDate = useRecoilValue(challengeEndDate);
 
     return (

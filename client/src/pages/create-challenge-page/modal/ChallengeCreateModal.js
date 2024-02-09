@@ -10,22 +10,19 @@ import {
 } from "@chakra-ui/react";
 import BasicButton from "../../../components/button/BasicButton";
 import { useNavigate } from "react-router-dom";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
 import {
-    challengeState,
-    challengeEndDate,
-    challengeListState,
+    createChallengeEndDate,
+    createChallengeState,
 } from "../../../contexts/Challenge";
-import { currentGroupState } from "../../../contexts/User";
+import { useEffect } from "react";
 
 function ChallengeCreateModal() {
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const [challenge, setChallenge] = useRecoilState(challengeState);
-    const [challengeList, setChallengeList] =
-        useRecoilState(challengeListState);
-    const endDate = useRecoilValue(challengeEndDate);
+    const challenge = useRecoilValue(createChallengeState);
+    const endDate = useRecoilValue(createChallengeEndDate);
     const navigate = useNavigate();
-    const currentGroup = { groupId: "1", groupName: "E105" };
+
     return (
         <div>
             <BasicButton onClick={onOpen} buttonName={"생성하기"} />
@@ -51,19 +48,22 @@ function ChallengeCreateModal() {
                             <p>{endDate.toLocaleDateString()}</p>
                         </div>
                         <div className="flex justify-between">
-                            <p>예상 저금통 금액</p>
+                            <p>만료시 저금통 적립 금액</p>
                             <p>
                                 {challenge.initialMoney +
                                     challenge.savedMoney *
                                         (challenge.duration /
-                                            challenge.savedPeriod)}
+                                            challenge.savedPeriod)}{" "}
+                                원
                             </p>
                         </div>
                     </ModalBody>
                     <ModalFooter>
                         <BasicButton
                             className="flex justify-center"
-                            onClick={navigate(`/group/${currentGroup.groupId}`)}
+                            onClick={() =>
+                                navigate(`/group/${challenge.groupId}`)
+                            }
                             buttonName={"챌린지 시작하기"}
                             variant={"bigbtn"}
                         />

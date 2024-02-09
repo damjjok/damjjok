@@ -8,7 +8,7 @@ export const currentUserState = atom({
         exp: 1722844037,
         iat: 1707292037,
         userId: 56,
-        userName: "문지호"
+        userName: "문지호",
     },
 });
 //
@@ -19,7 +19,7 @@ export const currentUserState = atom({
 
 export const currentGroupState = atom({
     key: "currentGroupState",
-    default: { groupId: "1", groupName: "E105" },
+    default: { groupId: "", groupName: "" },
 });
 
 // accessToken 에서 받아온 유저 정보

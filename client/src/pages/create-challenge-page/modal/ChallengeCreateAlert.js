@@ -49,8 +49,8 @@ function ChallengeCreateAlert() {
                                 후에는 도전 내용을 변경할 수 없습니다.
                             </Text>
                             <Box>
-                                <Heading>챌린지 정보</Heading>
                                 <VStack>
+                                    <Heading>챌린지 정보</Heading>
                                     <Text>
                                         챌린지 기간 : {challenge.duration} 일
                                     </Text>
