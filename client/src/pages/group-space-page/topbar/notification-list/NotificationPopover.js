@@ -20,8 +20,9 @@ import {
     Wrap,
     WrapItem,
 } from "@chakra-ui/react";
+import { checkNotification } from "apis/api/Notification";
 
-const AlramPopover = ({ alramList, isMobile }) => {
+const NotificationPopover = ({ alramList, isMobile, clickHandler }) => {
     return (
         <>
             <Popover>
@@ -52,12 +53,19 @@ const AlramPopover = ({ alramList, isMobile }) => {
                 <PopoverContent>
                     <PopoverArrow />
                     <PopoverCloseButton />
-                    <PopoverHeader>알림함</PopoverHeader>
+                    <PopoverHeader>
+                        <Text fontWeight={700}>알림함</Text>
+                    </PopoverHeader>
                     <PopoverBody>
                         <List spacing={3}>
                             {alramList.map((e) => (
                                 <>
-                                    <ListItem>
+                                    <ListItem
+                                        onClick={() => {
+                                            clickHandler(e.notificationId);
+                                        }}
+                                        cursor={"pointer"}
+                                    >
                                         <Box>
                                             <Grid
                                                 templateRows="repeat(2, 1fr)"
@@ -103,4 +111,4 @@ const AlramPopover = ({ alramList, isMobile }) => {
     );
 };
 
-export default AlramPopover;
+export default NotificationPopover;

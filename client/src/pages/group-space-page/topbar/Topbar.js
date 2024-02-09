@@ -5,8 +5,8 @@ import logo from "assets/images/logo.png";
 import { Box, Flex, Text, Wrap, useBreakpointValue } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getAlarmList } from "apis/api/Alram";
-import AlramPopover from "./alram-list/AlramPopover";
+import { checkNotification, getAlarmList } from "apis/api/Notification";
+import NotificationPopover from "./notification-list/NotificationPopover";
 
 function Topbar() {
     const user = useRecoilValue(currentUser);
@@ -15,6 +15,11 @@ function Topbar() {
     const fetchAlram = async () => {
         const list = await getAlarmList();
         setAlramList(list);
+    };
+
+    const notificationClickHandler = async (notificationId) => {
+        await checkNotification(notificationId);
+        await fetchAlram();
     };
     useEffect(() => {
         fetchAlram();
@@ -66,10 +71,11 @@ function Topbar() {
                     </BasicButton>
                 </Flex>
                 <Wrap sx={{ transform: isMobile ? "scale(0.6)" : "none" }}>
-                    <AlramPopover
+                    <NotificationPopover
                         alramList={alramList}
                         isMobile={isMobile}
-                    ></AlramPopover>
+                        clickHandler={notificationClickHandler}
+                    ></NotificationPopover>
                 </Wrap>
             </Box>
         </Box>
