@@ -9,6 +9,7 @@ import com.ssafy.server.service.EnterRoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -127,6 +128,9 @@ public class EnterRoomServiceImpl implements EnterRoomService {
     public void setChallengeState(Integer challengeId, String status) {
         ChallengeEntity challengeEntity = challengeRepository.findByChallengeId(challengeId);
         challengeEntity.setStatus(status);
+        //진실의 방 종료일을 바꿔주기
+        challengeEntity.setFinalTruthRoomDate(LocalDateTime.now());
         challengeRepository.save(challengeEntity);
     }
+
 }
