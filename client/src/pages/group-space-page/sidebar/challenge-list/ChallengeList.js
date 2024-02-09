@@ -27,6 +27,7 @@ import { currentUser, currentUserState } from "contexts/User";
 
 function ChallengeList({ onClick }) {
     const loginedUser = useRecoilValue(currentUser);
+    console.log("로그인한 유저 정보" + loginedUser);
 
     const { groupId } = useParams();
     // const setChallengeState = useSetRecoilState(challengeState);

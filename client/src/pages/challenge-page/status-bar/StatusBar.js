@@ -27,10 +27,14 @@ function StatusBar() {
     const challenge = useRecoilValue(challengeState);
     const challengeUserId = challenge.userId;
     const loginedUser = useRecoilValue(currentUser);
-    console.log(currentUser);
+    // console.log(loginedUser);
     const [candyCount, setCandyCount] = useRecoilState(challengeCandyCount);
-    const currentCandyCount = useRecoilValue(challengeCandyCount);
-    // let navigate = useNavigate();
+    const [currentCandyCount, setCurrentCandyCount] =
+        useRecoilState(challengeCandyCount);
+
+    useEffect(() => {
+        console.log("응원완료");
+    }, [currentCandyCount]);
 
     const isMobile = useBreakpointValue({ base: true, md: false });
 
