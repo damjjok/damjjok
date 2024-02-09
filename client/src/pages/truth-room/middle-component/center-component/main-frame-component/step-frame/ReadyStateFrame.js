@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import BasicButton from "components/button/BasicButton";
 import { useRecoilState } from "recoil";
-import { stepState } from "contexts/TruthRoom";
+import { stepState } from "contexts/TruthRoomSocket";
 
 function ReadyStateFrame() {
     const [step, setStep] = useRecoilState(stepState);

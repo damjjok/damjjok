@@ -8,38 +8,26 @@ import {
     WrapItem,
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useRecoilState } from "recoil";
 import { myFriendState } from "contexts/Search";
+import { searchUserByEmail } from "apis/api/Group";
+
 const SearchBar = () => {
     const [email, setEmail] = useState("");
     const [searchResults, setSearchResults] = useState([]);
 
     const [myfriend, setMyFriend] = useRecoilState(myFriendState);
     // 사용자가 입력할 때마다 호출되는 함수
-    const handleChange = (e) => {
+    const handleChange = async (e) => {
         const newEmail = e.target.value;
         setEmail(newEmail);
 
         // 영어 한 글자 한 글자 입력될 때마다 API 요청을 보냅니다.
         if (newEmail) {
-            searchUserByEmail(newEmail);
+            const results = await searchUserByEmail(newEmail);
+            setSearchResults(results);
         } else {
             setSearchResults([]); // 입력값이 없을 때는 검색 결과를 비웁니다.
-        }
-    };
-
-    // API 요청을 수행하는 함수
-    const searchUserByEmail = async (email) => {
-        try {
-            const response = await axios.get(
-                `https://i10e105.p.ssafy.io/api/v1/group/search-user/${email}`,
-            );
-            setSearchResults(response.data.list);
-            console.log(searchResults);
-        } catch (error) {
-            console.error(error); // 에러 처리
-            setSearchResults([]); // 에러가 발생하면 검색 결과를 비웁니다.
         }
     };
 
@@ -50,6 +38,7 @@ const SearchBar = () => {
             !myfriend.some((selectedUser) => selectedUser.email === user.email)
         ) {
             setMyFriend([...myfriend, user]);
+            console.log(myfriend);
         }
     };
     // 사용자 제거 처리
@@ -117,6 +106,7 @@ const SearchBar = () => {
                             handleSelectUser({
                                 userName: result.userName,
                                 email: result.email,
+                                userId: result.userId,
                             })
                         }
                         _hover={{

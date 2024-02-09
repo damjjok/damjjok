@@ -1,26 +1,29 @@
 import { useRecoilValue } from "recoil";
 import BasicButton from "../../../components/button/BasicButton";
-import { currentUserState } from "../../../contexts/User";
+import { currentUser, currentUserState } from "../../../contexts/User";
 import logo from "assets/images/logo.png";
-import {
-    Box,
-    Button,
-    Flex,
-    Icon,
-    IconButton,
-    Text,
-    Wrap,
-    WrapItem,
-    theme,
-    useBreakpointValue,
-} from "@chakra-ui/react";
-import { BellIcon } from "@chakra-ui/icons";
+import { Box, Flex, Text, Wrap, useBreakpointValue } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { checkNotification, getAlarmList } from "apis/api/Notification";
+import NotificationPopover from "./notification-list/NotificationPopover";
 
 function Topbar() {
-    const currentUser = useRecoilValue(currentUserState);
-
+    const user = useRecoilValue(currentUser);
+    const [alramList, setAlramList] = useState([]);
     const isMobile = useBreakpointValue({ base: true, md: false });
+    const fetchAlram = async () => {
+        const list = await getAlarmList();
+        setAlramList(list);
+    };
+
+    const notificationClickHandler = async (notificationId) => {
+        await checkNotification(notificationId);
+        await fetchAlram();
+    };
+    useEffect(() => {
+        fetchAlram();
+    }, []);
 
     return (
         <Box
@@ -37,7 +40,7 @@ function Topbar() {
                 </Link>
             </Flex>
 
-            <div className="flex justify-center items-center">
+            <Box className="flex justify-center items-center">
                 <Flex
                     justifyContent={"center"}
                     alignItems={"center"}
@@ -47,14 +50,14 @@ function Topbar() {
                 >
                     {isMobile ? (
                         <Text fontSize="xs" className="font-semibold px-2">
-                            {currentUser.userName} 님
+                            {user.userName} 님
                         </Text>
                     ) : (
                         <Text
                             fontSize={isMobile ? "sm" : "md"}
                             className="font-semibold px-2"
                         >
-                            안녕하세요! {currentUser.userName} 님!
+                            안녕하세요! {user.userName} 님!
                         </Text>
                     )}
                     <BasicButton
@@ -68,29 +71,13 @@ function Topbar() {
                     </BasicButton>
                 </Flex>
                 <Wrap sx={{ transform: isMobile ? "scale(0.6)" : "none" }}>
-                    <Button
-                        marginX={isMobile ? "0.1em" : "1em"}
-                        backgroundColor={"#FFD100"}
-                        borderRadius={"50%"}
-                        width={"50%"}
-                        _hover={{ backgroundColor: "#3182CE" }}
-                    >
-                        <BellIcon></BellIcon>
-                        <Wrap
-                            position={"absolute"}
-                            right={isMobile ? "0" : "-10%"}
-                            top={isMobile ? "0" : "-10%"}
-                            backgroundColor={"red"}
-                            width={isMobile ? "30%" : "50%"}
-                            height={isMobile ? "30%" : "50%"}
-                            borderRadius={"50%"}
-                            justify={"center"}
-                        >
-                            {isMobile ? null : <WrapItem>1</WrapItem>}
-                        </Wrap>
-                    </Button>
+                    <NotificationPopover
+                        alramList={alramList}
+                        isMobile={isMobile}
+                        clickHandler={notificationClickHandler}
+                    ></NotificationPopover>
                 </Wrap>
-            </div>
+            </Box>
         </Box>
     );
 }

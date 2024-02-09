@@ -1,6 +1,16 @@
 import { useRecoilValue } from "recoil";
-import { Step, Stack, StepIcon, StepIndicator, StepSeparator, StepStatus, Stepper, Flex, Text } from "@chakra-ui/react";
-import { stepState } from "contexts/TruthRoom";
+import {
+    Step,
+    Stack,
+    StepIcon,
+    StepIndicator,
+    StepSeparator,
+    StepStatus,
+    Stepper,
+    Flex,
+    Text,
+} from "@chakra-ui/react";
+import { stepState } from "contexts/TruthRoomSocket";
 
 const steps = [
     { title: "First", description: "대기중" },
@@ -29,7 +39,9 @@ function CenterStepper() {
                             width={"5rem"}
                             left={"-1.75rem"}
                             top={"1.5rem"}
-                            color={index <= currentStep ? "dam.yellow" : "white"}
+                            color={
+                                index <= currentStep ? "dam.yellow" : "white"
+                            }
                         >
                             {step.description}
                         </Text>

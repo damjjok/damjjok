@@ -36,8 +36,9 @@ const OauthPage = () => {
         if (accessToken) {
             try {
                 const decoded = jwtDecode(accessToken);
-
+                console.log(decoded);
                 setCurrentUserInfo(decoded); // 토큰에서 추출한 사용자 정보를 저장
+
                 // 로그인 성공 후 fcm 토큰 요청
                 requestForToken(accessToken);
             } catch (error) {

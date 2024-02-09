@@ -1,5 +1,5 @@
 import React from "react";
-import { stepState } from "contexts/TruthRoom";
+import { stepState } from "contexts/TruthRoomSocket";
 import { useRecoilState } from "recoil";
 import { Wrapper } from "./BottomComponent.style";
 import { Button } from "@chakra-ui/react";

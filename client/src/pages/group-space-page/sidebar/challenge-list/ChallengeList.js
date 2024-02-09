@@ -139,7 +139,8 @@ function ChallengeList({ onClick }) {
                             : null}
                         {currentGroupChallengeList.length > 0 &&
                             !currentGroupChallengeList.some(
-                                (challenge) => challenge.userId === userId
+                                (challenge, index) =>
+                                    challenge.userId === userId
                             ) && (
                                 <Box px={3} py={2} display={"flex"}>
                                     <Flex

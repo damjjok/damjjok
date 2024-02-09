@@ -1,4 +1,5 @@
-import { groupState, stepState } from "contexts/TruthRoom";
+import { groupState } from "contexts/TruthRoom";
+import { stepState } from "contexts/TruthRoomSocket";
 import React from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 
