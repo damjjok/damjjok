@@ -153,10 +153,14 @@ public class SchedulerServiceImpl implements SchedulerService {
         });
 
         // 챌린지가 3일 뒤에 종료되는 경우에 대한 알림
+        LocalDateTime inThreeDaysStart = LocalDate.now().plusDays(3).atStartOfDay();
+        LocalDateTime inThreeDaysEnd = inThreeDaysStart.plusDays(1).minusSeconds(1);
+
         List<ChallengeEntity> exactThreeDaysToEndChallenges = entityManager.createQuery(
-                        "SELECT c FROM ChallengeEntity c WHERE c.endDate = :inThreeDays",
+                        "SELECT c FROM ChallengeEntity c WHERE c.endDate >= :inThreeDaysStart AND c.endDate < :inThreeDaysEnd",
                         ChallengeEntity.class)
-                .setParameter("inThreeDays", LocalDate.now().plusDays(3))
+                .setParameter("inThreeDaysStart", inThreeDaysStart)
+                .setParameter("inThreeDaysEnd", inThreeDaysEnd)
                 .getResultList();
 
 
@@ -177,12 +181,15 @@ public class SchedulerServiceImpl implements SchedulerService {
         });
 
         // 그룹이 7일 뒤에 종료되는 경우에 대한 알림
-        List<GroupEntity> exactSevenDaysToEndGroups = entityManager.createQuery(
-                        "SELECT g FROM GroupEntity g WHERE g.endDate = :inSevenDays",
-                        GroupEntity.class)
-                .setParameter("inSevenDays", LocalDate.now().plusDays(7))
-                .getResultList();
+        LocalDateTime inSevenDaysStart = LocalDate.now().plusDays(7).atStartOfDay();
+        LocalDateTime inSevenDaysEnd = inSevenDaysStart.plusDays(1).minusSeconds(1);
 
+        List<GroupEntity> exactSevenDaysToEndGroups = entityManager.createQuery(
+                        "SELECT g FROM GroupEntity g WHERE g.endDate >= :inSevenDaysStart AND g.endDate < :inSevenDaysEnd",
+                        GroupEntity.class)
+                .setParameter("inSevenDaysStart", inSevenDaysStart)
+                .setParameter("inSevenDaysEnd", inSevenDaysEnd)
+                .getResultList();
 
         exactSevenDaysToEndGroups.forEach(group -> {
             // 그룹의 모든 멤버에게 알림 전송
