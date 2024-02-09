@@ -6,7 +6,6 @@ import {
     fineStepState,
     fineVoteListState,
     joinMemberListState,
-    readyMemberCountState,
     stepReadyCountState,
     voteResultState,
 } from "contexts/TruthRoomSocket";
@@ -29,7 +28,6 @@ const ConnectionButton = () => {
     } = useContext(WebSocketContext);
     const step = useRecoilValue(stepState);
     const joinMemberList = useRecoilValue(joinMemberListState);
-    const readyMemberCount = useRecoilValue(readyMemberCountState);
     const allUserReady = useRecoilValue(allUserReadyState);
     const stepReadyCount = useRecoilValue(stepReadyCountState);
     const isVoted = useRecoilValue(isVotedState);
@@ -44,11 +42,11 @@ const ConnectionButton = () => {
             <div>
                 참여 유저 목록:{" "}
                 {joinMemberList
-                    .map((member) => `${member.name} (${member.role})`)
+                    .map(
+                        (member) =>
+                            `${member.name} (${member.role}) (isReady: ${member.isReady})`
+                    )
                     .join(", ")}
-            </div>
-            <div>
-                준비 완료 유저 수: {readyMemberCount} / {joinMemberList.length}
             </div>
             {allUserReady && <div>모든 유저 준비 완료!</div>}
             <div>현재 단계 : {step}</div>

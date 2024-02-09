@@ -7,7 +7,6 @@ import {
     allUserReadyState,
     fineStepState,
     joinMemberListState,
-    readyMemberCountState,
     stepReadyCountState,
     voteResultState,
     fineVoteListState,
@@ -25,9 +24,6 @@ export const WebSocketProvider = ({ children }) => {
         useRecoilState(stepReadyCountState); // 각 단계에서 다음 상태로 갈 준비가 된 유저 수 카운트(모든 단계에서 사용 / 각 단계에서 모든 유저가 준비 완료될 때마다 0으로 초기화)
 
     // 1. 준비 단계
-    const [readyMemberCount, setReadyMemberCount] = useRecoilState(
-        readyMemberCountState
-    ); // 준비 단계에서 준비가 된 유저의 수
     const setAllUserReady = useSetRecoilState(allUserReadyState); // 모든 유저가 준비 완료인지 여부, 이건 false였다가 true가 되기만해도 끝이므로 setRecoilState로 호출
     // 2. 증거 판별 단계
     // 3. PASS/FAIL 투표 단계
@@ -80,6 +76,7 @@ export const WebSocketProvider = ({ children }) => {
                 "/topic/member/" + roomId,
                 (message) => {
                     console.log("hi");
+                    console.log("입장을 통해 갱신된 멤버 리스트");
                     console.log(JSON.parse(message.body));
                     setJoinMemberList(JSON.parse(message.body));
                 }
@@ -87,10 +84,10 @@ export const WebSocketProvider = ({ children }) => {
             stompClient.current.subscribe(
                 "/topic/readyState/" + roomId,
                 (message) => {
-                    console.log("raw message: " + message);
-                    console.log("raw message body: " + message.body);
-                    console.log("준비한 유저 수: ", JSON.parse(message.body));
-                    setReadyMemberCount(JSON.parse(message.body));
+                    console.log("준비 버튼 클릭을 통해 갱신된 멤버 리스트");
+                    console.log(JSON.parse(message.body));
+                    setJoinMemberList(JSON.parse(message.body));
+                    console.log("유저 목록: " + joinMemberList);
                 }
             );
             stompClient.current.subscribe(
@@ -131,7 +128,7 @@ export const WebSocketProvider = ({ children }) => {
                 (message) => {
                     console.log("Vote Result: ", message.body);
                     setStepReadyCount(0); // 투표 결과 나왔으므로 준비된 유저 수 0으로 초기화
-                    setVoteResultState(message.body); // 이 부분은
+                    setVoteResultState(message.body); // 이 부분은 "PASS", "FAIL" 형태로 오므로 JSON.parse() 안해줬음
                 }
             );
             stompClient.current.subscribe(
