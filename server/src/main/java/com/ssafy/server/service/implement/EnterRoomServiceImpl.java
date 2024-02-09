@@ -38,7 +38,8 @@ public class EnterRoomServiceImpl implements EnterRoomService {
     public void addMember(Integer roomId, String sessionId, String userName, String role) {
         TruthRoomDto room = createOrGetRoom(roomId);
         Map<String, MemberInfoDto> members = room.getMembers();
-        MemberInfoDto dto = new MemberInfoDto(userName, role);
+        boolean isReady = false;
+        MemberInfoDto dto = new MemberInfoDto(userName, role,isReady);
         members.put(sessionId, dto);
         System.out.println(members);
         room.getReadyState().put(sessionId, false);
@@ -76,6 +77,8 @@ public class EnterRoomServiceImpl implements EnterRoomService {
         TruthRoomDto room = truthRooms.get(roomId);
         if (room != null && room.getReadyState().containsKey(sessionId)) {
             room.getReadyState().put(sessionId, isReady);
+            MemberInfoDto dto = room.getMembers().get(sessionId);
+            dto.setReady(isReady);
         }
     }
 
