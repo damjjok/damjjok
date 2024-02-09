@@ -8,12 +8,6 @@ export const challengeIdState = atom({
     default: 0,
 });
 
-export const stepState = atom({
-    // 대기 중, 제보 판별, 투표, PASS/FAIL, 최후 변론, 벌금 결정, 종료
-    key: "step",
-    default: 0,
-});
-
 export const voteState = atom({
     // 투표 단계에서 투표여부 판단할 때 쓰임
     key: "vote",

@@ -1,7 +1,7 @@
 import React from "react";
 import { Wrapper } from "./LeftComponent.style";
 import { useRecoilValue } from "recoil";
-import { stepState } from "contexts/TruthRoom";
+import { stepState } from "contexts/TruthRoomSocket";
 import JoinMemberComponent from "./inner-components/join-member/JoinMemberComponent";
 import ReportComopnent from "./inner-components/report/ReportComponent";
 import AttendanceComponent from "./inner-components/attendance/AttendanceComponent";

@@ -1,10 +1,10 @@
 import BasicButton from "components/button/BasicButton";
 import { useSetRecoilState } from "recoil";
-import { voteState } from "contexts/TruthRoom";
+import { isVotedState } from "contexts/TruthRoomSocket";
 import React from "react";
 
 function DoVoteComponent(props) {
-    const setIsVoted = useSetRecoilState(voteState);
+    const setIsVoted = useSetRecoilState(isVotedState);
 
     function handleClickVote(voteOption) {
         // voteOption : 1(yes) or no(0), 나중에 소켓으로 데이터 쏠 때 필요
