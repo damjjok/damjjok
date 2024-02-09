@@ -5,7 +5,6 @@ import com.ssafy.server.dto.auth.CustomUserDetails;
 import com.ssafy.server.dto.notification.NotificationDto;
 import com.ssafy.server.dto.request.notification.NotificationCheckReadRequestDto;
 import com.ssafy.server.dto.request.notification.NotificationCreateRequestDto;
-import com.ssafy.server.dto.request.notification.NotificationListRequestDto;
 import com.ssafy.server.dto.response.notification.NotificationCheckReadResponseDto;
 import com.ssafy.server.dto.response.notification.NotificationCreateResponseDto;
 import com.ssafy.server.dto.response.notification.NotificationListResponseDto;
@@ -31,7 +30,7 @@ public class NotificationServiceImpl implements NotificationService {
     private final GroupRepository groupRepository;
     private final NotificationMessageTemplateRepository notificationMessageTemplateRepository;
     @Override
-    public ResponseEntity<? super NotificationListResponseDto> list(NotificationListRequestDto dto) {
+    public ResponseEntity<? super NotificationListResponseDto> list() {
         List<NotificationDto> list = new ArrayList<>();
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -40,8 +39,6 @@ public class NotificationServiceImpl implements NotificationService {
 
             UserEntity userEntity = userRepository.findByUserId(userId);
             List<NotificationEntity> entityList = notificationRepository.findByUserEntity(userEntity);
-
-
 
             entityList.stream().forEach((e) -> {
                 NotificationDto notificationDto = new NotificationDto();

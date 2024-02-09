@@ -2,11 +2,9 @@ package com.ssafy.server.controller;
 
 import com.ssafy.server.dto.request.notification.NotificationCheckReadRequestDto;
 import com.ssafy.server.dto.request.notification.NotificationCreateRequestDto;
-import com.ssafy.server.dto.request.notification.NotificationListRequestDto;
 import com.ssafy.server.dto.response.notification.NotificationCheckReadResponseDto;
 import com.ssafy.server.dto.response.notification.NotificationCreateResponseDto;
 import com.ssafy.server.dto.response.notification.NotificationListResponseDto;
-import com.ssafy.server.dto.response.schedule.ScheduleDetailResponseDto;
 import com.ssafy.server.service.NotificationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -16,10 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ResourceBundle;
 
 @Tag(name = "알림", description = "알림함에 알림 보내기")
 @RestController
@@ -32,11 +27,9 @@ public class NotificationController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "SU", description = "성공", content = @Content(schema = @Schema(implementation = NotificationListResponseDto.class)))
     })
-    @GetMapping("/{userId}")
-    public ResponseEntity<? super NotificationListResponseDto> list (@PathVariable int userId) {
-        NotificationListRequestDto requestBody = new NotificationListRequestDto();
-        requestBody.setUserId(userId);
-        ResponseEntity<? super NotificationListResponseDto> response = notificationService.list(requestBody);
+    @GetMapping("")
+    public ResponseEntity<? super NotificationListResponseDto> list () {
+        ResponseEntity<? super NotificationListResponseDto> response = notificationService.list();
         return response;
     }
 
