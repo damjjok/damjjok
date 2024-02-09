@@ -75,7 +75,7 @@ public class SchedulerServiceImpl implements SchedulerService {
 
         LocalDateTime todayStart = LocalDate.now().atStartOfDay();
         LocalDateTime todayEnd = todayStart.plusDays(1).minusSeconds(1);
-        // 1
+        // 1 그룹 종료 알림
         List<GroupEntity> groups = entityManager.createQuery(
                         "SELECT g FROM GroupEntity g WHERE g.endDate >= :todayStart AND g.endDate <= :todayEnd",
                         GroupEntity.class)
@@ -143,7 +143,7 @@ public class SchedulerServiceImpl implements SchedulerService {
                     GroupEntity groupEntity = groupRepository.findByGroupId(challenge.getGroupEntity().getGroupId());
                     dto.setGroupName(groupEntity.getGroupName());
                     dto.setReceivingMemberId(user.getUserId());
-                    dto.setCommonCodeId(303);
+                    dto.setCommonCodeId(401);
                     UserEntity userEntity = userRepository.findByUserId(challenge.getUserId());
                     dto.setDamjjokName(userEntity.getUserName());
                     LocalDateTime challengeCreatedAt = challenge.getCreatedAt();
