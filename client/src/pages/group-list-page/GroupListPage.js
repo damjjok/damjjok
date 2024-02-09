@@ -6,12 +6,20 @@ import landingBg from "assets/images/bgimg.png";
 import { useRecoilValue } from "recoil";
 import { myFriendState } from "contexts/Search";
 import { getGroupList, postCreateGroup } from "apis/api/Group";
+import { useNavigate } from "react-router-dom";
 
 const GroupListPage = () => {
     const [groupData, setGroupData] = useState([]);
     const [groupName, setGroupName] = useState(""); // 그룹 이름 상태 추가
     const { isOpen, onOpen, onClose } = useDisclosure();
     const groupList = useRecoilValue(myFriendState);
+
+    const navigate = useNavigate(); // 네비게이트 함수 사용
+
+    const handleGroupClick = (groupId) => {
+        navigate(`/group/${groupId}`); // 해당 그룹 ID의 경로로 이동
+    };
+
     // 그룹 데이터를 가져오는 함수
     useEffect(() => {
         // 함수를 실행합니다.
@@ -136,6 +144,9 @@ const GroupListPage = () => {
                                         bg="#ffd100"
                                         width="120px"
                                         height="120px"
+                                        onClick={() =>
+                                            handleGroupClick(group.groupId)
+                                        }
                                     >
                                         {group.groupname}
                                     </Button>
