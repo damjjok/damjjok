@@ -1,6 +1,7 @@
 package com.ssafy.server.service.implement;
 
 import com.ssafy.server.dto.ResponseDto;
+import com.ssafy.server.dto.auth.CustomUserDetails;
 import com.ssafy.server.dto.request.schedule.ScheduleCreateRequestDto;
 import com.ssafy.server.dto.request.schedule.ScheduleDetailRequestDto;
 import com.ssafy.server.dto.response.schedule.ScheduleCreateResponseDto;
@@ -15,6 +16,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -52,6 +55,9 @@ public class ScheduleServiceImpl implements ScheduleService {
     public ResponseEntity<? super ScheduleCreateResponseDto> createSchedule(ScheduleCreateRequestDto requestDto) {
 
         try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+
             // 챌린지 관련 데이터를 가져오는 부분
             int challengeId = requestDto.getChallengeId();
             ChallengeEntity challengeEntity = challengeRepository.findByChallengeId(challengeId);
@@ -63,7 +69,7 @@ public class ScheduleServiceImpl implements ScheduleService {
              }
 
              //담쪽이가 아닌 경우 "VF"
-             if(requestDto.getDamjjokId() != damjjokId) {
+             if(customUserDetails.getUserId() != damjjokId) {
                  return ScheduleCreateResponseDto.notDomjjok();
              }
 
