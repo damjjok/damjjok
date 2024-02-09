@@ -21,12 +21,12 @@ import challengeIcon from "assets/images/currentChallengeIcon.png";
 import { useNavigate, useParams } from "react-router-dom";
 import { getChallengeList } from "apis/api/Challenge";
 import { useRecoilValue } from "recoil";
-import { currentUserState } from "contexts/User";
+import { currentUser, currentUserState } from "contexts/User";
 // import { useRecoilValue } from "recoil";
 // import { challengeListState } from "../../../../context/Challenge";
 
 function ChallengeList({ onClick }) {
-    const userId = useRecoilValue(currentUserState);
+    const loginedUser = useRecoilValue(currentUser);
 
     const { groupId } = useParams();
     // const setChallengeState = useSetRecoilState(challengeState);
@@ -140,7 +140,7 @@ function ChallengeList({ onClick }) {
                         {currentGroupChallengeList.length > 0 &&
                             !currentGroupChallengeList.some(
                                 (challenge, index) =>
-                                    challenge.userId === userId
+                                    challenge.userId === loginedUser.userId
                             ) && (
                                 <Box px={3} py={2} display={"flex"}>
                                     <Flex
