@@ -1,5 +1,5 @@
 import { useRecoilState, useRecoilValue } from "recoil";
-import { currentUserState } from "../../../contexts/User";
+import { currentUser, currentUserState } from "../../../contexts/User";
 import candyImg from "assets/images/candylogo.png";
 import StatusBarToast from "../modal/StatusBarToast";
 import StatusEditModal from "../modal/StatusEditModal";
@@ -26,7 +26,8 @@ import { getChallengeCandyCount } from "apis/api/Candy";
 function StatusBar() {
     const challenge = useRecoilValue(challengeState);
     const challengeUserId = challenge.userId;
-    const currentUser = useRecoilValue(currentUserState);
+    const loginedUser = useRecoilValue(currentUser);
+    console.log(currentUser);
     const [candyCount, setCandyCount] = useRecoilState(challengeCandyCount);
     const currentCandyCount = useRecoilValue(challengeCandyCount);
     // let navigate = useNavigate();
@@ -108,7 +109,7 @@ function StatusBar() {
 
                         {/* EditModal axios 적용해야 함 */}
                         {/* 요청 API : /api/v1/challenge/{challengeId}/profile-modify */}
-                        {challenge.userId === currentUser.userId ? (
+                        {challenge.userId === loginedUser.userId ? (
                             <StatusEditModal
                                 currentChallenge={challenge}
                                 avatars={avatars}
