@@ -7,6 +7,7 @@ const axiosInstance = axios.create({
     // headers: {'our-server-token': 'not-yet'} // 우리 서버 아직 토큰 헤더 이름 안나옴...
 });
 
+// 이렇게 설정해두면 aixos 요청을 할때마다 header에 accesToken이 자동적으로 담겨서 요청이 됨
 axiosInstance.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem("accessToken");

@@ -1,21 +1,52 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button, useDisclosure, HStack } from "@chakra-ui/react";
 import CreateGroupModal from "./modal/CreateGroupModal";
 import logo from "assets/images/logo.png";
 import landingBg from "assets/images/bgimg.png";
+import { getGroupList, postCreateGroup } from "apis/api/Landig";
+import { useRecoilValue } from "recoil";
+import { myFriendState } from "contexts/Search";
 
 const GroupListPage = () => {
     const [groupData, setGroupData] = useState([]);
     const [groupName, setGroupName] = useState(""); // 그룹 이름 상태 추가
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const groupList = useRecoilValue(myFriendState);
+    // 그룹 데이터를 가져오는 함수
+    useEffect(() => {
+        // 함수를 실행합니다.
+        fetchGroupData();
+    }, []); // 빈 배열을 넘겨주어 컴포넌트 마운트 시에만 실행되도록 합니다.
+    const fetchGroupData = async () => {
+        try {
+            // getGroupList 함수를 호출하여 데이터를 가져옵니다.
+            const response = await getGroupList();
+            // 가져온 데이터를 groupData 상태에 저장합니다.
+            setGroupData(response.list);
+        } catch (error) {
+            console.error("그룹 리스트를 불러오는 데 실패했습니다:", error);
+        }
+    };
 
-    const onGroupCreate = () => {
-        const newGroupData = {
-            groupName,
-        };
-        setGroupData([...groupData, newGroupData]); // 그룹 데이터 배열에 추가
-        setGroupName(" "); // 입력 필드 초기화
-        onClose();
+    const handleCreateGroup = async () => {
+        if (!groupName.trim()) {
+            alert("그룹 이름을 입력해주세요.");
+            return;
+        }
+
+        const userIds = groupList.map((user) => ({ userId: user.userId }));
+
+        try {
+            const newGroup = await postCreateGroup(groupName, userIds);
+            if (newGroup) {
+                // setGroupData((prevGroupData) => [...prevGroupData, newGroup]);
+                fetchGroupData();
+                setGroupName(""); // 입력 필드 초기화
+                onClose(); // 모달 닫기
+            }
+        } catch (error) {
+            console.error("그룹 생성 중 에러 발생:", error);
+        }
     };
 
     return (
@@ -94,8 +125,6 @@ const GroupListPage = () => {
                         <div>
                             <HStack spacing={4}>
                                 {groupData.map((group, index) => (
-                                    // <p key={index}>{group.groupName}</p>
-
                                     <Button
                                         // onClick={onOpen}
                                         key={index}
@@ -108,7 +137,7 @@ const GroupListPage = () => {
                                         width="120px"
                                         height="120px"
                                     >
-                                        {group.groupName}
+                                        {group.groupname}
                                     </Button>
                                 ))}
 
@@ -135,7 +164,7 @@ const GroupListPage = () => {
                     onClose={onClose}
                     groupName={groupName}
                     setGroupName={setGroupName}
-                    onGroupCreate={onGroupCreate}
+                    onGroupCreate={handleCreateGroup}
                 />
             </div>
         </div>
