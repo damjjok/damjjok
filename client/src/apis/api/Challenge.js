@@ -18,7 +18,9 @@ const createChallenge = async ({
         const response = await axiosInstance.post("/v1/challenge/create", body);
         if (response.status === 200) return response.data;
         // console.log(response.status);
-    } catch (error) {}
+    } catch (error) {
+        console.log(body);
+    }
 };
 
 const getChallengeRanking = async (challengeId) => {

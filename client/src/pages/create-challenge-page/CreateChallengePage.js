@@ -25,12 +25,13 @@ import { currentUserState } from "contexts/User";
 
 function CreateChallengePage() {
     const { groupId } = useParams();
+    const groupIdval = Number(groupId);
     const { isOpen, onClose } = useDisclosure();
     const currentUser = useRecoilValue(currentUserState);
     const [challenge, setChallenge] = useRecoilState(createChallengeState);
     const isMobile = useBreakpointValue({ base: true, md: false });
     const initialState = {
-        groupId: groupId,
+        groupId: groupIdval,
         duration: 0,
         initialMoney: 0,
         savedPeriod: 0,

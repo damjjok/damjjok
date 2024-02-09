@@ -35,6 +35,7 @@ function ChallengeCreateModal() {
             });
             onOpen();
         } catch (error) {
+            console.log(challenge);
             console.error(error);
         }
     };

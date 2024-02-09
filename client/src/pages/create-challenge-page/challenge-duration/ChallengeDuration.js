@@ -32,7 +32,7 @@ function ChallengeDuration() {
         <Box>
             <Slider
                 onChange={handleSliderChange}
-                defaultValue={180}
+                defaultValue={0}
                 min={30}
                 max={180}
                 step={30}
