@@ -148,7 +148,7 @@ public class SchedulerServiceImpl implements SchedulerService {
                     dto.setDamjjokName(userEntity.getUserName());
                     LocalDateTime challengeCreatedAt = challenge.getCreatedAt();
                     LocalDateTime today = LocalDateTime.now();
-                    int daysBetween = (int) ChronoUnit.DAYS.between(challengeCreatedAt.toLocalDate(), today.toLocalDate());
+                    long daysBetween = ChronoUnit.DAYS.between(challengeCreatedAt.toLocalDate(), today.toLocalDate());
                     dto.setDay(Long.toString(daysBetween));
                     notificationService.create(dto);
                 }
