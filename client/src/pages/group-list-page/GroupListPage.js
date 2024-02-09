@@ -3,9 +3,9 @@ import { Button, useDisclosure, HStack } from "@chakra-ui/react";
 import CreateGroupModal from "./modal/CreateGroupModal";
 import logo from "assets/images/logo.png";
 import landingBg from "assets/images/bgimg.png";
-import { getGroupList, postCreateGroup } from "apis/api/Landig";
 import { useRecoilValue } from "recoil";
 import { myFriendState } from "contexts/Search";
+import { getGroupList, postCreateGroup } from "apis/api/Group";
 
 const GroupListPage = () => {
     const [groupData, setGroupData] = useState([]);

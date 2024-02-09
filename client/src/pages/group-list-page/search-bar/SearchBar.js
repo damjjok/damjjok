@@ -10,8 +10,8 @@ import {
 import React, { useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { myFriendState } from "contexts/Search";
+import { searchUserByEmail } from "apis/api/Group";
 
-import { searchUserByEmail } from "apis/api/Landig";
 const SearchBar = () => {
     const [email, setEmail] = useState("");
     const [searchResults, setSearchResults] = useState([]);
