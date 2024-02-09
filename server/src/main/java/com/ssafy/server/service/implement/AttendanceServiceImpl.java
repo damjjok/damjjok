@@ -1,6 +1,7 @@
 package com.ssafy.server.service.implement;
 
 import com.ssafy.server.dto.ResponseDto;
+import com.ssafy.server.dto.auth.CustomUserDetails;
 import com.ssafy.server.dto.request.attendance.AttedanceListRquestDto;
 import com.ssafy.server.dto.request.attendance.AttendanceCreateRequestDto;
 import com.ssafy.server.dto.response.attendance.AttendanceCreateResponseDto;
@@ -15,6 +16,8 @@ import com.ssafy.server.service.AttendanceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cglib.core.Local;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -32,8 +35,11 @@ public class AttendanceServiceImpl implements AttendanceService {
     @Override
     public ResponseEntity<? super AttendanceCreateResponseDto> create(AttendanceCreateRequestDto dto) {
         try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+
             int challengeId = dto.getChallengeId();
-            int userId = dto.getUserId();
+            int userId = customUserDetails.getUserId();
 
             System.out.println(challengeId);
             System.out.println(userId);

@@ -14,8 +14,8 @@ import java.time.LocalDateTime;
 public class ScheduleCreateRequestDto {
     @Schema(description = "챌린지아이디")
     private Integer challengeId;
+
     @Schema(description = "날짜")
     private LocalDateTime date;
-    @Schema(description = "담쪽이 아이디")
-    private Integer damjjokId;
+
 }

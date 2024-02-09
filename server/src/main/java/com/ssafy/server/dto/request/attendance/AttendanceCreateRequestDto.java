@@ -14,7 +14,4 @@ public class AttendanceCreateRequestDto {
     @Schema(description = "챌린지 아이디", example = "1")
     private int challengeId;
 
-    @NotBlank
-    @Schema(description = "유저 아이디", example = "1")
-    private int userId;
 }

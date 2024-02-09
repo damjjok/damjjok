@@ -1,6 +1,7 @@
 package com.ssafy.server.service.implement;
 
 import com.ssafy.server.dto.ResponseDto;
+import com.ssafy.server.dto.auth.CustomUserDetails;
 import com.ssafy.server.dto.proof.EvidenceDto;
 import com.ssafy.server.dto.request.proof.*;
 import com.ssafy.server.dto.response.proof.*;
@@ -15,6 +16,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.User;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,9 +38,12 @@ public class EvidenceServiceImpl implements EvidenceService {
     public ResponseEntity<? super EvidenceCreateResponseDto> createEvidence(EvidenceCreateRequestDto dto) {
 
         try{
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+
             MultipartFile image = dto.getImage();
             int challengeId = dto.getChallengeId();
-            int userId = dto.getUserId();
+            int userId = customUserDetails.getUserId();
             String title = dto.getTitle();
 
 //            String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\files";
@@ -72,9 +78,12 @@ public class EvidenceServiceImpl implements EvidenceService {
     @Transactional
     public ResponseEntity<? super EvidenceModifyResponseDto> modifyEvidence(EvidenceModifyRequestDto dto) {
         try{
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+
             MultipartFile image = dto.getImage();
             String title = dto.getTitle();
-            int userId = dto.getUserId();
+            int userId = customUserDetails.getUserId();
             int evidenceId = dto.getEvidenceId();
 
             EvidenceEntity evidenceEntity = evidenceRepository.findByEvidenceId(evidenceId);

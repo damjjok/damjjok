@@ -1,6 +1,7 @@
 package com.ssafy.server.service.implement;
 
 import com.ssafy.server.dto.ResponseDto;
+import com.ssafy.server.dto.auth.CustomUserDetails;
 import com.ssafy.server.dto.cheermsg.CheerMessageDto;
 import com.ssafy.server.dto.request.cheermsg.CheerMsgCreateRequestDto;
 import com.ssafy.server.dto.request.cheermsg.CheerMsgListRequestDto;
@@ -13,6 +14,8 @@ import com.ssafy.server.repository.UserRepository;
 import com.ssafy.server.service.CheerMsgService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -28,7 +31,10 @@ public class CheerMsgServiceImpl implements CheerMsgService {
     @Override
     public ResponseEntity<? super CheerMsgCreateResponseDto> create(CheerMsgCreateRequestDto dto) {
         try {
-            int userId = dto.getUserId();
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+
+            int userId = customUserDetails.getUserId();
             int challengeId = dto.getChallengeId();
 
             UserEntity userEntity = userRepository.findByUserId(userId);

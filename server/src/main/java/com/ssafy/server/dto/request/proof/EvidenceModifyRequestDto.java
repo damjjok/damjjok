@@ -15,10 +15,6 @@ public class EvidenceModifyRequestDto {
     private int evidenceId;
 
     @NotBlank
-    @Schema(description = "사용자 아이디", example = "1")
-    private int userId;
-
-    @NotBlank
     @Schema(description = "제목", example = "test title")
     private String title;
 
