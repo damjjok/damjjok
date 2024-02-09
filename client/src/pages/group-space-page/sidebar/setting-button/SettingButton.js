@@ -10,12 +10,13 @@ function SettingButton() {
     const { groupId } = useParams();
     const [currentGroupInfo, setCurrentGroupInfo] = useState({});
     const [currentGroupMember, setCurrentGroupMember] = useState([]);
+    const groupIdVal = Number(groupId);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const groupresponse = await getGroupInfo(groupId);
-                const response = await getGroupMember(groupId);
+                const groupresponse = await getGroupInfo(groupIdVal);
+                const response = await getGroupMember(groupIdVal);
                 // console.log(groupresponse);
                 const updatedGroupInfo = groupresponse.groupDto;
                 setCurrentGroupInfo(updatedGroupInfo);
