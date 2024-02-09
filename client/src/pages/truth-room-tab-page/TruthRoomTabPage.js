@@ -1,18 +1,18 @@
 import { Box, Button, Flex, Text, Wrap, useDisclosure } from "@chakra-ui/react";
 import { getScheduleByChallengeId, postSchedule } from "apis/api/Schedule";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import TruthRoomEnterModal from "./modal/TruthRoomEnterModal";
 import TruthRoomTabImg from "assets/images/truth-room-tab-img.png";
 import { useRecoilValue } from "recoil";
-import { currentUserState } from "contexts/User";
+import { currentUser } from "contexts/User";
 import { challengeState } from "contexts/Challenge";
 import TruthRoomScheduleModal from "./modal/TruthRoomScheduleModal";
 
 function TruthRoomTabPage() {
     const { groupId, challengeId } = useParams();
     const challenge = useRecoilValue(challengeState);
-    const user = useRecoilValue(currentUserState);
+    const user = useRecoilValue(currentUser);
     const [schedule, getSchedule] = useState({
         date: "",
     });
