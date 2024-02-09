@@ -46,7 +46,7 @@ function ChallengeList({ onClick }) {
                 const updatedLastChallenge = [];
                 for (let i = 0; i < updatedChallengeList.length; i++) {
                     const challenge = updatedChallengeList[i];
-                    if (challenge.status === "ON") {
+                    if (challenge.status === "PROGRESS") {
                         updatedCurrentGroupChallengeList.push(challenge);
                     } else {
                         updatedLastChallenge.push(challenge);
@@ -226,7 +226,7 @@ function ChallengeList({ onClick }) {
                                         if (onClick) onClick();
                                     }}
                                 >
-                                    {challenge.status === "success" ? (
+                                    {challenge.status === "SUCCESS" ? (
                                         <CheckCircleIcon
                                             size="4"
                                             color="green.500"
