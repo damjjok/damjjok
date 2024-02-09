@@ -12,4 +12,5 @@ import lombok.Setter;
 public class MemberInfoDto {
     private String name;
     private String role;
+    private boolean isReady;
 }
