@@ -7,6 +7,7 @@ import com.ssafy.server.dto.group.UserDto;
 import com.ssafy.server.dto.group.UserInviteDto;
 import com.ssafy.server.dto.request.group.GroupCreateRequestDto;
 import com.ssafy.server.dto.request.group.GroupMemberCreateRequestDto;
+import com.ssafy.server.dto.request.notification.NotificationCreateRequestDto;
 import com.ssafy.server.dto.response.group.*;
 import com.ssafy.server.entity.GroupEntity;
 import com.ssafy.server.entity.GroupMemberEntity;
@@ -18,6 +19,7 @@ import com.ssafy.server.repository.GroupMemberRepository;
 import com.ssafy.server.repository.GroupRepository;
 import com.ssafy.server.repository.UserRepository;
 import com.ssafy.server.service.GroupService;
+import com.ssafy.server.service.NotificationService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +41,8 @@ public class GroupServiceImpl implements GroupService {
     private final GroupRepository groupRepository;
     private final UserRepository userRepository;
     private final GroupMemberRepository groupMemberRepository;
-    private final JwtProvider jwtProvider;
+
+    private final NotificationService notificationService;
 
     @Override
     public ResponseEntity<? super GroupCreateResponseDto> create(GroupCreateRequestDto dto) {
@@ -75,7 +78,19 @@ public class GroupServiceImpl implements GroupService {
                 entity.setUserEntity(userEntity);
                 entity.setId(groupMemberId);
 
+                // 그룹 멤버에 추가
                 groupMemberRepository.save(entity);
+
+                // 그룹 초대 알림 보내기 ( 그룹 만든 사람 뺴고 보내기 )
+                if(user.getUserId() != userId) {
+                    NotificationCreateRequestDto ncrDto = new NotificationCreateRequestDto();
+                    ncrDto.setCommonCodeId(101);
+                    ncrDto.setReceivingMemberId(user.getUserId());
+                    ncrDto.setLink("https://");
+                    ncrDto.setGroupName(groupEntity.getGroupName());
+
+                    notificationService.create(ncrDto);
+                }
             });
 
         }catch (Exception e){
@@ -153,6 +168,10 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public ResponseEntity<? super GroupMemberCreateResponseDto> joinGroupMember(GroupMemberCreateRequestDto dto) {
         try{
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+
+            int userId = customUserDetails.getUserId();
 
             List<UserInviteDto> usersList = dto.getList();
             GroupEntity groupEntity = groupRepository.findByGroupId(dto.getGroupId());
@@ -168,6 +187,17 @@ public class GroupServiceImpl implements GroupService {
                 entity.setId(groupMemberId);
 
                 groupMemberRepository.save(entity);
+
+                // 그룹 초대 알림 보내기 ( 그룹 만든 사람 뺴고 보내기 )
+                if(user.getUserId() != userId) {
+                    NotificationCreateRequestDto ncrDto = new NotificationCreateRequestDto();
+                    ncrDto.setCommonCodeId(101);
+                    ncrDto.setReceivingMemberId(user.getUserId());
+                    ncrDto.setLink("https://");
+                    ncrDto.setGroupName(groupEntity.getGroupName());
+
+                    notificationService.create(ncrDto);
+                }
             });
 
         }catch(Exception e){
