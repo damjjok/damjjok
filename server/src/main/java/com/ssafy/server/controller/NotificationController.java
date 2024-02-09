@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@Tag(name = "알림", description = "알림함에 알림 보내기")
+@Tag(name = "Notification Controller", description = "알림함에 알림 보내기")
 @RestController
 @RequestMapping("/api/v1/notification")
 @RequiredArgsConstructor

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 
-@Tag(name = "일정", description = "진실의 방 일정 관련 api")
+@Tag(name = "Schedule Controller", description = "진실의 방 일정 관련 api")
 @RestController
 @RequestMapping("/api/v1/schedule")
 @RequiredArgsConstructor
