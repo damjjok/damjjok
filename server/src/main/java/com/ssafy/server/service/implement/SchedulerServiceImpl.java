@@ -109,8 +109,16 @@ public class SchedulerServiceImpl implements SchedulerService {
                 // 해당 그룹의 멤버에게 알림 전송
                 List<UserEntity> userEntityList = groupMemberRepository.findUsersByGroupId(challenge.getGroupEntity().getGroupId());
                 userEntityList.stream().forEach( user -> {
-                    if(user.getFcmToken() != null)
-                        fcmAlarmService.sendNotification(user.getFcmToken(),"챌린지 종료","챌린지 종료함돠");
+                    if(user.getFcmToken() != null) {
+                        NotificationCreateRequestDto dto = new NotificationCreateRequestDto();
+                        GroupEntity groupEntity = groupRepository.findByGroupId(challenge.getGroupEntity().getGroupId());
+                        dto.setGroupName(groupEntity.getGroupName());
+                        dto.setReceivingMemberId(user.getUserId());
+                        dto.setCommonCodeId(303);
+                        UserEntity userEntity = userRepository.findByUserId(challenge.getUserId());
+                        dto.setDamjjokName(userEntity.getUserName());
+                    }
+
                 });
                 challenge.setStatus("SUCCESS");
                 entityManager.merge(challenge);
