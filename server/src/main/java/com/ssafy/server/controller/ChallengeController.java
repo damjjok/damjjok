@@ -87,4 +87,10 @@ public class ChallengeController {
         ResponseEntity<? super ChallengeRankResponseDto> response = challengeService.challengeRank(dto);
         return response;
     }
+
+    @GetMapping("/{challengeId}/savedMoney")
+    public ResponseEntity<? super ChallengeSavedMoneyResponseDto> challengeSavedMoney(@PathVariable int challengeId){
+        ResponseEntity<? super ChallengeSavedMoneyResponseDto> response = challengeService.challengeSavedMoney(challengeId);
+        return response;
+    }
 }
