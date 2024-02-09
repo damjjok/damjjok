@@ -1,5 +1,4 @@
 import { useLocation } from "react-router-dom";
-import HomeTabPage from "../home-tab-page/HomeTabPage";
 import TitleText from "components/TitleText";
 import bgSucceedChallenge from "assets/images/bgSucceedChallenge.png";
 import bgFailedChallenge from "assets/images/bgFailedChallenge.png";
