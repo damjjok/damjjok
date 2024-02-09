@@ -18,10 +18,6 @@ public class EvidenceCreateRequestDto {
     private int challengeId;
 
     @NotBlank
-    @Schema(description = "유저 아이디", example = "1")
-    private int userId;
-
-    @NotBlank
     @Schema(description = "제목", example = "Test Tile")
     private String title;
 
