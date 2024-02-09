@@ -1,18 +1,5 @@
-import {
-    Box,
-    Button,
-    Flex,
-    tepper,
-    NumberIncrementStepper,
-    NumberInput,
-    NumberInputField,
-    NumberInputStepper,
-    Text,
-    Wrap,
-    useDisclosure,
-    NumberDecrementStepper,
-} from "@chakra-ui/react";
-import { getScheduleByChallengeId } from "apis/api/Schedule";
+import { Box, Button, Flex, Text, Wrap, useDisclosure } from "@chakra-ui/react";
+import { getScheduleByChallengeId, postSchedule } from "apis/api/Schedule";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import TruthRoomEnterModal from "./modal/TruthRoomEnterModal";
@@ -29,6 +16,9 @@ function TruthRoomTabPage() {
     const [schedule, getSchedule] = useState({
         date: "",
     });
+    const settingBtnClickHandler = async (date) => {
+        await postSchedule(challengeId, date);
+    };
 
     useEffect(() => {
         getScheduleByChallengeId(challengeId, getSchedule);
@@ -102,7 +92,7 @@ function TruthRoomTabPage() {
                                     fontSize={"1.5rem"}
                                     color={"white"}
                                 >
-                                    진실의 방 오픈일 설정
+                                    진실의 방 예약하기
                                 </Text>
                                 <Button
                                     bg={"dam.yellow"}
@@ -138,6 +128,7 @@ function TruthRoomTabPage() {
             <TruthRoomScheduleModal
                 isOpen={isOpenScheduleModal}
                 onClose={onCloseScheduleModal}
+                handler={settingBtnClickHandler}
             ></TruthRoomScheduleModal>
         </>
     );

@@ -51,14 +51,13 @@ function Strick({ startedDate }) {
                 const diff = cur - startedDate;
 
                 let days = parseInt(diff / (1000 * 60 * 60 * 24));
-                console.log(days);
                 tmp[days] = true;
             });
 
             setAttendanceData(tmp);
         };
         makeStrick();
-    }, [attendanceList]);
+    }, []);
 
     return (
         // css 150~80일인 경우 오른쪽으로 쏠림

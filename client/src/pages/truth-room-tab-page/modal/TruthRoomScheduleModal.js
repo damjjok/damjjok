@@ -14,8 +14,14 @@ import {
     Text,
     Wrap,
 } from "@chakra-ui/react";
+import { useState } from "react";
 
-const TruthRoomScheduleModal = ({ isOpen, onClose }) => {
+const TruthRoomScheduleModal = ({ isOpen, onClose, handler }) => {
+    const [date, setDate] = useState({
+        year: new Date().getFullYear(),
+        month: new Date().getMonth() + 1,
+        day: new Date().getDate(),
+    });
     return (
         <>
             <Modal isOpen={isOpen}>
@@ -25,7 +31,11 @@ const TruthRoomScheduleModal = ({ isOpen, onClose }) => {
                         <Text>진실의 방 일정잡기</Text>
                     </ModalHeader>
                     <ModalBody>
-                        <Wrap height={"15vh"}>
+                        <Flex
+                            alignItems={"center"}
+                            justifyContent={"center"}
+                            height={"15vh"}
+                        >
                             <Flex
                                 alignItems={"center"}
                                 justifyContent={"center"}
@@ -38,10 +48,19 @@ const TruthRoomScheduleModal = ({ isOpen, onClose }) => {
                                         alignItems={"center"}
                                     >
                                         <NumberInput
-                                            defaultValue={2024}
+                                            defaultValue={date.year}
                                             min={2024}
                                             max={2025}
                                             width={"6vw"}
+                                            onChange={(
+                                                valueString,
+                                                valueNumber
+                                            ) => {
+                                                setDate({
+                                                    ...date,
+                                                    year: valueNumber,
+                                                });
+                                            }}
                                         >
                                             <NumberInputField />
                                             <NumberInputStepper>
@@ -51,10 +70,19 @@ const TruthRoomScheduleModal = ({ isOpen, onClose }) => {
                                         </NumberInput>
                                         <Text fontSize={"1.5rem"}>년</Text>
                                         <NumberInput
-                                            defaultValue={1}
+                                            defaultValue={date.month}
                                             min={1}
                                             max={12}
                                             width={"5vw"}
+                                            onChange={(
+                                                valueString,
+                                                valueNumber
+                                            ) => {
+                                                setDate({
+                                                    ...date,
+                                                    month: valueNumber,
+                                                });
+                                            }}
                                         >
                                             <NumberInputField />
                                             <NumberInputStepper>
@@ -64,10 +92,19 @@ const TruthRoomScheduleModal = ({ isOpen, onClose }) => {
                                         </NumberInput>
                                         <Text fontSize={"1.5rem"}>월</Text>
                                         <NumberInput
-                                            defaultValue={1}
+                                            defaultValue={date.day}
                                             min={1}
                                             max={31}
                                             width={"5vw"}
+                                            onChange={(
+                                                valueString,
+                                                valueNumber
+                                            ) => {
+                                                setDate({
+                                                    ...date,
+                                                    day: valueNumber,
+                                                });
+                                            }}
                                         >
                                             <NumberInputField />
                                             <NumberInputStepper>
@@ -78,16 +115,37 @@ const TruthRoomScheduleModal = ({ isOpen, onClose }) => {
                                         <Text fontSize={"1.5rem"}>일</Text>
                                     </Flex>
                                 </Wrap>
-                                <Button
-                                    bg={"dam.yellow"}
-                                    size={"sm"}
-                                    borderRadius={"30px"}
-                                    onClick={onClose}
-                                >
-                                    설정하기
-                                </Button>
+                                <Wrap>
+                                    <Button
+                                        bg={"dam.yellow"}
+                                        size={"sm"}
+                                        borderRadius={"30px"}
+                                        onClick={() => {
+                                            onClose();
+                                            console.log(date);
+                                            handler(
+                                                new Date(
+                                                    date.year,
+                                                    date.month - 1,
+                                                    date.day
+                                                )
+                                            );
+                                        }}
+                                    >
+                                        설정하기
+                                    </Button>
+                                    <Button
+                                        size={"sm"}
+                                        borderRadius={"30px"}
+                                        onClick={() => {
+                                            onClose();
+                                        }}
+                                    >
+                                        닫기
+                                    </Button>
+                                </Wrap>
                             </Flex>
-                        </Wrap>
+                        </Flex>
                     </ModalBody>
                 </ModalContent>
             </Modal>

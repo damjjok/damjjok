@@ -10,4 +10,17 @@ const getScheduleByChallengeId = async (challengeId, setSchdule) => {
     }
 };
 
-export { getScheduleByChallengeId };
+const postSchedule = async (challengeId, date) => {
+    try {
+        const response = await axiosInstance.post(`/v1/schedule`, {
+            challengeId,
+            date,
+        });
+
+        if (response.status === 200) console.log("진실의 방 일정 등록 성공!");
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export { getScheduleByChallengeId, postSchedule };
