@@ -29,13 +29,10 @@ function ChallengeDuration() {
     };
 
     return (
-        <Box my={4}>
-            <Text fontSize={"x-large"} mb={8} fontWeight={700}>
-                챌린지 기한 설정
-            </Text>
+        <Box>
             <Slider
                 onChange={handleSliderChange}
-                defaultValue={challenge.duration}
+                defaultValue={0}
                 min={30}
                 max={180}
                 step={30}

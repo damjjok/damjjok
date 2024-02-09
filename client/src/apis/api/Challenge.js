@@ -2,23 +2,25 @@ const { axiosInstance } = require("util/axios/AxiosInstance");
 
 const createChallenge = async ({
     groupId,
-    userId,
+    duration,
     initialMoney,
     savedMoney,
     savedPeriod,
 }) => {
     const body = {
         groupId: groupId,
-        userId: userId,
+        duration: duration,
         initialMoney: initialMoney,
         savedMoney: savedMoney,
         savedPeriod: savedPeriod,
     };
     try {
-        const response = await axiosInstance.post("/v1/challenge/create");
+        const response = await axiosInstance.post("/v1/challenge/create", body);
         if (response.status === 200) return response.data;
         // console.log(response.status);
-    } catch (error) {}
+    } catch (error) {
+        console.log(body);
+    }
 };
 
 const getChallengeRanking = async (challengeId) => {

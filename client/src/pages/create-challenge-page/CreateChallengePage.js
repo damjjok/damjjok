@@ -25,11 +25,13 @@ import { currentUserState } from "contexts/User";
 
 function CreateChallengePage() {
     const { groupId } = useParams();
+    const groupIdval = Number(groupId);
     const { isOpen, onClose } = useDisclosure();
     const currentUser = useRecoilValue(currentUserState);
     const [challenge, setChallenge] = useRecoilState(createChallengeState);
     const isMobile = useBreakpointValue({ base: true, md: false });
     const initialState = {
+        groupId: groupIdval,
         duration: 0,
         initialMoney: 0,
         savedPeriod: 0,
@@ -41,9 +43,9 @@ function CreateChallengePage() {
         setChallenge(initialState);
     }, []);
 
-    useEffect(() => {
-        console.log("createChallengeState has changed:", challenge);
-    }, [challenge]);
+    // useEffect(() => {
+    //     console.log("createChallengeState has changed:", challenge);
+    // }, [challenge]);
     // const endDate = useRecoilValue(challengeEndDate);
 
     return (
@@ -58,23 +60,48 @@ function CreateChallengePage() {
             </TitleText>
             <Flex
                 flexFlow={"column"}
-                alignItems={"center"}
-                justifyContent={"center"}
                 my={6}
                 overflowY={"auto"}
-                height="60vh"
+                height={isMobile ? "68vh" : "64vh"}
                 // width={isMobile ? "90vw" : "none"}
             >
-                <VStack>
+                <Text fontSize={"x-large"} fontWeight={700}>
+                    챌린지 기한 설정
+                </Text>
+                <Box
+                    display={"flex"}
+                    flexFlow={"column"}
+                    alignItems={"center"}
+                    mt={8}
+                    mb={12}
+                >
                     <ChallengeDuration />
+                </Box>
+                <Text fontSize={"x-large"} fontWeight={700}>
+                    금연 저금통 설정
+                </Text>
+                <Box
+                    display={"flex"}
+                    flexFlow={"column"}
+                    alignItems={"center"}
+                    mt={8}
+                    mb={12}
+                >
                     <ChallengeMoney />
-                    {/* <Text>
+                </Box>
+                {/* <Text>
                         {groupId},{currentUser.userId},{challenge.duration},
                         {challenge.savedMoney},{challenge.initialMoney},
                         {challenge.savedPeriod}
                     </Text> */}
-                </VStack>
-                <ChallengeCreateAlert isOpen={isOpen} onClose={onClose} />
+                <Box
+                    display={"flex"}
+                    flexFlow={"column"}
+                    alignItems={"center"}
+                    mb={4}
+                >
+                    <ChallengeCreateAlert isOpen={isOpen} onClose={onClose} />
+                </Box>
             </Flex>
         </Box>
     );

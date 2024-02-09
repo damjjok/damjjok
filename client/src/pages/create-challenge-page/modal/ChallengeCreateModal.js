@@ -10,25 +10,39 @@ import {
 } from "@chakra-ui/react";
 import BasicButton from "../../../components/button/BasicButton";
 import { useNavigate } from "react-router-dom";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
 import {
-    challengeState,
-    challengeEndDate,
-    challengeListState,
+    createChallengeEndDate,
+    createChallengeState,
 } from "../../../contexts/Challenge";
-import { currentGroupState } from "../../../contexts/User";
+import { useEffect } from "react";
+import { createChallenge } from "apis/api/Challenge";
 
 function ChallengeCreateModal() {
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const [challenge, setChallenge] = useRecoilState(challengeState);
-    const [challengeList, setChallengeList] =
-        useRecoilState(challengeListState);
-    const endDate = useRecoilValue(challengeEndDate);
+    const challenge = useRecoilValue(createChallengeState);
+    const endDate = useRecoilValue(createChallengeEndDate);
     const navigate = useNavigate();
-    const currentGroup = { groupId: "1", groupName: "E105" };
+
+    const handleClick = async () => {
+        try {
+            const data = await createChallenge({
+                groupId: challenge.groupId,
+                duration: challenge.duration,
+                initialMoney: challenge.initialMoney,
+                savedMoney: challenge.savedMoney,
+                savedPeriod: challenge.savedPeriod,
+            });
+            onOpen();
+        } catch (error) {
+            console.log(challenge);
+            console.error(error);
+        }
+    };
+
     return (
         <div>
-            <BasicButton onClick={onOpen} buttonName={"생성하기"} />
+            <BasicButton onClick={handleClick} buttonName={"생성하기"} />
             {/* onClick에 API 연결 => POST실행 후에 데이터 받아와서 그 값들을 하단 출력에 활용해서 넣어줄 것.  */}
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
@@ -51,19 +65,22 @@ function ChallengeCreateModal() {
                             <p>{endDate.toLocaleDateString()}</p>
                         </div>
                         <div className="flex justify-between">
-                            <p>예상 저금통 금액</p>
+                            <p>만료시 저금통 적립 금액</p>
                             <p>
                                 {challenge.initialMoney +
                                     challenge.savedMoney *
                                         (challenge.duration /
-                                            challenge.savedPeriod)}
+                                            challenge.savedPeriod)}{" "}
+                                원
                             </p>
                         </div>
                     </ModalBody>
                     <ModalFooter>
                         <BasicButton
                             className="flex justify-center"
-                            onClick={navigate(`/group/${currentGroup.groupId}`)}
+                            onClick={() =>
+                                navigate(`/group/${challenge.groupId}`)
+                            }
                             buttonName={"챌린지 시작하기"}
                             variant={"bigbtn"}
                         />

@@ -4,13 +4,7 @@
 
 // 수정해야 할 것 : Route 설정
 import { useEffect } from "react";
-import {
-    Routes,
-    Route,
-    Outlet,
-    useNavigate,
-    useParams,
-} from "react-router-dom";
+import { Outlet, useNavigate, useParams } from "react-router-dom";
 // import { useRecoilValue } from "recoil";
 import ChallengePage from "../../challenge-page/ChallengePage";
 import EmptyChallengePage from "../../empty-challenge-page/EmptyChallengePage";
@@ -19,52 +13,45 @@ import {
     challengeState,
 } from "../../../contexts/Challenge";
 import CreateChallengePage from "../../create-challenge-page/CreateChallengePage";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { getChallengeList } from "apis/api/Challenge";
+import { currentUserState } from "contexts/User";
 
 // import NormalButton from "../components/button/normalbutton/NormalButton";
 
 function GroupSpaceMain() {
     // 더미데이터
-    const userId = 0;
+    const userId = useRecoilValue(currentUserState);
 
     const { groupId } = useParams();
     // console.log(groupId);
     // const setChallengeState = useSetRecoilState(challengeState);
-    const [currentChallengeList, setCurrentChallengeList] =
-        useRecoilState(challengeListState);
+    const currentChallengeList = useRecoilValue(challengeListState);
     const navigate = useNavigate();
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await getChallengeList(groupId);
-                const updatedChallengeList = response.list;
-                setCurrentChallengeList(updatedChallengeList); // Recoil 상태에 데이터 적용
-                // console.log(currentChallengeList);
-                const currentMyChallenge = updatedChallengeList.find(
-                    (challenge) =>
-                        challenge.userId === userId && challenge.status === "ON"
+        // currentChallengeList가 정의되어 있고, 그 길이가 0보다 클 때만 로직 실행
+        if (currentChallengeList && currentChallengeList.length > 0) {
+            const currentMyChallenge = currentChallengeList.find(
+                (challenge) =>
+                    challenge.userId === userId &&
+                    challenge.status === "PROGRESS"
+            );
+
+            if (currentMyChallenge) {
+                navigate(`challenge/${currentMyChallenge.challengeId}`);
+            } else {
+                const randomCurrentChallenge = currentChallengeList.find(
+                    (challenge) => challenge.status === "PROGRESS"
                 );
-                // setChallengeState(currentMyChallenge);
-                // console.log(currentMyChallenge);
-
-                if (currentMyChallenge) {
-                    navigate(`challenge/${currentMyChallenge.challengeId}`);
-                } else if (!currentMyChallenge && currentChallengeList) {
-                    navigate(
-                        `challenge/${updatedChallengeList[0].challengeId}`
-                    );
-                } else {
-                    navigate("empty-challenge");
+                if (randomCurrentChallenge) {
+                    navigate(`challenge/${randomCurrentChallenge.challengeId}`);
                 }
-            } catch (error) {
-                console.error("챌린지 정보 불러오기 실패", error);
             }
-        };
-
-        fetchData(); // fetchData 함수 호출
-    }, [groupId]);
+        } else {
+            navigate("empty-challenge");
+        }
+    }, [groupId, currentChallengeList]);
 
     return (
         <>

@@ -20,11 +20,13 @@ import { useEffect, useState } from "react";
 import challengeIcon from "assets/images/currentChallengeIcon.png";
 import { useNavigate, useParams } from "react-router-dom";
 import { getChallengeList } from "apis/api/Challenge";
+import { useRecoilValue } from "recoil";
+import { currentUserState } from "contexts/User";
 // import { useRecoilValue } from "recoil";
 // import { challengeListState } from "../../../../context/Challenge";
 
 function ChallengeList({ onClick }) {
-    const userId = 0;
+    const userId = useRecoilValue(currentUserState);
 
     const { groupId } = useParams();
     // const setChallengeState = useSetRecoilState(challengeState);
@@ -46,7 +48,7 @@ function ChallengeList({ onClick }) {
                 const updatedLastChallenge = [];
                 for (let i = 0; i < updatedChallengeList.length; i++) {
                     const challenge = updatedChallengeList[i];
-                    if (challenge.status === "ON") {
+                    if (challenge.status === "PROGRESS") {
                         updatedCurrentGroupChallengeList.push(challenge);
                     } else {
                         updatedLastChallenge.push(challenge);
@@ -208,6 +210,7 @@ function ChallengeList({ onClick }) {
                         {lastChallenge.length > 0 ? (
                             lastChallenge.map((challenge, index) => (
                                 <Flex
+                                    key={index}
                                     alignItems="center"
                                     className={`py-2 px-4 rounded-lg ${
                                         selectedChallenge.index === index &&
@@ -221,13 +224,13 @@ function ChallengeList({ onClick }) {
                                             list: "last",
                                         });
                                         navigate(
-                                            `/group/${groupId}}/last-challenge/${challenge.challengeId}`,
+                                            `/group/${groupId}/last-challenge/${challenge.challengeId}`,
                                             { state: { challenge } }
                                         );
                                         if (onClick) onClick();
                                     }}
                                 >
-                                    {challenge.status === "success" ? (
+                                    {challenge.status === "SUCCESS" ? (
                                         <CheckCircleIcon
                                             size="4"
                                             color="green.500"

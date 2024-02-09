@@ -18,11 +18,6 @@ export const currentUserState = atom({
 //     default: { groupId: "1", groupName: "E105" },
 // });
 
-export const currentGroupState = atom({
-    key: "currentGroupState",
-    default: { groupId: "1", groupName: "E105" },
-});
-
 // accessToken 에서 받아온 유저 정보
 export const currentUser = atom({
     key: "currentUser",

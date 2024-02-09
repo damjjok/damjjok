@@ -31,12 +31,8 @@ function ChallengeMoney() {
             [name]: numericValue,
         }));
     };
-    const isError = challenge.duration < 0;
     return (
-        <Box display={"flex"} flexFlow={"column"} mt={10} mb={4}>
-            <Text fontSize={"x-large"} fontWeight={700}>
-                금연 저금통 설정
-            </Text>
+        <Box display={"flex"} flexFlow={"column"}>
             <Flex
                 flexFlow={"column"}
                 alignItems={"center"}
@@ -47,7 +43,7 @@ function ChallengeMoney() {
                     isInvalid={isErrorInitialMoney}
                     className="flex flex-col my-4 min-w-lg max-w-lg"
                 >
-                    <div className="flex items-end px-4">
+                    <div className="flex justify-center items-end px-4">
                         <FormLabel fontSize={"md"} fontWeight={"semibold"}>
                             초기금액
                         </FormLabel>
@@ -58,7 +54,6 @@ function ChallengeMoney() {
                             onChange={handleInputChange("initialMoney")}
                             focusBorderColor="dam.yellow"
                             placeholder="단위(원)"
-                            htmlSize={16}
                             width="auto"
                         >
                             <NumberInputField
@@ -76,17 +71,17 @@ function ChallengeMoney() {
                     className="flex flex-col my-4 min-w-lg max-w-lg"
                 >
                     <Box my={4}>
-                        <div className="flex items-end px-4">
+                        <div className="flex justify-center items-end px-4">
                             <FormLabel fontSize={"md"} fontWeight={"semibold"}>
                                 적립주기
                             </FormLabel>
                             <NumberInput
-                                min={0}
+                                min={1}
+                                max={180}
                                 name="savedPeriod"
                                 type="number"
                                 onChange={handleInputChange("savedPeriod")}
                                 placeholder="단위(일)"
-                                htmlSize={16}
                                 width="auto"
                             >
                                 <NumberInputField
@@ -106,9 +101,9 @@ function ChallengeMoney() {
                 </FormControl>
                 <FormControl
                     isInvalid={isErrorSavedMoney}
-                    className="flex flex-col justify-center my-4 min-w-lg max-w-lg"
+                    className="flex flex-col my-4 min-w-lg max-w-lg"
                 >
-                    <div className="flex items-end px-4">
+                    <div className="flex justify-center items-end px-4">
                         <FormLabel fontSize={"md"} fontWeight={"semibold"}>
                             적립금액
                         </FormLabel>
@@ -118,7 +113,6 @@ function ChallengeMoney() {
                             type="number"
                             onChange={handleInputChange("savedMoney")}
                             placeholder="단위(원)"
-                            htmlSize={16}
                         >
                             <NumberInputField
                                 width={isMobile ? "30vw" : "none"}

@@ -1,5 +1,4 @@
-import { useLocation } from "react-router-dom";
-import HomeTabPage from "../home-tab-page/HomeTabPage";
+import { useLocation, useParams } from "react-router-dom";
 import TitleText from "components/TitleText";
 import bgSucceedChallenge from "assets/images/bgSucceedChallenge.png";
 import bgFailedChallenge from "assets/images/bgFailedChallenge.png";
@@ -9,32 +8,55 @@ import PiggyBankFinished from "../challenge-page/modal/completed-modal/piggy-ban
 import StatusBar from "../challenge-page/status-bar/StatusBar";
 import Strick from "../home-tab-page/strick/Strick";
 import InfoCards from "../home-tab-page/info-cards/InfoCards";
+import { useEffect } from "react";
+import { getChallengeInfo } from "apis/api/Challenge";
+import { useRecoilState } from "recoil";
+import { challengeState } from "contexts/Challenge";
 
 function LastChallengePage() {
-    const location = useLocation();
-    const challenge = location.state.challenge;
+    const { groupId, challengeId } = useParams();
+    const [currentChallenge, setCurrentChallenge] =
+        useRecoilState(challengeState);
     const tabName =
-        challenge.status === "success" ? "성공한 챌린지" : "실패한 챌린지";
+        currentChallenge.status === "SUCCESS"
+            ? "성공한 챌린지"
+            : "실패한 챌린지";
     const description =
-        challenge.status === "success"
+        currentChallenge.status === "SUCCESS"
             ? "이전에 성공한 챌린지 정보를 볼 수 있어요"
             : "이전에 실패한 챌린지 정보를 볼 수 있어요";
     const bgImage =
-        challenge.status === "success" ? bgSucceedChallenge : bgFailedChallenge;
+        currentChallenge.status === "SUCCESS"
+            ? bgSucceedChallenge
+            : bgFailedChallenge;
     const isExpired = "True";
 
-    console.log(challenge);
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await getChallengeInfo(challengeId);
+                const updatedChallenge = response.dto;
+                setCurrentChallenge(updatedChallenge); // Recoil 상태에 데이터 적용
+                console.log(updatedChallenge);
+            } catch (error) {
+                console.error("챌린지 정보 불러오기 실패", error);
+            }
+        };
 
-    //더미
-    const endDate = new Date(challenge.endDate);
-    const startedDate = new Date(challenge.createdAt);
+        fetchData(); // fetchData 함수 호출
+    }, [challengeId, setCurrentChallenge]);
+
+    // console.log(challenge);
+
+    const endDate = new Date(currentChallenge.endDate);
+    const startedDate = new Date(currentChallenge.createdAt);
     const diffMilliseconds = endDate.getTime() - startedDate.getTime();
     const diffDays = Math.floor(diffMilliseconds / (24 * 60 * 60 * 1000));
 
     return (
         <>
             <VStack marginBottom={15}>
-                <StatusBar challenge={challenge} />
+                <StatusBar />
                 <TitleText
                     fontSize="2rem"
                     img={bgImage}
@@ -54,14 +76,15 @@ function LastChallengePage() {
                     // height="120vh"
                 >
                     <VStack spacing={"30px"} mb={20}>
-                        {challenge.status === "success" ? (
+                        {currentChallenge.status === "SUCCESS" ? (
                             <Heading>
-                                {challenge.userName}님이 성공했던 금연
+                                {currentChallenge.userName}님이 성공했던 금연
                                 기록이에요!
                             </Heading>
                         ) : (
                             <Heading>
-                                {challenge.userName}님이 금연하려 했던 노력은...
+                                {currentChallenge.userName}님이 금연하려 했던
+                                노력은...
                             </Heading>
                         )}
                         <Strick startedDate={startedDate} />
@@ -69,10 +92,10 @@ function LastChallengePage() {
                         <InfoCards
                             diffDays={diffDays}
                             diffMilliseconds={diffMilliseconds}
-                            challengeId={challenge.challengeId}
+                            challengeId={currentChallenge.challengeId}
                         />
                     </VStack>
-                    {challenge.status === "success" ? (
+                    {currentChallenge.status === "SUCCESS" ? (
                         <VStack spacing={"30px"}>
                             <MessageCheckModal isExpired={isExpired} />
                             <PiggyBankFinished isExpired={isExpired} />

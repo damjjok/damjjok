@@ -26,28 +26,26 @@ export const challengeListState = atom({
     default: [],
 });
 
-export const challengeEndDate = selector({
+export const createChallengeEndDate = selector({
     key: "challengeEndDate",
     get: ({ get }) => {
-        const challenge = get(challengeState);
-        const startDate = new Date(challenge.createdAt);
-        return new Date(
-            startDate.setDate(startDate.getDate() + challenge.duration),
-        );
+        const challenge = get(createChallengeState);
+        let today = new Date();
+        return new Date(today.setDate(today.getDate() + challenge.duration));
     },
 });
 
 export const challengeCandyCount = atom({
     key: "challengeCandyCount",
     default: 0,
-})
+});
 
 export const createChallengeState = atom({
     key: "createChallengeState",
     default: {
-        duration : 0,
+        duration: 0,
         initialMoney: 0,
         savedMoney: 0,
         savedPeriod: 0,
-    }
-})
+    },
+});
