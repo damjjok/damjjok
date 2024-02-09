@@ -8,9 +8,10 @@ export const currentUserState = atom({
         exp: 1722844037,
         iat: 1707292037,
         userId: 56,
-        userName: "문지호"
+        userName: "문지호",
     },
 });
+
 //
 // export const currentGroupState = atom({
 //     key: "currentGroupState",
