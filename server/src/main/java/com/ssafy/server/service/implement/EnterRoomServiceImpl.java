@@ -3,7 +3,10 @@ package com.ssafy.server.service.implement;
 import com.google.firebase.auth.UserInfo;
 import com.ssafy.server.dto.websocket.MemberInfoDto;
 import com.ssafy.server.dto.websocket.TruthRoomDto;
+import com.ssafy.server.entity.ChallengeEntity;
+import com.ssafy.server.repository.ChallengeRepository;
 import com.ssafy.server.service.EnterRoomService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -11,7 +14,11 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
+@RequiredArgsConstructor
 public class EnterRoomServiceImpl implements EnterRoomService {
+
+    private final ChallengeRepository challengeRepository;
+
     //현재 진실의 방이 진행되고 있는 방들 정보
     private final Map<Integer, TruthRoomDto> truthRooms = new ConcurrentHashMap<>();
 
@@ -111,5 +118,12 @@ public class EnterRoomServiceImpl implements EnterRoomService {
     // 세션 ID에 해당하는 매핑을 제거하는 메소드
     public void removeSessionFromRoomMap(String sessionId) {
         sessionRoomMap.remove(sessionId);
+    }
+
+    @Override
+    public void setChallengeState(Integer challengeId, String status) {
+        ChallengeEntity challengeEntity = challengeRepository.findByChallengeId(challengeId);
+        challengeEntity.setStatus(status);
+        challengeRepository.save(challengeEntity);
     }
 }
