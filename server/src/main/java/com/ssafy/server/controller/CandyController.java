@@ -1,8 +1,10 @@
 package com.ssafy.server.controller;
 
 
+import com.ssafy.server.dto.request.candy.BestCheeringMemberRequestDto;
 import com.ssafy.server.dto.request.candy.CandyCountRequestDto;
 import com.ssafy.server.dto.request.candy.CandyCreateRequestDto;
+import com.ssafy.server.dto.response.candy.BestCheeringMemberResponseDto;
 import com.ssafy.server.dto.response.candy.CandyCountResponseDto;
 import com.ssafy.server.dto.response.candy.CandyCreateResponseDto;
 import com.ssafy.server.service.CandyService;
@@ -41,6 +43,17 @@ public class CandyController {
         CandyCountRequestDto requestBody = new CandyCountRequestDto();
         requestBody.setChallengeId(challengeId);
         ResponseEntity<? super CandyCountResponseDto> response = candyService.count(requestBody);
+        return response;
+    }
+
+    @Operation(summary = "응원왕 조회", description = "응원왕 이름과 캔디수, 메시지 수를 조회합니다.",
+            responses = { @ApiResponse(responseCode = "200", description = "응원왕 조회 성공",
+                    content = @Content(schema = @Schema(implementation = BestCheeringMemberResponseDto.class)))})
+    @GetMapping("/best-member/{challengeId}")
+    public ResponseEntity<? super BestCheeringMemberResponseDto> bestCheeringMember(@PathVariable int challengeId) {
+        BestCheeringMemberRequestDto requestBody = new BestCheeringMemberRequestDto() ;
+        requestBody.setChallengeId(challengeId);
+        ResponseEntity<? super BestCheeringMemberResponseDto> response = candyService.bestMember(requestBody);
         return response;
     }
 }
