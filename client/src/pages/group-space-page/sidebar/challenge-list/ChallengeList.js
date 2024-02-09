@@ -209,6 +209,7 @@ function ChallengeList({ onClick }) {
                         {lastChallenge.length > 0 ? (
                             lastChallenge.map((challenge, index) => (
                                 <Flex
+                                    key={index}
                                     alignItems="center"
                                     className={`py-2 px-4 rounded-lg ${
                                         selectedChallenge.index === index &&
