@@ -26,6 +26,9 @@ public class ChallengeEntity {
     @JoinColumn(name="group_id")
     GroupEntity groupEntity;
 
+    @Column(name="duration", nullable = false)
+    private Integer duration;
+
     @Column(name="user_id",nullable = false)
     private Integer userId;
 

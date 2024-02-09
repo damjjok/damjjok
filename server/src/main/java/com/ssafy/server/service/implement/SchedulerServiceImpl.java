@@ -89,16 +89,18 @@ public class SchedulerServiceImpl implements SchedulerService {
                 .setParameter("now", now)
                 .getResultList();
 
-        challengeEntityList.stream().forEach( challenge -> {
-            // 해당 그룹의 멤버에게 알림 전송
-            List<UserEntity> userEntityList = groupMemberRepository.findUsersByGroupId(challenge.getGroupEntity().getGroupId());
-            userEntityList.stream().forEach( user -> {
-                if(user.getFcmToken() != null)
-                    fcmAlarmService.sendNotification(user.getFcmToken(),"챌린지 종료","챌린지 종료함돠");
+        challengeEntityList.stream()
+                .filter( challenge -> challenge.getChallengeId().equals("PROGRESS")) // 해당 챌린지가 진행중이면 밑의 forEach 실행
+                .forEach( challenge -> {
+                // 해당 그룹의 멤버에게 알림 전송
+                List<UserEntity> userEntityList = groupMemberRepository.findUsersByGroupId(challenge.getGroupEntity().getGroupId());
+                userEntityList.stream().forEach( user -> {
+                    if(user.getFcmToken() != null)
+                        fcmAlarmService.sendNotification(user.getFcmToken(),"챌린지 종료","챌린지 종료함돠");
+                });
+                challenge.setStatus("SUCCESS");
+                entityManager.merge(challenge);
             });
-            challenge.setStatus("OFF");
-            entityManager.merge(challenge);
-        });
 
         // 3 챌린지 지속 알림
         List<ChallengeEntity> challengeEntityList1 = challengeRepository.findAll();

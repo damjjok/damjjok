@@ -13,6 +13,10 @@ public class ChallengeCreateRequestDto {
     private int groupId;
 
     @NotBlank
+    @Schema(description = "챌린지 기간", example = "30,60,90,120,150,180")
+    private int duration;
+
+    @NotBlank
     @Schema(description = "기본금", example = "1000")
     private int initialMoney;
 
