@@ -28,8 +28,7 @@ public class AttendanceController {
                     content = @Content(schema = @Schema(implementation = AttendanceCreateResponseDto.class)))})
     public ResponseEntity<? super AttendanceCreateResponseDto> createAttendance(
             @RequestBody AttendanceCreateRequestDto requestBody){
-        System.out.println(requestBody.toString());
-
+        //System.out.println(requestBody.toString());
         ResponseEntity<? super AttendanceCreateResponseDto> response = attendanceService.create(requestBody);
         return response;
     }
