@@ -10,6 +10,7 @@ import com.ssafy.server.dto.response.notification.NotificationCreateResponseDto;
 import com.ssafy.server.dto.response.notification.NotificationListResponseDto;
 import com.ssafy.server.entity.*;
 import com.ssafy.server.repository.*;
+import com.ssafy.server.service.FCMAlarmService;
 import com.ssafy.server.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,10 +27,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class NotificationServiceImpl implements NotificationService {
     private final UserRepository userRepository;
+    private final ChallengeRepository challengeRepository;
     private final NotificationRepository notificationRepository;
     private final CommonCodeRepository commonCodeRepository;
     private final GroupRepository groupRepository;
     private final NotificationMessageTemplateRepository notificationMessageTemplateRepository;
+
+    private FCMAlarmService fcmAlarmService;
+
     @Override
     public ResponseEntity<? super NotificationListResponseDto> list() {
         List<NotificationDto> list = new ArrayList<>();
@@ -67,15 +73,19 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public ResponseEntity<? super NotificationCreateResponseDto> create(NotificationCreateRequestDto dto) {
+
         try{
+
+            // 수신인
             int userId = dto.getReceivingMemberId();
             UserEntity userEntity = userRepository.findByUserId(userId);
-            //수신인 이름
-            String userName = userEntity.getUserName();
+            String senderName = dto.getSenderName();
 
-            int groupId = dto.getGroupId();
-            GroupEntity groupEntity = groupRepository.findByGroupId(groupId);
-            String groupName = groupEntity.getGroupName();
+            // 그룹
+            String groupName = dto.getGroupName();
+
+            // 챌린지
+            String day = dto.getDay();
 
             NotificationEntity notificationEntity = new NotificationEntity();
             notificationEntity.setLink(dto.getLink());
@@ -85,51 +95,43 @@ public class NotificationServiceImpl implements NotificationService {
             CommonCodeEntity commonCodeEntity = commonCodeRepository.findByCommonCodeId(dto.getCommonCodeId());
             notificationEntity.setCommonCodeEntity(commonCodeEntity);
             notificationEntity.setUserEntity(userEntity);
+
+            NotificationMessageTemplateEntity notificationMessageTemplateEntity = notificationMessageTemplateRepository.findByCommonCodeId(dto.getCommonCodeId());
+            String title = notificationMessageTemplateEntity.getNotificationMessageTitle();
+            String temp = notificationMessageTemplateEntity.getNotificationMessageContent();
+
             //각 공통코드 마다 다르게 notification_content 담기
             // 각 공통코드 마다 다르게 notification_content 담기
             String messageTemplate = "";
-            switch (dto.getCommonCodeId()) {
-                case 101:
-                    messageTemplate = String.format("%s 님이 새로운 모험을 함께 할 %s 으로 초대했어요!",
-                            dto.getDamjjokName(), groupName);
-                    break;
-                case 201:
-                    messageTemplate = String.format("%s 에서 %s 님이 새로운 도전을 시작했어요! 담쪽이를 응원해주세요!",
-                            groupName, dto.getDamjjokName());
-                    break;
-                case 301:
-                    messageTemplate = String.format("%s 의 %s 님의 챌린지가 3일 뒤에 종료됩니다. 마지막 까지 함께해요 !",
-                            groupName, dto.getDamjjokName());
-                    break;
-                case 302:
-                    messageTemplate = String.format("%s 이 3일 뒤에 삭제됩니다.",
-                            groupName);
-                    break;
-                case 401:
-                    messageTemplate = String.format("%s 에서의 %s 챌린지가 무려 %d 일이 되었어요!",
-                            groupName, dto.getDamjjokName(), dto.getDay());
-                    break;
-                case 501:
-                    messageTemplate = String.format("%s 님이 새로운 모험을 함께 할 %s 으로 초대했어요!",
-                            dto.getSenderName(), groupName);
-                    break;
-                case 601:
-                    messageTemplate = String.format("%s 님 %s 의 진실의 방 일정을 잡아주세요",
-                            dto.getDamjjokName(), groupName);
-                    break;
-                case 602:
-                    messageTemplate = String.format("%s 님 %s 의 담쪽이가 진실의 방 일정을 생성하였습니다.",
-                            userName, groupName);
-                    break;
-                case 603:
-                    messageTemplate = String.format("%s 에서 %s 님이 주최하는 진실의 방이 열리는 날!",
-                            groupName, dto.getDamjjokName());
-                    break;
-                // 여기에 추가적인 케이스를 계속 추가할 수 있습니다.
-                default:
-                    messageTemplate = "알 수 없는 알림 타입입니다.";
-                    break;
+
+            int commonCodeId = dto.getCommonCodeId();
+
+            if(commonCodeId == 201 || commonCodeId == 301 ||
+                    commonCodeId == 303  || commonCodeId == 601 || commonCodeId == 603){
+                messageTemplate = temp
+                        .replace("{damjjokName}", dto.getDamjjokName())
+                        .replace("{groupName}", groupName);
             }
+            else if(commonCodeId == 101 || commonCodeId == 302
+                    || commonCodeId == 304 || commonCodeId == 602){
+                messageTemplate = temp
+                        .replace("{groupName}", groupName);
+            }
+            else if(commonCodeId == 401){
+                messageTemplate = temp
+                        .replace("{damjjokName}", dto.getDamjjokName())
+                        .replace("{groupName}", groupName)
+                        .replace("{day}", day);
+            }
+            else if(commonCodeId == 501){
+                messageTemplate = temp
+                        .replace("{senderName}", senderName)
+                        .replace("{groupName}", groupName);
+            }
+
+            // 실제 알림 전송
+            fcmAlarmService.sendNotification(userEntity.getFcmToken(),title ,messageTemplate);
+            // 디비에 값 저장
             notificationEntity.setNotificationContents(messageTemplate);
             notificationRepository.save(notificationEntity);
 

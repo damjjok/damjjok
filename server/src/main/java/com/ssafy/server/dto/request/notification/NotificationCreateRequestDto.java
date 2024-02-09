@@ -14,6 +14,7 @@ import org.checkerframework.checker.units.qual.N;
 @NoArgsConstructor
 @AllArgsConstructor
 public class NotificationCreateRequestDto {
+
     @NotBlank
     @Schema(description = "공통코드 Id", example = "101")
     private int commonCodeId;
@@ -27,22 +28,19 @@ public class NotificationCreateRequestDto {
     private String link;
 
     @NotBlank
-    @Schema(description = "그룹 Id", example = "1")
-    private int groupId;
-
-    @NotBlank
     @Schema(description = "담쪽이 Name", example = "영후")
     private String damjjokName;
 
     @NotBlank
-    @Schema(description = "박사님 Name", example = "서현")
-    private String doctorName;
+    @Schema(description = "그룹 Name", example = "영후")
+    private String groupName;
 
     @NotBlank
-    @Schema(description = "발신자 Name", example = "다희")
+    @Schema(description = "제보 등록한 사람 이름", example = "다희")
     private String senderName;
 
     @NotBlank
     @Schema(description = "날짜수" , example = "30")
-    private int day;
+    private String day;
+
 }
