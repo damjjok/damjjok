@@ -3,7 +3,7 @@ import { Button, useDisclosure, HStack } from "@chakra-ui/react";
 import CreateGroupModal from "./create-group-modal/CreateGroupModal";
 import logo from "assets/images/logo.png";
 import landingBg from "assets/images/bgimg.png";
-import { getGroupList } from "apis/api/Landig";
+import { getGroupList, postCreateGroup } from "apis/api/Landig";
 
 const CreateGroup = () => {
     const [groupData, setGroupData] = useState([]);
@@ -17,7 +17,7 @@ const CreateGroup = () => {
                 // getGroupList 함수를 호출하여 데이터를 가져옵니다.
                 const response = await getGroupList();
                 // 가져온 데이터를 groupData 상태에 저장합니다.
-                setGroupData(response);
+                setGroupData(response.list);
             } catch (error) {
                 console.error("그룹 리스트를 불러오는 데 실패했습니다:", error);
             }
@@ -27,13 +27,22 @@ const CreateGroup = () => {
         fetchGroupData();
     }, []); // 빈 배열을 넘겨주어 컴포넌트 마운트 시에만 실행되도록 합니다.
 
-    const onGroupCreate = () => {
-        const newGroupData = {
-            groupName,
-        };
-        setGroupData([...groupData, newGroupData]); // 그룹 데이터 배열에 추가
-        setGroupName(" "); // 입력 필드 초기화
-        onClose();
+    const handleCreateGroup = async () => {
+        if (!groupName.trim()) {
+            alert("그룹 이름을 입력해주세요.");
+            return;
+        }
+
+        try {
+            const newGroup = await postCreateGroup(groupName);
+            if (newGroup) {
+                setGroupData((prevGroupData) => [...prevGroupData, newGroup]); // 서버로부터 받은 그룹 데이터를 상태에 추가
+                setGroupName(""); // 입력 필드 초기화
+                onClose(); // 모달 닫기
+            }
+        } catch (error) {
+            console.error("그룹 생성 중 에러 발생:", error);
+        }
     };
 
     return (
@@ -112,8 +121,6 @@ const CreateGroup = () => {
                         <div>
                             <HStack spacing={4}>
                                 {groupData.map((group, index) => (
-                                    // <p key={index}>{group.groupName}</p>
-
                                     <Button
                                         // onClick={onOpen}
                                         key={index}
@@ -126,7 +133,7 @@ const CreateGroup = () => {
                                         width="120px"
                                         height="120px"
                                     >
-                                        {group.groupName}
+                                        {group.groupname}
                                     </Button>
                                 ))}
 
@@ -153,7 +160,7 @@ const CreateGroup = () => {
                     onClose={onClose}
                     groupName={groupName}
                     setGroupName={setGroupName}
-                    onGroupCreate={onGroupCreate}
+                    onGroupCreate={handleCreateGroup}
                 />
             </div>
         </div>
