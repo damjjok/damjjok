@@ -4,13 +4,7 @@
 
 // 수정해야 할 것 : Route 설정
 import { useEffect } from "react";
-import {
-    Routes,
-    Route,
-    Outlet,
-    useNavigate,
-    useParams,
-} from "react-router-dom";
+import { Outlet, useNavigate, useParams } from "react-router-dom";
 // import { useRecoilValue } from "recoil";
 import ChallengePage from "../../challenge-page/ChallengePage";
 import EmptyChallengePage from "../../empty-challenge-page/EmptyChallengePage";
@@ -19,14 +13,15 @@ import {
     challengeState,
 } from "../../../contexts/Challenge";
 import CreateChallengePage from "../../create-challenge-page/CreateChallengePage";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { getChallengeList } from "apis/api/Challenge";
+import { currentUserState } from "contexts/User";
 
 // import NormalButton from "../components/button/normalbutton/NormalButton";
 
 function GroupSpaceMain() {
     // 더미데이터
-    const userId = 0;
+    const userId = useRecoilValue(currentUserState);
 
     const { groupId } = useParams();
     // console.log(groupId);
@@ -44,7 +39,8 @@ function GroupSpaceMain() {
                 // console.log(currentChallengeList);
                 const currentMyChallenge = updatedChallengeList.find(
                     (challenge) =>
-                        challenge.userId === userId && challenge.status === "ON"
+                        challenge.userId === userId &&
+                        challenge.status === "PROGRESS"
                 );
                 // setChallengeState(currentMyChallenge);
                 // console.log(currentMyChallenge);

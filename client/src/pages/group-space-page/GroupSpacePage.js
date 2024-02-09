@@ -6,8 +6,6 @@ import GroupSpaceMain from "./group-space-main/GroupSpaceMain.js";
 // 회원 정보 Get API
 function GroupSpacePage() {
     const isMobile = useBreakpointValue({ base: true, md: false });
-    // const challengeDetail = getChallengeInfo(challengeId);
-    // console.log(challengeDetail);
 
     return (
         <div>
