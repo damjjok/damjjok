@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import jakarta.persistence.PersistenceContext;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -29,7 +30,6 @@ public class SchedulerServiceImpl implements SchedulerService {
     @PersistenceContext
     private EntityManager entityManager;
 
-    private final FCMAlarmService fcmAlarmService;
     private final UserRepository userRepository;
     private final ChallengeRepository challengeRepository;
     private final GroupMemberRepository groupMemberRepository;
@@ -205,7 +205,34 @@ public class SchedulerServiceImpl implements SchedulerService {
             });
         });
 
+        LocalDate today = now.toLocalDate();
+        LocalDateTime todayStart = LocalDateTime.of(today, LocalTime.MIN);
+        LocalDateTime todayEnd = LocalDateTime.of(today, LocalTime.MAX);
 
+        List<ScheduleEntity> todaysSchedules = entityManager.createQuery(
+                        "SELECT s FROM ScheduleEntity s WHERE s.date >= :todayStart AND s.date <= :todayEnd",
+                        ScheduleEntity.class)
+                .setParameter("todayStart", todayStart)
+                .setParameter("todayEnd", todayEnd)
+                .getResultList();
+
+        todaysSchedules.forEach(schedule -> {
+            ChallengeEntity challenge = schedule.getChallengeEntity();
+            GroupEntity group = challenge.getGroupEntity();
+            UserEntity createdByUser = userRepository.findByUserId(schedule.getCreatedBy());
+
+            List<UserEntity> groupMembers = groupMemberRepository.findUsersByGroupId(group.getGroupId());
+            groupMembers.forEach(member -> {
+                if (member.getFcmToken() != null) {
+                    NotificationCreateRequestDto notificationDto = new NotificationCreateRequestDto();
+                    notificationDto.setReceivingMemberId(member.getUserId());
+                    notificationDto.setCommonCodeId(603);
+                    notificationDto.setGroupName(group.getGroupName());
+                    notificationDto.setDamjjokName(createdByUser.getUserName());
+                    notificationService.create(notificationDto);
+                }
+            });
+        });
 
     }
 }
