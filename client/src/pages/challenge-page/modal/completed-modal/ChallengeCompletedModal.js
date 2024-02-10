@@ -1,8 +1,13 @@
 import { StarIcon } from "@chakra-ui/icons";
 import { Flex, ModalBody, VStack } from "@chakra-ui/react";
+import { getBestMember } from "apis/api/Candy";
 import { getCheerMessageList } from "apis/api/CheerMsg";
 import BasicButton from "components/button/BasicButton";
-import { challengeCheerMessageList, challengeState } from "contexts/Challenge";
+import {
+    challengeBestMember,
+    challengeCheerMessageList,
+    challengeState,
+} from "contexts/Challenge";
 import { useEffect } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 
@@ -11,15 +16,21 @@ function ChallengeCompletedModal({ nextContent }) {
     const [cheerMessageList, setCheerMessageList] = useRecoilState(
         challengeCheerMessageList
     );
+    const [bestMember, setBestMember] = useRecoilState(challengeBestMember);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await getCheerMessageList(
+                const messageResponse = await getCheerMessageList(
                     challenge.challengeId
                 );
-                setCheerMessageList(response);
-                console.log(cheerMessageList);
+                setCheerMessageList(messageResponse);
+
+                const bestMemberResponse = await getBestMember(
+                    challenge.challengeId
+                );
+                setBestMember(bestMemberResponse);
+                // console.log(cheerMessageList);
             } catch (error) {
                 console.log(error);
             }

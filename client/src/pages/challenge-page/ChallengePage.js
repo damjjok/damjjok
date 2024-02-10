@@ -181,7 +181,10 @@ function ChallengePage() {
                 closeOnOverlayClick={false}
             >
                 <ModalOverlay />
-                <ModalContent margin={"auto"}>
+                <ModalContent
+                    maxW={isMobile ? "100vw" : "1000px"}
+                    margin={"auto"}
+                >
                     <ModalBody paddingY={20}>{contents[contentStep]}</ModalBody>
                 </ModalContent>
             </Modal>

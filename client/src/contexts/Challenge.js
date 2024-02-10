@@ -62,3 +62,12 @@ export const challengeCheerMessageList = atom({
     key: "challengeCheerMessageList",
     default: [],
 });
+
+export const challengeBestMember = atom({
+    key: "challengeBestMember",
+    default: {
+        userName: "",
+        candyCnt: 0,
+        cheerMsgCnt: 0,
+    },
+});
