@@ -2,6 +2,7 @@ import { Button, Text } from "@chakra-ui/react";
 import {
     challengeIdState,
     fineDeterminedState,
+    initGroupPhDCountState,
     joinMemberListState,
 } from "contexts/TruthRoomSocket";
 import { WebSocketContext } from "contexts/WebSocketContext";
@@ -12,6 +13,7 @@ import { useRecoilValue } from "recoil";
 function ShowDistributedStepComponent(props) {
     const { leaveRoom } = useContext(WebSocketContext);
     const joinMemberList = useRecoilValue(joinMemberListState);
+    const initGroupPhDCount = useRecoilValue(initGroupPhDCountState);
     const fineDetermined = useRecoilValue(fineDeterminedState);
     const challengeId = useRecoilValue(challengeIdState);
     const navigate = useNavigate();
@@ -28,7 +30,7 @@ function ShowDistributedStepComponent(props) {
         <div>
             <div style={{ marginTop: "100px", textAlign: "center" }}>
                 <Text as="b" fontSize={50}>
-                    {fineDetermined / (joinMemberList.length - 1)}원이 <p />
+                    {fineDetermined / initGroupPhDCount}원씩이 <p />
                     박사님들에게 나누어졌어요!
                 </Text>
             </div>

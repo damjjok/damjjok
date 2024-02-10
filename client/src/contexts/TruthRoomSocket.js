@@ -7,6 +7,12 @@ export const challengeIdState = atom({
     default: "",
 });
 
+export const initGroupPhDCountState = atom({
+    // 벌금 분배 화면에서 나누기 처리에 사용할 그룹의 박사님 수, 임시 값으로 시작 시점의 박사님 카운트를 넣을 것임 => WebSocketContext.js의 readyStatus 파트에 작성해둠.
+    key: "initGroupPhDCount",
+    default: 0,
+});
+
 export const enteringTruthRoomMemberInfoState = atom({
     // 진실의 방에 입장하는 유저의 정보(이름, 역할)
     key: "enteringTruthRommMemberInfo",

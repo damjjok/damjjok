@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { showingTestimonyState } from "contexts/TruthRoom";
 import TestimonyFrame from "./TestimonyFrame";
 import { Wrapper } from "../TabComponent.style";
@@ -7,10 +7,8 @@ import { useParams } from "react-router-dom";
 import { getTestimoniesInTruthRoom } from "apis/api/Proof";
 
 function TestimonyComponent(props) {
-    // const testimonies = useRecoilValue(testimonyState);
     const { challengeId } = useParams();
     const [testimonies, setTestimonies] = useState([]);
-    // const setTestimonyIdx = useSetRecoilState(testimonyIndexState);
     const setShowingTestimony = useSetRecoilState(showingTestimonyState);
 
     function handlerTestimonyClick(testimony) {
@@ -18,6 +16,7 @@ function TestimonyComponent(props) {
     }
 
     useEffect(() => {
+        console.log("증언 요청 보냄");
         getTestimoniesInTruthRoom(challengeId, setTestimonies);
     }, []);
 
