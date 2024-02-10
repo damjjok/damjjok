@@ -1,17 +1,18 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import BasicButton from "components/button/BasicButton";
 import { useRecoilState } from "recoil";
 import { stepState } from "contexts/TruthRoomSocket";
+import { WebSocketContext } from "contexts/WebSocketContext";
+import { useParams } from "react-router-dom";
 
 function ReadyStateFrame() {
-    const [step, setStep] = useRecoilState(stepState);
+    const { setReady } = useContext(WebSocketContext); // context로 선언한 소켓 사용
     const [buttonClicked, setButtonClicked] = useState(false);
 
-    function stepChange() {
-        // 준비 완료 눌렀을 때 임시로 step 변경할 때 쓸 함수
-        setStep(step + 1);
-    }
+    const { challengeId } = useParams();
+
     function startButtonClick() {
+        setReady(challengeId); // 소켓을 통해 준비 완료 신호 전송
         setButtonClicked(true);
     }
 
@@ -30,7 +31,6 @@ function ReadyStateFrame() {
             <BasicButton
                 buttonName={"준비 완료!"}
                 variant={"cancel"}
-                onClick={stepChange}
             ></BasicButton>
         );
     }

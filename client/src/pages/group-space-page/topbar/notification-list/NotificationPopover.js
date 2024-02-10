@@ -20,9 +20,9 @@ import {
     Wrap,
     WrapItem,
 } from "@chakra-ui/react";
-import { checkNotification } from "apis/api/Notification";
 
 const NotificationPopover = ({ alramList, isMobile, clickHandler }) => {
+    const doNotReadAlramList = alramList.filter((e) => !e.readOrNot);
     return (
         <>
             <Popover>
@@ -35,18 +35,20 @@ const NotificationPopover = ({ alramList, isMobile, clickHandler }) => {
                         _hover={{ backgroundColor: "#3182CE" }}
                     >
                         <BellIcon></BellIcon>
-                        <Wrap
-                            position={"absolute"}
-                            right={isMobile ? "0" : "-10%"}
-                            top={isMobile ? "0" : "-10%"}
-                            backgroundColor={"red"}
-                            width={isMobile ? "30%" : "50%"}
-                            height={isMobile ? "30%" : "50%"}
-                            borderRadius={"50%"}
-                            justify={"center"}
-                        >
-                            {isMobile ? null : <WrapItem>1</WrapItem>}
-                        </Wrap>
+                        {isMobile || !doNotReadAlramList.length ? null : (
+                            <Wrap
+                                position={"absolute"}
+                                right={isMobile ? "0" : "-10%"}
+                                top={isMobile ? "0" : "-10%"}
+                                backgroundColor={"red"}
+                                width={isMobile ? "30%" : "50%"}
+                                height={isMobile ? "30%" : "50%"}
+                                borderRadius={"50%"}
+                                justify={"center"}
+                            >
+                                <WrapItem>{doNotReadAlramList.length}</WrapItem>
+                            </Wrap>
+                        )}
                     </Button>
                 </PopoverTrigger>
 
@@ -56,10 +58,10 @@ const NotificationPopover = ({ alramList, isMobile, clickHandler }) => {
                     <PopoverHeader>
                         <Text fontWeight={700}>알림함</Text>
                     </PopoverHeader>
-                    <PopoverBody>
+                    <PopoverBody height={"40vh"} overflowY={"scroll"}>
                         <List spacing={3}>
-                            {alramList.map((e) => (
-                                <>
+                            {alramList.map((e, index) => (
+                                <Box key={index}>
                                     <ListItem
                                         onClick={() => {
                                             clickHandler(e.notificationId);
@@ -101,7 +103,7 @@ const NotificationPopover = ({ alramList, isMobile, clickHandler }) => {
                                         </Box>
                                     </ListItem>
                                     <Divider></Divider>
-                                </>
+                                </Box>
                             ))}
                         </List>
                     </PopoverBody>

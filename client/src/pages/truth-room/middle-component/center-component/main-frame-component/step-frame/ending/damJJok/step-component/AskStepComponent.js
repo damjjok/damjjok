@@ -1,12 +1,35 @@
 import { Button, Text } from "@chakra-ui/react";
-import React from "react";
+import {
+    challengeIdState,
+    joinMemberListState,
+} from "contexts/TruthRoomSocket";
+import { WebSocketContext } from "contexts/WebSocketContext";
+import React, { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
 
-function AskStepComponent({ damJJok }) {
+function AskStepComponent({ damJJokName }) {
+    const { leaveRoom } = useContext(WebSocketContext);
+    const joinMemberList = useRecoilValue(joinMemberListState);
+    const challengeId = useRecoilValue(challengeIdState);
+    const navigate = useNavigate();
+
+    const [isLastMember, setIsLastMember] = useState(false);
+    function handleClickExit(mode) {
+        if (joinMemberList.length === 1) setIsLastMember(true); // 마지막 멤버 여부 저장
+        leaveRoom(challengeId, isLastMember);
+
+        if (mode === "YES") navigate(`/truth-room/enter-test/${challengeId}`);
+        // 예 클릭 시 챌린지 생성으로, 아직 임시 처리
+        else if (mode === "NO")
+            navigate(`/truth-room/enter-test/${challengeId}`); // 아니오 클릭 시 바로 밖으로 나감, 아직 임시 처리
+    }
+
     return (
         <div>
             <div style={{ marginTop: "100px", textAlign: "center" }}>
                 <Text as="b" fontSize={40}>
-                    {damJJok.name}님, <p />
+                    {damJJokName}님, <p />
                     이번 챌린지에는 실패하셨지만
                     <p />또 다시 도전할 수 있어요!
                 </Text>
@@ -25,12 +48,20 @@ function AskStepComponent({ damJJok }) {
                 }}
             >
                 <div style={{ marginRight: "10px" }}>
-                    <Button colorScheme="linkedin" size="lg">
+                    <Button
+                        colorScheme="linkedin"
+                        size="lg"
+                        onClick={() => handleClickExit("YES")}
+                    >
                         예
                     </Button>
                 </div>
                 <div style={{ marginLeft: "10px" }}>
-                    <Button colorScheme="orange" size="lg">
+                    <Button
+                        colorScheme="orange"
+                        size="lg"
+                        onClick={() => handleClickExit("NO")}
+                    >
                         아니오
                     </Button>
                 </div>

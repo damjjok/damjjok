@@ -1,6 +1,18 @@
 import { atom } from "recoil";
 // 진실의 방에서 소켓으로 관리할 전역 상태들
 
+export const challengeIdState = atom({
+    // 소켓 통신에 쓰일 챌린지의 ID를 관리
+    key: "challengeId",
+    default: "",
+});
+
+export const enteringTruthRoomMemberInfoState = atom({
+    // 진실의 방에 입장하는 유저의 정보(이름, 역할)
+    key: "enteringTruthRommMemberInfo",
+    default: {},
+});
+
 export const stepState = atom({
     // 대기 중, 제보 판별, 투표, PASS/FAIL, 최후 변론, 벌금 결정, 종료
     key: "step",
@@ -11,12 +23,6 @@ export const joinMemberListState = atom({
     // 진실의 방 입장 유저 목록
     key: "joinMemberList",
     default: [],
-});
-
-export const readyMemberCountState = atom({
-    // 준비 단계에서 준비를 누른 멤버의 수
-    key: "readyMemberCount",
-    default: 0,
 });
 
 export const allUserReadyState = atom({
@@ -44,8 +50,20 @@ export const voteResultState = atom({
 });
 
 export const fineStepState = atom({
-    // 투표 단계는 입력, 벌금 투표, 벌금 결정의 3단계로 나뉘므로 따로 저장
+    // 벌금 결정 단계는 벌금 결정, 완료 두 단계로 나뉨
     key: "fineStep",
+    default: 0,
+});
+
+export const fineInputStepState = atom({
+    // 투표 단계는 입력, 벌금 투표, 벌금 결정의 3단계로 나뉘므로 따로 저장
+    key: "fineInputStep",
+    default: 0,
+});
+
+export const inputFineState = atom({
+    // 멤버가 입력한 벌금
+    key: "inputFine",
     default: 0,
 });
 
