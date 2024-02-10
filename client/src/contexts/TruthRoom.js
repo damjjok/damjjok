@@ -1,13 +1,4 @@
 import { atom } from "recoil";
-import logo from "assets/images/logo.png";
-import piggyBankLogo from "assets/images/piggybanklogo.png";
-import testImg1 from "logo.svg";
-
-export const voteState = atom({
-    // 투표 단계에서 투표여부 판단할 때 쓰임
-    key: "vote",
-    default: false,
-});
 
 export const groupState = atom({
     // 진실의 방에 참여한 멤버 목록
@@ -35,78 +26,6 @@ export const groupState = atom({
 export const reportModeState = atom({
     key: "reportMode",
     default: "EVIDENCE", // EVIDENCE, TESTIMONY
-});
-
-export const evidenceIndexState = atom({
-    key: "evidenceIndex",
-    default: 0,
-});
-
-export const evidenceState = atom({
-    key: "evidence",
-    default: [
-        { title: "증거 1", img: logo },
-        { title: "증거 2", img: piggyBankLogo },
-        { title: "증거 3", img: testImg1 },
-        { title: "증거 4", img: testImg1 },
-    ],
-});
-
-export const testimonyIndexState = atom({
-    key: "testimonyIndex",
-    default: 0,
-});
-
-export const testimonyState = atom({
-    key: "testimony",
-    default: [
-        {
-            title: "증언 1",
-            writer: "작성자1",
-            content:
-                "이새끼 담배 폈습니다111111111111111111111111111111111111111111111111111111111111111111",
-        },
-        {
-            title: "증언 2",
-            writer: "작성자2",
-            content: "이새끼 담배 폈습니다2",
-        },
-        {
-            title: "증언 3",
-            writer: "작성자3",
-            content: "이새끼 담배 폈습니다3",
-        },
-        {
-            title: "증언 4",
-            writer: "작성자4",
-            content: "이새끼 담배 폈습니다4",
-        },
-        {
-            title: "증언 4",
-            writer: "작성자4",
-            content: "이새끼 담배 폈습니다4",
-        },
-        {
-            title: "증언 4",
-            writer: "작성자4",
-            content: "이새끼 담배 폈습니다4",
-        },
-        {
-            title: "증언 4",
-            writer: "작성자4",
-            content: "이새끼 담배 폈습니다4",
-        },
-        {
-            title: "증언 4",
-            writer: "작성자4",
-            content: "이새끼 담배 폈습니다4",
-        },
-        {
-            title: "증언 4",
-            writer: "작성자4",
-            content: "이새끼 담배 폈습니다4",
-        },
-    ],
 });
 
 export const fineDecisionStepState = atom({
