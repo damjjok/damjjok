@@ -188,7 +188,6 @@ export const WebSocketProvider = ({ children }) => {
                 (message) => {
                     console.log("Fine Submitted Count: ", message.body);
                     setStepReadyCount(message.body); // 여기서는 벌금 입력한 멤버 수 카운트로 사용
-                    setFineInputStep(1); // 벌금 입력(1) -> 벌금 입력 대기(2) 단계로
                 }
             );
             stompClient.current.subscribe(
