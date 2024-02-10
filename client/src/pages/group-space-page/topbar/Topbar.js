@@ -76,7 +76,7 @@ function Topbar() {
                 </Flex>
                 <Wrap sx={{ transform: isMobile ? "scale(0.6)" : "none" }}>
                     <NotificationPopover
-                        alramList={notificationList}
+                        alramList={notificationList ? notificationList : []}
                         isMobile={isMobile}
                         clickHandler={notificationClickHandler}
                     ></NotificationPopover>

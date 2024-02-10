@@ -21,7 +21,9 @@ const InvitationCodePage = () => {
         navigate(`/group/${groupId}`);
     };
     useEffect(() => {
-        if (!isLoaded) {
+        console.log(isLoaded);
+        console.log(user);
+        if (!user || !isLoaded) {
             setIsLoaded(true);
             return;
         }
@@ -32,11 +34,12 @@ const InvitationCodePage = () => {
         // 근데 로그인 한 상태로 다시 눌러야함
         // 로그인 성공했으면 uuid로 가입신처 넣고 groupId 받아와서 거기로 이동시켜주기
 
-        if (!user) {
+        if (!user.userId) {
             navigate("/");
             return;
         }
-        console.log(user);
+
+        // console.log(user);
         enterGroup();
     }, [user, isLoaded]);
 
