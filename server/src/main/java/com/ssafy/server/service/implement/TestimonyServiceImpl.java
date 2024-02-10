@@ -15,6 +15,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -96,7 +97,9 @@ public class TestimonyServiceImpl implements TestimonyService {
             int challengeId = dto.getChallengeId();
 
             ChallengeEntity challengeEntity = challengeRepository.findByChallengeId(challengeId);
-            List<TestimonyEntity> entityList = testimonyRepository.findByChallengeEntity(challengeEntity);
+            // createdAt 기준으로 내림차순 정렬
+            Sort sort = Sort.by("createdAt").descending();
+            List<TestimonyEntity> entityList = testimonyRepository.findByChallengeEntity(challengeEntity, sort);
 
             entityList.stream().forEach((e) -> {
                 TestimonyDto testimonyDto = new TestimonyDto();
@@ -177,7 +180,9 @@ public class TestimonyServiceImpl implements TestimonyService {
             int challengeId = dto.getChallengeId();
 
             ChallengeEntity challengeEntity = challengeRepository.findByChallengeId(challengeId);
-            List<TestimonyEntity> entityList = testimonyRepository.findByChallengeEntity(challengeEntity);
+            // createdAt 기준으로 내림차순 정렬
+            Sort sort = Sort.by("createdAt").descending();
+            List<TestimonyEntity> entityList = testimonyRepository.findByChallengeEntity(challengeEntity, sort);
 
             entityList.stream().forEach((e) -> {
                 if(e.getCreatedAt().isBefore(challengeEntity.getFinalTruthRoomDate())) return;
