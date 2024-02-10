@@ -41,26 +41,32 @@ export const WebSocketProvider = ({ children }) => {
     const stompClient = useRef(null);
 
     const connect = useCallback(() => {
-        if (!stompClient.current) {
-            // SockJS 인스턴스 생성(소켓 연결을 위함)
-            const socket = new SockJS(
-                "https://i10e105.p.ssafy.io/truth-room-websocket"
-            );
-
-            // Client 인스턴스 생성
-            stompClient.current = new Client({
-                brokerURL: "wss://i10e105.p.ssafy.io/truth-room-websocket",
-                webSocketFactory: () => socket, // SockJS 인스턴스를 사용하여 WebSocket 연결을 생성
-                onConnect: (frame) => {
-                    console.log("Connected: " + frame);
-                    setIsConnected(true);
-                },
-                // 연결 해제 및 오류 처리에 대한 콜백도 여기에 추가 가능
-            });
-
-            // 연결 시작
-            stompClient.current.activate();
-        }
+        return new Promise((resolve, reject) => {
+            // connection이 된 후에 enterRoom이 실행되게 Promise 객체를 반환
+            if (!stompClient.current) {
+                const socket = new SockJS( // 소켓 연결을 위한 SockJS 인스턴스 생성
+                    "https://i10e105.p.ssafy.io/truth-room-websocket"
+                );
+                stompClient.current = new Client({
+                    // Client 인스턴스 생성을 통해 STOMP 프로토콜 사용
+                    webSocketFactory: () => socket,
+                    onConnect: (frame) => {
+                        console.log("Connected: " + frame);
+                        setIsConnected(true);
+                        resolve(); // 연결 성공 시 resolve 호출
+                    },
+                    // 연결 실패 또는 오류 발생 시 reject를 호출할 수 있음
+                    onStompError: (error) => {
+                        console.error("STOMP error: ", error);
+                        reject(error); // 오류 발생 시 reject 호출
+                    },
+                });
+                stompClient.current.activate(); // 연결 시작
+            } else {
+                // 이미 연결된 경우, 즉시 resolve 호출
+                resolve("Already connected.");
+            }
+        });
     }, []);
 
     const disconnect = useCallback(() => {

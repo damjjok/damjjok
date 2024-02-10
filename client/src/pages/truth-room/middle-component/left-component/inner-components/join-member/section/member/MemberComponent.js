@@ -23,7 +23,7 @@ function MemberComponent({ m, type, isReady }) {
                     alt="icon"
                     className="w-[25px] mr-2"
                 />
-                <Text fontWeight={700}>{m.userName}</Text>
+                <Text fontWeight={700}>{m.name}</Text>
             </Flex>
         </Wrapper>
     );

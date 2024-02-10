@@ -21,6 +21,7 @@ import OauthPage from "pages/oauth-page/OauthPage";
 import "./util/firebase/firebaseConfig";
 
 import { getMessaging, onMessage } from "firebase/messaging";
+import ConnectionTest from "pages/truth-room/openvidu/ConnectionTest";
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -131,9 +132,13 @@ function App() {
                             element={<OauthPage />}
                         ></Route>
                         <Route
-                            path="/truth-room/:groupId/challenge/:challengeId/*"
+                            path="/truth-room/:groupId/challenge/:challengeId/"
                             element={<TruthRoom />}
                         />
+                        <Route
+                            path="/truth-room/enter-test/:challengeId"
+                            element={<ConnectionTest />}
+                        ></Route>
                     </Routes>
                 </ChakraProvider>
             </Suspense>
