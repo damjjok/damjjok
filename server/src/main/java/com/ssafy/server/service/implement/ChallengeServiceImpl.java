@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -158,6 +159,8 @@ public class ChallengeServiceImpl implements ChallengeService {
                 dto.setCreatedAt(e.getCreatedAt());
                 list.add(dto);
             });
+            //담쪽이 이름순으로 정렬
+            list.sort(Comparator.comparing(ChallengeDto::getUserName));
 
         }catch (Exception e){
             return ResponseDto.databaseError();
