@@ -21,6 +21,7 @@ import AvatarSelector from "./AvatarSelector";
 import { useRecoilState } from "recoil";
 import { challengeStatusState } from "contexts/Challenge";
 import { patchChallengeStatus } from "apis/api/Challenge";
+import { useNavigate } from "react-router-dom";
 
 function StatusEditModal({ currentChallenge, selectedAvatar }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -30,6 +31,7 @@ function StatusEditModal({ currentChallenge, selectedAvatar }) {
     );
     const initialRef = React.useRef(null);
     const finalRef = React.useRef(null);
+    const navigate = useNavigate();
 
     return (
         <>
@@ -80,6 +82,7 @@ function StatusEditModal({ currentChallenge, selectedAvatar }) {
                                 setStatus({
                                     determination: inputValue,
                                 });
+                                navigate(``);
                                 onClose();
                             }}
                         />

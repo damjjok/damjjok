@@ -21,4 +21,15 @@ const postChallengeCandyCount = async (challengeId, userId) => {
         }
     } catch (error) {}
 };
-export { getChallengeCandyCount, postChallengeCandyCount };
+
+const getBestMember = async (challengeId) => {
+    try {
+        const response = await axiosInstance.get(
+            `/v1/candy/best-member/${challengeId}`
+        );
+        if (response.status === 200) {
+            return response.data;
+        }
+    } catch (error) {}
+};
+export { getChallengeCandyCount, postChallengeCandyCount, getBestMember };

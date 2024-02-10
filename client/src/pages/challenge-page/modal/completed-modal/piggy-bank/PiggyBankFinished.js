@@ -2,9 +2,16 @@ import { Flex, ModalBody } from "@chakra-ui/react";
 import BasicButton from "components/button/BasicButton";
 import PiggyBank from "../../../../reward-tab-page/piggy-bank/PiggyBank";
 import { useNavigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { challengeState } from "contexts/Challenge";
 
 function PiggyBankFinished({ nextContent, isExpired }) {
+    const challenge = useRecoilValue(challengeState);
     const navigate = useNavigate();
+
+    const handleGroupClick = (groupId) => {
+        navigate(`/group/${groupId}`); // 해당 그룹 ID의 경로로 이동
+    };
     return (
         <>
             <Flex
@@ -22,7 +29,7 @@ function PiggyBankFinished({ nextContent, isExpired }) {
                     <BasicButton
                         buttonName={"챌린지 종료하기"}
                         variant={"bigbtn"}
-                        onClick={() => navigate("empty-challenge")}
+                        onClick={() => handleGroupClick(challenge.groupId)}
                     />
                 ) : (
                     <></>

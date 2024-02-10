@@ -1,24 +1,27 @@
 import BasicButton from "components/button/BasicButton";
 import Strick from "../../../../home-tab-page/strick/Strick";
 import InfoCards from "../../../../home-tab-page/info-cards/InfoCards";
-import { Box, Flex, ModalBody, Text, VStack } from "@chakra-ui/react";
+import {
+    Box,
+    Flex,
+    ModalBody,
+    Text,
+    VStack,
+    useBreakpointValue,
+} from "@chakra-ui/react";
 import { StarIcon } from "@chakra-ui/icons";
 import trophyIcon from "assets/gifs/trophy.gif";
+import { useRecoilValue } from "recoil";
+import { challengeState } from "contexts/Challenge";
 
 function ChallengeReport({ nextContent }) {
-    let currentChallenge = localStorage.getItem("challengeList");
-    if (currentChallenge) {
-        // 가져온 값이 있으면 JSON.parse를 사용해서 문자열을 객체로 변환합니다.
-        const myChallenge = JSON.parse(currentChallenge);
-
-        // 이후 myObject를 원하는대로 사용할 수 있습니다.
-        currentChallenge = myChallenge[0];
-    } else {
-        console.log("No data in localStorage");
-        return <></>;
-    }
-
+    const currentChallenge = useRecoilValue(challengeState);
+    const isMobile = useBreakpointValue({ base: true, md: false });
+    let today = new Date();
     const startedDate = new Date(currentChallenge.createdAt);
+    // 두 날짜 사이의 밀리초 차이를 계산
+    const diffMilliseconds = today.getTime() - startedDate.getTime();
+    const diffDays = Math.floor(diffMilliseconds / (24 * 60 * 60 * 1000));
     return (
         <>
             <Flex
@@ -49,13 +52,31 @@ function ChallengeReport({ nextContent }) {
                         앞으로도 금연을 이어나가요!
                     </p>
                     <Flex flexFlow={"column"} marginY={10}>
-                        <Text fontSize={"xl"} fontWeight={"semibold"}>
+                        <Text
+                            fontSize={"xl"}
+                            fontWeight={"semibold"}
+                            textAlign={"center"}
+                        >
                             180일 챌린지에 성공했어요!
                         </Text>
-                        <Strick startedDate={startedDate} />
+                        <Box
+                            display={"flex"}
+                            flexWrap={"wrap"}
+                            justifyContent={"center"}
+                            sx={{ transform: isMobile ? "scale(0.5)" : "none" }}
+                        >
+                            <Strick
+                                challenge={currentChallenge}
+                                startedDate={startedDate}
+                            />
+                        </Box>
                     </Flex>
                     <Box marginY={10}>
-                        <InfoCards />
+                        <InfoCards
+                            diffDays={diffDays}
+                            diffMilliseconds={diffMilliseconds}
+                            challengeId={currentChallenge.challengeId}
+                        />
                     </Box>
                 </VStack>
                 <BasicButton

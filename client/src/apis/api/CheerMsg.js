@@ -16,7 +16,7 @@ const postCheerMessage = async (challengeId, content) => {
 const getCheerMessageList = async (challengeId) => {
     try {
         const response = await axiosInstance.get(
-            `/api/v1/cheer-msg/${challengeId}`
+            `/v1/cheer-msg/${challengeId}`
         );
         return response.data.list;
     } catch (error) {}
