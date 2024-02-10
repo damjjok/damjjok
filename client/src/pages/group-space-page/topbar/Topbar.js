@@ -5,7 +5,7 @@ import logo from "assets/images/logo.png";
 import { Box, Flex, Text, Wrap, useBreakpointValue } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { checkNotification, getAlarmList } from "apis/api/Notification";
+import { checkNotification, getNotificationList } from "apis/api/Notification";
 import NotificationPopover from "./notification-list/NotificationPopover";
 
 function Topbar() {
@@ -13,7 +13,7 @@ function Topbar() {
     const [alramList, setAlramList] = useState([]);
     const isMobile = useBreakpointValue({ base: true, md: false });
     const fetchAlram = async () => {
-        const list = await getAlarmList();
+        const list = await getNotificationList();
         setAlramList(list);
     };
 
@@ -21,6 +21,7 @@ function Topbar() {
         await checkNotification(notificationId);
         await fetchAlram();
     };
+
     useEffect(() => {
         fetchAlram();
     }, []);
