@@ -13,7 +13,7 @@ function FineDecisionFrame(props) {
     const enteringTruthRoomMemberInfo = useRecoilValue(
         enteringTruthRoomMemberInfoState
     );
-    if (enteringTruthRoomMemberInfo.role === "damJJok" && fineStep !== 2) {
+    if (enteringTruthRoomMemberInfo.role === "Damjjok" && fineStep !== 1) {
         return <DecideWaitingComponent />;
     } else {
         return (

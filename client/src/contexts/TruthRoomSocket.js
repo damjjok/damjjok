@@ -50,8 +50,20 @@ export const voteResultState = atom({
 });
 
 export const fineStepState = atom({
-    // 투표 단계는 입력, 벌금 투표, 벌금 결정의 3단계로 나뉘므로 따로 저장
+    // 벌금 결정 단계는 벌금 결정, 완료 두 단계로 나뉨
     key: "fineStep",
+    default: 0,
+});
+
+export const fineInputStepState = atom({
+    // 투표 단계는 입력, 벌금 투표, 벌금 결정의 3단계로 나뉘므로 따로 저장
+    key: "fineInputStep",
+    default: 0,
+});
+
+export const inputFineState = atom({
+    // 멤버가 입력한 벌금
+    key: "inputFine",
     default: 0,
 });
 

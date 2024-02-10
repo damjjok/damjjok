@@ -12,6 +12,7 @@ import {
     fineVoteListState,
     fineDeterminedState,
     isVotedState,
+    fineInputStepState,
 } from "./TruthRoomSocket";
 import { closeOpenviduSession } from "apis/api/TruthRoom";
 
@@ -34,6 +35,8 @@ export const WebSocketProvider = ({ children }) => {
     // 4. 최후 변론 단계
     // 5. 벌금 결정 단계
     const [fineStep, setFineStep] = useRecoilState(fineStepState); // 벌금 결정 단계에서
+    const [fineInputStep, setFineInputStep] =
+        useRecoilState(fineInputStepState);
     const [fineVoteList, setFineVoteList] = useRecoilState(fineVoteListState); // 서버에서 받아온 벌금 리스트
     const [fineDetermined, setFineDetermined] =
         useRecoilState(fineDeterminedState);
@@ -170,6 +173,7 @@ export const WebSocketProvider = ({ children }) => {
                 (message) => {
                     console.log("Fine Submitted Count: ", message.body);
                     setStepReadyCount(stepReadyCount + 1); // 여기서는 벌금 입력한 멤버 수 카운트로 사용
+                    setFineInputStep(1); // 벌금 입력(1) -> 벌금 입력 대기(2) 단계로
                 }
             );
             stompClient.current.subscribe(
@@ -181,7 +185,7 @@ export const WebSocketProvider = ({ children }) => {
                     );
                     setFineVoteList(JSON.parse(message.body)); // 받아온 벌금 리스트를 먼저 set
                     setStepReadyCount(0); // 모든 멤버가 벌금을 입력 완료, 단계 별 준비 상황 0으로 초기화
-                    setFineStep(1); // 벌금 입력(0) -> 벌금 투표(1) 단계로
+                    setFineInputStep(2); // 벌금 입력 대기(1) -> 벌금 투표(2) 단계로
                 }
             );
             stompClient.current.subscribe(
