@@ -46,7 +46,7 @@ const LoginModal = ({ LoginisOpen, LoginonClose, handleLogintoForm }) => {
                             >
                                 네이버로 로그인
                             </Button>
-                            <Button
+                            {/* <Button
                                 bg="#ffd100"
                                 size="md"
                                 w="full"
@@ -63,7 +63,7 @@ const LoginModal = ({ LoginisOpen, LoginonClose, handleLogintoForm }) => {
                                 color="white"
                             >
                                 구글로 로그인
-                            </Button>
+                            </Button> */}
                         </VStack>
                     </ModalBody>
                 </ModalContent>
