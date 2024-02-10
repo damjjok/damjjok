@@ -10,12 +10,13 @@ import { challengeIdState } from "contexts/TruthRoomSocket";
 
 function TruthRoom() {
     const { connect, enterRoom } = useContext(WebSocketContext); // context로 선언한 소켓 사용
-    const { challengeId } = useRecoilValue(challengeIdState); // 구조 분해 할당
+    const challengeId = useRecoilValue(challengeIdState);
     const enteringTruthRoomMemberInfo = useRecoilValue(
         enteringTruthRoomMemberInfoState
     );
     useEffect(() => {
         // 진실의 방 렌더링 시 소켓 연결, 방 입장 처리
+        console.log(challengeId);
         connect()
             .then(() => {
                 enterRoom(

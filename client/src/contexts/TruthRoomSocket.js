@@ -2,8 +2,9 @@ import { atom } from "recoil";
 // 진실의 방에서 소켓으로 관리할 전역 상태들
 
 export const challengeIdState = atom({
+    // 소켓 통신에 쓰일 챌린지의 ID를 관리
     key: "challengeId",
-    default: 0,
+    default: "",
 });
 
 export const enteringTruthRoomMemberInfoState = atom({
