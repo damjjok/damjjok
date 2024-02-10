@@ -86,10 +86,45 @@ const searchUserByEmail = async (email) => {
     }
 };
 
+const validateInviationCode = async (code) => {
+    try {
+        const response = await axiosInstance.get(
+            `/v1/group/invite/validate?invitationLink=${code}`
+        );
+        const data = await response.data;
+
+        if (response.status === 200) {
+            return data.groupId;
+        }
+    } catch (error) {
+        console.log(error);
+    }
+    return null;
+};
+
+const joinGroup = async (groupId, list) => {
+    try {
+        const response = await axiosInstance.post(`/v1/group/join`, {
+            groupId,
+            list,
+        });
+        const data = response.data;
+        if (response.status === 200) {
+            console.log("그룹 가입 성공");
+        }
+    } catch (error) {
+        console.log(error);
+    }
+
+    return null;
+};
+
 export {
     getGroupMember,
     getGroupInfo,
     getGroupList,
     postCreateGroup,
     searchUserByEmail,
+    validateInviationCode,
+    joinGroup,
 };

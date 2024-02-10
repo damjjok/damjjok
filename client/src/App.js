@@ -24,6 +24,7 @@ import { getMessaging, onMessage } from "firebase/messaging";
 import { getNotificationList } from "apis/api/Notification";
 import { notificationListState } from "contexts/Notification";
 import firebaseApp from "./util/firebase/firebaseConfig";
+import InvitationCodePage from "pages/invitation-code-page/InvitationCodePage";
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -139,7 +140,10 @@ function App() {
                                 element={<LastChallengePage />}
                             />
                         </Route>
-
+                        <Route
+                            path="/invitation/:code"
+                            element={<InvitationCodePage />}
+                        ></Route>
                         <Route
                             path="/auth/oauth-response"
                             element={<OauthPage />}
