@@ -26,6 +26,8 @@ import { notificationListState } from "contexts/Notification";
 import firebaseApp from "./util/firebase/firebaseConfig";
 import InvitationCodePage from "pages/invitation-code-page/InvitationCodePage";
 import ConnectionTest from "pages/truth-room/openvidu/ConnectionTest";
+import { currentUser } from "contexts/User";
+import useAuth from "hooks/useAuth";
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -90,6 +92,7 @@ function App() {
     // const [notificationList, setNotificationList] = useRecoilState(
     //     notificationListState
     // );
+    const { user } = useAuth();
 
     const setNotificationList = useSetRecoilState(notificationListState);
 
