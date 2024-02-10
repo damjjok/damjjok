@@ -1,24 +1,38 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { Wrapper } from "./PassFailResultComponent.style";
 import { Text } from "@chakra-ui/react";
 import BasicButton from "components/button/BasicButton";
 import { failText, passText } from "./PassFailText";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { stepState, voteResultState } from "contexts/TruthRoomSocket";
+import {
+    challengeIdState,
+    joinMemberListState,
+    stepState,
+    voteResultState,
+} from "contexts/TruthRoomSocket";
+import { WebSocketContext } from "contexts/WebSocketContext";
+import { useNavigate } from "react-router-dom";
 
 function PassFailResultComponent() {
     // result: PASS or FAIL
-    const [step, setStep] = useRecoilState(stepState);
+    const navigate = useNavigate();
+
+    const { finalArgumentReady, leaveRoom } = useContext(WebSocketContext);
+    const challengeId = useRecoilValue(challengeIdState);
+    const joinMemberList = useRecoilValue(joinMemberListState);
     const result = useRecoilValue(voteResultState); // 소켓으로 받아온 투표 결과
+    const [isLastMember, setIsLastMember] = useState(false);
 
     function handleNextClick(mode) {
         // mode: exit(나가기) or next(최후 변론으로)
         if (mode === "exit") {
-            // 원래 나가는 기능 매핑돼야하지만 일단은 임시 처리
-            console.log("원래 나가는 기능 매핑돼야합니다");
-            setStep(step + 1);
+            // PASS 시 바로 나가기
+            if (joinMemberList.length === 1) setIsLastMember(true);
+            leaveRoom(challengeId, isLastMember);
+            navigate(`/truth-room/enter-test/${challengeId}`); // 나가기 버튼 임시 처리
         } else if (mode === "next") {
-            setStep(step + 1);
+            // FAIL 시 최후 변론으로
+            finalArgumentReady(challengeId);
         }
     }
 
