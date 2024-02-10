@@ -13,6 +13,7 @@ function TruthRoomTabPage() {
     const { groupId, challengeId } = useParams();
     const challenge = useRecoilValue(challengeState);
     const user = useRecoilValue(currentUser);
+
     const [schedule, getSchedule] = useState({
         date: "",
     });
@@ -21,10 +22,8 @@ function TruthRoomTabPage() {
     };
 
     useEffect(() => {
-        console.log(user);
-        console.log(challenge);
         getScheduleByChallengeId(challengeId, getSchedule);
-    }, []);
+    }, [challengeId]);
 
     const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -33,6 +32,7 @@ function TruthRoomTabPage() {
         onOpen: onOpenScheduleModal,
         onClose: onCloseScheduleModal,
     } = useDisclosure();
+
     return (
         <>
             <Flex

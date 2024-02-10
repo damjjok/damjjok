@@ -26,4 +26,4 @@ const checkNotification = async (notificationId) => {
     }
 };
 
-export { getNotificationList as getAlarmList, checkNotification };
+export { getNotificationList, checkNotification };

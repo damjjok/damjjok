@@ -1,26 +1,30 @@
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import BasicButton from "../../../components/button/BasicButton";
 import { currentUser, currentUserState } from "../../../contexts/User";
 import logo from "assets/images/logo.png";
 import { Box, Flex, Text, Wrap, useBreakpointValue } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { checkNotification, getAlarmList } from "apis/api/Notification";
+import { checkNotification, getNotificationList } from "apis/api/Notification";
 import NotificationPopover from "./notification-list/NotificationPopover";
+import { notificationListState } from "contexts/Notification";
 
 function Topbar() {
     const user = useRecoilValue(currentUser);
-    const [alramList, setAlramList] = useState([]);
+    const [notificationList, setNotificationList] = useRecoilState(
+        notificationListState
+    );
     const isMobile = useBreakpointValue({ base: true, md: false });
     const fetchAlram = async () => {
-        const list = await getAlarmList();
-        setAlramList(list);
+        const list = await getNotificationList();
+        setNotificationList(list);
     };
 
     const notificationClickHandler = async (notificationId) => {
         await checkNotification(notificationId);
         await fetchAlram();
     };
+
     useEffect(() => {
         fetchAlram();
     }, []);
@@ -72,7 +76,7 @@ function Topbar() {
                 </Flex>
                 <Wrap sx={{ transform: isMobile ? "scale(0.6)" : "none" }}>
                     <NotificationPopover
-                        alramList={alramList}
+                        alramList={notificationList}
                         isMobile={isMobile}
                         clickHandler={notificationClickHandler}
                     ></NotificationPopover>
