@@ -24,7 +24,7 @@ const Testimony = () => {
 
     useEffect(() => {
         getTestimonies(challengeId, setTestimonies);
-    }, []);
+    }, [challengeId]);
 
     const { isOpen, onOpen, onClose } = useDisclosure();
     return (

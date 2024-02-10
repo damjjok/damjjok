@@ -26,7 +26,7 @@ const Evidence = () => {
 
     useEffect(() => {
         getEvidences(challengeId, setEvidences);
-    }, []);
+    }, [challengeId]);
 
     return (
         <div className="Evidence mt-3">
