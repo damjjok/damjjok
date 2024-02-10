@@ -2,16 +2,14 @@ package com.ssafy.server.service.implement;
 
 import com.ssafy.server.dto.request.notification.NotificationCreateRequestDto;
 import com.ssafy.server.dto.response.schedule.ScheduleDetailResponseDto;
-import com.ssafy.server.entity.ChallengeEntity;
-import com.ssafy.server.entity.GroupEntity;
-import com.ssafy.server.entity.ScheduleEntity;
-import com.ssafy.server.entity.UserEntity;
+import com.ssafy.server.entity.*;
 import com.ssafy.server.repository.*;
 import com.ssafy.server.service.FCMAlarmService;
 import com.ssafy.server.service.NotificationService;
 import com.ssafy.server.service.SchedulerService;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +33,7 @@ public class SchedulerServiceImpl implements SchedulerService {
     private final GroupMemberRepository groupMemberRepository;
     private final NotificationService notificationService;
     private final GroupRepository groupRepository;
+    private final EvidenceRepository evidenceRepository;
 
     // 매일 자정에 실행되는 스케줄러
     @Scheduled(cron = "59 59 23 * * ?")
@@ -71,6 +70,7 @@ public class SchedulerServiceImpl implements SchedulerService {
         - 진실의 방 열리는 날
         - 챌린지 종료됬어요 알림
         - 그룹 종료됬어요 ( 마지막 챌린지 종료된 지 + 1달 )이 지나면 바로 종료
+        - (서현 추가함) 일정 잡아달라는 알림 -> 담쪽이에 에게만
          */
 
         LocalDateTime todayStart = LocalDate.now().atStartOfDay();
@@ -237,5 +237,31 @@ public class SchedulerServiceImpl implements SchedulerService {
             });
         });
 
+        // 진실의 방 일정 잡아달라
+
+        List<ChallengeEntity> challenges = entityManager.createQuery(
+                        "SELECT c FROM ChallengeEntity c WHERE c.finalTruthRoomDate < :now AND c.status = :status",
+                        ChallengeEntity.class)
+                .setParameter("now", now)
+                .setParameter("status", "PROGRESS")
+                .getResultList();
+
+        challenges.stream().forEach(challenge -> {
+            List<EvidenceEntity> elist = evidenceRepository.findByChallengeEntity
+                    (challenge, Sort.by("created_at").ascending());
+
+            if(elist.get(elist.size() - 1).getCreatedAt().isAfter(challenge.getFinalTruthRoomDate())){
+
+                GroupEntity g = groupRepository.findByGroupId(challenge.getGroupEntity().getGroupId());
+                UserEntity u = userRepository.findByUserId(challenge.getUserId());
+
+                NotificationCreateRequestDto notificationDto = new NotificationCreateRequestDto();
+                notificationDto.setReceivingMemberId(challenge.getUserId());
+                notificationDto.setCommonCodeId(601);
+                notificationDto.setGroupName(g.getGroupName());
+                notificationDto.setDamjjokName(u.getUserName());
+                notificationService.create(notificationDto);
+            }
+        });
     }
 }

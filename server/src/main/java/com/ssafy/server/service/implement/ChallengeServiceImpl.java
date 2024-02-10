@@ -59,7 +59,7 @@ public class ChallengeServiceImpl implements ChallengeService {
             challengeEntity.setSavedMoney(dto.getSavedMoney());
             challengeEntity.setSavedPeriod(dto.getSavedPeriod());
 
-            LocalDateTime challenge_endDate = LocalDateTime.now().plusDays(dto.getSavedPeriod());
+            LocalDateTime challenge_endDate = LocalDateTime.now().plusDays(dto.getDuration());
             challengeEntity.setFinalTruthRoomDate(challenge_endDate);
             challengeEntity.setEndDate(challenge_endDate);
 

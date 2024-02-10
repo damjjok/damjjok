@@ -142,6 +142,10 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public ResponseEntity<? super GroupUserListResponseDto> userList(String email) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+
+        int userId = customUserDetails.getUserId();
 
         List<UserDto> list = new ArrayList<>();
 
@@ -150,13 +154,16 @@ public class GroupServiceImpl implements GroupService {
             List<UserEntity> userEntityList = userRepository.findByEmailContaining(email);
 //            System.out.println(userEntityList);
 
-            userEntityList.stream().forEach(e -> {
-                UserDto dto = new UserDto();
-                dto.setUserId(e.getUserId());
-                dto.setUserName(e.getUserName());
-                dto.setEmail(e.getEmail());
-                list.add(dto);
-            });
+            userEntityList
+                    .stream()
+                    .filter(e -> e.getUserId() != userId)
+                    .forEach(e -> {
+                        UserDto dto = new UserDto();
+                        dto.setUserId(e.getUserId());
+                        dto.setUserName(e.getUserName());
+                        dto.setEmail(e.getEmail());
+                        list.add(dto);
+                    });
 
         }catch(Exception e){
             e.printStackTrace();
