@@ -6,10 +6,12 @@ import { Flex, Text } from "@chakra-ui/react";
 import { ChatIcon } from "@chakra-ui/icons";
 import { useParams } from "react-router-dom";
 import { getChallengeMembers } from "apis/api/Challenge";
+import { joinMemberListState } from "contexts/TruthRoomSocket";
 
 function JoinMemberComponent() {
     const { challengeId } = useParams();
     const [members, setMembers] = useState([]);
+    const joinMemberList = useRecoilValue(joinMemberListState);
 
     const [damJJok, setDamJJok] = useState([]);
     const [phDs, setPhDs] = useState([]);
