@@ -39,7 +39,7 @@ function FineInputComponent(props) {
                         <InputComponent></InputComponent>
                         <ConfirmButtonComponent
                             margin={0}
-                            onClick={handleClickConfirm}
+                            onClick={() => handleClickConfirm()}
                         />
                     </div>
                 }

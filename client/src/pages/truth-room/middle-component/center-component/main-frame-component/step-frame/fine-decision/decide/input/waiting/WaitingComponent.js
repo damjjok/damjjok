@@ -2,7 +2,7 @@ import React from "react";
 import SmallFrameComponent from "../../../../../small-frame/SmallFrameComponent";
 import { Text } from "@chakra-ui/react";
 
-function FineInputWaitingComponent(props) {
+function WaitingComponent({ text }) {
     return (
         <SmallFrameComponent
             width={700}
@@ -10,7 +10,7 @@ function FineInputWaitingComponent(props) {
             content={
                 <div style={{ display: "flex", alignItems: "center" }}>
                     <Text as="b" fontSize={"30px"}>
-                        다른 분들이 벌금을 입력하는 중이예요...
+                        {text}
                     </Text>
                 </div>
             }
@@ -18,4 +18,4 @@ function FineInputWaitingComponent(props) {
     );
 }
 
-export default FineInputWaitingComponent;
+export default WaitingComponent;
