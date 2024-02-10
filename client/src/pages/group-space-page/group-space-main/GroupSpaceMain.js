@@ -51,7 +51,7 @@ function GroupSpaceMain() {
         } else {
             navigate("empty-challenge");
         }
-    }, []);
+    }, [currentChallengeList]);
 
     return (
         <>
