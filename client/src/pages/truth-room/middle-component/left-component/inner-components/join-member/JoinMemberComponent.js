@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { Wrapper } from "../InnerComponent.style";
-import { groupState } from "contexts/TruthRoom";
 import SectionComponent from "./section/SectionComponent";
-import { Box, Flex, Text, Wrap } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import { ChatIcon } from "@chakra-ui/icons";
 import { useParams } from "react-router-dom";
 import { getChallengeMembers } from "apis/api/Challenge";
@@ -12,7 +11,6 @@ function JoinMemberComponent() {
     const { challengeId } = useParams();
     const [members, setMembers] = useState([]);
 
-    const joinMember = useRecoilValue(groupState);
     const [damJJok, setDamJJok] = useState([]);
     const [phDs, setPhDs] = useState([]);
 
