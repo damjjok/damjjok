@@ -131,7 +131,7 @@ function App() {
                             element={<OauthPage />}
                         ></Route>
                         <Route
-                            path="/truth-room/:groupId/challenge/:challengeId"
+                            path="/truth-room/:groupId/challenge/:challengeId/*"
                             element={<TruthRoom />}
                         />
                     </Routes>
