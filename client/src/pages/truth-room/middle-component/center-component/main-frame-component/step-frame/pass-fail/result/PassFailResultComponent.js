@@ -3,12 +3,13 @@ import { Wrapper } from "./PassFailResultComponent.style";
 import { Text } from "@chakra-ui/react";
 import BasicButton from "components/button/BasicButton";
 import { failText, passText } from "./PassFailText";
-import { useRecoilState } from "recoil";
-import { stepState } from "contexts/TruthRoomSocket";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { stepState, voteResultState } from "contexts/TruthRoomSocket";
 
-function PassFailResultComponent({ result }) {
+function PassFailResultComponent() {
     // result: PASS or FAIL
     const [step, setStep] = useRecoilState(stepState);
+    const result = useRecoilValue(voteResultState); // 소켓으로 받아온 투표 결과
 
     function handleNextClick(mode) {
         // mode: exit(나가기) or next(최후 변론으로)
