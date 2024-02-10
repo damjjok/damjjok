@@ -117,7 +117,7 @@ function MessageCheckModal({ nextContent, isExpired }) {
                         </AnimatePresence>
                     </Flex>
                     {isMessagesVisible && ( // 메시지가 더 있을 경우에만 '더보기' 버튼을 표시
-                        <Flex justifyContent={"center"}>
+                        <Flex justifyContent={"center"} my={4}>
                             <WholeMessageList messages={messages} />
                         </Flex>
                     )}

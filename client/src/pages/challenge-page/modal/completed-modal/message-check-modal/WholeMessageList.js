@@ -21,6 +21,11 @@ function WholeMessageList({ messages }) {
             <Text
                 onClick={onOpen}
                 className="font-bold cursor-pointer underline underline-offset-4"
+                bgColor={"dam.lightgray"}
+                fontSize={"xs"}
+                py={1}
+                px={2}
+                // rounded={"full"}
             >
                 전체 응원메시지 보기
             </Text>
