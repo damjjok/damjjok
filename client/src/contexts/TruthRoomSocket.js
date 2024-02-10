@@ -1,6 +1,11 @@
 import { atom } from "recoil";
 // 진실의 방에서 소켓으로 관리할 전역 상태들
 
+export const challengeIdState = atom({
+    key: "challengeId",
+    default: 0,
+});
+
 export const enteringTruthRoomMemberInfoState = atom({
     // 진실의 방에 입장하는 유저의 정보(이름, 역할)
     key: "enteringTruthRommMemberInfo",

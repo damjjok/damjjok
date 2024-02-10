@@ -1,12 +1,16 @@
 import { Button } from "@chakra-ui/react";
-import { useRecoilState } from "recoil";
-import { enteringTruthRoomMemberInfoState } from "contexts/TruthRoomSocket";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import {
+    challengeIdState,
+    enteringTruthRoomMemberInfoState,
+} from "contexts/TruthRoomSocket";
 import { useNavigate, useParams } from "react-router-dom";
 
 const ConnectionTest = () => {
+    const navigate = useNavigate();
     const [enteringTruthRoomMemberInfo, setEnteringTruthRoomMemberInfo] =
         useRecoilState(enteringTruthRoomMemberInfoState);
-    const navigate = useNavigate();
+    const setChallengeId = useSetRecoilState(challengeIdState);
 
     const { challengeId } = useParams(); // 테스트를 위한 challengeId 받아오기(구조 분해 할당)
     const hoo = {
@@ -20,12 +24,14 @@ const ConnectionTest = () => {
 
     function handleClickEnterDamjjok() {
         // 담쪽이가 입장함을 테스트
+        setChallengeId(challengeId);
         setEnteringTruthRoomMemberInfo(hoo);
         navigate(`/truth-room/1/challenge/${challengeId}`);
     }
 
     function handleClickEnterPhD() {
         // 박사님이 입장함을 테스트
+        setChallengeId(challengeId);
         setEnteringTruthRoomMemberInfo(phD);
         navigate(`/truth-room/1/challenge/${challengeId}`);
     }

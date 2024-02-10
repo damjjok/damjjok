@@ -3,14 +3,14 @@ import { Wrapper } from "./TruthRoom.style";
 import TopComponent from "./top-component/TopComponent";
 import MiddleComponent from "./middle-component/MiddleComponent";
 import BottomComponent from "./bottom-component/BottomComponent";
-import { useParams } from "react-router-dom";
 import { enteringTruthRoomMemberInfoState } from "../../contexts/TruthRoomSocket";
 import { useRecoilValue } from "recoil";
 import { WebSocketContext } from "contexts/WebSocketContext";
+import { challengeIdState } from "contexts/TruthRoom";
 
 function TruthRoom() {
     const { connect, enterRoom } = useContext(WebSocketContext); // context로 선언한 소켓 사용
-    const { challengeId } = useParams(); // 구조 분해 할당
+    const { challengeId } = useRecoilValue(challengeIdState); // 구조 분해 할당
     const enteringTruthRoomMemberInfo = useRecoilValue(
         enteringTruthRoomMemberInfoState
     );

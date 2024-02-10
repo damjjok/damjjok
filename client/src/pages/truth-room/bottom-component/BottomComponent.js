@@ -1,14 +1,18 @@
-import React from "react";
-import { stepState } from "contexts/TruthRoomSocket";
-import { useRecoilState } from "recoil";
+import React, { useContext } from "react";
+import { challengeIdState, stepState } from "contexts/TruthRoomSocket";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { Wrapper } from "./BottomComponent.style";
 import { Button } from "@chakra-ui/react";
+import { WebSocketContext } from "contexts/WebSocketContext";
+import { useParams } from "react-router-dom";
 
 function BottomComponent() {
+    const { evidenceNextStage } = useContext(WebSocketContext);
     const [step, setStep] = useRecoilState(stepState);
+    const challengeId = useRecoilValue(challengeIdState);
 
     function handleNextStepClick() {
-        setStep(step + 1);
+        evidenceNextStage(challengeId);
     }
 
     if (step === 1)
