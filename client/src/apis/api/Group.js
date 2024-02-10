@@ -111,9 +111,11 @@ const joinGroup = async (groupId, list) => {
         const data = response.data;
         if (response.status === 200) {
             console.log("그룹 가입 성공");
+            return groupId;
         }
     } catch (error) {
         console.log(error);
+        console.log("이미 가입된 그룹입니다.");
     }
 
     return null;
