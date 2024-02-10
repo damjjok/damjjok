@@ -154,7 +154,8 @@ public class GroupServiceImpl implements GroupService {
             List<UserEntity> userEntityList = userRepository.findByEmailContaining(email);
 //            System.out.println(userEntityList);
 
-            userEntityList.stream()
+            userEntityList
+                    .stream()
                     .filter(e -> e.getUserId() != userId)
                     .forEach(e -> {
                         UserDto dto = new UserDto();
