@@ -1,11 +1,12 @@
 import { useToast } from "@chakra-ui/react";
+import { getAttendanceList, postAttendance } from "apis/api/Attendance";
 import {
     getChallengeCandyCount,
     postChallengeCandyCount,
 } from "apis/api/Candy";
 import BasicButton from "components/button/BasicButton";
 import { challengeCandyCount } from "contexts/Challenge";
-import { currentUserState } from "contexts/User";
+import { currentUser, currentUserState } from "contexts/User";
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 
@@ -15,12 +16,14 @@ import { useRecoilState, useRecoilValue } from "recoil";
 function StatusBarToast({ challenge }) {
     const [isClicked, setIsClicked] = useState(false); // 버튼 클릭 여부 확인
     const toast = useToast();
-    const currentUser = useRecoilValue(currentUserState);
+    const loginedUser = useRecoilValue(currentUser);
     const [candyCount, setCandyCount] = useRecoilState(challengeCandyCount);
     // 버튼이 클릭되면, 클릭 감지하는 함수
     const handleButtonClick = async () => {
         setIsClicked(true);
-        if (currentUser.userId === challenge.userId) {
+        if (loginedUser.userId === challenge.userId) {
+            postAttendance(+challenge.challengeId);
+            const response = await getAttendanceList(challenge.challengeId);
             toast({
                 title: "출석 완료!",
                 description: "오늘의 금연도 화이팅이에요!",
@@ -28,12 +31,11 @@ function StatusBarToast({ challenge }) {
                 duration: 9000,
                 isClosable: true,
             });
-            // 출석일수 추가해주는 로직 넣어줘야 함
         } else {
             try {
                 postChallengeCandyCount(
                     challenge.challengeId,
-                    currentUser.userId
+                    loginedUser.userId
                 );
                 const response = await getChallengeCandyCount(
                     challenge.challengeId
@@ -74,7 +76,7 @@ function StatusBarToast({ challenge }) {
             onClick={handleButtonClick}
             isDisabled={isClicked}
             buttonName={
-                currentUser.userId === challenge.userId
+                loginedUser.userId === challenge.userId
                     ? "출석하기"
                     : "응원하기"
             }

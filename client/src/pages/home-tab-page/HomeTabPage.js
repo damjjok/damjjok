@@ -45,7 +45,10 @@ function HomeTabPage() {
                     justifyContent={"center"}
                     sx={{ transform: isMobile ? "scale(0.5)" : "none" }}
                 >
-                    <Strick startedDate={startedDate} />
+                    <Strick
+                        challenge={currentChallenge}
+                        startedDate={startedDate}
+                    />
                 </Box>
             </div>
             <div className="py-8">

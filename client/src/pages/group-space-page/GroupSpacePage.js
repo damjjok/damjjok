@@ -2,9 +2,8 @@ import Topbar from "./topbar/Topbar.js";
 import Sidebar from "./sidebar/Sidebar.js";
 import { Box, useBreakpointValue } from "@chakra-ui/react";
 import GroupSpaceMain from "./group-space-main/GroupSpaceMain.js";
-import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
+import { useRecoilState, useResetRecoilState } from "recoil";
 import { challengeListState } from "contexts/Challenge.js";
-import { currentUserState } from "contexts/User.js";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { getChallengeList } from "apis/api/Challenge.js";
@@ -12,9 +11,6 @@ import { getChallengeList } from "apis/api/Challenge.js";
 // 회원 정보 Get API
 function GroupSpacePage() {
     const isMobile = useBreakpointValue({ base: true, md: false });
-
-    //더미데이터 : currentUser로 바꿔줘야 함
-    const userId = useRecoilValue(currentUserState);
 
     const { groupId } = useParams();
     // console.log(groupId);

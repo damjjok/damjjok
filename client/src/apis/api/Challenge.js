@@ -73,10 +73,26 @@ const getChallengeMembers = async (challengeId, setGroupMembers) => {
     return null;
 };
 
+const patchChallengeStatus = async (challengeId, determination, imagePath) => {
+    try {
+        const requestBody = {
+            determination: determination,
+            imagePath: imagePath,
+        };
+        const response = await axiosInstance.patch(
+            `/v1/challenge/${challengeId}/profile-modify`,
+            requestBody
+        );
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 export {
     createChallenge,
     getChallengeRanking,
     getChallengeInfo,
     getChallengeList,
     getChallengeMembers,
+    patchChallengeStatus,
 };

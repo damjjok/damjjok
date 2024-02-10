@@ -1,5 +1,5 @@
 import { useRecoilState, useRecoilValue } from "recoil";
-import { currentUserState } from "../../../contexts/User";
+import { currentUser, currentUserState } from "../../../contexts/User";
 import candyImg from "assets/images/candylogo.png";
 import StatusBarToast from "../modal/StatusBarToast";
 import StatusEditModal from "../modal/StatusEditModal";
@@ -13,23 +13,29 @@ import {
     Wrap,
     useBreakpointValue,
 } from "@chakra-ui/react";
-import avatar1 from "assets/images/avatar1.png";
-import avatar2 from "assets/images/avatar2.png";
-import avatar3 from "assets/images/avatar3.png";
-import avatar4 from "assets/images/avatar4.png";
-import { challengeCandyCount, challengeState } from "contexts/Challenge";
-import { useEffect } from "react";
+
+import {
+    challengeAvatarState,
+    challengeCandyCount,
+    challengeState,
+    challengeStatusState,
+} from "contexts/Challenge";
+import { useEffect, useState } from "react";
 import { getChallengeCandyCount } from "apis/api/Candy";
+import { getAttendanceList } from "apis/api/Attendance";
 // import { challengeState } from "../../../../../contexts/Challenge";
 
 // profilePath 올바르게 설정될 필요성
 function StatusBar() {
     const challenge = useRecoilValue(challengeState);
     const challengeUserId = challenge.userId;
-    const currentUser = useRecoilValue(currentUserState);
+    const loginedUser = useRecoilValue(currentUser);
+    // console.log(loginedUser);
     const [candyCount, setCandyCount] = useRecoilState(challengeCandyCount);
-    const currentCandyCount = useRecoilValue(challengeCandyCount);
-    // let navigate = useNavigate();
+    // const [currentCandyCount, setCurrentCandyCount] =
+    //     useRecoilState(challengeCandyCount);
+
+    const [currentStatus, setStatus] = useRecoilState(challengeStatusState);
 
     const isMobile = useBreakpointValue({ base: true, md: false });
 
@@ -41,15 +47,8 @@ function StatusBar() {
     const diffMilliseconds = today.getTime() - startedDate.getTime();
     const diffDays = Math.floor(diffMilliseconds / (24 * 60 * 60 * 1000));
 
-    const avatars = [
-        { name: "cat1", src: avatar1 },
-        { name: "cat2", src: avatar2 },
-        { name: "dog1", src: avatar3 },
-        { name: "dog2", src: avatar4 },
-    ];
-
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchCandyData = async () => {
             try {
                 const response = await getChallengeCandyCount(
                     challenge.challengeId
@@ -58,11 +57,24 @@ function StatusBar() {
                 setCandyCount(updatedCount); // Recoil 상태에 데이터 적용
                 // console.log(response);
             } catch (error) {
-                console.error("챌린지 정보 불러오기 실패", error);
+                console.error("캔디 정보 불러오기 실패", error);
             }
         };
 
-        fetchData(); // fetchData 함수 호출
+        const fetchAttendanceData = async () => {
+            try {
+                const response = await getAttendanceList(challenge.challengeId);
+                const currentAttendanceList = response.list;
+            } catch (error) {
+                console.error("춣석 정보 불러오기 실패", error);
+            }
+        };
+
+        if (challenge.challengeId === loginedUser.userId) {
+            fetchAttendanceData();
+        } else {
+            fetchCandyData(); // fetchData 함수 호출
+        }
     }, [challenge, setCandyCount]);
 
     return (
@@ -78,8 +90,8 @@ function StatusBar() {
                 <Wrap>
                     <Flex alignItems={"center"}>
                         <Avatar
-                            name="Cat"
-                            src={avatar1}
+                            name="challengeProfileImg"
+                            src={challenge.profilePath}
                             size="sm"
                             bg="dam.white"
                         />
@@ -108,10 +120,10 @@ function StatusBar() {
 
                         {/* EditModal axios 적용해야 함 */}
                         {/* 요청 API : /api/v1/challenge/{challengeId}/profile-modify */}
-                        {challenge.userId === currentUser.userId ? (
+                        {challenge.userId === loginedUser.userId ? (
                             <StatusEditModal
                                 currentChallenge={challenge}
-                                avatars={avatars}
+                                selectedAvatar={currentStatus.profilePath}
                             />
                         ) : null}
                     </Flex>

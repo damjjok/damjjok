@@ -49,3 +49,11 @@ export const createChallengeState = atom({
         savedPeriod: 0,
     },
 });
+
+export const challengeStatusState = atom({
+    key: "challengeStatusState",
+    default: {
+        determination: "",
+        imagePath: "",
+    },
+});

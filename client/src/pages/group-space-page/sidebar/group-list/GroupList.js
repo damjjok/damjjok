@@ -2,26 +2,60 @@ import { useRecoilValue } from "recoil";
 import { useEffect, useState } from "react";
 import Select from "react-select";
 import { Box } from "@chakra-ui/react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { getGroupList } from "apis/api/Group";
 
 //테스트를 위한 더미 데이터
-const groupItems = ["우리끼리만든그룹", "E106", "E107"];
+// const groupItems = ["우리끼리만든그룹", "E106", "E107"];
 
-function GroupList() {
+function GroupList({ currentGroupInfo }) {
+    const [groupListData, setGroupListData] = useState([]);
+    const { groupId } = useParams();
+    const groupIdVal = Number(groupId);
+    // 그룹 데이터를 가져오는 함수
     useEffect(() => {
-        // console.log("userId 로 그룹 목록을 불러 옵니다.");
-        // TODO : 지호가 로그인 완성하면 Token에서 사용자 정보 알아내서 그걸로 그룹 목록 불러오기
-    });
-    // react-select 활용을 위한 option 배열 만들기
-    const options = groupItems.map((item, index) => ({
-        value: item,
-        label: item,
-    }));
-    const currentGroup = { groupId: "1", groupName: "E105" };
-    // 더미데이터이므로 더미데이터[0]으로 초기값 설정, 이후 props나 recoilstate 기반으로 선택한 그룹명이 표시될 수 있도록 수정해야 함
-    const [selectedGroup, setSelectedGroup] = useState(options[0]);
+        // 함수를 실행합니다.
+        fetchGroupData();
+    }, [groupListData, groupId]); // 빈 배열을 넘겨주어 컴포넌트 마운트 시에만 실행되도록 합니다.
 
-    // 나중에 styledComponent로 분리해줄 것.
+    const navigate = useNavigate();
+
+    const fetchGroupData = async () => {
+        try {
+            // getGroupList 함수를 호출하여 데이터를 가져옵니다.
+            const response = await getGroupList();
+            // 가져온 데이터를 groupData 상태에 저장합니다.
+            setGroupListData(response.list);
+
+            const currentGroup = response.list.find(
+                (group) => group.groupId === groupId
+            );
+            // 현재 그룹의 이름을 selectedGroup 상태에 설정합니다.
+            setSelectedGroup({
+                value: currentGroup?.groupId,
+                label: currentGroup?.groupname,
+            });
+        } catch (error) {
+            console.error("그룹 리스트를 불러오는 데 실패했습니다:", error);
+        }
+    };
+
+    const handleGroupClick = (groupId) => {
+        navigate(`/group/${groupId}`); // 해당 그룹 ID의 경로로 이동
+    };
+
+    // react-select 활용을 위한 option 배열 만들기
+    const options = groupListData.map((item, index) => ({
+        key: index,
+        value: item.groupId,
+        label: item.groupname,
+    }));
+
+    const [selectedGroup, setSelectedGroup] = useState({
+        value: currentGroupInfo.groupId,
+        label: currentGroupInfo.groupname,
+    });
+
     const customStyles = {
         control: (base, state) => ({
             ...base,
@@ -36,11 +70,7 @@ function GroupList() {
         option: (styles, { isFocused, isSelected }) => {
             return {
                 ...styles,
-                backgroundColor: isSelected
-                    ? "#FFD100"
-                    : isFocused
-                    ? "rgba(255, 209, 0, 0.5)"
-                    : null,
+                backgroundColor: isSelected ? "rgba(255, 209, 0, 0.5)" : null,
                 color: "black",
                 cursor: "pointer",
                 "&:hover": {
@@ -64,11 +94,15 @@ function GroupList() {
     return (
         <Box flex={1} marginRight={"1rem"}>
             <Select
-                placeholder={selectedGroup || currentGroup.groupName}
+                placeholder={selectedGroup.value}
+                defaultValue={selectedGroup.value}
                 options={options}
-                value={selectedGroup}
+                value={selectedGroup.value}
                 styles={customStyles}
-                onChange={(selectedOption) => setSelectedGroup(selectedOption)}
+                onChange={(selectedOption) => {
+                    setSelectedGroup(selectedOption);
+                    handleGroupClick(selectedGroup.value);
+                }}
                 isSearchable={false}
                 style={{ flex: 1 }}
             />
