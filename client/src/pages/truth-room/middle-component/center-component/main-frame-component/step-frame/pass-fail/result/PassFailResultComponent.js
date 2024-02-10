@@ -3,11 +3,11 @@ import { Wrapper } from "./PassFailResultComponent.style";
 import { Text } from "@chakra-ui/react";
 import BasicButton from "components/button/BasicButton";
 import { failText, passText } from "./PassFailText";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
 import {
     challengeIdState,
     joinMemberListState,
-    stepState,
+    stepReadyCountState,
     voteResultState,
 } from "contexts/TruthRoomSocket";
 import { WebSocketContext } from "contexts/WebSocketContext";
@@ -21,6 +21,9 @@ function PassFailResultComponent() {
     const challengeId = useRecoilValue(challengeIdState);
     const joinMemberList = useRecoilValue(joinMemberListState);
     const result = useRecoilValue(voteResultState); // 소켓으로 받아온 투표 결과
+    const stepReadyCount = useRecoilValue(stepReadyCountState); // 최후 변론으로 버튼을 누른 멤버 수 카운트
+
+    const [isClickedReady, setIsClickedReady] = useState(false); // 최후 변론으로 버튼을 눌렀는지 판별
     const [isLastMember, setIsLastMember] = useState(false);
 
     function handleNextClick(mode) {
@@ -33,6 +36,7 @@ function PassFailResultComponent() {
         } else if (mode === "next") {
             // FAIL 시 최후 변론으로
             finalArgumentReady(challengeId);
+            setIsClickedReady(true);
         }
     }
 
@@ -51,16 +55,28 @@ function PassFailResultComponent() {
             {result === "PASS" && <Text fontSize="20px">{passText}</Text>}
             {result === "FAIL" && <Text fontSize="20px">{failText}</Text>}
 
-            <div className="next-button-container">
-                <BasicButton
-                    buttonName={result === "PASS" ? "나가기" : "최후 변론으로"}
-                    onClick={
-                        result === "PASS"
-                            ? () => handleNextClick("exit")
-                            : () => handleNextClick("next")
-                    }
-                ></BasicButton>
-            </div>
+            {!isClickedReady && (
+                <div className="next-button-container">
+                    <BasicButton
+                        buttonName={
+                            result === "PASS" ? "나가기" : "최후 변론으로"
+                        }
+                        onClick={
+                            result === "PASS"
+                                ? () => handleNextClick("exit")
+                                : () => handleNextClick("next")
+                        }
+                    ></BasicButton>
+                </div>
+            )}
+            {isClickedReady && (
+                <div className="next-button-container">
+                    <BasicButton
+                        buttonName={`${stepReadyCount}/${joinMemberList.length}`}
+                        isDisabled={true}
+                    ></BasicButton>
+                </div>
+            )}
         </Wrapper>
     );
 }
