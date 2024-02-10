@@ -1,8 +1,7 @@
 import { Text } from "@chakra-ui/react";
 import React, { useContext, useState } from "react";
 import ConfirmButtonComponent from "../../../ConfirmButtonComponent";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { fineDecisionStepState } from "contexts/TruthRoom";
+import { useRecoilValue } from "recoil";
 import FineItemComponent from "./FineItemComponent";
 import { challengeIdState, fineVoteListState } from "contexts/TruthRoomSocket";
 import { WebSocketContext } from "contexts/WebSocketContext";
