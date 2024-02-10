@@ -6,7 +6,7 @@ import BottomComponent from "./bottom-component/BottomComponent";
 import { enteringTruthRoomMemberInfoState } from "../../contexts/TruthRoomSocket";
 import { useRecoilValue } from "recoil";
 import { WebSocketContext } from "contexts/WebSocketContext";
-import { challengeIdState } from "contexts/TruthRoom";
+import { challengeIdState } from "contexts/TruthRoomSocket";
 
 function TruthRoom() {
     const { connect, enterRoom } = useContext(WebSocketContext); // context로 선언한 소켓 사용

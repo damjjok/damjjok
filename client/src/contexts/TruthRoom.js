@@ -3,11 +3,6 @@ import logo from "assets/images/logo.png";
 import piggyBankLogo from "assets/images/piggybanklogo.png";
 import testImg1 from "logo.svg";
 
-export const challengeIdState = atom({
-    key: "challengeId",
-    default: 0,
-});
-
 export const voteState = atom({
     // 투표 단계에서 투표여부 판단할 때 쓰임
     key: "vote",

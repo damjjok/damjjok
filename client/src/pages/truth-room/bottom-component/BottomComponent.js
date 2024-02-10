@@ -8,7 +8,7 @@ import { useParams } from "react-router-dom";
 
 function BottomComponent() {
     const { evidenceNextStage } = useContext(WebSocketContext);
-    const [step, setStep] = useRecoilState(stepState);
+    const step = useRecoilValue(stepState);
     const challengeId = useRecoilValue(challengeIdState);
 
     function handleNextStepClick() {
