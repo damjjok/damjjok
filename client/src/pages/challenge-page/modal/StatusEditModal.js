@@ -16,12 +16,18 @@ import {
     useDisclosure,
 } from "@chakra-ui/react";
 import BasicButton from "components/button/BasicButton";
-import React from "react";
+import React, { useState } from "react";
 import AvatarSelector from "./AvatarSelector";
+import { useRecoilState } from "recoil";
+import { challengeStatusState } from "contexts/Challenge";
+import { patchChallengeStatus } from "apis/api/Challenge";
 
-function StatusEditModal({ currentChallenge, avatars }) {
+function StatusEditModal({ currentChallenge, selectedAvatar }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
-
+    const [currentStatus, setStatus] = useRecoilState(challengeStatusState);
+    const [inputValue, setInputValue] = useState(
+        currentChallenge.determination
+    );
     const initialRef = React.useRef(null);
     const finalRef = React.useRef(null);
 
@@ -46,7 +52,7 @@ function StatusEditModal({ currentChallenge, avatars }) {
                     <ModalBody pb={6}>
                         <FormControl pb={6}>
                             <FormLabel>챌린지 프로필 선택</FormLabel>
-                            <AvatarSelector avatars={avatars} />
+                            <AvatarSelector />
                         </FormControl>
 
                         <p>나의 한 마디 수정</p>
@@ -54,7 +60,10 @@ function StatusEditModal({ currentChallenge, avatars }) {
                             defaultValue={`${currentChallenge.determination}`}
                         >
                             <EditablePreview />
-                            <EditableInput />
+                            <EditableInput
+                                value={inputValue}
+                                onChange={(e) => setInputValue(e.target.value)}
+                            />
                         </Editable>
                     </ModalBody>
 
@@ -63,6 +72,14 @@ function StatusEditModal({ currentChallenge, avatars }) {
                             buttonName={"수정하기"}
                             onClick={() => {
                                 //수정사항 반영 로직 작성
+                                patchChallengeStatus(
+                                    currentChallenge.challengeId,
+                                    inputValue,
+                                    currentStatus.imagePath
+                                );
+                                setStatus({
+                                    determination: inputValue,
+                                });
                                 onClose();
                             }}
                         />

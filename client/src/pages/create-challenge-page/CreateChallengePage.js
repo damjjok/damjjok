@@ -21,13 +21,11 @@ import { useParams } from "react-router-dom";
 import { createChallengeState } from "contexts/Challenge";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { useEffect } from "react";
-import { currentUserState } from "contexts/User";
 
 function CreateChallengePage() {
     const { groupId } = useParams();
     const groupIdval = Number(groupId);
     const { isOpen, onClose } = useDisclosure();
-    const currentUser = useRecoilValue(currentUserState);
     const [challenge, setChallenge] = useRecoilState(createChallengeState);
     const isMobile = useBreakpointValue({ base: true, md: false });
     const initialState = {

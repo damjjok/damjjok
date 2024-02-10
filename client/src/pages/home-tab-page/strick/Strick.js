@@ -5,25 +5,7 @@ import { useParams } from "react-router-dom";
 import { Box } from "@chakra-ui/react";
 import { getAttendanceList } from "apis/api/Attendance";
 
-// 테스트용 챌린지 객체
-const currentChallenge = {
-    challengeId: 0,
-    createdAt: "2024-01-31T01:43:20.139Z",
-    determination: "오늘 하루도,,, 홧팅 ^^@@",
-    duration: 180,
-    groupId: 0,
-    initialMoney: 40000,
-    profilePath: "",
-    savedMoney: 3000,
-    savedPeriod: 15,
-    status: "",
-    attendance: [
-        { attendanceId: "0", attendanceDate: "2024-01-31T01:43:20.139Z" },
-        { attendanceId: "1", attendanceDate: "2024-02-01T01:43:20.139Z" },
-    ],
-};
-
-function Strick({ startedDate }) {
+function Strick({ challenge, startedDate }) {
     const { challengeId } = useParams();
     const [attendanceList, setAttendanceList] = useState([]);
     const [attendanceData, setAttendanceData] = useState([]);
@@ -74,7 +56,7 @@ function Strick({ startedDate }) {
             </div>
             <p className="text-xs text-right">
                 금연 시작일 : {startedDate.toLocaleDateString()} | 목표일 수 :{" "}
-                {currentChallenge.duration}일
+                {challenge.duration}일
             </p>
         </Box>
     );
