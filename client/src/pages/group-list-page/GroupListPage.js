@@ -1,5 +1,11 @@
 import { useState, useEffect } from "react";
-import { Button, useDisclosure, HStack } from "@chakra-ui/react";
+import {
+    Button,
+    useDisclosure,
+    HStack,
+    Wrap,
+    WrapItem,
+} from "@chakra-ui/react";
 import CreateGroupModal from "./modal/CreateGroupModal";
 import logo from "assets/images/logo.png";
 import landingBg from "assets/images/bgimg.png";
@@ -120,8 +126,8 @@ const GroupListPage = () => {
                                 px={10} // 좌우 패딩
                                 py={7} // 상하 패딩
                                 bg="#ffd100"
-                                width="120px"
-                                height="120px"
+                                width="150px"
+                                height="150px"
                             >
                                 +
                             </Button>
@@ -129,43 +135,64 @@ const GroupListPage = () => {
                     </>
                 ) : (
                     <>
-                        <p style={{ color: "white" }}>그룹 선택하기</p>
+                        <p
+                            style={{
+                                color: "white",
+                                marginBottom: "100px",
+                                fontSize: "70px",
+                                textAlign: "center",
+                            }}
+                        >
+                            그룹 선택하기
+                        </p>
                         <div>
-                            <HStack spacing={4}>
+                            <Wrap spacing={10} justify="center">
                                 {groupData.map((group, index) => (
+                                    <WrapItem key={index}>
+                                        <Button
+                                            // onClick={onOpen}
+                                            key={index}
+                                            size="xl" // 버튼 크기
+                                            fontSize="30px" // 글자 크기
+                                            colorScheme="blue" // 버튼 색상 스킴
+                                            px={2} // 좌우 패딩
+                                            py={2} // 상하 패딩
+                                            bg="#ffd100"
+                                            width="150px"
+                                            height="150px"
+                                            onClick={() =>
+                                                handleGroupClick(group.groupId)
+                                            }
+                                            style={{
+                                                whiteSpace: "normal", // 텍스트가 필요에 따라 줄바꿈되도록 설정
+                                                overflow: "hidden", // 내용이 넘칠 경우 숨김
+                                                textOverflow: "ellipsis", // 내용이 넘칠 경우 말줄임표로 표시 (여러 줄에 대해서는 작동하지 않음)
+                                                display: "flex",
+                                                flexDirection: "column",
+                                                justifyContent: "center", // 텍스트를 버튼 중앙에 정렬
+                                                alignItems: "center", // 가로축 중앙 정렬
+                                            }}
+                                        >
+                                            {group.groupname}
+                                        </Button>
+                                    </WrapItem>
+                                ))}
+                                <WrapItem>
                                     <Button
-                                        // onClick={onOpen}
-                                        key={index}
+                                        onClick={onOpen}
                                         size="xl" // 버튼 크기
-                                        fontSize="30px" // 글자 크기
+                                        fontSize="4xl" // 글자 크기
                                         colorScheme="blue" // 버튼 색상 스킴
                                         px={10} // 좌우 패딩
                                         py={7} // 상하 패딩
                                         bg="#ffd100"
-                                        width="120px"
-                                        height="120px"
-                                        onClick={() =>
-                                            handleGroupClick(group.groupId)
-                                        }
+                                        width="150px"
+                                        height="150px"
                                     >
-                                        {group.groupname}
+                                        +
                                     </Button>
-                                ))}
-
-                                <Button
-                                    onClick={onOpen}
-                                    size="xl" // 버튼 크기
-                                    fontSize="4xl" // 글자 크기
-                                    colorScheme="blue" // 버튼 색상 스킴
-                                    px={10} // 좌우 패딩
-                                    py={7} // 상하 패딩
-                                    bg="#ffd100"
-                                    width="120px"
-                                    height="120px"
-                                >
-                                    +
-                                </Button>
-                            </HStack>
+                                </WrapItem>
+                            </Wrap>
                         </div>
                     </>
                 )}

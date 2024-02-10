@@ -25,6 +25,7 @@ import { getNotificationList } from "apis/api/Notification";
 import { notificationListState } from "contexts/Notification";
 import firebaseApp from "./util/firebase/firebaseConfig";
 import InvitationCodePage from "pages/invitation-code-page/InvitationCodePage";
+import ConnectionTest from "pages/truth-room/openvidu/ConnectionTest";
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -152,6 +153,10 @@ function App() {
                             path="/truth-room/:groupId/challenge/:challengeId"
                             element={<TruthRoom />}
                         />
+                        <Route
+                            path="/truth-room/enter-test/:challengeId"
+                            element={<ConnectionTest />}
+                        ></Route>
                     </Routes>
                 </ChakraProvider>
             </Suspense>
