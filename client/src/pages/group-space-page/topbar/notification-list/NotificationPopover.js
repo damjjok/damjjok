@@ -61,8 +61,8 @@ const NotificationPopover = ({ alramList, isMobile, clickHandler }) => {
                     </PopoverHeader>
                     <PopoverBody>
                         <List spacing={3}>
-                            {alramList.map((e) => (
-                                <>
+                            {alramList.map((e, index) => (
+                                <Box key={index}>
                                     <ListItem
                                         onClick={() => {
                                             clickHandler(e.notificationId);
@@ -104,7 +104,7 @@ const NotificationPopover = ({ alramList, isMobile, clickHandler }) => {
                                         </Box>
                                     </ListItem>
                                     <Divider></Divider>
-                                </>
+                                </Box>
                             ))}
                         </List>
                     </PopoverBody>

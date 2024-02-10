@@ -1,9 +1,9 @@
 // src/firebaseMessaging.js
 import { getMessaging, getToken } from "firebase/messaging";
-import app from "./firebaseConfig";
+import firebaseApp from "./firebaseConfig";
 import axios from "axios";
 
-const messaging = getMessaging(app);
+const messaging = getMessaging(firebaseApp);
 
 export const requestForToken = (accessToken) => {
     return getToken(messaging, {

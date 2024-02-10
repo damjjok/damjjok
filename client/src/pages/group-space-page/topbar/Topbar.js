@@ -1,4 +1,4 @@
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import BasicButton from "../../../components/button/BasicButton";
 import { currentUser, currentUserState } from "../../../contexts/User";
 import logo from "assets/images/logo.png";
@@ -7,14 +7,17 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { checkNotification, getNotificationList } from "apis/api/Notification";
 import NotificationPopover from "./notification-list/NotificationPopover";
+import { notificationListState } from "contexts/Notification";
 
 function Topbar() {
     const user = useRecoilValue(currentUser);
-    const [alramList, setAlramList] = useState([]);
+    const [notificationList, setNotificationList] = useRecoilState(
+        notificationListState
+    );
     const isMobile = useBreakpointValue({ base: true, md: false });
     const fetchAlram = async () => {
         const list = await getNotificationList();
-        setAlramList(list);
+        setNotificationList(list);
     };
 
     const notificationClickHandler = async (notificationId) => {
@@ -73,7 +76,7 @@ function Topbar() {
                 </Flex>
                 <Wrap sx={{ transform: isMobile ? "scale(0.6)" : "none" }}>
                     <NotificationPopover
-                        alramList={alramList}
+                        alramList={notificationList}
                         isMobile={isMobile}
                         clickHandler={notificationClickHandler}
                     ></NotificationPopover>
