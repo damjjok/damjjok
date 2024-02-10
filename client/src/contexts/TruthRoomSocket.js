@@ -25,12 +25,6 @@ export const joinMemberListState = atom({
     default: [],
 });
 
-export const readyMemberCountState = atom({
-    // 준비 단계에서 준비를 누른 멤버의 수
-    key: "readyMemberCount",
-    default: 0,
-});
-
 export const allUserReadyState = atom({
     // 모든 유저가 준비 완료 됐는지 여부 => 이거 사실상 있을 필요 없을 듯?
     key: "allUserReady",

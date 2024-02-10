@@ -11,6 +11,7 @@ import {
     voteResultState,
     fineVoteListState,
     fineDeterminedState,
+    isVotedState,
 } from "./TruthRoomSocket";
 import { closeOpenviduSession } from "apis/api/TruthRoom";
 
@@ -28,7 +29,8 @@ export const WebSocketProvider = ({ children }) => {
     const setAllUserReady = useSetRecoilState(allUserReadyState); // 모든 유저가 준비 완료인지 여부, 이건 false였다가 true가 되기만해도 끝이므로 setRecoilState로 호출
     // 2. 증거 판별 단계
     // 3. PASS/FAIL 투표 단계
-    const setVoteResultState = useSetRecoilState(voteResultState);
+    const setVoteResult = useSetRecoilState(voteResultState);
+    const setIsVoted = useSetRecoilState(isVotedState);
     // 4. 최후 변론 단계
     // 5. 벌금 결정 단계
     const [fineStep, setFineStep] = useRecoilState(fineStepState); // 벌금 결정 단계에서
@@ -136,7 +138,7 @@ export const WebSocketProvider = ({ children }) => {
                 (message) => {
                     console.log("Vote Result: ", message.body);
                     setStepReadyCount(0); // 투표 결과 나왔으므로 준비된 유저 수 0으로 초기화
-                    setVoteResultState(message.body); // 이 부분은 "PASS", "FAIL" 형태로 오므로 JSON.parse() 안해줬음
+                    setVoteResult(message.body); // 이 부분은 "PASS", "FAIL" 형태로 오므로 JSON.parse() 안해줬음
                     setStep(3); // 4단계(PASS/FAIL 표출)로 단계 변경
                 }
             );
@@ -324,6 +326,17 @@ export const WebSocketProvider = ({ children }) => {
                 headers: {},
                 body: {},
             });
+            // 소켓 연결 후 관련 recoil 값들 원상복구, challengeId와 enteringTruthRoomMemberInfo는 입장하기 누를 때 set되므로 여기서 초기화 x
+            setStep(0);
+            setJoinMemberList([]);
+            setAllUserReady(false);
+            setStepReadyCount(0);
+            setIsVoted(false);
+            setVoteResult("");
+            setFineStep(0);
+            setFineVoteList([]);
+            setFineDetermined(0);
+            // 소켓과 연결 끊기
             disconnect();
         },
         [disconnect]
