@@ -2,12 +2,17 @@ import React from "react";
 import SmallFrameComponent from "../../../small-frame/SmallFrameComponent";
 import CheckImageComponent from "./CheckImageComponent";
 import { Text } from "@chakra-ui/react";
-import { useRecoilValue } from "recoil";
-import { decidedFineState } from "contexts/TruthRoom";
+import { useRecoilState, useRecoilValue } from "recoil";
 import ConfirmButtonComponent from "../ConfirmButtonComponent";
+import { fineDeterminedState, stepState } from "contexts/TruthRoomSocket";
 
 function ResultComponent(props) {
-    const decidedFine = useRecoilValue(decidedFineState);
+    const fineDetermined = useRecoilValue(fineDeterminedState);
+    const [step, setStep] = useRecoilState(stepState);
+
+    function handleClickConfirm() {
+        setStep(6);
+    }
 
     return (
         <div>
@@ -25,12 +30,15 @@ function ResultComponent(props) {
                                 <div style={{ marginTop: "20px" }}>
                                     <Text as="b" fontSize={"20px"}>
                                         벌금은 <p></p>
-                                        {decidedFine}원이예요
+                                        {fineDetermined}원이예요
                                     </Text>
                                 </div>
                             </div>
                         </div>
-                        <ConfirmButtonComponent margin={30} />
+                        <ConfirmButtonComponent
+                            onClick={() => handleClickConfirm()}
+                            margin={30}
+                        />
                     </div>
                 }
             ></SmallFrameComponent>

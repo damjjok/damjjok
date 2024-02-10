@@ -11,8 +11,11 @@ import {
     voteResultState,
     fineVoteListState,
     fineDeterminedState,
+    isVotedState,
+    fineInputStepState,
 } from "./TruthRoomSocket";
 import { closeOpenviduSession } from "apis/api/TruthRoom";
+import { damJJokNameState } from "./TruthRoom";
 
 const WebSocketContext = createContext({});
 
@@ -23,15 +26,19 @@ export const WebSocketProvider = ({ children }) => {
         useRecoilState(joinMemberListState); // 참여 유저 목록
     const [stepReadyCount, setStepReadyCount] =
         useRecoilState(stepReadyCountState); // 각 단계에서 다음 상태로 갈 준비가 된 유저 수 카운트(모든 단계에서 사용 / 각 단계에서 모든 유저가 준비 완료될 때마다 0으로 초기화)
+    const [damJJokName, setDamJJokName] = useRecoilState(damJJokNameState);
 
     // 1. 준비 단계
     const setAllUserReady = useSetRecoilState(allUserReadyState); // 모든 유저가 준비 완료인지 여부, 이건 false였다가 true가 되기만해도 끝이므로 setRecoilState로 호출
     // 2. 증거 판별 단계
     // 3. PASS/FAIL 투표 단계
-    const setVoteResultState = useSetRecoilState(voteResultState);
+    const setVoteResult = useSetRecoilState(voteResultState);
+    const setIsVoted = useSetRecoilState(isVotedState);
     // 4. 최후 변론 단계
     // 5. 벌금 결정 단계
     const [fineStep, setFineStep] = useRecoilState(fineStepState); // 벌금 결정 단계에서
+    const [fineInputStep, setFineInputStep] =
+        useRecoilState(fineInputStepState);
     const [fineVoteList, setFineVoteList] = useRecoilState(fineVoteListState); // 서버에서 받아온 벌금 리스트
     const [fineDetermined, setFineDetermined] =
         useRecoilState(fineDeterminedState);
@@ -41,26 +48,32 @@ export const WebSocketProvider = ({ children }) => {
     const stompClient = useRef(null);
 
     const connect = useCallback(() => {
-        if (!stompClient.current) {
-            // SockJS 인스턴스 생성(소켓 연결을 위함)
-            const socket = new SockJS(
-                "https://i10e105.p.ssafy.io/truth-room-websocket"
-            );
-
-            // Client 인스턴스 생성
-            stompClient.current = new Client({
-                brokerURL: "wss://i10e105.p.ssafy.io/truth-room-websocket",
-                webSocketFactory: () => socket, // SockJS 인스턴스를 사용하여 WebSocket 연결을 생성
-                onConnect: (frame) => {
-                    console.log("Connected: " + frame);
-                    setIsConnected(true);
-                },
-                // 연결 해제 및 오류 처리에 대한 콜백도 여기에 추가 가능
-            });
-
-            // 연결 시작
-            stompClient.current.activate();
-        }
+        return new Promise((resolve, reject) => {
+            // connection이 된 후에 enterRoom이 실행되게 Promise 객체를 반환
+            if (!stompClient.current) {
+                const socket = new SockJS( // 소켓 연결을 위한 SockJS 인스턴스 생성
+                    "https://i10e105.p.ssafy.io/truth-room-websocket"
+                );
+                stompClient.current = new Client({
+                    // Client 인스턴스 생성을 통해 STOMP 프로토콜 사용
+                    webSocketFactory: () => socket,
+                    onConnect: (frame) => {
+                        console.log("Connected: " + frame);
+                        setIsConnected(true);
+                        resolve(); // 연결 성공 시 resolve 호출
+                    },
+                    // 연결 실패 또는 오류 발생 시 reject를 호출할 수 있음
+                    onStompError: (error) => {
+                        console.error("STOMP error: ", error);
+                        reject(error); // 오류 발생 시 reject 호출
+                    },
+                });
+                stompClient.current.activate(); // 연결 시작
+            } else {
+                // 이미 연결된 경우, 즉시 resolve 호출
+                resolve("Already connected.");
+            }
+        });
     }, []);
 
     const disconnect = useCallback(() => {
@@ -80,8 +93,17 @@ export const WebSocketProvider = ({ children }) => {
                 (message) => {
                     console.log("hi");
                     console.log("입장을 통해 갱신된 멤버 리스트");
-                    console.log(JSON.parse(message.body));
-                    setJoinMemberList(JSON.parse(message.body));
+                    const refJoinMemeberList = JSON.parse(message.body);
+                    console.log(refJoinMemeberList);
+                    setJoinMemberList(refJoinMemeberList);
+                    if (damJJokName === "") {
+                        // 담쪽이가 아직 입장하지 않아 이름이 저장되지 않았을 때
+                        var i;
+                        for (i = 0; i < refJoinMemeberList.length; i++) {
+                            if (refJoinMemeberList[i].role === "Damjjok")
+                                setDamJJokName(refJoinMemeberList[i].name);
+                        }
+                    }
                 }
             );
             stompClient.current.subscribe(
@@ -130,7 +152,7 @@ export const WebSocketProvider = ({ children }) => {
                 (message) => {
                     console.log("Vote Result: ", message.body);
                     setStepReadyCount(0); // 투표 결과 나왔으므로 준비된 유저 수 0으로 초기화
-                    setVoteResultState(message.body); // 이 부분은 "PASS", "FAIL" 형태로 오므로 JSON.parse() 안해줬음
+                    setVoteResult(message.body); // 이 부분은 "PASS", "FAIL" 형태로 오므로 JSON.parse() 안해줬음
                     setStep(3); // 4단계(PASS/FAIL 표출)로 단계 변경
                 }
             );
@@ -162,6 +184,7 @@ export const WebSocketProvider = ({ children }) => {
                 (message) => {
                     console.log("Fine Submitted Count: ", message.body);
                     setStepReadyCount(stepReadyCount + 1); // 여기서는 벌금 입력한 멤버 수 카운트로 사용
+                    setFineInputStep(1); // 벌금 입력(1) -> 벌금 입력 대기(2) 단계로
                 }
             );
             stompClient.current.subscribe(
@@ -173,7 +196,7 @@ export const WebSocketProvider = ({ children }) => {
                     );
                     setFineVoteList(JSON.parse(message.body)); // 받아온 벌금 리스트를 먼저 set
                     setStepReadyCount(0); // 모든 멤버가 벌금을 입력 완료, 단계 별 준비 상황 0으로 초기화
-                    setFineStep(1); // 벌금 입력(0) -> 벌금 투표(1) 단계로
+                    setFineInputStep(2); // 벌금 입력 대기(1) -> 벌금 투표(2) 단계로
                 }
             );
             stompClient.current.subscribe(
@@ -189,7 +212,7 @@ export const WebSocketProvider = ({ children }) => {
                     console.log("Fine Vote Result: ", message.body);
                     setFineDetermined(message.body);
                     setStepReadyCount(0); // 단계 별 준비 멤버 수 0으로 초기화
-                    setFineStep(2); // 벌금 투표(1) -> 벌금 발표(2) 단계로
+                    setFineStep(1); // 벌금 입력(0) -> 벌금 발표(1) 단계로
                 }
             );
             stompClient.current.subscribe(
@@ -318,6 +341,17 @@ export const WebSocketProvider = ({ children }) => {
                 headers: {},
                 body: {},
             });
+            // 소켓 연결 후 관련 recoil 값들 원상복구, challengeId와 enteringTruthRoomMemberInfo는 입장하기 누를 때 set되므로 여기서 초기화 x
+            setStep(0);
+            setJoinMemberList([]);
+            setAllUserReady(false);
+            setStepReadyCount(0);
+            setIsVoted(false);
+            setVoteResult("");
+            setFineStep(0);
+            setFineVoteList([]);
+            setFineDetermined(0);
+            // 소켓과 연결 끊기
             disconnect();
         },
         [disconnect]

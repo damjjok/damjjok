@@ -1,19 +1,20 @@
-import React from "react";
+import React, { useContext } from "react";
 import SmallFrameComponent from "../../../../small-frame/SmallFrameComponent";
 import ConfirmButtonComponent from "../../ConfirmButtonComponent";
 import TextComponent from "./components/TextComponent";
 import InputComponent from "./components/InputComponent";
 import { Wrapper } from "./FineComponent.style";
-import { useRecoilState } from "recoil";
-import { fineDecisionInputStepState } from "contexts/TruthRoom";
+import { useRecoilValue } from "recoil";
+import { challengeIdState, inputFineState } from "contexts/TruthRoomSocket";
+import { WebSocketContext } from "contexts/WebSocketContext";
 
 function FineInputComponent(props) {
-    const [fineDecisionInputStep, setFineDecisionInputStep] = useRecoilState(
-        fineDecisionInputStepState
-    );
+    const { submitFine } = useContext(WebSocketContext);
+    const challengeId = useRecoilValue(challengeIdState);
+    const inputFine = useRecoilValue(inputFineState);
 
     function handleClickConfirm() {
-        setFineDecisionInputStep(fineDecisionInputStep + 1);
+        submitFine(challengeId, inputFine);
     }
 
     return (

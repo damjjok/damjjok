@@ -1,11 +1,12 @@
+import React from "react";
 import { Text } from "@chakra-ui/react";
 import { gatheredMoneyState } from "contexts/TruthRoom";
-import React, { useState } from "react";
-import { useRecoilValue } from "recoil";
+import { inputFineState } from "contexts/TruthRoomSocket";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 function InputComponent(props) {
     const gatheredMoney = useRecoilValue(gatheredMoneyState);
-    const [inputValue, setInputValue] = useState(0);
+    const [inputValue, setInputValue] = useRecoilState(inputFineState);
 
     // 입력 필드 값을 변경하는 함수입니다.
     const handleInputChange = (event) => {

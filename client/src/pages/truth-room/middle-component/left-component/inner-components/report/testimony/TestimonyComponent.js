@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import {
-    showingTestimonyState,
-    testimonyIndexState,
-    testimonyState,
-} from "contexts/TruthRoom";
+import { showingTestimonyState } from "contexts/TruthRoom";
 import TestimonyFrame from "./TestimonyFrame";
 import { Wrapper } from "../TabComponent.style";
 import { useParams } from "react-router-dom";

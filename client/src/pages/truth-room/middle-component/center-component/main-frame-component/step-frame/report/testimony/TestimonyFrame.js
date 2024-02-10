@@ -1,10 +1,6 @@
 import { Wrapper } from "./TestimonyFrame.style";
 import { useRecoilState, useRecoilValue } from "recoil";
-import {
-    showingTestimonyState,
-    testimonyIndexState,
-    testimonyState,
-} from "contexts/TruthRoom";
+import { showingTestimonyState } from "contexts/TruthRoom";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import TestimonyDeatilComponent from "./detail/TestimonyDeatilComponent";
 

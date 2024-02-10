@@ -1,22 +1,45 @@
-import React from "react";
-import { stepState } from "contexts/TruthRoomSocket";
-import { useRecoilState } from "recoil";
+import React, { useContext, useState } from "react";
+import {
+    challengeIdState,
+    joinMemberListState,
+    stepReadyCountState,
+    stepState,
+} from "contexts/TruthRoomSocket";
+import { useRecoilValue } from "recoil";
 import { Wrapper } from "./BottomComponent.style";
 import { Button } from "@chakra-ui/react";
+import { WebSocketContext } from "contexts/WebSocketContext";
 
 function BottomComponent() {
-    const [step, setStep] = useRecoilState(stepState);
+    const { evidenceNextStage } = useContext(WebSocketContext);
+    const step = useRecoilValue(stepState);
+    const challengeId = useRecoilValue(challengeIdState);
+    const joinMemberList = useRecoilValue(joinMemberListState);
+    const stepReadyCount = useRecoilValue(stepReadyCountState);
+    const [isClickedReady, setIsClickedReady] = useState(false);
 
     function handleNextStepClick() {
-        setStep(step + 1);
+        evidenceNextStage(challengeId);
+        setIsClickedReady(true);
     }
 
     if (step === 1)
         return (
             <Wrapper>
-                <Button colorScheme="yellow" onClick={handleNextStepClick}>
-                    다음으로
-                </Button>
+                {!isClickedReady && (
+                    <Button
+                        width={"80px"}
+                        colorScheme="yellow"
+                        onClick={handleNextStepClick}
+                    >
+                        다음으로
+                    </Button>
+                )}
+                {isClickedReady && (
+                    <Button width={"80px"}>
+                        {stepReadyCount}/{joinMemberList.length}
+                    </Button>
+                )}
             </Wrapper>
         );
     else return <Wrapper></Wrapper>;
