@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
 public interface NotificationRepository extends JpaRepository<NotificationEntity, Integer> {
-    List<NotificationEntity> findByUserEntity(UserEntity userEntity);
+    List<NotificationEntity> findByUserEntityOrderBySendDateDesc(UserEntity userEntity);
     NotificationEntity findByNotificationId(int notificationId);
 }
