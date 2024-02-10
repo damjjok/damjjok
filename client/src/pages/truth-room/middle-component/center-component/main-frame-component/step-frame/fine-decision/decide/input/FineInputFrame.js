@@ -5,7 +5,7 @@ import FineInputWaitingComponent from "./input-waiting/FineInputWaitingComponent
 import FineVoteComponent from "./vote/FineVoteComponent";
 import { fineInputStepState } from "contexts/TruthRoomSocket";
 
-function FineInputFrame(props) {
+function FineInputFrame() {
     const fineInputStep = useRecoilValue(fineInputStepState);
 
     return (
