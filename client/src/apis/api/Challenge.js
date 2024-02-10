@@ -88,6 +88,22 @@ const patchChallengeStatus = async (challengeId, determination, imagePath) => {
     }
 };
 
+const completeChallenge = async (challengeId) => {
+    try {
+        const requestBody = {
+            challengeId: challengeId,
+            status: "Completed",
+        };
+
+        const response = await axiosInstance.patch(
+            "/v1/challenge/change/status",
+            requestBody
+        );
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 export {
     createChallenge,
     getChallengeRanking,
@@ -95,4 +111,5 @@ export {
     getChallengeList,
     getChallengeMembers,
     patchChallengeStatus,
+    completeChallenge,
 };

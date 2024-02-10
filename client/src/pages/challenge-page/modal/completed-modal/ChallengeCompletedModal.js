@@ -9,17 +9,24 @@ import {
     challengeState,
 } from "contexts/Challenge";
 import { useEffect } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 
 function ChallengeCompletedModal({ nextContent }) {
     const challenge = useRecoilValue(challengeState);
     const [cheerMessageList, setCheerMessageList] = useRecoilState(
         challengeCheerMessageList
     );
+    const resetCheerMessageListAtom = useResetRecoilState(
+        challengeCheerMessageList
+    );
     const [bestMember, setBestMember] = useRecoilState(challengeBestMember);
+    const resetBestMemberAtom = useResetRecoilState(challengeBestMember);
 
     useEffect(() => {
         const fetchData = async () => {
+            resetCheerMessageListAtom();
+            resetBestMemberAtom();
+
             try {
                 const messageResponse = await getCheerMessageList(
                     challenge.challengeId
@@ -36,7 +43,7 @@ function ChallengeCompletedModal({ nextContent }) {
             }
         };
         fetchData();
-    }, []);
+    }, [cheerMessageList]);
 
     return (
         <>
