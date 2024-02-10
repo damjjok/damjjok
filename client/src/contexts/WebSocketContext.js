@@ -148,7 +148,7 @@ export const WebSocketProvider = ({ children }) => {
                 "/topic/passFailVoteState/" + roomId,
                 (message) => {
                     console.log("Current Vote Count: ", message.body);
-                    setStepReadyCount(stepReadyCount + 1); // 현재 단계에서 투표 완료한 사람 카운트 용으로 사용
+                    setStepReadyCount(message.body); // 현재 단계에서 투표 완료한 사람 카운트 용으로 사용
                 }
             );
             stompClient.current.subscribe(
@@ -164,7 +164,7 @@ export const WebSocketProvider = ({ children }) => {
                 "/topic/finalArgumentReadyState/" + roomId,
                 (message) => {
                     console.log("Final Argument Ready State: ", message.body);
-                    setStepReadyCount(stepReadyCount + 1); // 투표 단계에서 최후 변론으로 갈 준비 완료한 사람 카운트용으로 사용
+                    setStepReadyCount(message.body); // 투표 단계에서 최후 변론으로 갈 준비 완료한 사람 카운트용으로 사용
                 }
             );
             stompClient.current.subscribe(
@@ -187,7 +187,7 @@ export const WebSocketProvider = ({ children }) => {
                 "/topic/fineSubmittedCount/" + roomId,
                 (message) => {
                     console.log("Fine Submitted Count: ", message.body);
-                    setStepReadyCount(stepReadyCount + 1); // 여기서는 벌금 입력한 멤버 수 카운트로 사용
+                    setStepReadyCount(message.body); // 여기서는 벌금 입력한 멤버 수 카운트로 사용
                     setFineInputStep(1); // 벌금 입력(1) -> 벌금 입력 대기(2) 단계로
                 }
             );
@@ -207,7 +207,7 @@ export const WebSocketProvider = ({ children }) => {
                 "/topic/fineVoteCount/" + roomId,
                 (message) => {
                     console.log("Fine Vote Count: ", message.body);
-                    setStepReadyCount(stepReadyCount + 1); // 벌금 투표한 멤버 수 카운트 용으로 사용
+                    setStepReadyCount(message.body); // 벌금 투표한 멤버 수 카운트 용으로 사용
                 }
             );
             stompClient.current.subscribe(
