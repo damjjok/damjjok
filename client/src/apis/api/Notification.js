@@ -24,6 +24,8 @@ const checkNotification = async (notificationId) => {
     } catch (error) {
         console.log(error);
     }
+
+    return [];
 };
 
 export { getNotificationList, checkNotification };
