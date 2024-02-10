@@ -11,7 +11,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface GroupMemberRepository extends JpaRepository<GroupMemberEntity, GroupMemberId> {
-    @Query("SELECT gm.groupEntity FROM GroupMemberEntity gm WHERE gm.userEntity.id = :userId")
+    @Query("SELECT gm.groupEntity FROM GroupMemberEntity gm WHERE gm.userEntity.id = :userId ORDER BY gm.groupEntity.groupName ASC")
     List<GroupEntity> findGroupsByUserId(@Param("userId") Integer userId);
 
     @Query("SELECT gm.userEntity from GroupMemberEntity gm WHERE gm.groupEntity.id = :groupId")
