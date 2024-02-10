@@ -15,13 +15,12 @@ import {
 import CreateChallengePage from "../../create-challenge-page/CreateChallengePage";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { getChallengeList } from "apis/api/Challenge";
-import { currentUserState } from "contexts/User";
+import { currentUser, currentUserState } from "contexts/User";
 
 // import NormalButton from "../components/button/normalbutton/NormalButton";
 
 function GroupSpaceMain() {
-    // 더미데이터
-    const userId = useRecoilValue(currentUserState);
+    const loginedUser = useRecoilValue(currentUser);
 
     const { groupId } = useParams();
     // console.log(groupId);
@@ -34,7 +33,7 @@ function GroupSpaceMain() {
         if (currentChallengeList && currentChallengeList.length > 0) {
             const currentMyChallenge = currentChallengeList.find(
                 (challenge) =>
-                    challenge.userId === userId &&
+                    challenge.userId === loginedUser.userId &&
                     challenge.status === "PROGRESS"
             );
 
