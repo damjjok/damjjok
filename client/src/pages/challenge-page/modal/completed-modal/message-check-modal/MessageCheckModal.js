@@ -19,26 +19,29 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import messageBg from "assets/images/messageBg.png";
 import WholeMessageList from "./WholeMessageList";
+import { challengeCheerMessageList } from "contexts/Challenge";
+import { useRecoilValue } from "recoil";
 
 //더미 데이터
-const messages = [
-    {
-        writer: "작성자1",
-        content: "안녕잘지내니테스트용으로메시지를길게넣어보려고해",
-    },
-    { writer: "작성자2", content: "사실처음봤을때부터...더보기" },
-    { writer: "작성자3", content: "이편지는영국에서시작되어..." },
-    { writer: "작성자4", content: "[WEB발신] 너는 나를 존중해야 하고" },
-    { writer: "작성자5", content: "메시지 5" },
-    { writer: "작성자6", content: "메시지 6" },
-    { writer: "작성자7", content: "메시지 7" },
-    { writer: "작성자8", content: "메시지 8" },
-    { writer: "작성자9", content: "메시지 9" },
-];
+// const messages = [
+//     {
+//         writer: "작성자1",
+//         content: "안녕잘지내니테스트용으로메시지를길게넣어보려고해",
+//     },
+//     { writer: "작성자2", content: "사실처음봤을때부터...더보기" },
+//     { writer: "작성자3", content: "이편지는영국에서시작되어..." },
+//     { writer: "작성자4", content: "[WEB발신] 너는 나를 존중해야 하고" },
+//     { writer: "작성자5", content: "메시지 5" },
+//     { writer: "작성자6", content: "메시지 6" },
+//     { writer: "작성자7", content: "메시지 7" },
+//     { writer: "작성자8", content: "메시지 8" },
+//     { writer: "작성자9", content: "메시지 9" },
+// ];
 
 function MessageCheckModal({ nextContent, isExpired }) {
     const [isMessagesVisible, setIsMessagesVisible] = useState(false);
     const [displayCount, setDisplayCount] = useState(8); // 메시지 표시 개수 상태
+    const messages = useRecoilValue(challengeCheerMessageList);
 
     const handleClick = () => {
         setIsMessagesVisible(true);
@@ -97,7 +100,7 @@ function MessageCheckModal({ nextContent, isExpired }) {
                                             >
                                                 <Box>
                                                     <Heading size="sm">
-                                                        {message.writer}
+                                                        {message.userName}
                                                     </Heading>
                                                 </Box>
                                                 <Box>

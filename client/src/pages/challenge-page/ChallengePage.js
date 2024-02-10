@@ -32,6 +32,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { challengeState } from "contexts/Challenge";
 import { useParams } from "react-router-dom";
 import { getChallengeInfo } from "apis/api/Challenge";
+import { currentUser } from "contexts/User";
 
 function ChallengePage() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -41,6 +42,7 @@ function ChallengePage() {
     const [currentChallenge, setCurrentChallenge] =
         useRecoilState(challengeState);
 
+    const loginedUser = useRecoilValue(currentUser);
     const isMobile = useBreakpointValue({ base: true, md: false });
 
     useEffect(() => {
@@ -56,12 +58,15 @@ function ChallengePage() {
         };
 
         fetchData(); // fetchData 함수 호출
-    }, [challengeId, setCurrentChallenge]);
+    }, []);
 
     useEffect(() => {
         // 조건 수정 필요
         // 모달 마지막에 navigate 하면 url이 하위 URL로 감.(/challenge/4/empty-challenge). 바꿔줘야 함.
-        if (currentChallenge.status === "OFF") {
+        if (
+            currentChallenge.userId === loginedUser.userId &&
+            currentChallenge.status === "PROGRESS"
+        ) {
             setIsModalOpen(true);
         } else {
             setIsModalOpen(false);

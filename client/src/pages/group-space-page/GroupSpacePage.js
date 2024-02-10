@@ -37,15 +37,15 @@ function GroupSpacePage() {
         };
 
         fetchData(); // fetchData 함수 호출
-    }, [groupId, setCurrentChallengeList]);
+    }, []);
 
     return (
-        <div>
+        <Box>
             <Topbar />
             <div className="flex">
                 <Box
                     position={isMobile ? "fixed" : "static"}
-                    bottom={isMobile ? "10px" : "auto"}
+                    bottom={isMobile ? "10vw" : "auto"}
                     left={isMobile ? "10px" : "auto"}
                     zIndex={"docked"}
                 >
@@ -55,7 +55,7 @@ function GroupSpacePage() {
                     <GroupSpaceMain />
                 </Box>
             </div>
-        </div>
+        </Box>
     );
 }
 

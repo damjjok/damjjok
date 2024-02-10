@@ -57,3 +57,8 @@ export const challengeStatusState = atom({
         imagePath: "",
     },
 });
+
+export const challengeCheerMessageList = atom({
+    key: "challengeCheerMessageList",
+    default: [],
+});

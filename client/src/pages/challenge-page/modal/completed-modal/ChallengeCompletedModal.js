@@ -1,8 +1,32 @@
 import { StarIcon } from "@chakra-ui/icons";
 import { Flex, ModalBody, VStack } from "@chakra-ui/react";
+import { getCheerMessageList } from "apis/api/CheerMsg";
 import BasicButton from "components/button/BasicButton";
+import { challengeCheerMessageList, challengeState } from "contexts/Challenge";
+import { useEffect } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 function ChallengeCompletedModal({ nextContent }) {
+    const challenge = useRecoilValue(challengeState);
+    const [cheerMessageList, setCheerMessageList] = useRecoilState(
+        challengeCheerMessageList
+    );
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await getCheerMessageList(
+                    challenge.challengeId
+                );
+                setCheerMessageList(response);
+                console.log(cheerMessageList);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        fetchData();
+    }, []);
+
     return (
         <>
             <Flex
@@ -22,7 +46,9 @@ function ChallengeCompletedModal({ nextContent }) {
                         <BasicButton
                             buttonName={"리포트 확인하기"}
                             variant={"bigbtn"}
-                            onClick={nextContent}
+                            onClick={() => {
+                                nextContent();
+                            }}
                         />
                     </VStack>
                 </ModalBody>
