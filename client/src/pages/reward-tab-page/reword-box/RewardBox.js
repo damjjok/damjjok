@@ -28,7 +28,7 @@ function RewardBox() {
                         />
                     </div>
                     <div
-                        className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[400px] h-fit text-center py-4 bg-damlightgray transition-opacity duration-500 ${
+                        className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[400px] h-fit text-center py-4 bg-damlightgray rounded-lg transition-opacity duration-500 ${
                             isHovered ? "opacity-100" : "opacity-0"
                         }`}
                     >
