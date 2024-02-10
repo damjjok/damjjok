@@ -20,6 +20,7 @@ import avatar4 from "assets/images/avatar4.png";
 import { challengeCandyCount, challengeState } from "contexts/Challenge";
 import { useEffect } from "react";
 import { getChallengeCandyCount } from "apis/api/Candy";
+import { getAttendanceList } from "apis/api/Attendance";
 // import { challengeState } from "../../../../../contexts/Challenge";
 
 // profilePath 올바르게 설정될 필요성
@@ -31,10 +32,6 @@ function StatusBar() {
     const [candyCount, setCandyCount] = useRecoilState(challengeCandyCount);
     const [currentCandyCount, setCurrentCandyCount] =
         useRecoilState(challengeCandyCount);
-
-    useEffect(() => {
-        console.log("응원완료");
-    }, [currentCandyCount]);
 
     const isMobile = useBreakpointValue({ base: true, md: false });
 
@@ -54,7 +51,7 @@ function StatusBar() {
     ];
 
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchCandyData = async () => {
             try {
                 const response = await getChallengeCandyCount(
                     challenge.challengeId
@@ -63,11 +60,24 @@ function StatusBar() {
                 setCandyCount(updatedCount); // Recoil 상태에 데이터 적용
                 // console.log(response);
             } catch (error) {
-                console.error("챌린지 정보 불러오기 실패", error);
+                console.error("캔디 정보 불러오기 실패", error);
             }
         };
 
-        fetchData(); // fetchData 함수 호출
+        const fetchAttendanceData = async () => {
+            try {
+                const response = await getAttendanceList(challenge.challengeId);
+                const currentAttendanceList = response.list;
+            } catch (error) {
+                console.error("춣석 정보 불러오기 실패", error);
+            }
+        };
+
+        if (challenge.challengeId === loginedUser.userId) {
+            fetchAttendanceData();
+        } else {
+            fetchCandyData(); // fetchData 함수 호출
+        }
     }, [challenge, setCandyCount]);
 
     return (

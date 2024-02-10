@@ -8,24 +8,30 @@ import {
     useDisclosure,
 } from "@chakra-ui/react";
 import BasicButton from "components/button/BasicButton";
-import React from "react";
+import React, { useEffect } from "react";
 import postboxSented from "assets/gifs/postbox-unscreen.gif";
 // import { useRecoilValue } from "recoil";
 // import { currentGroupState } from "contexts/User";
 // import { useNavigate } from "react-router-dom";
 
-function RewardBoxSendAlert() {
+function RewardBoxSendAlert({ inputValue }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const cancelRef = React.useRef();
+
+    useEffect(() => {
+        if (inputValue) {
+            onOpen();
+        }
+    }, [inputValue, onOpen]);
     // const currentGroup = useRecoilValue(currentGroupState);
     // const navigate = useNavigate();
     return (
         <>
-            <BasicButton
+            {/* <BasicButton
                 onClick={onOpen}
                 buttonName={"메시지 보내기"}
                 variant={"bigbtn"}
-            />
+            /> */}
 
             <AlertDialog
                 isOpen={isOpen}
@@ -50,6 +56,7 @@ function RewardBoxSendAlert() {
                                 <p className="text-center font-bold">
                                     메시지 전송이 완료되었습니다!
                                 </p>
+                                {/* <p>{inputValue}</p> */}
                             </div>
                         </AlertDialogBody>
 
