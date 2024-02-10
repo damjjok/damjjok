@@ -221,8 +221,9 @@ public class EvidenceServiceImpl implements EvidenceService {
             int challengeId = dto.getChallengeId();
 
             ChallengeEntity challengeEntity = challengeRepository.findByChallengeId(challengeId);
-
-            List<EvidenceEntity> entityList = evidenceRepository.findByChallengeEntity(challengeEntity);
+            // createdAt 기준으로 내림차순 정렬
+            Sort sort = Sort.by("createdAt").descending();
+            List<EvidenceEntity> entityList = evidenceRepository.findByChallengeEntity(challengeEntity, sort);
 
             entityList.stream().forEach(e ->{
                 if(e.getCreatedAt().isBefore(challengeEntity.getFinalTruthRoomDate())) return;
