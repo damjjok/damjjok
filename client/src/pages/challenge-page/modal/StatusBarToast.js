@@ -1,4 +1,5 @@
 import { useToast } from "@chakra-ui/react";
+import { getAttendanceList, postAttendance } from "apis/api/Attendance";
 import {
     getChallengeCandyCount,
     postChallengeCandyCount,
@@ -21,6 +22,8 @@ function StatusBarToast({ challenge }) {
     const handleButtonClick = async () => {
         setIsClicked(true);
         if (loginedUser.userId === challenge.userId) {
+            postAttendance(+challenge.challengeId);
+            const response = await getAttendanceList(challenge.challengeId);
             toast({
                 title: "출석 완료!",
                 description: "오늘의 금연도 화이팅이에요!",
@@ -28,7 +31,6 @@ function StatusBarToast({ challenge }) {
                 duration: 9000,
                 isClosable: true,
             });
-            // 출석일수 추가해주는 로직 넣어줘야 함
         } else {
             try {
                 postChallengeCandyCount(
