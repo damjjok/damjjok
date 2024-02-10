@@ -128,7 +128,11 @@ export const WebSocketProvider = ({ children }) => {
             stompClient.current.subscribe(
                 "/topic/evidenceNextStageState/" + roomId,
                 (message) => {
-                    setStepReadyCount(stepReadyCount + 1); // 여기서는 다음 단계를 클릭한 사람 카운트로 사용
+                    console.log(
+                        "증거에서 다음단계로 넘어가기 누른 멤버 수 : " +
+                            message.body
+                    );
+                    setStepReadyCount(message.body); // 여기서는 다음 단계를 클릭한 사람 카운트로 사용
                 }
             );
             stompClient.current.subscribe(
