@@ -31,7 +31,7 @@ function RewardBoxModal() {
 
     const handleConfirm = () => {
         setConfirmedInputValue(inputValue); // 확인 버튼을 눌렀을 때 confirmedInputValue를 업데이트합니다.
-        postCheerMessage(challenge.challengeId, confirmedInputValue);
+        postCheerMessage(challenge.challengeId, inputValue);
         onClose();
     };
 
