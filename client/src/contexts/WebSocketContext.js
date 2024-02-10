@@ -201,7 +201,7 @@ export const WebSocketProvider = ({ children }) => {
                     console.log("Fine Vote Result: ", message.body);
                     setFineDetermined(message.body);
                     setStepReadyCount(0); // 단계 별 준비 멤버 수 0으로 초기화
-                    setFineStep(2); // 벌금 투표(1) -> 벌금 발표(2) 단계로
+                    setFineStep(1); // 벌금 입력(0) -> 벌금 발표(1) 단계로
                 }
             );
             stompClient.current.subscribe(

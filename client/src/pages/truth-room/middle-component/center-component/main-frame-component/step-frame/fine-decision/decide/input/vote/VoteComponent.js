@@ -1,24 +1,25 @@
 import { Text } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import ConfirmButtonComponent from "../../../ConfirmButtonComponent";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { fineDecisionStepState, inputFineListState } from "contexts/TruthRoom";
+import { fineDecisionStepState } from "contexts/TruthRoom";
 import FineItemComponent from "./FineItemComponent";
+import { challengeIdState, fineVoteListState } from "contexts/TruthRoomSocket";
+import { WebSocketContext } from "contexts/WebSocketContext";
 
 function VoteComponent(props) {
-    const inputFineList = useRecoilValue(inputFineListState);
-    const [fineDecisionStep, setFineDecisionStep] = useRecoilState(
-        fineDecisionStepState
-    );
-    const [selectedFine, setSelectedFine] = useState(inputFineList[0]);
+    const { voteFine } = useContext(WebSocketContext);
+    const fineVoteList = useRecoilValue(fineVoteListState);
+    const challengeId = useRecoilValue(challengeIdState);
 
+    const [selectedFine, setSelectedFine] = useState(fineVoteList[0]); // 디폴트로 선택값 주기 위해 변수 선언
     const handleFineChange = (fine) => {
         setSelectedFine(fine); // 선택된 벌금 업데이트
     };
 
     const handleClickConfrim = () => {
-        // 이 단계는 입력의 가장 마지막 단계이므로, fineDecisionInputStep이 아닌 fineDecisionStep을 컨트롤 해줘야 함
-        setFineDecisionStep(fineDecisionStep + 1);
+        // 투표 시 소켓에 투표함을 알림
+        voteFine(challengeId, selectedFine);
     };
 
     return (
@@ -34,7 +35,7 @@ function VoteComponent(props) {
                         overflowY: "auto",
                     }}
                 >
-                    {inputFineList.map((fine) => (
+                    {fineVoteList.map((fine) => (
                         <FineItemComponent
                             fine={fine}
                             onFineChange={handleFineChange}
