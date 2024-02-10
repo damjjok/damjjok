@@ -20,7 +20,6 @@ import {
     Wrap,
     WrapItem,
 } from "@chakra-ui/react";
-import { checkNotification } from "apis/api/Notification";
 
 const NotificationPopover = ({ alramList, isMobile, clickHandler }) => {
     const doNotReadAlramList = alramList.filter((e) => !e.readOrNot);
@@ -59,7 +58,7 @@ const NotificationPopover = ({ alramList, isMobile, clickHandler }) => {
                     <PopoverHeader>
                         <Text fontWeight={700}>알림함</Text>
                     </PopoverHeader>
-                    <PopoverBody>
+                    <PopoverBody height={"40vh"} overflowY={"scroll"}>
                         <List spacing={3}>
                             {alramList.map((e, index) => (
                                 <Box key={index}>
