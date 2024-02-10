@@ -23,6 +23,12 @@ export const groupState = atom({
     ],
 });
 
+export const damJJokNameState = atom({
+    // 종료 단계에서 담쪽이 이름을 표출하기 위해 저장
+    key: "damJJokName",
+    default: "",
+});
+
 export const reportModeState = atom({
     key: "reportMode",
     default: "EVIDENCE", // EVIDENCE, TESTIMONY

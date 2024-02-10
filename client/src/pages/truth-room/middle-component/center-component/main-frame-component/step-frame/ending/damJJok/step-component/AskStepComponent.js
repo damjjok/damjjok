@@ -1,12 +1,12 @@
 import { Button, Text } from "@chakra-ui/react";
 import React from "react";
 
-function AskStepComponent({ damJJok }) {
+function AskStepComponent({ damJJokName }) {
     return (
         <div>
             <div style={{ marginTop: "100px", textAlign: "center" }}>
                 <Text as="b" fontSize={40}>
-                    {damJJok.name}님, <p />
+                    {damJJokName}님, <p />
                     이번 챌린지에는 실패하셨지만
                     <p />또 다시 도전할 수 있어요!
                 </Text>

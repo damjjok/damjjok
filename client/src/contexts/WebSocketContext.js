@@ -15,6 +15,7 @@ import {
     fineInputStepState,
 } from "./TruthRoomSocket";
 import { closeOpenviduSession } from "apis/api/TruthRoom";
+import { damJJokNameState } from "./TruthRoom";
 
 const WebSocketContext = createContext({});
 
@@ -25,6 +26,7 @@ export const WebSocketProvider = ({ children }) => {
         useRecoilState(joinMemberListState); // 참여 유저 목록
     const [stepReadyCount, setStepReadyCount] =
         useRecoilState(stepReadyCountState); // 각 단계에서 다음 상태로 갈 준비가 된 유저 수 카운트(모든 단계에서 사용 / 각 단계에서 모든 유저가 준비 완료될 때마다 0으로 초기화)
+    const [damJJokName, setDamJJokName] = useRecoilState(damJJokNameState);
 
     // 1. 준비 단계
     const setAllUserReady = useSetRecoilState(allUserReadyState); // 모든 유저가 준비 완료인지 여부, 이건 false였다가 true가 되기만해도 끝이므로 setRecoilState로 호출
@@ -91,8 +93,17 @@ export const WebSocketProvider = ({ children }) => {
                 (message) => {
                     console.log("hi");
                     console.log("입장을 통해 갱신된 멤버 리스트");
-                    console.log(JSON.parse(message.body));
-                    setJoinMemberList(JSON.parse(message.body));
+                    const refJoinMemeberList = JSON.parse(message.body);
+                    console.log(refJoinMemeberList);
+                    setJoinMemberList(refJoinMemeberList);
+                    if (damJJokName === "") {
+                        // 담쪽이가 아직 입장하지 않아 이름이 저장되지 않았을 때
+                        var i;
+                        for (i = 0; i < refJoinMemeberList.length; i++) {
+                            if (refJoinMemeberList[i].role === "Damjjok")
+                                setDamJJokName(refJoinMemeberList[i].name);
+                        }
+                    }
                 }
             );
             stompClient.current.subscribe(

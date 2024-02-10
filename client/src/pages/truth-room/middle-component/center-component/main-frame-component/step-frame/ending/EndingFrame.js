@@ -2,19 +2,22 @@ import React from "react";
 import EndingDamJJokFrame from "./damJJok/EndingDamJJokFrame";
 import SmallFrameComponent from "../../small-frame/SmallFrameComponent";
 import EndingPhDFrame from "./phD/EndingPhDFrame";
+import { useRecoilValue } from "recoil";
+import { damJJokNameState } from "contexts/TruthRoom";
+import { enteringTruthRoomMemberInfoState } from "contexts/TruthRoomSocket";
 
 function EndingFrame(props) {
-    const testUser = {
-        name: "김영후",
-        role: "phD",
-    };
+    const enteringTruthRoomMemberInfo = useRecoilValue(
+        enteringTruthRoomMemberInfoState
+    );
+    const damJJokName = useRecoilValue(damJJokNameState);
 
-    if (testUser.role === "damJJok") {
+    if (enteringTruthRoomMemberInfo.role === "Damjjok") {
         return (
             <SmallFrameComponent
                 width={900}
                 height={600}
-                content={<EndingDamJJokFrame damJJok={testUser} />}
+                content={<EndingDamJJokFrame />}
             ></SmallFrameComponent>
         );
     } else {
@@ -22,7 +25,7 @@ function EndingFrame(props) {
             <SmallFrameComponent
                 width={900}
                 height={600}
-                content={<EndingPhDFrame damJJok={testUser} />}
+                content={<EndingPhDFrame damJJokName={damJJokName} />}
             ></SmallFrameComponent>
         );
     }
