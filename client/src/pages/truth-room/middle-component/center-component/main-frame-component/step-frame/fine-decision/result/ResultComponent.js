@@ -2,12 +2,17 @@ import React from "react";
 import SmallFrameComponent from "../../../small-frame/SmallFrameComponent";
 import CheckImageComponent from "./CheckImageComponent";
 import { Text } from "@chakra-ui/react";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import ConfirmButtonComponent from "../ConfirmButtonComponent";
-import { fineDeterminedState } from "contexts/TruthRoomSocket";
+import { fineDeterminedState, stepState } from "contexts/TruthRoomSocket";
 
 function ResultComponent(props) {
     const fineDetermined = useRecoilValue(fineDeterminedState);
+    const [step, setStep] = useRecoilState(stepState);
+
+    function handleClickConfirm() {
+        setStep(6);
+    }
 
     return (
         <div>
@@ -30,7 +35,10 @@ function ResultComponent(props) {
                                 </div>
                             </div>
                         </div>
-                        <ConfirmButtonComponent margin={30} />
+                        <ConfirmButtonComponent
+                            onClick={() => handleClickConfirm()}
+                            margin={30}
+                        />
                     </div>
                 }
             ></SmallFrameComponent>
