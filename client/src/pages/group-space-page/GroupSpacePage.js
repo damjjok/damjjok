@@ -40,7 +40,7 @@ function GroupSpacePage() {
     }, []);
 
     return (
-        <Box>
+        <Box width={"100vw"} height={"100vh"}>
             <Topbar />
             <div className="flex">
                 <Box
