@@ -4,7 +4,7 @@ import "./App.css";
 import { Routes, Route } from "react-router-dom";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 // import GroupHome from "./pages/groupspace/group-home/GroupHome.js";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { Suspense, useEffect } from "react";
 import LandingPage from "./pages/landing-page/LandigPage.js";
 import GroupListPage from "./pages/group-list-page/GroupListPage.js";
@@ -21,6 +21,9 @@ import OauthPage from "pages/oauth-page/OauthPage";
 import "./util/firebase/firebaseConfig";
 
 import { getMessaging, onMessage } from "firebase/messaging";
+import { getNotificationList } from "apis/api/Notification";
+import { notificationListState } from "contexts/Notification";
+import firebaseApp from "./util/firebase/firebaseConfig";
 import ConnectionTest from "pages/truth-room/openvidu/ConnectionTest";
 
 const GlobalStyle = createGlobalStyle`
@@ -83,18 +86,29 @@ const theme = extendTheme({
 });
 
 function App() {
+    // const [notificationList, setNotificationList] = useRecoilState(
+    //     notificationListState
+    // );
+
+    const setNotificationList = useSetRecoilState(notificationListState);
+
+    const fetchNotifications = async () => {
+        const list = await getNotificationList();
+        setNotificationList(list);
+    };
     useEffect(() => {
-        const messaging = getMessaging();
+        const messaging = getMessaging(firebaseApp);
         onMessage(messaging, (payload) => {
             console.log("Message received. ", payload);
             // 여기서 포그라운드 알림을 처리할 로직을 구현합니다.
             // 예를 들어, 사용자에게 메시지를 표시하는 다이얼로그나 알림을 띄울 수 있습니다.
-            if (Notification.permission === "granted") {
-                new Notification(payload.data.title, {
-                    body: payload.data.body,
-                    icon: "/firebase-logo.png", // 알림에 표시할 아이콘
-                });
-            }
+            // if (Notification.permission === "granted") {
+            //     new Notification(payload.data.title, {
+            //         body: payload.data.body,
+            //         icon: "/firebase-logo.png", // 알림에 표시할 아이콘
+            //     });
+            // }
+            fetchNotifications();
         });
     }, []);
     return (
