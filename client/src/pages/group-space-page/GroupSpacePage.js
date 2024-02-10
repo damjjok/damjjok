@@ -19,18 +19,14 @@ function GroupSpacePage() {
         useRecoilState(challengeListState);
     const resetChallengeList = useResetRecoilState(challengeListState);
 
-    // 페이지가 로드될 때 challengeListState를 리셋
-    useEffect(() => {
-        resetChallengeList();
-    }, []);
-
     useEffect(() => {
         const fetchData = async () => {
+            resetChallengeList();
             try {
                 const response = await getChallengeList(groupId);
                 const updatedChallengeList = response.list;
                 setCurrentChallengeList(updatedChallengeList); // Recoil 상태에 데이터 적용
-                // console.log(currentChallengeList);
+                // console.log("GroupSpacePage 켰을 때 " + currentChallengeList);
             } catch (error) {
                 console.error("챌린지 정보 불러오기 실패", error);
             }
@@ -40,7 +36,7 @@ function GroupSpacePage() {
     }, []);
 
     return (
-        <Box width={"100vw"} height={"100vh"}>
+        <>
             <Topbar />
             <div className="flex">
                 <Box
@@ -55,7 +51,7 @@ function GroupSpacePage() {
                     <GroupSpaceMain />
                 </Box>
             </div>
-        </Box>
+        </>
     );
 }
 

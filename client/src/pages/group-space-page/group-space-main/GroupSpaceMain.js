@@ -22,13 +22,13 @@ import { currentUser, currentUserState } from "contexts/User";
 function GroupSpaceMain() {
     const loginedUser = useRecoilValue(currentUser);
 
-    const { groupId } = useParams();
     // console.log(groupId);
     // const setChallengeState = useSetRecoilState(challengeState);
     const currentChallengeList = useRecoilValue(challengeListState);
     const navigate = useNavigate();
 
     useEffect(() => {
+        // console.log("GroupSpaceMain에서 리코일값" + currentChallengeList);
         // currentChallengeList가 정의되어 있고, 그 길이가 0보다 클 때만 로직 실행
         if (currentChallengeList && currentChallengeList.length > 0) {
             const currentMyChallenge = currentChallengeList.find(
@@ -50,7 +50,7 @@ function GroupSpaceMain() {
         } else {
             navigate("empty-challenge");
         }
-    }, []);
+    }, [currentChallengeList]);
 
     return (
         <>

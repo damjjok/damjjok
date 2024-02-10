@@ -25,6 +25,7 @@ import { getNotificationList } from "apis/api/Notification";
 import { notificationListState } from "contexts/Notification";
 import firebaseApp from "./util/firebase/firebaseConfig";
 import ConnectionTest from "pages/truth-room/openvidu/ConnectionTest";
+import GroupSpaceMain from "pages/group-space-page/group-space-main/GroupSpaceMain";
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -119,6 +120,10 @@ function App() {
                     <Routes>
                         <Route path="/" element={<LandingPage />} />
                         <Route path="/group-list" element={<GroupListPage />} />
+                        <Route
+                            path={`/group/:groupId`}
+                            element={<GroupSpaceMain />}
+                        />
                         <Route
                             path={`/group/:groupId/*`}
                             element={<GroupSpacePage />}
