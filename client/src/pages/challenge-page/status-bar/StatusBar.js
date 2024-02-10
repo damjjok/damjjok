@@ -13,12 +13,14 @@ import {
     Wrap,
     useBreakpointValue,
 } from "@chakra-ui/react";
-import avatar1 from "assets/images/avatar1.png";
-import avatar2 from "assets/images/avatar2.png";
-import avatar3 from "assets/images/avatar3.png";
-import avatar4 from "assets/images/avatar4.png";
-import { challengeCandyCount, challengeState } from "contexts/Challenge";
-import { useEffect } from "react";
+
+import {
+    challengeAvatarState,
+    challengeCandyCount,
+    challengeState,
+    challengeStatusState,
+} from "contexts/Challenge";
+import { useEffect, useState } from "react";
 import { getChallengeCandyCount } from "apis/api/Candy";
 import { getAttendanceList } from "apis/api/Attendance";
 // import { challengeState } from "../../../../../contexts/Challenge";
@@ -30,8 +32,10 @@ function StatusBar() {
     const loginedUser = useRecoilValue(currentUser);
     // console.log(loginedUser);
     const [candyCount, setCandyCount] = useRecoilState(challengeCandyCount);
-    const [currentCandyCount, setCurrentCandyCount] =
-        useRecoilState(challengeCandyCount);
+    // const [currentCandyCount, setCurrentCandyCount] =
+    //     useRecoilState(challengeCandyCount);
+
+    const [currentStatus, setStatus] = useRecoilState(challengeStatusState);
 
     const isMobile = useBreakpointValue({ base: true, md: false });
 
@@ -42,13 +46,6 @@ function StatusBar() {
     // 두 날짜 사이의 밀리초 차이를 계산합니다.
     const diffMilliseconds = today.getTime() - startedDate.getTime();
     const diffDays = Math.floor(diffMilliseconds / (24 * 60 * 60 * 1000));
-
-    const avatars = [
-        { name: "cat1", src: avatar1 },
-        { name: "cat2", src: avatar2 },
-        { name: "dog1", src: avatar3 },
-        { name: "dog2", src: avatar4 },
-    ];
 
     useEffect(() => {
         const fetchCandyData = async () => {
@@ -93,8 +90,8 @@ function StatusBar() {
                 <Wrap>
                     <Flex alignItems={"center"}>
                         <Avatar
-                            name="Cat"
-                            src={avatar1}
+                            name="challengeProfileImg"
+                            src={challenge.profilePath}
                             size="sm"
                             bg="dam.white"
                         />
@@ -126,7 +123,7 @@ function StatusBar() {
                         {challenge.userId === loginedUser.userId ? (
                             <StatusEditModal
                                 currentChallenge={challenge}
-                                avatars={avatars}
+                                selectedAvatar={currentStatus.profilePath}
                             />
                         ) : null}
                     </Flex>
