@@ -7,7 +7,7 @@ export const Wrapper = styled.div`
     align-items: center;
     width: 14vw;
     margin: 0 3vw;
-    height: 65vh;
     border-radius: 20px;
     background-color: #515151;
+    overflow-y: scroll;
 `;
