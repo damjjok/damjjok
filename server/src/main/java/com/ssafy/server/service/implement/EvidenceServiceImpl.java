@@ -239,6 +239,8 @@ public class EvidenceServiceImpl implements EvidenceService {
                 list.add(evidenceDto);
             });
 
+            if(list.isEmpty()) return ResponseDto.validationFail();
+
         }catch (Exception exception){
             exception.printStackTrace();
             return ResponseDto.databaseError();
