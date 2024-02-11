@@ -10,7 +10,18 @@ function InputComponent(props) {
 
     // 입력 필드 값을 변경하는 함수입니다.
     const handleInputChange = (event) => {
-        setInputValue(event.target.value);
+        let inputFine = event.target.value;
+        if (inputFine < 0) {
+            alert("0원 이하의 금액은 벌금으로 설정할 수 없어요!");
+            setInputValue(0);
+        } else if (inputFine > gatheredMoney) {
+            alert(
+                "이때까지 모인 금액(" +
+                    gatheredMoney +
+                    "원) 이하의 값만 벌금으로 설정할 수 있어요!"
+            );
+            setInputValue(gatheredMoney);
+        } else setInputValue(inputFine);
     };
 
     // 버튼 클릭 시 호출될 함수입니다.
@@ -24,7 +35,10 @@ function InputComponent(props) {
             <div>
                 <input
                     className="input-container"
+                    type="number"
                     value={inputValue}
+                    min={0}
+                    max={gatheredMoney}
                     onChange={handleInputChange}
                 ></input>
                 <Text as="b" fontSize={"20px"}>
