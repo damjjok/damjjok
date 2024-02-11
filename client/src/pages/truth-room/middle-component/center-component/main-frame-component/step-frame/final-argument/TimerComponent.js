@@ -25,7 +25,7 @@ function TimerComponent(props) {
     const formattedSeconds = seconds.toString().padStart(2, "0");
 
     return (
-        <div className="timer-container">
+        <div>
             <span>
                 {formattedMinute}:{formattedSeconds}
             </span>

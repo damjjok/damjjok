@@ -17,7 +17,7 @@ function FinalArgumentFrame(props) {
 
     return (
         <Wrapper>
-            <div>
+            <div className="timer-container">
                 <TimerComponent />
             </div>
             <div onClick={handleClickTest}>최후 변론</div>
