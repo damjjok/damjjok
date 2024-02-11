@@ -160,12 +160,17 @@ public class ChallengeServiceImpl implements ChallengeService {
 
             List<ChallengeEntity> entityList = challengeRepository.findByGroupEntityGroupId(groupId);
 
+            if(entityList == null) throw new CustomException(HttpStatus.NOT_FOUND, ResponseCode.NOT_FOUND, "존재하지 않는 그룹 ID 입니다.");
+
             entityList.stream().forEach(e -> {
                 ChallengeDto dto = new ChallengeDto();
                 dto.setChallengeId(e.getChallengeId());
                 dto.setGroupId(e.getGroupEntity().getGroupId());
                 dto.setUserId(e.getUserId());
+
                 UserEntity userEntity = userRepository.findByUserId(e.getUserId());
+                if(userEntity == null) throw new CustomException(HttpStatus.NOT_FOUND, ResponseCode.NOT_FOUND, "존재하지 않는 유저 ID 입니다.");
+
                 dto.setUserName(userEntity.getUserName());
                 dto.setDuration(e.getDuration());
                 dto.setInitialMoney(e.getInitialMoney());
@@ -192,10 +197,16 @@ public class ChallengeServiceImpl implements ChallengeService {
     public ResponseEntity<? super ChallengeDetailResponseDto> challengeDetail(int challengeId) {
         ChallengeDto dto;
         try{
+
             ChallengeEntity entity = challengeRepository.findByChallengeId(challengeId);
+            if(entity == null) throw new CustomException(HttpStatus.NOT_FOUND, ResponseCode.NOT_FOUND, "존재하지 않는 챌린지 ID 입니다.");
+
             dto = new ChallengeDto(entity);
             UserEntity userEntity = userRepository.findByUserId(entity.getUserId());
+            if( userEntity == null ) throw new CustomException(HttpStatus.NOT_FOUND, ResponseCode.NOT_FOUND, "존재하지 않는 유저 ID 입니다.");
+
             dto.setUserName(userEntity.getUserName());
+
         }catch (Exception e){
             return ResponseDto.databaseError();
         }
@@ -208,6 +219,7 @@ public class ChallengeServiceImpl implements ChallengeService {
         try{
 
             List<ChallengeMemberEntity> entityList = challengeMemeberRepository.findByChallengeEntityChallengeId(challengeId);
+            if(entityList == null) throw new CustomException(HttpStatus.NOT_FOUND, ResponseCode.NOT_FOUND, "존재하지 않는 챌린지 ID 입니다.");
 
             entityList.stream().forEach(e -> {
                 ChallengeMemeberDto dto = new ChallengeMemeberDto(e);
@@ -227,6 +239,7 @@ public class ChallengeServiceImpl implements ChallengeService {
         try{
 
             ChallengeEntity entity = challengeRepository.findByChallengeId(dto.getChallengeId());
+            if(entity == null) throw new CustomException(HttpStatus.NOT_FOUND, ResponseCode.NOT_FOUND, "존재하지 않는 챌린지 ID 입니다.");
 
             entity.setStatus(dto.getStatus());
 
@@ -243,6 +256,7 @@ public class ChallengeServiceImpl implements ChallengeService {
         try{
 
             ChallengeEntity entity = challengeRepository.findByChallengeId(challengeId);
+            if(entity == null) throw new CustomException(HttpStatus.NOT_FOUND, ResponseCode.NOT_FOUND, "존재하지 않는 챌린지 ID 입니다.");
 
             entity.setDetermination(dto.getDetermination());
             entity.setProfilePath(dto.getImagePath());

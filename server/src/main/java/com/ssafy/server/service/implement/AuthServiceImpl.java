@@ -76,7 +76,7 @@ public class AuthServiceImpl implements AuthService {
             accessToken = jwtProvider.createToken(userId, email, userName, 5, ChronoUnit.DAYS);
             refreshToken = jwtProvider.createToken(userId, email, userName, 5, ChronoUnit.DAYS);
 
-            redisTemplate.opsForHash().delete(dto.getRefreshToken());
+            redisTemplate.delete(dto.getRefreshToken());
             valueOperations.set(refreshToken, email);
 
         }catch(CustomJwtException e){
