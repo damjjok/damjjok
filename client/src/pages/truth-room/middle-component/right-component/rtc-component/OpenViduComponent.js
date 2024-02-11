@@ -95,7 +95,7 @@ export default function OpenViduComponent() {
     const leaveSession = useCallback(() => {
         // Leave the session
         if (session) {
-            closeOpenviduSession(sessionKey);
+            closeOpenviduSession(sessionKey); // 지금은 테스트라 여기 뒀지만 나중에는 소켓에서 마지막 남은 사람이 나갈 때 실행됨.
             session.disconnect();
         }
 
