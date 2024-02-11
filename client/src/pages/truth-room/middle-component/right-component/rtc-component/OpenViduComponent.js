@@ -48,7 +48,7 @@ export default function OpenViduComponent() {
             getToken().then(async (token) => {
                 try {
                     await session.connect(token, {
-                        clientData: enteringTruthRoomMemberInfo.name,
+                        clientData: enteringTruthRoomMemberInfo,
                     });
 
                     let publisher = await OV.current.initPublisherAsync(
