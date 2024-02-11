@@ -33,7 +33,7 @@ function GroupSpacePage() {
         };
 
         fetchData(); // fetchData 함수 호출
-    }, []);
+    }, [groupId]);
 
     return (
         <>

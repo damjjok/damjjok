@@ -92,7 +92,7 @@ const completeChallenge = async (challengeId) => {
     try {
         const requestBody = {
             challengeId: challengeId,
-            status: "Completed",
+            status: "SUCCESS",
         };
 
         const response = await axiosInstance.patch(

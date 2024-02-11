@@ -71,10 +71,10 @@ function ChallengePage() {
         if (
             currentChallenge.userId === loginedUser.userId &&
             //테스트용 코드
-            currentChallenge.status === "PROGRESS"
+            // currentChallenge.status === "PROGRESS"
 
             // 챌린지 기한이 diffDays와 같아질 때
-            // currentChallenge.duration === diffDays
+            currentChallenge.duration === diffDays
         ) {
             setIsModalOpen(true);
         } else {
