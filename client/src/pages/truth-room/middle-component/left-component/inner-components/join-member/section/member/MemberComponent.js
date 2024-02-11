@@ -2,8 +2,9 @@ import React from "react";
 import { Wrapper } from "./MemberComponene.style";
 import phDIcon from "assets/images/phDIcon.png";
 import damJJokIcon from "assets/images/damJJokIcon.png";
+import phDReadyIcon from "assets/images/phDReadyIcon.png";
+import damJJokReadyIcon from "assets/images/damJJokReadyIcon.png";
 import { Flex, Text } from "@chakra-ui/react";
-import logo from "assets/images/logo.png";
 
 // Section component 하위에서 쓰일 멤버 이름 컴포넌트
 function MemberComponent({ m, type, isReady }) {
@@ -13,11 +14,13 @@ function MemberComponent({ m, type, isReady }) {
                 <img
                     src={
                         type === "담쪽이"
-                            ? isReady === true
-                                ? logo // 임시
+                            ? // 담쪽이 섹션
+                              isReady === true
+                                ? damJJokReadyIcon // 임시
                                 : damJJokIcon
-                            : isReady === true
-                            ? logo // 임시
+                            : // 박사님 섹션
+                            isReady === true
+                            ? phDReadyIcon // 임시
                             : phDIcon
                     }
                     alt="icon"

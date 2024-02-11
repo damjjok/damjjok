@@ -25,7 +25,9 @@ import { useClipboard } from "@chakra-ui/react";
 
 function GroupInviteModal({ currentGroupInfo }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const inviteLink = currentGroupInfo.invitationLink;
+    const inviteLink =
+        `https://i10e105.p.ssafy.io/invitation/` +
+        currentGroupInfo.invitationLink;
     const { hasCopied, onCopy } = useClipboard(inviteLink);
 
     return (

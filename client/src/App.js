@@ -24,8 +24,11 @@ import { getMessaging, onMessage } from "firebase/messaging";
 import { getNotificationList } from "apis/api/Notification";
 import { notificationListState } from "contexts/Notification";
 import firebaseApp from "./util/firebase/firebaseConfig";
+import InvitationCodePage from "pages/invitation-code-page/InvitationCodePage";
 import ConnectionTest from "pages/truth-room/openvidu/ConnectionTest";
 import GroupSpaceMain from "pages/group-space-page/group-space-main/GroupSpaceMain";
+import { currentUser } from "contexts/User";
+import useAuth from "hooks/useAuth";
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -90,6 +93,7 @@ function App() {
     // const [notificationList, setNotificationList] = useRecoilState(
     //     notificationListState
     // );
+    const { user } = useAuth();
 
     const setNotificationList = useSetRecoilState(notificationListState);
 
@@ -141,7 +145,10 @@ function App() {
                                 element={<LastChallengePage />}
                             />
                         </Route>
-
+                        <Route
+                            path="/invitation/:code"
+                            element={<InvitationCodePage />}
+                        ></Route>
                         <Route
                             path="/auth/oauth-response"
                             element={<OauthPage />}

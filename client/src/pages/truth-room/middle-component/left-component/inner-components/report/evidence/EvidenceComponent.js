@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Wrapper } from "../TabComponent.style";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { showingEvidenceState } from "contexts/TruthRoom";
 import EvidenceFrame from "./EvidenceFrame";
 import { useParams } from "react-router-dom";
 import { getEvidenceInTruthRoom } from "apis/api/Proof";
 
 function EvidenceComponent(props) {
-    // const evidences = useRecoilValue(evidenceState);
     const { challengeId } = useParams();
     const [evidences, setEvidences] = useState([]);
     const setShowingEvidence = useSetRecoilState(showingEvidenceState);
@@ -18,6 +17,7 @@ function EvidenceComponent(props) {
     }
 
     useEffect(() => {
+        console.log("증거 요청 보냄");
         getEvidenceInTruthRoom(challengeId, setEvidences);
     }, []);
 
