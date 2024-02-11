@@ -6,7 +6,7 @@ import {
     Button,
     Image,
     Flex,
-    Grid,
+    HStack,
 } from "@chakra-ui/react";
 
 import LoginModal from "./modal/LoginModal";
@@ -51,7 +51,7 @@ const LandingPage = () => {
         <Flex direction="column" align="stretch" minH="100vh">
             {/* 상단 배경 이미지 컨테이너 */}
             <Box
-                height="55vh"
+                height="60vh"
                 width="100vw"
                 backgroundImage={`url(${landingBg})`}
                 backgroundPosition="center"
@@ -81,10 +81,11 @@ const LandingPage = () => {
                 >
                     <Text
                         fontSize={isMobile ? "x-large" : "5xl"}
-                        fontWeight={600}
+                        fontWeight={700}
                         className="LandigTitle"
                         textAlign="center"
                         color="white"
+                        mt={12}
                     >
                         세상에 나쁜 흡연자는 없다!
                     </Text>
@@ -100,8 +101,7 @@ const LandingPage = () => {
                                 fontSize="3xl"
                                 mt={2}
                             >
-                                흡연이 건강에 안 좋다는 것을 알지만 금연하기
-                                어려운 당신
+                                금연하고 싶지만 실패하거나 어려운 당신
                             </Text>
 
                             <Text
@@ -128,28 +128,175 @@ const LandingPage = () => {
             </Box>
 
             {/* 나머지 페이지 컨텐츠 */}
-            <Flex direction="column" flexGrow={1} p="4" overflowY="auto">
-                <Box mb="4">
-                    <Text>TV를 마음껏</Text>
-                </Box>
+            <Flex
+                direction="column"
+                flexGrow={1}
+                p="4"
+                overflowY="auto"
+                m={0}
+                p={0}
+            >
+                <Box
+                    height="40vh"
+                    width="100vw"
+                    bg="black"
+                    borderBottom="8px solid"
+                    borderColor="gray.800"
+                >
+                    <HStack spacing={0} height="100%" py={16} px={24}>
+                        {/* 텍스트 영역 */}
+                        <Box flex="1">
+                            <Text color="white" fontSize="5xl" fontWeight={800}>
+                                친구와 함께 하세요
+                            </Text>
+                            <Text
+                                color="white"
+                                fontSize="2xl"
+                                mt={3}
+                                fontWeight={500}
+                            >
+                                친구 혹은 지인들을 그룹에 초대해서 금연 효과를
+                                높혀 보세요!
+                            </Text>
+                        </Box>
 
-                {/* '어디서나 자유롭게 시청하세요' 섹션 */}
-                <Box mb="4">
-                    <Text>TV를 마음껏</Text>
+                        {/* 이미지 영역 */}
+                        <Box flex="1">
+                            {/* 여기에 Image 컴포넌트를 사용하거나, backgroundImage 속성을 사용할 수 있습니다. */}
+                            <Image
+                                src={logo}
+                                alt="설명"
+                                objectFit="cover"
+                                height="100%"
+                                width="100%"
+                            />
+                        </Box>
+                    </HStack>
                 </Box>
+                <Box
+                    height="40vh"
+                    width="100vw"
+                    bg="black"
+                    borderBottom="8px solid"
+                    borderColor="gray.800"
+                >
+                    <HStack spacing={0} height="100%" py={16} px={24}>
+                        {/* 텍스트 영역 */}
 
-                {/* '어린이 전용 프로필을 만들어 보세요' 섹션 */}
-                <Box mb="4" bg="blue.500" color="white">
-                    {/* ... */}
+                        {/* 이미지 영역 */}
+                        <Box flex="1">
+                            {/* 여기에 Image 컴포넌트를 사용하거나, backgroundImage 속성을 사용할 수 있습니다. */}
+                            <Image
+                                src={logo}
+                                alt="설명"
+                                objectFit="cover"
+                                height="100%"
+                                width="100%"
+                            />
+                        </Box>
+                        <Box flex="1">
+                            <Text color="white" fontSize="5xl" fontWeight={800}>
+                                친구와 함께 하세요
+                            </Text>
+                            <Text
+                                color="white"
+                                fontSize="2xl"
+                                mt={3}
+                                fontWeight={500}
+                            >
+                                친구 혹은 지인들을 그룹에 초대해서 금연 효과를
+                                높혀 보세요!
+                            </Text>
+                        </Box>
+                    </HStack>
                 </Box>
+                <Box
+                    height="40vh"
+                    width="100vw"
+                    bg="black"
+                    borderBottom="8px solid"
+                    borderColor="gray.800"
+                >
+                    <HStack spacing={0} height="100%" py={16} px={24}>
+                        {/* 텍스트 영역 */}
+                        <Box flex="1">
+                            <Text color="white" fontSize="5xl" fontWeight={800}>
+                                친구와 함께 하세요
+                            </Text>
+                            <Text
+                                color="white"
+                                fontSize="2xl"
+                                mt={3}
+                                fontWeight={500}
+                            >
+                                친구 혹은 지인들을 그룹에 초대해서 금연 효과를
+                                높혀 보세요!
+                            </Text>
+                        </Box>
 
-                {/* 시작하기 버튼 */}
+                        {/* 이미지 영역 */}
+                        <Box flex="1">
+                            {/* 여기에 Image 컴포넌트를 사용하거나, backgroundImage 속성을 사용할 수 있습니다. */}
+                            <Image
+                                src={logo}
+                                alt="설명"
+                                objectFit="cover"
+                                height="100%"
+                                width="100%"
+                            />
+                        </Box>
+                    </HStack>
+                </Box>
+                <Box
+                    height="40vh"
+                    width="100vw"
+                    bg="black"
+                    borderBottom="8px solid"
+                    borderColor="gray.800"
+                >
+                    <HStack spacing={0} height="100%" py={16} px={24}>
+                        {/* 이미지 영역 */}
+                        <Box flex="1">
+                            {/* 여기에 Image 컴포넌트를 사용하거나, backgroundImage 속성을 사용할 수 있습니다. */}
+                            <Image
+                                src={logo}
+                                alt="설명"
+                                objectFit="cover"
+                                height="100%"
+                                width="100%"
+                            />
+                        </Box>
+                        {/* 텍스트 영역 */}
+                        <Box flex="1">
+                            <Text color="white" fontSize="5xl" fontWeight={800}>
+                                친구와 함께 하세요
+                            </Text>
+                            <Text
+                                color="white"
+                                fontSize="2xl"
+                                mt={3}
+                                fontWeight={500}
+                            >
+                                친구 혹은 지인들을 그룹에 초대해서 금연 효과를
+                                높혀 보세요!
+                            </Text>
+                        </Box>
+                    </HStack>
+                </Box>
 
                 {/* Login Modal */}
-                <LoginModal isOpen={LoginisOpen} onClose={LoginonClose} />
+                <LoginModal
+                    LoginisOpen={LoginisOpen}
+                    LoginonClose={LoginonClose}
+                    LoginonOpen={LoginonOpen}
+                />
 
                 {/* Form Modal */}
-                <FormModal isOpen={FormisOpen} onClose={FormonClose} />
+                <FormModal
+                    FormisOpen={FormisOpen}
+                    FormonOpen={FormonOpen}
+                    FormonClose={FormonClose}
+                />
             </Flex>
         </Flex>
     );
