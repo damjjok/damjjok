@@ -268,6 +268,7 @@ public class ChallengeServiceImpl implements ChallengeService {
     public ResponseEntity<? super ChallengeSavedMoneyResponseDto> challengeSavedMoney(int challengeId) {
 
         int returnMoney = 0;
+        int endMoney = 0;
 
         try{
 
@@ -276,13 +277,15 @@ public class ChallengeServiceImpl implements ChallengeService {
             int initialMoney = challengeEntity.getInitialMoney();
             int savedMoney = challengeEntity.getSavedMoney();
             int period = (int) ChronoUnit.DAYS.between(challengeEntity.getCreatedAt().toLocalDate() , LocalDateTime.now());
+            int period2 = (int) ChronoUnit.DAYS.between(challengeEntity.getCreatedAt().toLocalDate() , challengeEntity.getEndDate().toLocalDate());
             int sp = challengeEntity.getSavedPeriod();
 
             returnMoney = initialMoney + savedMoney * (period/sp);
+            endMoney = initialMoney + savedMoney * (period2 / sp);
 
         }catch (Exception e){
             return ResponseDto.databaseError();
         }
-        return ChallengeSavedMoneyResponseDto.success(returnMoney);
+        return ChallengeSavedMoneyResponseDto.success(returnMoney,endMoney);
     }
 }
