@@ -2,6 +2,7 @@ import { challengeIdState } from "contexts/TruthRoomSocket";
 import { WebSocketContext } from "contexts/WebSocketContext";
 import React, { useContext } from "react";
 import { useRecoilValue } from "recoil";
+import TimerComponent from "./TimerComponent";
 
 function FinalArgumentFrame(props) {
     const { finishFinalArgument } = useContext(WebSocketContext);
@@ -13,7 +14,14 @@ function FinalArgumentFrame(props) {
         finishFinalArgument(challengeId);
     }
 
-    return <div onClick={handleClickTest}>최후 변론</div>;
+    return (
+        <div>
+            <div>
+                <TimerComponent />
+            </div>
+            <div onClick={handleClickTest}>최후 변론</div>
+        </div>
+    );
 }
 
 export default FinalArgumentFrame;
