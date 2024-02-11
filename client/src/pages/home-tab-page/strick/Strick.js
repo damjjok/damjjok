@@ -28,7 +28,6 @@ function Strick({ challenge, startedDate }) {
         //
         console.log(attendanceList);
         const makeStrick = async () => {
-            console.log(challenge, startedDate);
             let tmp = Array(challenge.duration).fill(false);
 
             attendanceList.forEach((e) => {
@@ -36,8 +35,6 @@ function Strick({ challenge, startedDate }) {
                 const start = new Date(startedDate.getFullYear(), startedDate.getMonth(), startedDate.getDate());
 
                 const diff = cur - start;
-
-                console.log(start, cur);
 
                 let days = parseInt(diff / (1000 * 60 * 60 * 24));
 
