@@ -15,7 +15,7 @@ function Strick({ challenge, startedDate }) {
 
     useEffect(() => {
         getAttendanceList(challengeId, setAttendanceList);
-    }, []);
+    }, [challengeId]);
 
     useEffect(() => {
         if (!attendanceList) return;

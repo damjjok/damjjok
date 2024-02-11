@@ -17,25 +17,24 @@ import { getChallengeList, getGroupInfo } from "apis/api/Group";
 import { HamburgerIcon } from "@chakra-ui/icons";
 
 function Sidebar() {
-    const { groupId } = useParams();
-    const [currentGroupInfo, setCurrentGroupInfo] = useState({});
+    // const { groupId } = useParams();
+    // const [currentGroupInfo, setCurrentGroupInfo] = useState({});
     const { isOpen, onOpen, onClose } = useDisclosure();
     const isMobile = useBreakpointValue({ base: true, md: false });
-    const groupIdVal = Number(groupId);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const groupresponse = await getGroupInfo(groupIdVal);
-                const updatedGroupInfo = groupresponse.groupDto;
-                setCurrentGroupInfo(updatedGroupInfo);
-            } catch (error) {
-                console.error("챌린지 정보 불러오기 실패", error);
-            }
-        };
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             const groupresponse = await getGroupInfo(groupId);
+    //             const updatedGroupInfo = groupresponse.groupDto;
+    //             setCurrentGroupInfo(updatedGroupInfo);
+    //         } catch (error) {
+    //             console.error("챌린지 정보 불러오기 실패", error);
+    //         }
+    //     };
 
-        fetchData(); // fetchData 함수 호출
-    }, [groupId]);
+    //     fetchData(); // fetchData 함수 호출
+    // }, [groupId]);
     return (
         <>
             {/* 모바일 화면일 때 햄버거 버튼 노출 */}
@@ -60,7 +59,8 @@ function Sidebar() {
                             alignItems="center"
                             className="my-8"
                         >
-                            <GroupList currentGroupInfo={currentGroupInfo} />
+                            {/* <GroupList currentGroupInfo={currentGroupInfo} /> */}
+                            <GroupList />
                             <SettingButton />
                         </Flex>
                         <div className="my-8">
@@ -80,9 +80,10 @@ function Sidebar() {
                                 alignItems="center"
                                 className="my-8"
                             >
-                                <GroupList
+                                {/* <GroupList
                                     currentGroupInfo={currentGroupInfo}
-                                />
+                                /> */}
+                                <GroupList />
                                 <SettingButton />
                             </Flex>
                             <div className="my-8">

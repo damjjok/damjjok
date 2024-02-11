@@ -131,7 +131,6 @@ function StatusBar() {
                 <div className="flex items-center">
                     <StatusBarToast challenge={challenge} />
                     <Box
-                        position="relative"
                         display="flex"
                         flexDirection="column"
                         alignItems="center"
@@ -146,25 +145,26 @@ function StatusBar() {
                                 _groupHover={{ opacity: "0.5" }}
                                 transition="opacity 0.2s"
                             />
+                            <Box position={"relative"}>
+                                <Flex
+                                    boxSize={"25px"}
+                                    position={"absolute"}
+                                    left={0}
+                                    top={"-25px"}
+                                    bgColor={"black"}
+                                    borderRadius={"full"}
+                                    alignItems="center"
+                                    justifyContent="center"
+                                    fontSize="xs"
+                                    opacity="0"
+                                    _groupHover={{ opacity: "1" }}
+                                    transition="opacity 0.2s"
+                                    textColor={"white"}
+                                >
+                                    <Box>{candyCount}</Box>
+                                </Flex>
+                            </Box>
                         </Box>
-                        <Flex
-                            bgColor={"black"}
-                            position="absolute"
-                            top="0"
-                            right="0"
-                            bottom="0"
-                            left="0"
-                            borderRadius={"full"}
-                            alignItems="center"
-                            justifyContent="center"
-                            fontSize="xs"
-                            opacity="0"
-                            _groupHover={{ opacity: "1" }}
-                            transition="opacity 0.2s"
-                            textColor={"white"}
-                        >
-                            {candyCount}
-                        </Flex>
                     </Box>
                 </div>
             </Flex>

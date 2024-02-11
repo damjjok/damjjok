@@ -18,7 +18,7 @@ const getTest = async () => {
 const getGroupInfo = async (groupId) => {
     try {
         const response = await axiosInstance.get(`/v1/group/detail/${groupId}`);
-        if (response.status === 200) return response.data;
+        if (response.status === 200) return response.data.groupDto;
         else console.log("통신 실패" + response.status);
     } catch (error) {
         console.log("그룹 멤버 정보 불러오기 실패" + error);

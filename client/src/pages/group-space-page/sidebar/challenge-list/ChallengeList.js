@@ -28,6 +28,7 @@ import { currentUser, currentUserState } from "contexts/User";
 function ChallengeList({ onClick }) {
     const loginedUser = useRecoilValue(currentUser);
     console.log("로그인한 유저 정보" + loginedUser);
+    const navigate = useNavigate();
 
     const { groupId } = useParams();
     // const setChallengeState = useSetRecoilState(challengeState);
@@ -55,6 +56,13 @@ function ChallengeList({ onClick }) {
                         updatedLastChallenge.push(challenge);
                     }
                 }
+                if (updatedCurrentGroupChallengeList.length == 0) {
+                    navigate(`./empty-challenge`);
+                } else {
+                    navigate(
+                        `./challenge/${updatedCurrentGroupChallengeList[0].challengeId}`
+                    );
+                }
 
                 setCurrentGroupChallengeList(updatedCurrentGroupChallengeList);
                 setLastChallenge(updatedLastChallenge);
@@ -73,7 +81,6 @@ function ChallengeList({ onClick }) {
         index: null,
         list: null,
     });
-    const navigate = useNavigate();
 
     return (
         <Accordion defaultIndex={[0]} allowMultiple>

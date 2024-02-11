@@ -18,7 +18,7 @@ const InvitationCodePage = () => {
             return;
         }
         const result = await joinGroup(groupId, [user.userId]);
-        navigate(`/group/${groupId}`);
+        navigate(`/group/${groupId}/`);
     };
     useEffect(() => {
         console.log(isLoaded);

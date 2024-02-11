@@ -8,15 +8,18 @@ import { getGroupList } from "apis/api/Group";
 //테스트를 위한 더미 데이터
 // const groupItems = ["우리끼리만든그룹", "E106", "E107"];
 
-function GroupList({ currentGroupInfo }) {
+function GroupList() {
     const [groupListData, setGroupListData] = useState([]);
     const { groupId } = useParams();
-    const groupIdVal = Number(groupId);
+    const [selectedGroup, setSelectedGroup] = useState({
+        value: "",
+        label: "",
+    });
     // 그룹 데이터를 가져오는 함수
     useEffect(() => {
         // 함수를 실행합니다.
         fetchGroupData();
-    }, [groupListData, groupId]); // 빈 배열을 넘겨주어 컴포넌트 마운트 시에만 실행되도록 합니다.
+    }, [groupId]); // 빈 배열을 넘겨주어 컴포넌트 마운트 시에만 실행되도록 합니다.
 
     const navigate = useNavigate();
 
@@ -27,13 +30,17 @@ function GroupList({ currentGroupInfo }) {
             // 가져온 데이터를 groupData 상태에 저장합니다.
             setGroupListData(response.list);
 
+            console.log(response.list);
+
             const currentGroup = response.list.find(
-                (group) => group.groupId === groupId
+                (group) => group.groupId === Number(groupId)
             );
+
+            console.log(currentGroup);
             // 현재 그룹의 이름을 selectedGroup 상태에 설정합니다.
             setSelectedGroup({
-                value: currentGroup?.groupId,
-                label: currentGroup?.groupname,
+                value: currentGroup.groupId,
+                label: currentGroup.groupname,
             });
         } catch (error) {
             console.error("그룹 리스트를 불러오는 데 실패했습니다:", error);
@@ -41,7 +48,7 @@ function GroupList({ currentGroupInfo }) {
     };
 
     const handleGroupClick = (groupId) => {
-        navigate(`/group/${groupId}`); // 해당 그룹 ID의 경로로 이동
+        navigate(`/group/${groupId}/`); // 해당 그룹 ID의 경로로 이동
     };
 
     // react-select 활용을 위한 option 배열 만들기
@@ -50,11 +57,6 @@ function GroupList({ currentGroupInfo }) {
         value: item.groupId,
         label: item.groupname,
     }));
-
-    const [selectedGroup, setSelectedGroup] = useState({
-        value: currentGroupInfo.groupId,
-        label: currentGroupInfo.groupname,
-    });
 
     const customStyles = {
         control: (base, state) => ({
@@ -94,14 +96,13 @@ function GroupList({ currentGroupInfo }) {
     return (
         <Box flex={1} marginRight={"1rem"}>
             <Select
-                placeholder={selectedGroup.value}
-                defaultValue={selectedGroup.value}
+                placeholder={selectedGroup.label}
+                defaultValue={selectedGroup.label}
                 options={options}
                 value={selectedGroup.value}
                 styles={customStyles}
                 onChange={(selectedOption) => {
-                    setSelectedGroup(selectedOption);
-                    handleGroupClick(selectedGroup.value);
+                    handleGroupClick(selectedOption.value);
                 }}
                 isSearchable={false}
                 style={{ flex: 1 }}
