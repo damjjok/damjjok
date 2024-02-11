@@ -1,11 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-    Button,
-    useDisclosure,
-    HStack,
-    Wrap,
-    WrapItem,
-} from "@chakra-ui/react";
+import { Button, useDisclosure, HStack, Wrap, WrapItem } from "@chakra-ui/react";
 import CreateGroupModal from "./modal/CreateGroupModal";
 import logo from "assets/images/logo.png";
 import landingBg from "assets/images/bgimg.png";
@@ -23,7 +17,7 @@ const GroupListPage = () => {
     const navigate = useNavigate(); // 네비게이트 함수 사용
 
     const handleGroupClick = (groupId) => {
-        navigate(`/group/${groupId}`); // 해당 그룹 ID의 경로로 이동
+        navigate(`/group/${groupId}/`); // 해당 그룹 ID의 경로로 이동
     };
 
     // 그룹 데이터를 가져오는 함수
@@ -160,9 +154,7 @@ const GroupListPage = () => {
                                             bg="#ffd100"
                                             width="150px"
                                             height="150px"
-                                            onClick={() =>
-                                                handleGroupClick(group.groupId)
-                                            }
+                                            onClick={() => handleGroupClick(group.groupId)}
                                             style={{
                                                 whiteSpace: "normal", // 텍스트가 필요에 따라 줄바꿈되도록 설정
                                                 overflow: "hidden", // 내용이 넘칠 경우 숨김
@@ -197,13 +189,7 @@ const GroupListPage = () => {
                     </>
                 )}
 
-                <CreateGroupModal
-                    isOpen={isOpen}
-                    onClose={onClose}
-                    groupName={groupName}
-                    setGroupName={setGroupName}
-                    onGroupCreate={handleCreateGroup}
-                />
+                <CreateGroupModal isOpen={isOpen} onClose={onClose} groupName={groupName} setGroupName={setGroupName} onGroupCreate={handleCreateGroup} />
             </div>
         </div>
     );
