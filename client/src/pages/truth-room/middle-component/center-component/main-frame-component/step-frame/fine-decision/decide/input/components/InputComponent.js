@@ -38,6 +38,14 @@ function InputComponent(props) {
     return (
         <div className="input-group">
             <div>
+                <Text // 범위 벗어난 값을 입력했을 때 입력창 밑에 메시지 표출
+                    color="red"
+                    mt={2}
+                    visibility={errorMessage ? "visible" : "hidden"}
+                >
+                    {errorMessage ||
+                        "에러 메시지 없을 때도 같은 높이를 유지하기 위해 적음(opacity0이라 안보임)"}
+                </Text>
                 <input
                     className="input-container"
                     type="number"
@@ -49,11 +57,6 @@ function InputComponent(props) {
                 <Text as="b" fontSize={"20px"}>
                     원
                 </Text>
-                {errorMessage && (
-                    <Text color="red" mt={2}>
-                        {errorMessage}
-                    </Text>
-                )}
             </div>
             <div className="percent-button-container">
                 <button
