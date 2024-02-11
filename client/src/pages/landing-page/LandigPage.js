@@ -4,7 +4,7 @@ import LandingMain from "./landing-main/LandingMain";
 import LoginModal from "./modal/LoginModal";
 import FormModal from "./modal/FormModal";
 import landingBg from "assets/images/bgimg.png";
-import { userState } from "contexts/Sns";
+import { dontTouchSnsLoginInfo } from "contexts/Sns";
 import { useRecoilValue } from "recoil";
 import { useEffect } from "react";
 
@@ -14,10 +14,10 @@ const LandingPage = () => {
     // 이메일 형식이 맞는지 조건을 걸어줘야함
     // 그리고 state 값 axios로 회원가입 할 때 보내줘야함
 
-    const user = useRecoilValue(userState);
+    const snsLoginInfo = useRecoilValue(dontTouchSnsLoginInfo);
 
     useEffect(() => {
-        console.log(user);
+        console.log(snsLoginInfo);
     }, []);
 
     const {
@@ -37,10 +37,10 @@ const LandingPage = () => {
     };
 
     useEffect(() => {
-        if (user.email) {
+        if (snsLoginInfo.email) {
             FormonOpen();
         }
-    }, [user]);
+    }, [snsLoginInfo]);
     return (
         <div
             className="Landing"
