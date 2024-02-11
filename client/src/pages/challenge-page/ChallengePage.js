@@ -32,6 +32,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { challengeState } from "contexts/Challenge";
 import { useParams } from "react-router-dom";
 import { getChallengeInfo } from "apis/api/Challenge";
+import { currentUser } from "contexts/User";
 
 function ChallengePage() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -41,7 +42,15 @@ function ChallengePage() {
     const [currentChallenge, setCurrentChallenge] =
         useRecoilState(challengeState);
 
+    const loginedUser = useRecoilValue(currentUser);
     const isMobile = useBreakpointValue({ base: true, md: false });
+
+    let today = new Date();
+    const startedDate = new Date(currentChallenge.createdAt);
+
+    // 두 날짜 사이의 밀리초 차이를 계산합니다.
+    const diffMilliseconds = today.getTime() - startedDate.getTime();
+    const diffDays = Math.floor(diffMilliseconds / (24 * 60 * 60 * 1000));
 
     useEffect(() => {
         const fetchData = async () => {
@@ -49,19 +58,24 @@ function ChallengePage() {
                 const response = await getChallengeInfo(challengeId);
                 const updatedChallenge = response.dto;
                 setCurrentChallenge(updatedChallenge); // Recoil 상태에 데이터 적용
-                console.log(updatedChallenge);
+                // console.log(updatedChallenge);
             } catch (error) {
                 console.error("챌린지 정보 불러오기 실패", error);
             }
         };
 
         fetchData(); // fetchData 함수 호출
-    }, [challengeId, setCurrentChallenge]);
+    }, []);
 
     useEffect(() => {
-        // 조건 수정 필요
-        // 모달 마지막에 navigate 하면 url이 하위 URL로 감.(/challenge/4/empty-challenge). 바꿔줘야 함.
-        if (currentChallenge.status === "OFF") {
+        if (
+            currentChallenge.userId === loginedUser.userId &&
+            //테스트용 코드
+            // currentChallenge.status === "PROGRESS"
+
+            // 챌린지 기한이 diffDays와 같아질 때
+            currentChallenge.duration === diffDays
+        ) {
             setIsModalOpen(true);
         } else {
             setIsModalOpen(false);
@@ -176,7 +190,10 @@ function ChallengePage() {
                 closeOnOverlayClick={false}
             >
                 <ModalOverlay />
-                <ModalContent maxW={"1000px"} margin={"auto"}>
+                <ModalContent
+                    maxW={isMobile ? "100vw" : "1000px"}
+                    margin={"auto"}
+                >
                     <ModalBody paddingY={20}>{contents[contentStep]}</ModalBody>
                 </ModalContent>
             </Modal>

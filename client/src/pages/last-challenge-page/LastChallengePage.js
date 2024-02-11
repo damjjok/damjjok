@@ -14,27 +14,25 @@ import { useRecoilState } from "recoil";
 import { challengeState } from "contexts/Challenge";
 
 function LastChallengePage() {
-    const { groupId, challengeId } = useParams();
+    // const { groupId, challengeId } = useParams();
+    const location = useLocation();
+    const challenge = location.state.challenge;
     const [currentChallenge, setCurrentChallenge] =
         useRecoilState(challengeState);
     const tabName =
-        currentChallenge.status === "SUCCESS"
-            ? "성공한 챌린지"
-            : "실패한 챌린지";
+        challenge.status === "SUCCESS" ? "성공한 챌린지" : "실패한 챌린지";
     const description =
-        currentChallenge.status === "SUCCESS"
+        challenge.status === "SUCCESS"
             ? "이전에 성공한 챌린지 정보를 볼 수 있어요"
             : "이전에 실패한 챌린지 정보를 볼 수 있어요";
     const bgImage =
-        currentChallenge.status === "SUCCESS"
-            ? bgSucceedChallenge
-            : bgFailedChallenge;
+        challenge.status === "SUCCESS" ? bgSucceedChallenge : bgFailedChallenge;
     const isExpired = "True";
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await getChallengeInfo(challengeId);
+                const response = await getChallengeInfo(challenge.challengeId);
                 const updatedChallenge = response.dto;
                 setCurrentChallenge(updatedChallenge); // Recoil 상태에 데이터 적용
                 console.log(updatedChallenge);
@@ -44,7 +42,7 @@ function LastChallengePage() {
         };
 
         fetchData(); // fetchData 함수 호출
-    }, [challengeId, setCurrentChallenge]);
+    }, []);
 
     // console.log(challenge);
 
@@ -87,7 +85,7 @@ function LastChallengePage() {
                                 노력은...
                             </Heading>
                         )}
-                        <Strick startedDate={startedDate} />
+                        {/* <Strick startedDate={startedDate} /> */}
                         <Heading></Heading>
                         <InfoCards
                             diffDays={diffDays}
@@ -95,7 +93,7 @@ function LastChallengePage() {
                             challengeId={currentChallenge.challengeId}
                         />
                     </VStack>
-                    {currentChallenge.status === "SUCCESS" ? (
+                    {challenge.status === "SUCCESS" ? (
                         <VStack spacing={"30px"}>
                             <MessageCheckModal isExpired={isExpired} />
                             <PiggyBankFinished isExpired={isExpired} />

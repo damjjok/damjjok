@@ -3,58 +3,13 @@ import BasicButton from "components/button/BasicButton";
 import crownImg from "assets/gifs/crown.gif";
 import sendLetterImg from "assets/gifs/sendLetter.gif";
 import candyImg from "assets/gifs/candy.gif";
-
-//더미 데이터
-const currentUser = {
-    name: "손종민",
-};
-const currentGroupMember = [
-    {
-        name: "손종민",
-        role: "damJJok",
-        cheering_message_set: [1, 2, 3, 4],
-        candy_set: [1, 2, 3],
-    },
-    {
-        name: "최명성",
-        role: "phD",
-        cheering_message_set: [1, 2, 3, 4, 5],
-        candy_set: [1, 2, 3, 4],
-    },
-    {
-        name: "박서현",
-        role: "phD",
-        cheering_message_set: [1, 2, 3, 4],
-        candy_set: [1, 2, 3, 4, 5, 6, 7],
-    },
-    {
-        name: "김다희",
-        role: "phD",
-        cheering_message_set: [1, 2, 3, 4],
-        candy_set: [1, 2, 3],
-    },
-    {
-        name: "김영후",
-        role: "phD",
-        cheering_message_set: [1, 2, 3, 4, 5, 6, 7, 8],
-        candy_set: [1, 2, 3],
-    },
-    {
-        name: "문지호",
-        role: "phD",
-        cheering_message_set: [1, 2, 3, 4],
-        candy_set: [1, 2, 3],
-    },
-];
+import { useRecoilValue } from "recoil";
+import { challengeBestMember } from "contexts/Challenge";
+import { currentUser } from "contexts/User";
 
 function BestCheerMemberModal({ nextContent }) {
-    const bestCheerMember = currentGroupMember.reduce((prev, current) => {
-        const prevTotal =
-            prev.cheering_message_set.length + prev.candy_set.length;
-        const currentTotal =
-            current.cheering_message_set.length + current.candy_set.length;
-        return prevTotal > currentTotal ? prev : current;
-    });
+    const loginedUser = useRecoilValue(currentUser);
+    const bestCheerMember = useRecoilValue(challengeBestMember);
     return (
         <>
             <Flex
@@ -66,8 +21,15 @@ function BestCheerMemberModal({ nextContent }) {
                 {/* <StarIcon boxSize={20} color='dam.yellow'/> */}
                 <Flex flexFlow={"column"} alignItems={"center"} marginY={6}>
                     <p className=" font-extrabold text-4xl text-center">
-                        {currentUser.name}님의 이번 챌린지 응원왕은...
+                        {loginedUser.userName}님의
                     </p>
+                    <Text
+                        fontWeight={"extrabold"}
+                        fontSize={"4xl"}
+                        textAlign={"center"}
+                    >
+                        이번 챌린지 응원왕은...
+                    </Text>
                     <img
                         src={crownImg}
                         alt="crownImg"
@@ -80,7 +42,7 @@ function BestCheerMemberModal({ nextContent }) {
                     />
                     <VStack justifyContent={"center"}>
                         <Text fontSize={"3xl"} fontWeight={"bold"}>
-                            {bestCheerMember.name}님 입니다!!
+                            {bestCheerMember.userName}님 입니다!!
                         </Text>
                         <Box display={"flex"} alignItems={"center"}>
                             <img
@@ -91,8 +53,8 @@ function BestCheerMemberModal({ nextContent }) {
                                 }}
                             />
                             <Text fontSize={"xl"}>
-                                보낸 응원 메시지 :{" "}
-                                {bestCheerMember.cheering_message_set.length} 개
+                                보낸 응원 메시지 : {bestCheerMember.cheerMsgCnt}{" "}
+                                개
                             </Text>
                         </Box>
                         <Box display={"flex"} alignItems={"center"}>
@@ -106,8 +68,7 @@ function BestCheerMemberModal({ nextContent }) {
                                 }}
                             />
                             <Text fontSize={"xl"}>
-                                보낸 사탕 : {bestCheerMember.candy_set.length}{" "}
-                                개
+                                보낸 사탕 : {bestCheerMember.candyCnt} 개
                             </Text>
                         </Box>
                     </VStack>

@@ -1,8 +1,50 @@
 import { StarIcon } from "@chakra-ui/icons";
 import { Flex, ModalBody, VStack } from "@chakra-ui/react";
+import { getBestMember } from "apis/api/Candy";
+import { getCheerMessageList } from "apis/api/CheerMsg";
 import BasicButton from "components/button/BasicButton";
+import {
+    challengeBestMember,
+    challengeCheerMessageList,
+    challengeState,
+} from "contexts/Challenge";
+import { useEffect } from "react";
+import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 
 function ChallengeCompletedModal({ nextContent }) {
+    const challenge = useRecoilValue(challengeState);
+    const [cheerMessageList, setCheerMessageList] = useRecoilState(
+        challengeCheerMessageList
+    );
+    const resetCheerMessageListAtom = useResetRecoilState(
+        challengeCheerMessageList
+    );
+    const [bestMember, setBestMember] = useRecoilState(challengeBestMember);
+    const resetBestMemberAtom = useResetRecoilState(challengeBestMember);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            resetCheerMessageListAtom();
+            resetBestMemberAtom();
+
+            try {
+                const messageResponse = await getCheerMessageList(
+                    challenge.challengeId
+                );
+                setCheerMessageList(messageResponse);
+
+                const bestMemberResponse = await getBestMember(
+                    challenge.challengeId
+                );
+                setBestMember(bestMemberResponse);
+                // console.log(cheerMessageList);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        fetchData();
+    }, [cheerMessageList]);
+
     return (
         <>
             <Flex
@@ -22,7 +64,9 @@ function ChallengeCompletedModal({ nextContent }) {
                         <BasicButton
                             buttonName={"리포트 확인하기"}
                             variant={"bigbtn"}
-                            onClick={nextContent}
+                            onClick={() => {
+                                nextContent();
+                            }}
                         />
                     </VStack>
                 </ModalBody>

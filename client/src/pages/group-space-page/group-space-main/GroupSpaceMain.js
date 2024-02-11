@@ -15,7 +15,7 @@ import {
 import CreateChallengePage from "../../create-challenge-page/CreateChallengePage";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { getChallengeList } from "apis/api/Challenge";
-import { currentUserState } from "contexts/User";
+import { currentUser, currentUserState } from "contexts/User";
 
 // import NormalButton from "../components/button/normalbutton/NormalButton";
 
@@ -23,7 +23,6 @@ function GroupSpaceMain() {
     // 더미데이터
     // const userId = useRecoilValue(currentUserState);
 
-    const { groupId } = useParams();
     // console.log(groupId);
     // const setChallengeState = useSetRecoilState(challengeState);
     // const currentChallengeList = useRecoilValue(challengeListState);

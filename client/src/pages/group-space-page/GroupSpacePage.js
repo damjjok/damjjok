@@ -53,12 +53,12 @@ function GroupSpacePage() {
     // }, [groupId, setCurrentChallengeList]);
 
     return (
-        <div>
+        <>
             <Topbar />
             <div className="flex">
                 <Box
                     position={isMobile ? "fixed" : "static"}
-                    bottom={isMobile ? "10px" : "auto"}
+                    bottom={isMobile ? "10vw" : "auto"}
                     left={isMobile ? "10px" : "auto"}
                     zIndex={"docked"}
                 >
@@ -68,7 +68,7 @@ function GroupSpacePage() {
                     <GroupSpaceMain />
                 </Box>
             </div>
-        </div>
+        </>
     );
 }
 
