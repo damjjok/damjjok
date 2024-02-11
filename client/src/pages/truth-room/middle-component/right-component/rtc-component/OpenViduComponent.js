@@ -21,14 +21,37 @@ export default function OpenViduComponent() {
     const [subscribers, setSubscribers] = useState([]);
     const [currentVideoDevice, setCurrentVideoDevice] = useState(null);
 
+    const [connectedMemberList, setConnectedMemberList] = useState([]); // 우리 서비스 기준 순서로 화면에 멤버들 띄워줄 때 사용할 리스트
+    const [damJJok, setDamJJok] = useState(undefined); // 담쪽이 설정(화면 가장 위에 띄워줘야 하므로)
+
     const OV = useRef(new OpenVidu());
 
     const joinSession = useCallback(() => {
         const mySession = OV.current.initSession();
 
         mySession.on("streamCreated", (event) => {
+            // 멤버가 스트림에 들어올 때마다 담쪽이인지 아닌지 분간
             const subscriber = mySession.subscribe(event.stream, undefined);
-            setSubscribers((subscribers) => [...subscribers, subscriber]);
+            // setSubscribers((subscribers) => [...subscribers, subscriber]);
+            if (damJJok !== undefined)
+                // 현재 담쪽이가 설정돼있다면 기존 리스트에 새로운 subscriber만 추가
+                setConnectedMemberList((connectedMemberList) => [
+                    ...connectedMemberList,
+                    subscriber,
+                ]);
+            else {
+                // 담쪽이가 설정되지 않았다면
+                if (
+                    JSON.parse(subscriber.stream.connection.data).clientData
+                        .role === "Damjjok"
+                )
+                    setDamJJok(subscriber);
+                else
+                    setConnectedMemberList((connectedMemberList) => [
+                        ...connectedMemberList,
+                        subscriber,
+                    ]);
+            }
         });
 
         mySession.on("streamDestroyed", (event) => {
@@ -81,6 +104,9 @@ export default function OpenViduComponent() {
 
                     setPublisher(publisher);
                     setCurrentVideoDevice(currentVideoDevice);
+                    if (enteringTruthRoomMemberInfo.role === "Damjjok")
+                        // 입장한 본인이 담쪽이인 경우를 위한 set 로직
+                        setDamJJok(publisher);
                 } catch (error) {
                     console.log(
                         "There was an error connecting to the session:",
@@ -172,7 +198,21 @@ export default function OpenViduComponent() {
             <div id="session">
                 <div id="video-container" className="col-md-6">
                     <Wrapper>
-                        {publisher !== undefined ? ( // 본인 화면
+                        {damJJok !== undefined ? ( // 담쪽이 화면
+                            <UserVideoComponent streamManager={damJJok} />
+                        ) : null}
+                        {publisher !== undefined && publisher !== damJJok ? ( // 본인 화면
+                            <UserVideoComponent streamManager={publisher} />
+                        ) : null}
+                        {connectedMemberList.map(
+                            (
+                                mem,
+                                i // 나머지 멤버들 화면
+                            ) => (
+                                <UserVideoComponent streamManager={mem} />
+                            )
+                        )}
+                        {/* {publisher !== undefined ? ( // 본인 화면
                             <UserVideoComponent streamManager={publisher} />
                         ) : null}
                         {subscribers.map(
@@ -182,7 +222,7 @@ export default function OpenViduComponent() {
                             ) => (
                                 <UserVideoComponent streamManager={sub} />
                             )
-                        )}
+                        )} */}
                     </Wrapper>
                 </div>
                 <div id="session-header">
