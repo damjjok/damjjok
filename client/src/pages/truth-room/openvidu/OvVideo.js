@@ -1,7 +1,19 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 
 export default function OpenViduVideoComponent({ streamManager }) {
     const videoRef = useRef();
+    const [roleStyle, setRoleStyle] = useState({});
+
+    const getRole = () => {
+        // Gets the nickName of the user
+        return JSON.parse(streamManager.stream.connection.data).clientData.role;
+    };
+
+    useEffect(() => {
+        // 역할이 담쪽이일 때 노란색 테두리 적용하기 위함
+        const role = getRole();
+        if (role === "Damjjok") setRoleStyle({ border: "3px solid yellow" });
+    }, [streamManager]);
 
     useEffect(() => {
         if (streamManager && videoRef.current) {
@@ -9,5 +21,5 @@ export default function OpenViduVideoComponent({ streamManager }) {
         }
     }, [streamManager]);
 
-    return <video autoPlay={true} ref={videoRef} />;
+    return <video autoPlay={true} ref={videoRef} style={roleStyle} />;
 }

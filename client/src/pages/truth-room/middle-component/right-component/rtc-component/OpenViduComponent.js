@@ -212,17 +212,6 @@ export default function OpenViduComponent() {
                                 <UserVideoComponent streamManager={mem} />
                             )
                         )}
-                        {/* {publisher !== undefined ? ( // 본인 화면
-                            <UserVideoComponent streamManager={publisher} />
-                        ) : null}
-                        {subscribers.map(
-                            (
-                                sub,
-                                i // 나머지 참가자들 화면
-                            ) => (
-                                <UserVideoComponent streamManager={sub} />
-                            )
-                        )} */}
                     </Wrapper>
                 </div>
                 <div id="session-header">
