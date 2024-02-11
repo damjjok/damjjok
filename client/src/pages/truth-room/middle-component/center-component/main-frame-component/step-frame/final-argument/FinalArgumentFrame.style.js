@@ -15,4 +15,10 @@ export const Wrapper = styled.div`
         color: white;
         margin-bottom: 20px;
     }
+
+    .damJJok-frame {
+        border: 1px solid black;
+        width: 100%;
+        height: 100%;
+    }
 `;
