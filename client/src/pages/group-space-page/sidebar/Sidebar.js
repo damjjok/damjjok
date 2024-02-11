@@ -35,7 +35,7 @@ function Sidebar() {
         };
 
         fetchData(); // fetchData 함수 호출
-    }, [groupId]);
+    }, []);
     return (
         <>
             {/* 모바일 화면일 때 햄버거 버튼 노출 */}

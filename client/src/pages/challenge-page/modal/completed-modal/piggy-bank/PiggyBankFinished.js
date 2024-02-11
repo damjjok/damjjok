@@ -4,12 +4,14 @@ import PiggyBank from "../../../../reward-tab-page/piggy-bank/PiggyBank";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { challengeState } from "contexts/Challenge";
+import { completeChallenge } from "apis/api/Challenge";
 
 function PiggyBankFinished({ nextContent, isExpired }) {
     const challenge = useRecoilValue(challengeState);
     const navigate = useNavigate();
 
     const handleGroupClick = (groupId) => {
+        completeChallenge(challenge.challengeId);
         navigate(`/group/${groupId}`); // 해당 그룹 ID의 경로로 이동
     };
     return (

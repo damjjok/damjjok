@@ -26,6 +26,7 @@ import { notificationListState } from "contexts/Notification";
 import firebaseApp from "./util/firebase/firebaseConfig";
 import InvitationCodePage from "pages/invitation-code-page/InvitationCodePage";
 import ConnectionTest from "pages/truth-room/openvidu/ConnectionTest";
+import GroupSpaceMain from "pages/group-space-page/group-space-main/GroupSpaceMain";
 import { currentUser } from "contexts/User";
 import useAuth from "hooks/useAuth";
 

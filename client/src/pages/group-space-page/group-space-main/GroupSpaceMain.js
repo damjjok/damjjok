@@ -15,26 +15,25 @@ import {
 import CreateChallengePage from "../../create-challenge-page/CreateChallengePage";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { getChallengeList } from "apis/api/Challenge";
-import { currentUserState } from "contexts/User";
+import { currentUser, currentUserState } from "contexts/User";
 
 // import NormalButton from "../components/button/normalbutton/NormalButton";
 
 function GroupSpaceMain() {
-    // 더미데이터
-    const userId = useRecoilValue(currentUserState);
+    const loginedUser = useRecoilValue(currentUser);
 
-    const { groupId } = useParams();
     // console.log(groupId);
     // const setChallengeState = useSetRecoilState(challengeState);
     const currentChallengeList = useRecoilValue(challengeListState);
     const navigate = useNavigate();
 
     useEffect(() => {
+        console.log("GroupSpaceMain에서 리코일값" + currentChallengeList);
         // currentChallengeList가 정의되어 있고, 그 길이가 0보다 클 때만 로직 실행
         if (currentChallengeList && currentChallengeList.length > 0) {
             const currentMyChallenge = currentChallengeList.find(
                 (challenge) =>
-                    challenge.userId === userId &&
+                    challenge.userId === loginedUser.userId &&
                     challenge.status === "PROGRESS"
             );
 
