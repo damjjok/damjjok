@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Text } from "@chakra-ui/react";
 import { gatheredMoneyState } from "contexts/TruthRoom";
 import { inputFineState } from "contexts/TruthRoomSocket";
@@ -7,27 +7,32 @@ import { useRecoilState, useRecoilValue } from "recoil";
 function InputComponent(props) {
     const gatheredMoney = useRecoilValue(gatheredMoneyState);
     const [inputValue, setInputValue] = useRecoilState(inputFineState);
+    const [errorMessage, setErrorMessage] = useState(""); // 범위 벗어난 값 입력 시 띄워 줄 오류 메시지
 
     // 입력 필드 값을 변경하는 함수입니다.
     const handleInputChange = (event) => {
         let inputFine = event.target.value;
         if (inputFine < 0) {
-            alert("0원 이하의 금액은 벌금으로 설정할 수 없어요!");
-            setInputValue(0);
+            setErrorMessage("0원 이하의 금액은 벌금으로 설정할 수 없어요!");
+            // setInputValue(0);
         } else if (inputFine > gatheredMoney) {
-            alert(
+            setErrorMessage(
                 "이때까지 모인 금액(" +
                     gatheredMoney +
                     "원) 이하의 값만 벌금으로 설정할 수 있어요!"
             );
-            setInputValue(gatheredMoney);
-        } else setInputValue(inputFine);
+            // setInputValue(gatheredMoney);
+        } else {
+            setInputValue(inputFine);
+            setErrorMessage("");
+        }
     };
 
     // 버튼 클릭 시 호출될 함수입니다.
     const handleButtonClick = (percent) => {
         // Recoil 상태의 값을 입력 필드에 설정합니다.
         setInputValue(gatheredMoney * percent);
+        setErrorMessage("");
     };
 
     return (
@@ -44,6 +49,11 @@ function InputComponent(props) {
                 <Text as="b" fontSize={"20px"}>
                     원
                 </Text>
+                {errorMessage && (
+                    <Text color="red" mt={2}>
+                        {errorMessage}
+                    </Text>
+                )}
             </div>
             <div className="percent-button-container">
                 <button
