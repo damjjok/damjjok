@@ -18,7 +18,6 @@ export default function OpenViduComponent() {
     );
     const [session, setSession] = useState(undefined);
     const [publisher, setPublisher] = useState(undefined);
-    const [subscribers, setSubscribers] = useState([]);
     const [currentVideoDevice, setCurrentVideoDevice] = useState(null);
 
     const [connectedMemberList, setConnectedMemberList] = useState([]); // 우리 서비스 기준 순서로 화면에 멤버들 띄워줄 때 사용할 리스트
@@ -128,20 +127,21 @@ export default function OpenViduComponent() {
         // Reset all states and OpenVidu object
         OV.current = new OpenVidu();
         setSession(undefined);
-        setSubscribers([]);
+        setConnectedMemberList([]);
         setSessionKey("0");
         setPublisher(undefined);
+        setDamJJok(undefined);
     }, [session]);
 
     const deleteSubscriber = useCallback((streamManager) => {
-        setSubscribers((prevSubscribers) => {
-            const index = prevSubscribers.indexOf(streamManager);
+        setConnectedMemberList((prevConnectedMemberList) => {
+            const index = prevConnectedMemberList.indexOf(streamManager);
             if (index > -1) {
-                const newSubscribers = [...prevSubscribers];
-                newSubscribers.splice(index, 1);
-                return newSubscribers;
+                const newConnectedMemberList = [...prevConnectedMemberList];
+                newConnectedMemberList.splice(index, 1);
+                return newConnectedMemberList;
             } else {
-                return prevSubscribers;
+                return prevConnectedMemberList;
             }
         });
     }, []);
