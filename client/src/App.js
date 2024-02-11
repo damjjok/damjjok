@@ -121,10 +121,6 @@ function App() {
                         <Route path="/" element={<LandingPage />} />
                         <Route path="/group-list" element={<GroupListPage />} />
                         <Route
-                            path={`/group/:groupId`}
-                            element={<GroupSpaceMain />}
-                        />
-                        <Route
                             path={`/group/:groupId/*`}
                             element={<GroupSpacePage />}
                         >
