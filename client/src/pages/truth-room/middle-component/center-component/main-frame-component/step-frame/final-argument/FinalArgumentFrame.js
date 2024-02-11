@@ -1,7 +1,4 @@
-import { challengeIdState } from "contexts/TruthRoomSocket";
-import { WebSocketContext } from "contexts/WebSocketContext";
-import React, { useContext } from "react";
-import { useRecoilValue } from "recoil";
+import React from "react";
 import TimerComponent from "./TimerComponent";
 import { Wrapper } from "./FinalArgumentFrame.style";
 
