@@ -1,5 +1,6 @@
 package com.ssafy.server.service.implement;
 
+import com.ssafy.server.common.ResponseCode;
 import com.ssafy.server.dto.ResponseDto;
 import com.ssafy.server.dto.auth.CustomUserDetails;
 import com.ssafy.server.dto.request.alarm.FCMTokenRequestDto;
@@ -9,19 +10,19 @@ import com.ssafy.server.dto.response.auth.FcmTokenResponseDto;
 import com.ssafy.server.dto.response.auth.SignUpResponseDto;
 import com.ssafy.server.dto.response.auth.TokenResponseDto;
 import com.ssafy.server.entity.UserEntity;
+import com.ssafy.server.exception.CustomException;
 import com.ssafy.server.exception.CustomJwtException;
 import com.ssafy.server.provider.JwtProvider;
 import com.ssafy.server.repository.UserRepository;
 import com.ssafy.server.service.AuthService;
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.time.temporal.ChronoUnit;
@@ -79,7 +80,7 @@ public class AuthServiceImpl implements AuthService {
             valueOperations.set(refreshToken, email);
 
         }catch(CustomJwtException e){
-            throw new CustomJwtException(e.getMessage(),e);
+            throw new CustomException(HttpStatus.UNAUTHORIZED, ResponseCode.UNAUTHORIZED, "사용자 인증 다시 해야합니다.");
         }
         return TokenResponseDto.success(accessToken,refreshToken);
     }

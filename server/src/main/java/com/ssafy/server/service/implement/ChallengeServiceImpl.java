@@ -1,5 +1,6 @@
 package com.ssafy.server.service.implement;
 
+import com.ssafy.server.common.ResponseCode;
 import com.ssafy.server.dto.ResponseDto;
 import com.ssafy.server.dto.auth.CustomUserDetails;
 import com.ssafy.server.dto.challenge.ChallengeDto;
@@ -12,10 +13,12 @@ import com.ssafy.server.dto.request.challenge.ChallengeRankRequestDto;
 import com.ssafy.server.dto.request.notification.NotificationCreateRequestDto;
 import com.ssafy.server.dto.response.challenge.*;
 import com.ssafy.server.entity.*;
+import com.ssafy.server.exception.CustomException;
 import com.ssafy.server.repository.*;
 import com.ssafy.server.service.ChallengeService;
 import com.ssafy.server.service.NotificationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -47,15 +50,23 @@ public class ChallengeServiceImpl implements ChallengeService {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
 
+            if(authentication == null || !(authentication.getPrincipal() instanceof CustomUserDetails)){
+                throw new CustomException(HttpStatus.UNAUTHORIZED, ResponseCode.UNAUTHORIZED, "인증 정보가 없어요 ..");
+            }
+
             int userId = customUserDetails.getUserId();
             String damjjokName = customUserDetails.getUserName();
 
             // 먼저 진행중인 챌린지가 없을경우에만 챌린지 생성 가능
             if(challengeRepository.existsByUserIdAndStatusAndGroupEntityGroupId(userId,"PROGRESS",dto.getGroupId())){
-                return ChallengeCreateResponseDto.duplicateCreateChallenge();
+                throw new CustomException(HttpStatus.CONFLICT, ResponseCode.CONFLICT, "이미 진행중인 챌린지가 존재합니다.");
             }
 
             GroupEntity groupEntity = groupRepository.findByGroupId(dto.getGroupId());
+
+            if(groupEntity == null){
+                throw new CustomException(HttpStatus.NOT_FOUND, ResponseCode.NOT_FOUND, "존재하지 않는 그룹 ID 입니다.");
+            }
 
             ChallengeEntity challengeEntity = new ChallengeEntity();
             challengeEntity.setGroupEntity(groupEntity);
@@ -125,6 +136,10 @@ public class ChallengeServiceImpl implements ChallengeService {
 
             for (int i = 1; i <= 4 ; i++) {
                 ImageEntity entity = imageRespository.findByImageId(i);
+
+                if(entity == null){
+                    throw new CustomException(HttpStatus.NOT_FOUND, ResponseCode.NOT_FOUND, i + "<- 해당 id의 이미지가 없네요.디비 확인해주세요");
+                }
 
                 ImageDto dto = new ImageDto();
                 dto.setImageId(entity.getImageId());
