@@ -201,6 +201,8 @@ public class TestimonyServiceImpl implements TestimonyService {
                 list.add(testimonyDto);
             });
 
+            if(list.isEmpty()) return ResponseDto.validationFail();
+
         }catch(Exception exception){
             exception.printStackTrace();
             return ResponseDto.databaseError();
