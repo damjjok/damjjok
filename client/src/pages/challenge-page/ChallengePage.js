@@ -65,7 +65,7 @@ function ChallengePage() {
         };
 
         fetchData(); // fetchData 함수 호출
-    }, []);
+    }, [challengeId]);
 
     useEffect(() => {
         if (
