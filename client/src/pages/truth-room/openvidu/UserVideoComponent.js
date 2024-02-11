@@ -13,7 +13,9 @@ export default function UserVideoComponent({ streamManager }) {
             {streamManager !== undefined ? (
                 <div className="streamcomponent" style={{ margin: "10px" }}>
                     <OpenViduVideoComponent streamManager={streamManager} />
-                    <div id="nick-name-tag">{getNicknameTag()}</div>
+                    <div style={{ borderTopLeftRadius: "10px" }}>
+                        <p>{getNicknameTag()}</p>
+                    </div>
                 </div>
             ) : null}
         </div>
