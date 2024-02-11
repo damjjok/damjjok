@@ -19,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -76,6 +77,7 @@ public class CandyServiceImpl implements CandyService {
         try {
             int challengeId = dto.getChallengeId();
             ChallengeEntity challengeEntity = challengeRepository.findByChallengeId(challengeId);
+
             // 캔디와 응원 메시지의 사용자별 집계
             Map<UserEntity, Integer> candyCountByUser = candyRepository.findByChallengeEntity(challengeEntity)
                     .stream()
@@ -86,31 +88,31 @@ public class CandyServiceImpl implements CandyService {
                     .collect(Collectors.groupingBy(CheeringMessageEntity::getUserEntity, Collectors.summingInt(e -> 1)));
 
             // 사용자별로 캔디 수와 응원 메시지 수의 합계 계산 및 최대값 찾기
-            Integer bestUserId = null;
-            int maxSupport = 0;
-            for (Map.Entry<UserEntity, Integer> entry : candyCountByUser.entrySet()) {
-                UserEntity user = entry.getKey();
-                int totalSupport = entry.getValue() + cheerMsgCountByUser.getOrDefault(user, 0);
-                if (totalSupport > maxSupport) {
-                    bestUserId = user.getUserId();
-                    maxSupport = totalSupport;
-                }
-            }
+            Map<UserEntity, Integer> totalSupportByUser = new HashMap<>();
 
-            if (bestUserId == null) {
+            // 캔디 카운트와 응원 메시지 카운트 병합
+            candyCountByUser.forEach((user, candies) -> totalSupportByUser.merge(user, candies, Integer::sum));
+            cheerMsgCountByUser.forEach((user, messages) -> totalSupportByUser.merge(user, messages, Integer::sum));
+
+            // 최대 응원 횟수와 해당 사용자 찾기
+            Map.Entry<UserEntity, Integer> bestSupporter = totalSupportByUser.entrySet().stream()
+                    .max(Map.Entry.comparingByValue())
+                    .orElse(null);
+
+            if (bestSupporter == null) {
                 return ResponseEntity.ok(new BestCheeringMemberResponseDto("", 0, 0)); // 응원왕이 없는 경우
             }
 
-            // 최종 응원왕의 userName 조회
-            UserEntity bestUser = userRepository.findByUserId(bestUserId);
-            String bestUserName = bestUser != null ? bestUser.getUserName() : "응원왕 없음";
+            UserEntity bestUser = bestSupporter.getKey();
+            String bestUserName = bestUser.getUserName();
+            int bestSupportCount = bestSupporter.getValue();
 
-            // 최종 응원왕 정보 생성
+            // 캔디 카운트와 응원 메시지 카운트에서 최종 값 조회
+            int candies = candyCountByUser.getOrDefault(bestUser, 0);
+            int messages = cheerMsgCountByUser.getOrDefault(bestUser, 0);
+
             BestCheeringMemberResponseDto responseDto = new BestCheeringMemberResponseDto(
-                    bestUserName,
-                    candyCountByUser.getOrDefault(bestUser, 0),
-                    cheerMsgCountByUser.getOrDefault(bestUser, 0)
-            );
+                    bestUserName, candies, messages);
 
             return ResponseEntity.ok(responseDto);
         } catch (Exception exception) {
@@ -118,4 +120,5 @@ public class CandyServiceImpl implements CandyService {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
 }

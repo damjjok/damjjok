@@ -16,6 +16,7 @@ import com.ssafy.server.service.NotificationService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.User;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -189,7 +190,9 @@ public class EvidenceServiceImpl implements EvidenceService {
 
             ChallengeEntity challengeEntity = challengeRepository.findByChallengeId(challengeId);
 
-            List<EvidenceEntity> entityList = evidenceRepository.findByChallengeEntity(challengeEntity);
+            //생성 날짜 기준 내림차순
+            Sort sort = Sort.by("createdAt").descending();
+            List<EvidenceEntity> entityList = evidenceRepository.findByChallengeEntity(challengeEntity, sort);
 
             entityList.stream().forEach(e ->{
                 EvidenceDto evidenceDto = new EvidenceDto();
@@ -218,8 +221,9 @@ public class EvidenceServiceImpl implements EvidenceService {
             int challengeId = dto.getChallengeId();
 
             ChallengeEntity challengeEntity = challengeRepository.findByChallengeId(challengeId);
-
-            List<EvidenceEntity> entityList = evidenceRepository.findByChallengeEntity(challengeEntity);
+            // createdAt 기준으로 내림차순 정렬
+            Sort sort = Sort.by("createdAt").descending();
+            List<EvidenceEntity> entityList = evidenceRepository.findByChallengeEntity(challengeEntity, sort);
 
             entityList.stream().forEach(e ->{
                 if(e.getCreatedAt().isBefore(challengeEntity.getFinalTruthRoomDate())) return;

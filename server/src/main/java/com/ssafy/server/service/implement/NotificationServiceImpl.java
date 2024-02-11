@@ -44,7 +44,7 @@ public class NotificationServiceImpl implements NotificationService {
             int userId = customUserDetails.getUserId();
 
             UserEntity userEntity = userRepository.findByUserId(userId);
-            List<NotificationEntity> entityList = notificationRepository.findByUserEntity(userEntity);
+            List<NotificationEntity> entityList = notificationRepository.findByUserEntityOrderBySendDateDesc(userEntity);
 
             entityList.stream().forEach((e) -> {
                 NotificationDto notificationDto = new NotificationDto();
