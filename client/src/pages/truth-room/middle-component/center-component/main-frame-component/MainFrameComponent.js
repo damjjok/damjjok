@@ -6,7 +6,7 @@ import ReadyStateFrame from "./step-frame/ReadyStateFrame";
 import ReportFrame from "./step-frame/report/ReportFrame";
 import VoteFrame from "./step-frame/vote/VoteFrame";
 import PassFailFrame from "./step-frame/pass-fail/PassFailFrame";
-import FinalArgumentFrame from "./step-frame/FinalArgumentFrame";
+import FinalArgumentFrame from "./step-frame/final-argument/FinalArgumentFrame";
 import FineDecisionFrame from "./step-frame/fine-decision/FineDecisionFrame";
 import EndingFrame from "./step-frame/ending/EndingFrame";
 
