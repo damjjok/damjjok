@@ -6,7 +6,7 @@ import ReadyStateFrame from "./step-frame/ReadyStateFrame";
 import ReportFrame from "./step-frame/report/ReportFrame";
 import VoteFrame from "./step-frame/vote/VoteFrame";
 import PassFailFrame from "./step-frame/pass-fail/PassFailFrame";
-import ClosingArgumentFrame from "./step-frame/ClosingArgumentFrame";
+import FinalArgumentFrame from "./step-frame/FinalArgumentFrame";
 import FineDecisionFrame from "./step-frame/fine-decision/FineDecisionFrame";
 import EndingFrame from "./step-frame/ending/EndingFrame";
 
@@ -20,7 +20,7 @@ function MainFrameComponent() {
             {step === 1 && <ReportFrame />}
             {step === 2 && <VoteFrame />}
             {step === 3 && <PassFailFrame />}
-            {step === 4 && <ClosingArgumentFrame />}
+            {step === 4 && <FinalArgumentFrame />}
             {step === 5 && <FineDecisionFrame />}
             {step === 6 && <EndingFrame />}
         </Wrapper>

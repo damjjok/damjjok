@@ -3,7 +3,7 @@ import { WebSocketContext } from "contexts/WebSocketContext";
 import React, { useContext } from "react";
 import { useRecoilValue } from "recoil";
 
-function ClosingArgumentFrame(props) {
+function FinalArgumentFrame(props) {
     const { finishFinalArgument } = useContext(WebSocketContext);
 
     const challengeId = useRecoilValue(challengeIdState);
@@ -16,4 +16,4 @@ function ClosingArgumentFrame(props) {
     return <div onClick={handleClickTest}>최후 변론</div>;
 }
 
-export default ClosingArgumentFrame;
+export default FinalArgumentFrame;
