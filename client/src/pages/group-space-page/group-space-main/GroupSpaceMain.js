@@ -20,37 +20,37 @@ import { currentUser, currentUserState } from "contexts/User";
 // import NormalButton from "../components/button/normalbutton/NormalButton";
 
 function GroupSpaceMain() {
-    const loginedUser = useRecoilValue(currentUser);
+    // 더미데이터
+    // const userId = useRecoilValue(currentUserState);
 
     // console.log(groupId);
     // const setChallengeState = useSetRecoilState(challengeState);
-    const currentChallengeList = useRecoilValue(challengeListState);
+    // const currentChallengeList = useRecoilValue(challengeListState);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        console.log("GroupSpaceMain에서 리코일값" + currentChallengeList);
-        // currentChallengeList가 정의되어 있고, 그 길이가 0보다 클 때만 로직 실행
-        if (currentChallengeList && currentChallengeList.length > 0) {
-            const currentMyChallenge = currentChallengeList.find(
-                (challenge) =>
-                    challenge.userId === loginedUser.userId &&
-                    challenge.status === "PROGRESS"
-            );
+    // useEffect(() => {
+    //     // currentChallengeList가 정의되어 있고, 그 길이가 0보다 클 때만 로직 실행
+    //     if (currentChallengeList && currentChallengeList.length > 0) {
+    //         const currentMyChallenge = currentChallengeList.find(
+    //             (challenge) =>
+    //                 challenge.userId === userId &&
+    //                 challenge.status === "PROGRESS"
+    //         );
 
-            if (currentMyChallenge) {
-                navigate(`challenge/${currentMyChallenge.challengeId}`);
-            } else {
-                const randomCurrentChallenge = currentChallengeList.find(
-                    (challenge) => challenge.status === "PROGRESS"
-                );
-                if (randomCurrentChallenge) {
-                    navigate(`challenge/${randomCurrentChallenge.challengeId}`);
-                }
-            }
-        } else {
-            navigate("empty-challenge");
-        }
-    }, [currentChallengeList]);
+    //         if (currentMyChallenge) {
+    //             navigate(`challenge/${currentMyChallenge.challengeId}`);
+    //         } else {
+    //             const randomCurrentChallenge = currentChallengeList.find(
+    //                 (challenge) => challenge.status === "PROGRESS"
+    //             );
+    //             if (randomCurrentChallenge) {
+    //                 navigate(`challenge/${randomCurrentChallenge.challengeId}`);
+    //             }
+    //         }
+    //     } else {
+    //         navigate("empty-challenge");
+    //     }
+    // }, [currentChallengeList]);
 
     return (
         <>

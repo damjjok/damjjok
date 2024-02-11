@@ -19,16 +19,23 @@ import {
 } from "@chakra-ui/react";
 import SearchBar from "pages/group-list-page/search-bar/SearchBar";
 import { useClipboard } from "@chakra-ui/react";
+import { useEffect } from "react";
 
 // 초대코드는 임의대로?
 // API에 입력 API는 있는데, 생성 API는 없음
 
 function GroupInviteModal({ currentGroupInfo }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const inviteLink =
-        `https://i10e105.p.ssafy.io/invitation/` +
-        currentGroupInfo.invitationLink;
-    const { hasCopied, onCopy } = useClipboard(inviteLink);
+
+    const { hasCopied, onCopy, setValue, value } = useClipboard("");
+
+    useEffect(() => {
+        if (!currentGroupInfo) return;
+        const inviteLink =
+            `https://i10e105.p.ssafy.io/invitation/` +
+            currentGroupInfo.invitationLink;
+        setValue(inviteLink);
+    }, [currentGroupInfo]);
 
     return (
         <>
@@ -64,7 +71,7 @@ function GroupInviteModal({ currentGroupInfo }) {
                                         onClick={onCopy}
                                         cursor={"pointer"}
                                     >
-                                        {inviteLink}
+                                        {value}
                                     </Text>
                                     <IconButton>
                                         <CopyIcon onClick={onCopy} />

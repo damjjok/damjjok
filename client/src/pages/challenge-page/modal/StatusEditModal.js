@@ -35,7 +35,7 @@ function StatusEditModal({ currentChallenge, selectedAvatar }) {
 
     return (
         <>
-            <Button bg={"dam.gray"}>
+            <Button bg={"dam.gray"} position={"static"}>
                 <EditIcon onClick={onOpen} />
             </Button>
 
