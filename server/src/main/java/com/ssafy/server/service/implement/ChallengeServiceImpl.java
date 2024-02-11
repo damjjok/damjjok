@@ -51,7 +51,7 @@ public class ChallengeServiceImpl implements ChallengeService {
             String damjjokName = customUserDetails.getUserName();
 
             // 먼저 진행중인 챌린지가 없을경우에만 챌린지 생성 가능
-            if(challengeRepository.existsByUserIdAndStatus(userId,"PROGRESS")){
+            if(challengeRepository.existsByUserIdAndStatusAndGroupEntityGroupId(userId,"PROGRESS",dto.getGroupId())){
                 return ChallengeCreateResponseDto.duplicateCreateChallenge();
             }
 
