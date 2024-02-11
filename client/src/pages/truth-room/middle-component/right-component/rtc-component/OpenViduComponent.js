@@ -7,13 +7,15 @@ import { closeOpenviduSession } from "apis/api/TruthRoom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { sessionKeyState, userNameState } from "contexts/OpenVidu";
 import { Wrapper } from "./RtcComponent.style";
-import RtcFrameComponent from "./RtcFrameComponent";
+import { enteringTruthRoomMemberInfoState } from "contexts/TruthRoomSocket";
 
 const APPLICATION_SERVER_URL = "https://i10e105.p.ssafy.io/";
 
 export default function OpenViduComponent() {
     const [sessionKey, setSessionKey] = useRecoilState(sessionKeyState);
-    const userName = useRecoilValue(userNameState);
+    const enteringTruthRoomMemberInfo = useRecoilValue(
+        enteringTruthRoomMemberInfoState
+    );
     const [session, setSession] = useState(undefined);
     const [publisher, setPublisher] = useState(undefined);
     const [subscribers, setSubscribers] = useState([]);
@@ -45,7 +47,9 @@ export default function OpenViduComponent() {
             // Get a token from the OpenVidu deployment
             getToken().then(async (token) => {
                 try {
-                    await session.connect(token, { clientData: userName });
+                    await session.connect(token, {
+                        clientData: enteringTruthRoomMemberInfo.name,
+                    });
 
                     let publisher = await OV.current.initPublisherAsync(
                         undefined,
@@ -58,21 +62,21 @@ export default function OpenViduComponent() {
                             frameRate: 30,
                             insertMode: "APPEND",
                             mirror: false,
-                        },
+                        }
                     );
 
                     session.publish(publisher);
 
                     const devices = await OV.current.getDevices();
                     const videoDevices = devices.filter(
-                        (device) => device.kind === "videoinput",
+                        (device) => device.kind === "videoinput"
                     );
                     const currentVideoDeviceId = publisher.stream
                         .getMediaStream()
                         .getVideoTracks()[0]
                         .getSettings().deviceId;
                     const currentVideoDevice = videoDevices.find(
-                        (device) => device.deviceId === currentVideoDeviceId,
+                        (device) => device.deviceId === currentVideoDeviceId
                     );
 
                     setPublisher(publisher);
@@ -81,7 +85,7 @@ export default function OpenViduComponent() {
                     console.log(
                         "There was an error connecting to the session:",
                         error.code,
-                        error.message,
+                        error.message
                     );
                 }
             });
@@ -91,7 +95,7 @@ export default function OpenViduComponent() {
     const leaveSession = useCallback(() => {
         // Leave the session
         if (session) {
-            closeOpenviduSession(sessionKey);
+            closeOpenviduSession(sessionKey); // 지금은 테스트라 여기 뒀지만 나중에는 소켓에서 마지막 남은 사람이 나갈 때 실행됨.
             session.disconnect();
         }
 
@@ -149,7 +153,7 @@ export default function OpenViduComponent() {
     const createSession = async () => {
         const response = await axios.post(
             APPLICATION_SERVER_URL + "api/v1/sessions",
-            { sessionKey: sessionKey },
+            { sessionKey: sessionKey }
         );
         return response.data; // The sessionId
     };
@@ -159,7 +163,7 @@ export default function OpenViduComponent() {
             APPLICATION_SERVER_URL +
                 "api/v1/sessions/" +
                 sessionId +
-                "/connections",
+                "/connections"
         );
         return response.data.token; // The token
     };
@@ -169,27 +173,15 @@ export default function OpenViduComponent() {
                 <div id="video-container" className="col-md-6">
                     <Wrapper>
                         {publisher !== undefined ? ( // 본인 화면
-                            <RtcFrameComponent
-                                content={
-                                    <UserVideoComponent
-                                        streamManager={publisher}
-                                    />
-                                }
-                            ></RtcFrameComponent>
+                            <UserVideoComponent streamManager={publisher} />
                         ) : null}
                         {subscribers.map(
                             (
                                 sub,
-                                i, // 나머지 참가자들 화면
+                                i // 나머지 참가자들 화면
                             ) => (
-                                <RtcFrameComponent
-                                    content={
-                                        <UserVideoComponent
-                                            streamManager={sub}
-                                        />
-                                    }
-                                ></RtcFrameComponent>
-                            ),
+                                <UserVideoComponent streamManager={sub} />
+                            )
                         )}
                     </Wrapper>
                 </div>

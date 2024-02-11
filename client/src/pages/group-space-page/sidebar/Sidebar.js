@@ -1,16 +1,7 @@
 import GroupList from "./group-list/GroupList";
 import ChallengeList from "./challenge-list/ChallengeList";
 import SettingButton from "./setting-button/SettingButton";
-import {
-    Box,
-    Drawer,
-    DrawerContent,
-    DrawerOverlay,
-    Flex,
-    IconButton,
-    useBreakpointValue,
-    useDisclosure,
-} from "@chakra-ui/react";
+import { Box, Drawer, DrawerContent, DrawerOverlay, Flex, IconButton, useBreakpointValue, useDisclosure } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getChallengeList, getGroupInfo } from "apis/api/Group";
@@ -39,26 +30,11 @@ function Sidebar() {
         <>
             {/* 모바일 화면일 때 햄버거 버튼 노출 */}
             {isMobile ? (
-                <IconButton
-                    aria-label="Open menu"
-                    icon={<HamburgerIcon />}
-                    onClick={onOpen}
-                    size="lg"
-                />
+                <IconButton aria-label="Open menu" icon={<HamburgerIcon />} onClick={onOpen} size="lg" />
             ) : (
-                <Box
-                    borderRight={"1px solid rgba(214,214,214,0.25)"}
-                    height={"90vh"}
-                    minWidth={"250px"}
-                    width={"20vw"}
-                    maxWidth={"250px"}
-                >
+                <Box borderRight={"1px solid rgba(214,214,214,0.25)"} height={"90vh"} minWidth={"250px"} width={"20vw"} maxWidth={"250px"}>
                     <div className="flex flex-col h-300px px-4">
-                        <Flex
-                            justifyContent="space-between"
-                            alignItems="center"
-                            className="my-8"
-                        >
+                        <Flex justifyContent="space-between" alignItems="center" className="my-8">
                             {/* <GroupList currentGroupInfo={currentGroupInfo} /> */}
                             <GroupList />
                             <SettingButton />
@@ -75,11 +51,7 @@ function Sidebar() {
                 <DrawerOverlay>
                     <DrawerContent>
                         <div className="flex flex-col h-300px px-4">
-                            <Flex
-                                justifyContent="space-between"
-                                alignItems="center"
-                                className="my-8"
-                            >
+                            <Flex justifyContent="space-between" alignItems="center" className="my-8">
                                 {/* <GroupList
                                     currentGroupInfo={currentGroupInfo}
                                 /> */}
