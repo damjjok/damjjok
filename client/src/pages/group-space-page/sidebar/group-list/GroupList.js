@@ -33,6 +33,7 @@ function GroupList({ currentGroupInfo }) {
             );
             // 현재 그룹의 이름을 selectedGroup 상태에 설정합니다.
             setSelectedGroup({
+                key: currentGroup?.groupId,
                 value: currentGroup?.groupId,
                 label: currentGroup?.groupname,
             });
@@ -54,7 +55,7 @@ function GroupList({ currentGroupInfo }) {
 
     // react-select 활용을 위한 option 배열 만들기
     const options = groupListData.map((item, index) => ({
-        key: index,
+        key: item.groupId,
         value: item.groupId,
         label: item.groupname,
     }));
