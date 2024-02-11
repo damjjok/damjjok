@@ -31,11 +31,7 @@ function GroupList() {
             // 가져온 데이터를 groupData 상태에 저장합니다.
             setGroupListData(response.list);
 
-            console.log(response.list);
-
             const currentGroup = response.list.find((group) => group.groupId === Number(groupId));
-
-            console.log(currentGroup);
             // 현재 그룹의 이름을 selectedGroup 상태에 설정합니다.
             setSelectedGroup({
                 key: currentGroup?.groupId,

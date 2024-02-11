@@ -26,7 +26,6 @@ function Strick({ challenge, startedDate }) {
         // 받아온 attendanceList를 돌면서
         // attendanceData[(출석한날 - 시작일)] = true
         //
-        console.log(attendanceList);
         const makeStrick = async () => {
             let tmp = Array(challenge.duration).fill(false);
 
