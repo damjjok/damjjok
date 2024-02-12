@@ -66,7 +66,7 @@ const LandingPage = () => {
                     alignSelf="flex-start" // 로고를 왼쪽 상단으로 정렬
                     alt="Logo"
                     position="absolute" // 절대적 위치 지정
-                    top="3%"
+                    top="2%"
                     left="10%"
                 />
                 <Flex
@@ -136,7 +136,7 @@ const LandingPage = () => {
                     borderBottom="8px solid"
                     borderColor="gray.800"
                 >
-                    <HStack spacing={0} height="100%" py={16} px={24}>
+                    <HStack spacing={0} height="100%" py={16} mx="15%">
                         {/* 텍스트 영역 */}
                         <Box flex="1">
                             <Text color="white" fontSize="5xl" fontWeight={800}>
@@ -173,7 +173,7 @@ const LandingPage = () => {
                     borderBottom="8px solid"
                     borderColor="gray.800"
                 >
-                    <HStack spacing={0} height="100%" py={16} px={24}>
+                    <HStack spacing={0} height="100%" py={16} mx="15%">
                         {/* 텍스트 영역 */}
 
                         {/* 이미지 영역 */}
@@ -210,7 +210,7 @@ const LandingPage = () => {
                     borderBottom="8px solid"
                     borderColor="gray.800"
                 >
-                    <HStack spacing={0} height="100%" py={16} px={24}>
+                    <HStack spacing={0} height="100%" py={16} mx="15%">
                         {/* 텍스트 영역 */}
                         <Box flex="1">
                             <Text color="white" fontSize="5xl" fontWeight={800}>
@@ -247,7 +247,7 @@ const LandingPage = () => {
                     borderBottom="8px solid"
                     borderColor="gray.800"
                 >
-                    <HStack spacing={0} height="100%" py={16} px={24}>
+                    <HStack spacing={0} height="100%" py={16} mx="15%">
                         {/* 이미지 영역 */}
                         <Box flex="1">
                             {/* 여기에 Image 컴포넌트를 사용하거나, backgroundImage 속성을 사용할 수 있습니다. */}
