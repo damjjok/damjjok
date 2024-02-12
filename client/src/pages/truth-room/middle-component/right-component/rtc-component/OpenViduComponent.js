@@ -8,6 +8,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { sessionKeyState, userNameState } from "contexts/OpenVidu";
 import { Wrapper } from "./RtcComponent.style";
 import { enteringTruthRoomMemberInfoState } from "contexts/TruthRoomSocket";
+import { finalArgumentDamJJokState } from "contexts/TruthRoom";
 
 const APPLICATION_SERVER_URL = "https://i10e105.p.ssafy.io/";
 
@@ -22,6 +23,9 @@ export default function OpenViduComponent() {
 
     const [connectedMemberList, setConnectedMemberList] = useState([]); // 우리 서비스 기준 순서로 화면에 멤버들 띄워줄 때 사용할 리스트
     const [damJJok, setDamJJok] = useState(undefined); // 담쪽이 설정(화면 가장 위에 띄워줘야 하므로)
+    const [finalArgumentDamJJok, setFinalArgumentFrameDamJJok] = useRecoilState(
+        finalArgumentDamJJokState
+    ); // 최후 변론에서 중앙 컴포넌트에 담쪽이 화면 띄워줘야 해서, recoil로 담쪽이 openvidu stream 정보 저장
 
     const OV = useRef(new OpenVidu());
 
@@ -43,9 +47,10 @@ export default function OpenViduComponent() {
                 if (
                     JSON.parse(subscriber.stream.connection.data).clientData
                         .role === "Damjjok"
-                )
-                    setDamJJok(subscriber);
-                else
+                ) {
+                    setDamJJok(subscriber); // 우측 컴포넌트에 띄울 담쪽이 정보(useState)
+                    setFinalArgumentFrameDamJJok(subscriber); // 최후 변론에서 중앙에 띄울 담쪽이 정보(useRecoilState)
+                } else
                     setConnectedMemberList((connectedMemberList) => [
                         ...connectedMemberList,
                         subscriber,
@@ -103,9 +108,11 @@ export default function OpenViduComponent() {
 
                     setPublisher(publisher);
                     setCurrentVideoDevice(currentVideoDevice);
-                    if (enteringTruthRoomMemberInfo.role === "Damjjok")
+                    if (enteringTruthRoomMemberInfo.role === "Damjjok") {
                         // 입장한 본인이 담쪽이인 경우를 위한 set 로직
                         setDamJJok(publisher);
+                        setFinalArgumentFrameDamJJok(publisher); // 최후 변론에서 중앙에 띄울 담쪽이 정보(useRecoilState)
+                    }
                 } catch (error) {
                     console.log(
                         "There was an error connecting to the session:",

@@ -25,3 +25,8 @@ export const showingTestimonyState = atom({
     key: "showingTestimony",
     default: {},
 });
+
+export const finalArgumentDamJJokState = atom({
+    key: "finalArgumentDamJJok",
+    default: {},
+});
