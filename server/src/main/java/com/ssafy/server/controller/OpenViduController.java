@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.annotation.PostConstruct;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -52,7 +53,7 @@ public class OpenViduController {
     @Operation(summary = "진실의방 세션 생성", description = "진실의방 세션을 생성합니다.",
             responses = { @ApiResponse(responseCode = "200", description = "진실의방 세션 생성 성공",
                     content = @Content(schema = @Schema(implementation = OpenViduSessionInitializeResponseDto.class)))})
-    public ResponseEntity<? super OpenViduSessionInitializeResponseDto> initializeSession(@RequestBody OpenViduSessionInitializeRequestDto requestBody)
+    public ResponseEntity<? super OpenViduSessionInitializeResponseDto> initializeSession(@RequestBody @Valid OpenViduSessionInitializeRequestDto requestBody)
             {
         return openViduService.initializeSession(requestBody, openvidu);
     }

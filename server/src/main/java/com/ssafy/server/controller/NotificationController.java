@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +39,7 @@ public class NotificationController {
             @ApiResponse(responseCode = "SU", description = "성공", content = @Content(schema = @Schema(implementation = NotificationCreateResponseDto.class)))
     })
     @PostMapping("/")
-    public ResponseEntity<? super NotificationCreateResponseDto> create (@RequestBody NotificationCreateRequestDto dto) {
+    public ResponseEntity<? super NotificationCreateResponseDto> create (@RequestBody @Valid NotificationCreateRequestDto dto) {
         ResponseEntity<? super NotificationCreateResponseDto> response = notificationService.create(dto);
         return response;
     }
@@ -48,7 +49,7 @@ public class NotificationController {
             @ApiResponse(responseCode = "SU", description = "성공", content = @Content(schema = @Schema(implementation = NotificationCheckReadResponseDto.class)))
     })
     @PatchMapping("/")
-    public ResponseEntity<? super NotificationCheckReadResponseDto> checkRead(@RequestBody NotificationCheckReadRequestDto dto) {
+    public ResponseEntity<? super NotificationCheckReadResponseDto> checkRead(@RequestBody @Valid NotificationCheckReadRequestDto dto) {
         ResponseEntity<? super NotificationCheckReadResponseDto> response = notificationService.checkRead(dto);
         return response;
     }

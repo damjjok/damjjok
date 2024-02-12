@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +30,7 @@ public class CandyController {
     @Operation(summary = "캔디 생성", description = "새로운 캔디를 생성합니다.",
             responses = { @ApiResponse(responseCode = "200", description = "캔디 생성 성공",
                     content = @Content(schema = @Schema(implementation = CandyCreateResponseDto.class)))})
-    public ResponseEntity<? super CandyCreateResponseDto> createCandy(@RequestBody CandyCreateRequestDto requestBody){
+    public ResponseEntity<? super CandyCreateResponseDto> createCandy(@RequestBody @Valid CandyCreateRequestDto requestBody){
         ResponseEntity<? super CandyCreateResponseDto> response = candyService.create(requestBody);
         return response;
     }

@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ public class ChallengeController {
     @Operation(summary = "챌린지 생성", description = "챌린지 생성함",
             responses = { @ApiResponse(responseCode = "200", description = "챌린지 생성 성공",
                     content = @Content(schema = @Schema(implementation = ChallengeCreateResponseDto.class)))})
-    public ResponseEntity<? super ChallengeCreateResponseDto> create(@RequestBody ChallengeCreateRequestDto dto){
+    public ResponseEntity<? super ChallengeCreateResponseDto> create(@RequestBody @Valid ChallengeCreateRequestDto dto){
         ResponseEntity<? super ChallengeCreateResponseDto> response = challengeService.create(dto);
         return response;
     }
@@ -67,7 +68,7 @@ public class ChallengeController {
     }
 
     @PatchMapping("/change/status")
-    public ResponseEntity<? super ChallengeChangeStatusResponseDto> changeStatus(@RequestBody ChallengeChangeStatusRequestDto dto){
+    public ResponseEntity<? super ChallengeChangeStatusResponseDto> changeStatus(@RequestBody @Valid ChallengeChangeStatusRequestDto dto){
         ResponseEntity<? super ChallengeChangeStatusResponseDto> response = challengeService.changeStatus(dto);
         return response;
     }
@@ -76,7 +77,7 @@ public class ChallengeController {
     @Operation(summary = "특정 챌린지 프로필 수정", description = "특정 챌린지 프로필 수정함",
             responses = { @ApiResponse(responseCode = "200", description = "챌린지 프로필 변경 성공",
                     content = @Content(schema = @Schema(implementation = ChallengeProfileModifyResponseDto.class)))})
-    public ResponseEntity<? super ChallengeProfileModifyResponseDto> modifyProfile(@PathVariable int challengeId, @RequestBody ChallengeProfileModifyRequestDto dto){
+    public ResponseEntity<? super ChallengeProfileModifyResponseDto> modifyProfile(@PathVariable int challengeId, @RequestBody @Valid ChallengeProfileModifyRequestDto dto){
         ResponseEntity<? super ChallengeProfileModifyResponseDto> response = challengeService.modifyProfile(challengeId,dto);
         return response;
     }
