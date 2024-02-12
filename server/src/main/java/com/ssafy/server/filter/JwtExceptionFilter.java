@@ -27,7 +27,7 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.getWriter().write(e.getMessage());
         } catch (UnsupportedJwtException | SignatureException | MalformedJwtException e) {
-            response.setStatus(HttpStatus.FORBIDDEN.value());
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.getWriter().write(e.getMessage());
         } catch (CustomJwtException e) {
             response.setContentType("application/json;charset=UTF-8");

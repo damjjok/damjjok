@@ -1,6 +1,8 @@
 package com.ssafy.server.dto.request.schedule;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,9 +14,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ScheduleCreateRequestDto {
+    @NotNull
     @Schema(description = "챌린지아이디")
     private Integer challengeId;
 
+    @NotBlank
     @Schema(description = "날짜")
     private LocalDateTime date;
 

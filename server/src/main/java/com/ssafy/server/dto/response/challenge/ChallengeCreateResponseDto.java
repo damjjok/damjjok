@@ -19,9 +19,5 @@ public class ChallengeCreateResponseDto extends ResponseDto {
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
 
-    public static ResponseEntity<? super ChallengeCreateResponseDto> duplicateCreateChallenge(){
-        ResponseDto responseBody = new ResponseDto(ResponseCode.VALIDATION_FAIL, "현재 진행중인 챌린지가 존재합니다.");
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseBody);
-    }
 
 }
