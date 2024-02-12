@@ -57,6 +57,7 @@ public class NotificationServiceImpl implements NotificationService {
 
                 Integer commonCodeId = e.getCommonCodeEntity().getCommonCodeId();
 
+                notificationDto.setCommonCodeId(commonCodeId);
                 NotificationMessageTemplateEntity notificationMessageTemplateEntity = notificationMessageTemplateRepository.findByCommonCodeId(commonCodeId);
                 notificationDto.setNotification_message_title(notificationMessageTemplateEntity.getNotificationMessageTitle());
 
