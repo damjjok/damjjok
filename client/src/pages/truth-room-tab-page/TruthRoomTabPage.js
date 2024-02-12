@@ -20,7 +20,6 @@ function TruthRoomTabPage() {
 
     const today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
     const settingBtnClickHandler = async (date) => {
-        console.log("asdjklasdjkalsdjklasdjkl");
         const result = await postSchedule(challengeId, date);
         if (result) {
             toast({
