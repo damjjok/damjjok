@@ -50,11 +50,12 @@ public class ChallengeServiceImpl implements ChallengeService {
     public ResponseEntity<? super ChallengeCreateResponseDto> create(ChallengeCreateRequestDto dto) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
 
         if(authentication == null || !(authentication.getPrincipal() instanceof CustomUserDetails)){
             throw new CustomAuthenticationException("사용자 인증 다시 해주세요.");
         }
+
+        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
 
         int userId = customUserDetails.getUserId();
         String damjjokName = customUserDetails.getUserName();
@@ -154,7 +155,6 @@ public class ChallengeServiceImpl implements ChallengeService {
 
         List<ChallengeEntity> entityList = challengeRepository.findByGroupEntityGroupId(groupId);
 
-        if(entityList.size() == 0) throw new GroupNotFoundException();
 
         entityList.stream().forEach(e -> {
             ChallengeDto dto = new ChallengeDto();
@@ -207,7 +207,6 @@ public class ChallengeServiceImpl implements ChallengeService {
         List<ChallengeMemeberDto> list = new ArrayList<>();
 
         List<ChallengeMemberEntity> entityList = challengeMemeberRepository.findByChallengeEntityChallengeId(challengeId);
-        if(entityList.size() == 0) throw new ChallengeNotFoundException();
 
         entityList.stream().forEach(e -> {
             ChallengeMemeberDto dto = new ChallengeMemeberDto(e);
@@ -260,7 +259,7 @@ public class ChallengeServiceImpl implements ChallengeService {
         AtomicInteger rank = new AtomicInteger(1);
         AtomicInteger count = new AtomicInteger();
         int cur_day = (int) ChronoUnit.DAYS.between(cur.getCreatedAt().toLocalDate() , LocalDateTime.now());
-        System.out.println(cur_day);
+
         list.stream().forEach(challenge-> {
             if(challenge.getStatus().equals("PROGRESS")){
                 count.addAndGet(1);
