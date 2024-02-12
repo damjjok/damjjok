@@ -11,8 +11,6 @@ import lv7 from "assets/gifs/lv7strong-heart.gif";
 import lv8 from "assets/gifs/lv8lung-half.gif";
 import lv9 from "assets/gifs/lv9lung-perfect.gif";
 import { useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
-import { challengeState } from "contexts/Challenge";
 import { getChallengeRanking } from "apis/api/Challenge";
 
 const levelData = [
@@ -55,7 +53,7 @@ const levelData = [
     {
         key: 7,
         img: lv7,
-        duration: 31536000,//1년
+        duration: 31536000, //1년
         text: "심장마비 위험이 절반으로 줄었어요!",
     },
     {
@@ -74,11 +72,11 @@ const levelData = [
 
 // const currentLevel = 1;
 
-function InfoCards({diffDays, diffMilliseconds, challengeId}) {
+function InfoCards({ diffDays, diffMilliseconds, challengeId }) {
     // 셀렉터 감지를 위해
-    const [dailyState, setDailyState] = useState(1)
-    const [currentLevel, setCurrentLevel] = useState(1)
-    const [currentRank, setCurrentRank] = useState(0)
+    const [dailyState, setDailyState] = useState(1);
+    const [currentLevel, setCurrentLevel] = useState(1);
+    const [currentRank, setCurrentRank] = useState(0);
     // console.log(currentLevel);
 
     const isMobile = useBreakpointValue({ base: true, md: false });
@@ -86,34 +84,29 @@ function InfoCards({diffDays, diffMilliseconds, challengeId}) {
     useEffect(() => {
         const sortedLevelData = [...levelData].sort((a, b) => b.duration - a.duration);
         const level = sortedLevelData.find((level) => {
-          const durationMilliseconds = level.duration * 1000;
-          return diffMilliseconds >= durationMilliseconds;
+            const durationMilliseconds = level.duration * 1000;
+            return diffMilliseconds >= durationMilliseconds;
         });
-    
-        if (level) {
-          setCurrentLevel(level?.key);
-        }
-      }, [diffMilliseconds, levelData, setCurrentLevel]);
 
+        if (level) {
+            setCurrentLevel(level?.key);
+        }
+    }, [currentLevel, challengeId]);
 
     useEffect(() => {
-    const fetchData = async () => {
-        try {
-            const response = await getChallengeRanking(challengeId);
-            const updatedRank = response.rank
-            setCurrentRank(updatedRank); // Recoil 상태에 데이터 적용
-            // console.log(response);
+        const fetchData = async () => {
+            try {
+                const response = await getChallengeRanking(challengeId);
+                const updatedRank = response.rank;
+                setCurrentRank(updatedRank); // Recoil 상태에 데이터 적용
+                // console.log(response);
+            } catch (error) {
+                console.error("챌린지 정보 불러오기 실패", error);
+            }
+        };
 
-        } catch (error) {
-            console.error("챌린지 정보 불러오기 실패", error);
-        }
-            };
-
-            fetchData(); // fetchData 함수 호출
-        }, 
-        [challengeId, setCurrentRank]
-        );
-    
+        fetchData(); // fetchData 함수 호출
+    }, [challengeId, currentRank]);
 
     return (
         <Flex flexFlow={isMobile ? "column" : "row"}>
@@ -124,31 +117,27 @@ function InfoCards({diffDays, diffMilliseconds, challengeId}) {
             >
                 <VStack spacing={2} alignItems="center">
                     <Box w="20" h="20" className="overflow-hidden">
-                        <Image
-                            src={getMoneyGif}
-                            alt="getMoneyGif"
-                            boxSize="100%"
-                            className=" rounded-xl"
-                        />
+                        <Image src={getMoneyGif} alt="getMoneyGif" boxSize="100%" className=" rounded-xl" />
                     </Box>
                     <Box
                         h="4" // 텍스트 박스의 높이를 조절합니다.
                         // className="overflow-hidden"
                     >
-                        <Flex alignItems={'center'}>
-                            <Text className="text-xs text-center font-semibold">
-                                하루
-                            </Text>
-                            <Select size='xs' borderColor='dam.yellow' width={'50px'} marginX={2}
-                                value={dailyState}  // 현재 선택된 값을 표시
-                                onChange={(e) => setDailyState(e.target.value)} >
-                                <option value='1'>1</option>
-                                <option value='2'>2</option>
-                                <option value='3'>3</option>
+                        <Flex alignItems={"center"}>
+                            <Text className="text-xs text-center font-semibold">하루</Text>
+                            <Select
+                                size="xs"
+                                borderColor="dam.yellow"
+                                width={"50px"}
+                                marginX={2}
+                                value={dailyState} // 현재 선택된 값을 표시
+                                onChange={(e) => setDailyState(e.target.value)}
+                            >
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
                             </Select>
-                            <Text className="text-xs text-center font-semibold">
-                                갑 기준
-                            </Text>
+                            <Text className="text-xs text-center font-semibold">갑 기준</Text>
                         </Flex>
                     </Box>
                     <Box
@@ -169,29 +158,19 @@ function InfoCards({diffDays, diffMilliseconds, challengeId}) {
             >
                 <VStack spacing={2} alignItems="center">
                     <Box w="30" h="20" className="overflow-visible">
-                        <Image
-                            src={gradeGif}
-                            alt="gradeGif"
-                            boxSize="100%"
-                            className=" rounded-xl"
-                            objectFit='cover'
-                        />
+                        <Image src={gradeGif} alt="gradeGif" boxSize="100%" className=" rounded-xl" objectFit="cover" />
                     </Box>
                     <Box
                         h="4" // 텍스트 박스의 높이를 조절합니다.
                         className="overflow-hidden"
-                    >                            
-                        <Text className="text-xs text-center font-semibold">
-                            전체 챌린저 중
-                        </Text>
+                    >
+                        <Text className="text-xs text-center font-semibold">전체 챌린저 중</Text>
                     </Box>
                     <Box
                         h="8" // 텍스트 박스의 높이를 조절합니다.
                         className="overflow-visible"
                     >
-                        <Text className="text-center font-semibold">
-                            상위 { currentRank }%에요!
-                        </Text>
+                        <Text className="text-center font-semibold">상위 {currentRank}%에요!</Text>
                     </Box>
                 </VStack>
             </Box>
@@ -202,29 +181,19 @@ function InfoCards({diffDays, diffMilliseconds, challengeId}) {
             >
                 <VStack spacing={2} alignItems="center">
                     <Box w="20" h="20" className="overflow-hidden">
-                        <Image
-                            src={levelData[currentLevel - 1].img}
-                            alt="currentlvimg"
-                            boxSize="100%"
-                            className=" rounded-xl"
-                            objectFit='cover'
-                        />
+                        <Image src={levelData[currentLevel - 1].img} alt="currentlvimg" boxSize="100%" className=" rounded-xl" objectFit="cover" />
                     </Box>
                     <Box
                         h="4" // 텍스트 박스의 높이를 조절합니다.
                         className="overflow-hidden"
                     >
-                        <Text className="text-xs text-center font-semibold">
-                            {`금연 건강 레벨 ${levelData[currentLevel - 1].key}!`}
-                        </Text>
+                        <Text className="text-xs text-center font-semibold">{`금연 건강 레벨 ${levelData[currentLevel - 1].key}!`}</Text>
                     </Box>
                     <Box
                         h="8" // 텍스트 박스의 높이를 조절합니다.
                         className="overflow-visible"
                     >
-                        <Text className="text-center font-semibold">
-                            {`${levelData[currentLevel - 1].text}`}
-                        </Text>
+                        <Text className="text-center font-semibold">{`${levelData[currentLevel - 1].text}`}</Text>
                     </Box>
                 </VStack>
             </Box>

@@ -1,14 +1,12 @@
 import { useToast } from "@chakra-ui/react";
 import { getAttendanceList, postAttendance } from "apis/api/Attendance";
-import {
-    getChallengeCandyCount,
-    postChallengeCandyCount,
-} from "apis/api/Candy";
+import { getChallengeCandyCount, postChallengeCandyCount } from "apis/api/Candy";
 import BasicButton from "components/button/BasicButton";
+import { attendanceListState } from "contexts/Attendance";
 import { challengeCandyCount } from "contexts/Challenge";
 import { currentUser, currentUserState } from "contexts/User";
 import { useEffect, useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 // "현재 로그인된 회원이" "오늘" "이 챌린지에" 출석, 응원 했는지 어떻게 확인하지??
 // 현재 상황 : 버튼 활성화 상태가 모든 챌린지에 공유되어 버림.
@@ -18,12 +16,13 @@ function StatusBarToast({ challenge }) {
     const toast = useToast();
     const loginedUser = useRecoilValue(currentUser);
     const [candyCount, setCandyCount] = useRecoilState(challengeCandyCount);
+    const setAttendanceList = useSetRecoilState(attendanceListState);
     // 버튼이 클릭되면, 클릭 감지하는 함수
     const handleButtonClick = async () => {
         setIsClicked(true);
         if (loginedUser.userId === challenge.userId) {
-            postAttendance(+challenge.challengeId);
-            const response = await getAttendanceList(challenge.challengeId);
+            await postAttendance(+challenge.challengeId);
+            await getAttendanceList(challenge.challengeId, setAttendanceList);
             toast({
                 title: "출석 완료!",
                 description: "오늘의 금연도 화이팅이에요!",
@@ -33,13 +32,8 @@ function StatusBarToast({ challenge }) {
             });
         } else {
             try {
-                postChallengeCandyCount(
-                    challenge.challengeId,
-                    loginedUser.userId
-                );
-                const response = await getChallengeCandyCount(
-                    challenge.challengeId
-                );
+                postChallengeCandyCount(challenge.challengeId, loginedUser.userId);
+                const response = await getChallengeCandyCount(challenge.challengeId);
                 const updatedCount = response.count;
                 setCandyCount(updatedCount);
                 toast({
@@ -56,17 +50,10 @@ function StatusBarToast({ challenge }) {
     useEffect(() => {
         // 자정에 상태를 초기화하는 함수를 실행하는 타이머를 설정합니다.
         const now = new Date();
-        const tomorrow = new Date(
-            now.getFullYear(),
-            now.getMonth(),
-            now.getDate() + 1
-        );
+        const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
         const timeUntilTomorrow = tomorrow - now;
 
-        const timerId = setTimeout(
-            () => setIsClicked(false),
-            timeUntilTomorrow
-        );
+        const timerId = setTimeout(() => setIsClicked(false), timeUntilTomorrow);
 
         return () => clearTimeout(timerId); // 컴포넌트가 언마운트되면 타이머를 취소합니다.
     }, [isClicked]); // 상태가 변경될 때마다 타이머를 재설정합니다.
@@ -75,11 +62,7 @@ function StatusBarToast({ challenge }) {
         <BasicButton
             onClick={handleButtonClick}
             isDisabled={isClicked}
-            buttonName={
-                loginedUser.userId === challenge.userId
-                    ? "출석하기"
-                    : "응원하기"
-            }
+            buttonName={loginedUser.userId === challenge.userId ? "출석하기" : "응원하기"}
             variant={"smbtn"}
         ></BasicButton>
     );
