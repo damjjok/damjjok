@@ -8,17 +8,20 @@ import { getGroupList } from "apis/api/Group";
 //테스트를 위한 더미 데이터
 // const groupItems = ["우리끼리만든그룹", "E106", "E107"];
 
-function GroupList({ currentGroupInfo }) {
+function GroupList() {
     const [groupListData, setGroupListData] = useState([]);
     const { groupId } = useParams();
-    const groupIdVal = Number(groupId);
+    const [selectedGroup, setSelectedGroup] = useState({
+        value: "",
+        label: "",
+    });
+    // 그룹 데이터를 가져오는 함수
+    useEffect(() => {
+        // 함수를 실행합니다.
+        fetchGroupData();
+    }, [groupId]); // 빈 배열을 넘겨주어 컴포넌트 마운트 시에만 실행되도록 합니다.
 
     const navigate = useNavigate();
-
-    const [selectedGroup, setSelectedGroup] = useState({
-        value: currentGroupInfo.groupId,
-        label: currentGroupInfo.groupname,
-    });
 
     // 그룹리스트 데이터 가져오기 함수
     const fetchGroupData = async () => {
@@ -28,9 +31,7 @@ function GroupList({ currentGroupInfo }) {
             // 가져온 데이터를 groupData 상태에 저장합니다.
             setGroupListData(response.list);
 
-            const currentGroup = response.list.find(
-                (group) => group.groupId === groupId
-            );
+            const currentGroup = response.list.find((group) => group.groupId === Number(groupId));
             // 현재 그룹의 이름을 selectedGroup 상태에 설정합니다.
             setSelectedGroup({
                 key: currentGroup?.groupId,
@@ -50,7 +51,7 @@ function GroupList({ currentGroupInfo }) {
 
     // 동작 함수
     const handleGroupClick = (groupId) => {
-        navigate(`/group/${groupId}`); // 해당 그룹 ID의 경로로 이동
+        navigate(`/group/${groupId}/`); // 해당 그룹 ID의 경로로 이동
     };
 
     // react-select 활용을 위한 option 배열 만들기
@@ -76,11 +77,7 @@ function GroupList({ currentGroupInfo }) {
         option: (styles, { isFocused, isSelected }) => {
             return {
                 ...styles,
-                backgroundColor: isSelected
-                    ? "rgba(255, 209, 0, 0.8)"
-                    : isFocused
-                    ? "rgba(255, 209, 0, 0.5)"
-                    : null,
+                backgroundColor: isSelected ? "rgba(255, 209, 0, 0.8)" : isFocused ? "rgba(255, 209, 0, 0.5)" : null,
                 color: "black",
                 cursor: "pointer",
                 "&:hover": {
@@ -111,13 +108,12 @@ function GroupList({ currentGroupInfo }) {
     return (
         <Box flex={1} marginRight={"1rem"}>
             <Select
-                placeholder={selectedGroup.label || currentGroupInfo.groupname}
-                defaultValue={selectedGroup.label || currentGroupInfo.groupname}
+                placeholder={selectedGroup.label}
+                defaultValue={selectedGroup.label}
                 options={options}
                 value={selectedGroup.label}
                 styles={customStyles}
                 onChange={(selectedOption) => {
-                    setSelectedGroup(selectedOption);
                     handleGroupClick(selectedOption.value);
                 }}
                 isSearchable={false}

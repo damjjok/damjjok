@@ -30,10 +30,16 @@ import { joinGroup } from "apis/api/Group";
 
 function GroupInviteModal({ currentGroupInfo }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const inviteLink =
-        `https://i10e105.p.ssafy.io/invitation/` +
-        currentGroupInfo.invitationLink;
-    const { hasCopied, onCopy } = useClipboard(inviteLink);
+
+    const { hasCopied, onCopy, setValue, value } = useClipboard("");
+
+    useEffect(() => {
+        if (!currentGroupInfo) return;
+        const inviteLink =
+            `https://i10e105.p.ssafy.io/invitation/` +
+            currentGroupInfo.invitationLink;
+        setValue(inviteLink);
+    }, [currentGroupInfo]);
 
     const myfriend = useRecoilValue(myFriendState);
     const resetFriendListAtom = useResetRecoilState(myFriendState);
@@ -102,7 +108,7 @@ function GroupInviteModal({ currentGroupInfo }) {
                                         onClick={onCopy}
                                         cursor={"pointer"}
                                     >
-                                        {inviteLink}
+                                        {value}
                                     </Text>
                                     <IconButton>
                                         <CopyIcon onClick={onCopy} />

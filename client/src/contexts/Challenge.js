@@ -10,7 +10,7 @@ export const challengeState = atom({
         userName: "",
         challengeId: 0,
         groupId: 0,
-        duration: 30,
+        duration: 180,
         initialMoney: "",
         savedPeriod: "",
         savedMoney: "",

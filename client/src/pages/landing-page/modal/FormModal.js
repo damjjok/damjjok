@@ -23,11 +23,13 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "assets/images/logo.png";
 import { useRecoilState } from "recoil";
-import { userState } from "contexts/Sns";
+import { dontTouchSnsLoginInfo } from "contexts/Sns";
 import axios from "axios";
 
 const FormModal = ({ FormisOpen, FormonClose }) => {
-    const [user, setUser] = useRecoilState(userState);
+    const [snsLoginInfo, setSnsLoginInfo] = useRecoilState(
+        dontTouchSnsLoginInfo,
+    );
 
     const [state, setstate] = useState({
         user_name: "",
@@ -42,10 +44,10 @@ const FormModal = ({ FormisOpen, FormonClose }) => {
     useEffect(() => {
         setstate((prevState) => ({
             ...prevState,
-            user_name: user.name || "", // 전역 상태의 name, email 사용
-            email: user.email || "",
+            user_name: snsLoginInfo.name || "", // 전역 상태의 name, email 사용
+            email: snsLoginInfo.email || "",
         }));
-    }, [user]); // user 상태가 변경될 때마다 업데이트
+    }, [snsLoginInfo]); // user 상태가 변경될 때마다 업데이트
 
     const handleChangeState = (e) => {
         setstate({
@@ -85,7 +87,7 @@ const FormModal = ({ FormisOpen, FormonClose }) => {
             // 에러 처리 로직 추가...
         }
         // 2. 전역변수 user의 name과 email 삭제
-        setUser((prevUser) => ({ ...prevUser, name: "", email: "" }));
+        setSnsLoginInfo((prevUser) => ({ ...prevUser, name: "", email: "" }));
 
         FormonClose();
 

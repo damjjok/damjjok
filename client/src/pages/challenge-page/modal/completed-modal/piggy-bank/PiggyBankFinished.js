@@ -13,30 +13,17 @@ function PiggyBankFinished({ nextContent, isExpired }) {
 
     const handleGroupClick = (groupId) => {
         completeChallenge(challenge.challengeId);
-        navigate(`/group/${groupId}`); // 해당 그룹 ID의 경로로 이동
+        navigate(`/group/${groupId}/`); // 해당 그룹 ID의 경로로 이동
     };
     return (
         <>
-            <Flex
-                flexFlow={"column"}
-                justifyContent={"center"}
-                alignItems={"center"}
-                marginY={20}
-            >
+            <Flex flexFlow={"column"} justifyContent={"center"} alignItems={"center"} marginY={20}>
                 {/* <StarIcon boxSize={20} color='dam.yellow'/> */}
                 <Heading fontSize={isMobile ? "xl" : "xx-large"}>
                     금연 저금통에 이만큼 쌓였어요!
                 </Heading>
                 <PiggyBank />
-                {!isExpired ? (
-                    <BasicButton
-                        buttonName={"챌린지 종료하기"}
-                        variant={"bigbtn"}
-                        onClick={() => handleGroupClick(challenge.groupId)}
-                    />
-                ) : (
-                    <></>
-                )}
+                {!isExpired ? <BasicButton buttonName={"챌린지 종료하기"} variant={"bigbtn"} onClick={() => handleGroupClick(challenge.groupId)} /> : <></>}
 
                 {/* onClick에 현재 챌린지 -> 종료된 챌린지 리스트로 보내는 로직도 넣어야 할 듯 */}
             </Flex>

@@ -16,7 +16,7 @@ function AttendanceComponent(props) {
                     출석 현황
                 </Text>
             </Flex>
-            <AttendanceStrick startedDate={new Date(2024, 0, 28)} />
+            <AttendanceStrick />
         </Wrapper>
     );
 }

@@ -17,7 +17,7 @@ import TruthRoomTabPage from "../truth-room-tab-page/TruthRoomTabPage";
 import RewardTabPage from "../reward-tab-page/RewardTabPage";
 import StatusBar from "./status-bar/StatusBar";
 import ProofTabPage from "../proof-tap-page/ProofTabPage";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import MessageCheckModal from "./modal/completed-modal/message-check-modal/MessageCheckModal";
 import ChallengeCompletedModal from "./modal/completed-modal/ChallengeCompletedModal";
 import BestCheerMemberModal from "./modal/completed-modal/best-cheer/BestCheerMemberModal";

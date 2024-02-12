@@ -1,7 +1,7 @@
 import { atom } from "recoil";
 
-export const userState = atom({
-    key: "userInfo",
+export const dontTouchSnsLoginInfo = atom({
+    key: "dontTouchSnsLoginInfo",
     default: {
         email: "",
         name: "",

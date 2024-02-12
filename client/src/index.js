@@ -9,7 +9,6 @@ import { WebSocketProvider } from "contexts/WebSocketContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-    // <React.StrictMode>
     <BrowserRouter>
         <RecoilRoot>
             <WebSocketProvider>
@@ -17,7 +16,6 @@ root.render(
             </WebSocketProvider>
         </RecoilRoot>
     </BrowserRouter>
-    // </React.StrictMode>,
 );
 
 // If you want to start measuring performance in your app, pass a function

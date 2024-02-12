@@ -17,10 +17,16 @@ const postSchedule = async (challengeId, date) => {
             date,
         });
 
-        if (response.status === 200) console.log("진실의 방 일정 등록 성공!");
+        if (response.status === 200) {
+            console.log("진실의 방 일정 등록 성공!");
+            return true;
+        }
     } catch (error) {
-        console.log(error);
+        console.log(error, 123123);
+        return false;
     }
+
+    return false;
 };
 
 export { getScheduleByChallengeId, postSchedule };

@@ -5,21 +5,24 @@ import GroupInviteModal from "../../modal/GroupInviteModal";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getGroupInfo, getGroupMember } from "apis/api/Group";
+import { currentGroupState } from "contexts/Group";
+import { useRecoilValue } from "recoil";
 
 function SettingButton() {
     const { groupId } = useParams();
-    const [currentGroupInfo, setCurrentGroupInfo] = useState({});
+    // const [currentGroupInfo, setCurrentGroupInfo] = useState({});
+    const currentGroupInfo = useRecoilValue(currentGroupState);
     const [currentGroupMember, setCurrentGroupMember] = useState([]);
-    const groupIdVal = Number(groupId);
+    // const groupIdVal = Number(groupId);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const groupresponse = await getGroupInfo(groupIdVal);
-                const response = await getGroupMember(groupIdVal);
+                // const groupresponse = await getGroupInfo(grou);
+                const response = await getGroupMember(groupId);
                 // console.log(groupresponse);
-                const updatedGroupInfo = groupresponse.groupDto;
-                setCurrentGroupInfo(updatedGroupInfo);
+                // const updatedGroupInfo = groupresponse.groupDto;
+                // setCurrentGroupInfo(updatedGroupInfo);
                 const updatedGroupMember = response.list;
                 setCurrentGroupMember(updatedGroupMember); // Recoil 상태에 데이터 적용
                 // console.log(updatedGroupMember);

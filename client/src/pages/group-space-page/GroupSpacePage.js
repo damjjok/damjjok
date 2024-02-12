@@ -2,38 +2,55 @@ import Topbar from "./topbar/Topbar.js";
 import Sidebar from "./sidebar/Sidebar.js";
 import { Box, useBreakpointValue } from "@chakra-ui/react";
 import GroupSpaceMain from "./group-space-main/GroupSpaceMain.js";
-import { useRecoilState, useResetRecoilState } from "recoil";
+import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
 import { challengeListState } from "contexts/Challenge.js";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
-import { getChallengeList } from "apis/api/Challenge.js";
+import { getChallengeInfo, getChallengeList } from "apis/api/Challenge.js";
+import { getGroupInfo } from "apis/api/Group.js";
+import { currentGroupState } from "contexts/Group.js";
 
 // 회원 정보 Get API
 function GroupSpacePage() {
     const isMobile = useBreakpointValue({ base: true, md: false });
 
     const { groupId } = useParams();
+    const setCurrentGroup = useSetRecoilState(currentGroupState);
+
+    const fetchGroupDetail = async () => {
+        const group = await getGroupInfo(groupId);
+        setCurrentGroup(group);
+    };
+    useEffect(() => {
+        fetchGroupDetail();
+    }, [groupId]);
+
+    // const { groupId } = useParams();
     // console.log(groupId);
     // const setChallengeState = useSetRecoilState(challengeState);
-    const [currentChallengeList, setCurrentChallengeList] =
-        useRecoilState(challengeListState);
-    const resetChallengeList = useResetRecoilState(challengeListState);
+    // const [currentChallengeList, setCurrentChallengeList] =
+    //     useRecoilState(challengeListState);
+    // const resetChallengeList = useResetRecoilState(challengeListState);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            resetChallengeList();
-            try {
-                const response = await getChallengeList(groupId);
-                const updatedChallengeList = response.list;
-                setCurrentChallengeList(updatedChallengeList); // Recoil 상태에 데이터 적용
-                // console.log("GroupSpacePage 켰을 때 " + currentChallengeList);
-            } catch (error) {
-                console.error("챌린지 정보 불러오기 실패", error);
-            }
-        };
+    // 페이지가 로드될 때 challengeListState를 리셋
+    // useEffect(() => {
+    //     resetChallengeList();
+    // }, []);
 
-        fetchData(); // fetchData 함수 호출
-    }, [groupId]);
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             const response = await getChallengeList(groupId);
+    //             const updatedChallengeList = response.list;
+    //             setCurrentChallengeList(updatedChallengeList); // Recoil 상태에 데이터 적용
+    //             // console.log(currentChallengeList);
+    //         } catch (error) {
+    //             console.error("챌린지 정보 불러오기 실패", error);
+    //         }
+    //     };
+
+    //     fetchData(); // fetchData 함수 호출
+    // }, [groupId, setCurrentChallengeList]);
 
     return (
         <>

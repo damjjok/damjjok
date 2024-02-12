@@ -31,31 +31,16 @@ const TruthRoomScheduleModal = ({ isOpen, onClose, handler }) => {
                         <Text>진실의 방 일정잡기</Text>
                     </ModalHeader>
                     <ModalBody>
-                        <Flex
-                            alignItems={"center"}
-                            justifyContent={"center"}
-                            height={"15vh"}
-                        >
-                            <Flex
-                                alignItems={"center"}
-                                justifyContent={"center"}
-                                flexDirection={"column"}
-                                gap={"3"}
-                            >
+                        <Flex alignItems={"center"} justifyContent={"center"} height={"15vh"}>
+                            <Flex alignItems={"center"} justifyContent={"center"} flexDirection={"column"} gap={"3"}>
                                 <Wrap>
-                                    <Flex
-                                        justifyContent={"center"}
-                                        alignItems={"center"}
-                                    >
+                                    <Flex justifyContent={"center"} alignItems={"center"}>
                                         <NumberInput
                                             defaultValue={date.year}
                                             min={2024}
                                             max={2025}
                                             width={"6vw"}
-                                            onChange={(
-                                                valueString,
-                                                valueNumber
-                                            ) => {
+                                            onChange={(valueString, valueNumber) => {
                                                 setDate({
                                                     ...date,
                                                     year: valueNumber,
@@ -74,10 +59,7 @@ const TruthRoomScheduleModal = ({ isOpen, onClose, handler }) => {
                                             min={1}
                                             max={12}
                                             width={"5vw"}
-                                            onChange={(
-                                                valueString,
-                                                valueNumber
-                                            ) => {
+                                            onChange={(valueString, valueNumber) => {
                                                 setDate({
                                                     ...date,
                                                     month: valueNumber,
@@ -96,10 +78,7 @@ const TruthRoomScheduleModal = ({ isOpen, onClose, handler }) => {
                                             min={1}
                                             max={31}
                                             width={"5vw"}
-                                            onChange={(
-                                                valueString,
-                                                valueNumber
-                                            ) => {
+                                            onChange={(valueString, valueNumber) => {
                                                 setDate({
                                                     ...date,
                                                     day: valueNumber,
@@ -121,15 +100,8 @@ const TruthRoomScheduleModal = ({ isOpen, onClose, handler }) => {
                                         size={"sm"}
                                         borderRadius={"30px"}
                                         onClick={() => {
-                                            onClose();
-                                            console.log(date);
-                                            handler(
-                                                new Date(
-                                                    date.year,
-                                                    date.month - 1,
-                                                    date.day
-                                                )
-                                            );
+                                            console.log(1);
+                                            handler(new Date(date.year, date.month - 1, date.day));
                                         }}
                                     >
                                         설정하기
