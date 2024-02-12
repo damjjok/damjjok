@@ -20,7 +20,7 @@ public class GroupMemberCreateRequestDto {
     @Schema(description = "그룹 아이디", example = "1")
     private int groupId;
 
-    @NotBlank
+    @NotNull
     @Schema(description = "userId 만 담은 리스트", example = "list 형식")
     private List<UserInviteDto> list;
 }
