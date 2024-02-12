@@ -1,12 +1,15 @@
 package com.ssafy.server.service.implement;
 
+import com.ssafy.server.common.ResponseCode;
 import com.ssafy.server.dto.websocket.TruthRoomDto;
+import com.ssafy.server.exception.CustomException;
 import com.ssafy.server.exception.RoomNotFoundException;
 import com.ssafy.server.service.EnterRoomService;
 import com.ssafy.server.service.NextStageService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -30,7 +33,7 @@ public class NextStageServiceImpl implements NextStageService {
     public Integer countEvidenceNext(Integer roomId) {
         TruthRoomDto room = enterRoomService.getRoom(roomId); // 변경된 부분
         if (room == null) {
-            return 0; // 방이 존재하지 않으면 0 반환
+            throw new RoomNotFoundException();
         }
         long count = room.getEvidenceNextStage().values().stream()
                 .filter(Boolean::booleanValue)
@@ -42,8 +45,11 @@ public class NextStageServiceImpl implements NextStageService {
     @Transactional
     public boolean checkAllEvidenceNextReady(Integer roomId) {
         TruthRoomDto room = enterRoomService.getRoom(roomId);
-        if (room == null || room.getEvidenceNextStage() == null) {
-            return false; // 방이 존재하지 않거나 준비 데이터가 없는 경우
+        if (room == null) {
+            throw new RoomNotFoundException();
+        }
+        if (room.getEvidenceNextStage() == null) {
+            throw new CustomException(HttpStatus.BAD_REQUEST, ResponseCode.BAD_REQUEST, "이 방의 준비 상태가 존재하지 않습니다.");
         }
         // 모든 참가자의 준비 상태가 true인지 확인
         return room.getEvidenceNextStage().values().stream()
@@ -54,17 +60,21 @@ public class NextStageServiceImpl implements NextStageService {
     @Transactional
     public void setFinalArgumentReady(Integer roomId, String sessionId, Boolean isReady) {
         TruthRoomDto room = enterRoomService.getRoom(roomId); // 변경된 부분
-        if (room != null) {
-            room.getFinalArgumentReadyState().put(sessionId, isReady);
+        if (room == null) {
+            throw new RoomNotFoundException();
         }
+        room.getFinalArgumentReadyState().put(sessionId, isReady);
     }
 
     @Override
     @Transactional
     public Integer countFinalArgumentReady(Integer roomId) {
         TruthRoomDto room = enterRoomService.getRoom(roomId);
-        if (room == null || room.getFinalArgumentReadyState() == null) {
-            return 0; // 방이 존재하지 않거나 최후 변론 준비 데이터가 없는 경우
+        if (room == null) {
+            throw new RoomNotFoundException();
+        }
+        if (room.getFinalArgumentReadyState() == null) {
+            throw new CustomException(HttpStatus.BAD_REQUEST, ResponseCode.BAD_REQUEST, "이 방의 최후 변론 준비상태가 존재하지 않습니다.");
         }
         // 준비 상태가 true로 설정된 참가자의 수를 계산
         long count = room.getFinalArgumentReadyState().values().stream()
@@ -79,7 +89,7 @@ public class NextStageServiceImpl implements NextStageService {
     public boolean checkAllFinalArgumentReady(Integer roomId) {
         TruthRoomDto room = enterRoomService.getRoom(roomId); // 변경된 부분
         if (room == null) {
-            return false;
+            throw new RoomNotFoundException();
         }
         return room.getFinalArgumentReadyState().values().stream().allMatch(Boolean::booleanValue);
     }
