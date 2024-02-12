@@ -2,7 +2,7 @@ import { useLocation, useParams } from "react-router-dom";
 import TitleText from "components/TitleText";
 import bgSucceedChallenge from "assets/images/bgSucceedChallenge.png";
 import bgFailedChallenge from "assets/images/bgFailedChallenge.png";
-import { Box, Heading, VStack } from "@chakra-ui/react";
+import { Box, Heading, VStack, useBreakpointValue } from "@chakra-ui/react";
 import MessageCheckModal from "../challenge-page/modal/completed-modal/message-check-modal/MessageCheckModal";
 import PiggyBankFinished from "../challenge-page/modal/completed-modal/piggy-bank/PiggyBankFinished";
 import StatusBar from "../challenge-page/status-bar/StatusBar";
@@ -28,6 +28,7 @@ function LastChallengePage() {
     const bgImage =
         challenge.status === "SUCCESS" ? bgSucceedChallenge : bgFailedChallenge;
     const isExpired = "True";
+    const isMobile = useBreakpointValue({ base: true, md: false });
 
     useEffect(() => {
         const fetchData = async () => {
@@ -67,7 +68,7 @@ function LastChallengePage() {
                     display={"flex"}
                     flexFlow={"column"}
                     alignItems={"center"}
-                    width={"80vw"}
+                    // width={"80vw"}
                     overflowY={"auto"}
                     height="50vh"
                     marginY={10}
@@ -75,17 +76,27 @@ function LastChallengePage() {
                 >
                     <VStack spacing={"30px"} mb={20}>
                         {currentChallenge.status === "SUCCESS" ? (
-                            <Heading>
+                            <Heading fontSize={isMobile ? "xl" : "xx-large"}>
                                 {currentChallenge.userName}님이 성공했던 금연
                                 기록이에요!
                             </Heading>
                         ) : (
-                            <Heading>
+                            <Heading fontSize={isMobile ? "xl" : "xx-large"}>
                                 {currentChallenge.userName}님이 금연하려 했던
-                                노력은...
+                                노력이에요
                             </Heading>
                         )}
-                        {/* <Strick startedDate={startedDate} /> */}
+                        <Box
+                            display={"flex"}
+                            flexWrap={"wrap"}
+                            justifyContent={"center"}
+                            sx={{ transform: isMobile ? "scale(0.5)" : "none" }}
+                        >
+                            <Strick
+                                challenge={currentChallenge}
+                                startedDate={startedDate}
+                            />
+                        </Box>
                         <Heading></Heading>
                         <InfoCards
                             diffDays={diffDays}

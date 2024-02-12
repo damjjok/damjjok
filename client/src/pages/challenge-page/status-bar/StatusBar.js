@@ -120,7 +120,8 @@ function StatusBar() {
 
                         {/* EditModal axios 적용해야 함 */}
                         {/* 요청 API : /api/v1/challenge/{challengeId}/profile-modify */}
-                        {challenge.userId === loginedUser.userId ? (
+                        {challenge.userId === loginedUser.userId &&
+                        challenge.status === "PROGRESS" ? (
                             <StatusEditModal
                                 currentChallenge={challenge}
                                 selectedAvatar={currentStatus.profilePath}
@@ -129,7 +130,10 @@ function StatusBar() {
                     </Flex>
                 </Wrap>
                 <div className="flex items-center">
-                    <StatusBarToast challenge={challenge} />
+                    {challenge.status === "PROGRESS" ? (
+                        <StatusBarToast challenge={challenge} />
+                    ) : null}
+
                     <Box
                         position="relative"
                         display="flex"

@@ -36,7 +36,7 @@ function HomeTabPage() {
         >
             <div>
                 <p className="text-xl font-bold">
-                    {currentChallenge.userName}님! 오늘은 금연 {diffDays}
+                    {currentChallenge.userName}님은 오늘 금연 {diffDays}
                     일차예요!
                 </p>
                 <Box
