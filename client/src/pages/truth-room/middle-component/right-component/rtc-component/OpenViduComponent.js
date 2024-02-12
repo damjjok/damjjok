@@ -5,14 +5,18 @@ import "./OpenViduComponent.css";
 import UserVideoComponent from "../../../openvidu/UserVideoComponent";
 import { closeOpenviduSession } from "apis/api/TruthRoom";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { sessionKeyState, userNameState } from "contexts/OpenVidu";
+import { sessionKeyState } from "contexts/OpenVidu";
 import { Wrapper } from "./RtcComponent.style";
-import { enteringTruthRoomMemberInfoState } from "contexts/TruthRoomSocket";
+import {
+    enteringTruthRoomMemberInfoState,
+    stepState,
+} from "contexts/TruthRoomSocket";
 import { finalArgumentDamJJokState } from "contexts/TruthRoom";
 
 const APPLICATION_SERVER_URL = "https://i10e105.p.ssafy.io/";
 
 export default function OpenViduComponent() {
+    const step = useRecoilValue(stepState);
     const [sessionKey, setSessionKey] = useRecoilState(sessionKeyState);
     const enteringTruthRoomMemberInfo = useRecoilValue(
         enteringTruthRoomMemberInfoState
@@ -210,7 +214,7 @@ export default function OpenViduComponent() {
             <div id="session">
                 <div id="video-container" className="col-md-6">
                     <Wrapper>
-                        {damJJok !== undefined ? ( // 담쪽이 화면
+                        {damJJok !== undefined && step !== 4 ? ( // 담쪽이 화면, 최후 변론 단계(4)에서는 담쪽이 화면 우측 프레임에서 빼와서 중앙에만 배치함
                             <UserVideoComponent streamManager={damJJok} />
                         ) : null}
                         {publisher !== undefined && publisher !== damJJok ? ( // 본인 화면
