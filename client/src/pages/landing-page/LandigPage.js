@@ -66,8 +66,8 @@ const LandingPage = () => {
                     alignSelf="flex-start" // 로고를 왼쪽 상단으로 정렬
                     alt="Logo"
                     position="absolute" // 절대적 위치 지정
-                    top="4"
-                    left="24"
+                    top="3%"
+                    left="10%"
                 />
                 <Flex
                     direction="column"
@@ -128,14 +128,7 @@ const LandingPage = () => {
             </Box>
 
             {/* 나머지 페이지 컨텐츠 */}
-            <Flex
-                direction="column"
-                flexGrow={1}
-                p="4"
-                overflowY="auto"
-                m={0}
-                p={0}
-            >
+            <Flex direction="column" flexGrow={1} overflowY="auto" m={0} p={0}>
                 <Box
                     height="40vh"
                     width="100vw"
