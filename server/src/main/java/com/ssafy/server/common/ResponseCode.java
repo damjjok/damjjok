@@ -15,5 +15,6 @@ public interface ResponseCode {
     String CONFLICT = "CF";
     String NOT_FOUND = "NF";
     String UNAUTHORIZED = "UA";
+    String BAD_REQUEST = "BQ";
 
 }

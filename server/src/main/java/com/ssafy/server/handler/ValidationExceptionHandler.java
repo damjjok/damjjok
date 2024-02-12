@@ -31,18 +31,18 @@ public class ValidationExceptionHandler {
 
     @ExceptionHandler(GroupNotFoundException.class) // 존재하지 않는 그룹
     public ResponseEntity<ResponseDto> handleGroupNotFoundException(GroupNotFoundException ex) {
-        ResponseDto responseBody = new ResponseDto(ResponseCode.NOT_FOUND, "존재하지 않는 그룹 ID 입니다.");
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
+        ResponseDto responseBody = new ResponseDto(ResponseCode.BAD_REQUEST, "존재하지 않는 그룹 ID 입니다.");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
     }
 
     @ExceptionHandler(ChallengeNotFoundException.class) // 존재하지 않는 챌린지
     public ResponseEntity<ResponseDto> handleChallengeNotFoundException(ChallengeNotFoundException ex) {
-        ResponseDto responseBody = new ResponseDto(ResponseCode.NOT_FOUND, "존재하지 않는 챌린지 ID 입니다.");
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
+        ResponseDto responseBody = new ResponseDto(ResponseCode.BAD_REQUEST, "존재하지 않는 챌린지 ID 입니다.");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
     }
     @ExceptionHandler(DuplicateChallengeException.class) // 진행중인 챌린지 있음
     public ResponseEntity<ResponseDto> handleDuplicateChallengeException(DuplicateChallengeException ex) {
-        ResponseDto responseBody = new ResponseDto(ResponseCode.CONFLICT, "진행중인 챌린지가 존재합니다.");
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(responseBody);
+        ResponseDto responseBody = new ResponseDto(ResponseCode.BAD_REQUEST, "진행중인 챌린지가 존재합니다.");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
     }
 }
