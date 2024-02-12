@@ -3,6 +3,7 @@ package com.ssafy.server.dto.request.group;
 import com.ssafy.server.dto.group.UserInviteDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GroupMemberCreateRequestDto {
-    @NotBlank
+    @NotNull
     @Schema(description = "그룹 아이디", example = "1")
     private int groupId;
 
