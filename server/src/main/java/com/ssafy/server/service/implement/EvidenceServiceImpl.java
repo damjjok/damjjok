@@ -68,7 +68,7 @@ public class EvidenceServiceImpl implements EvidenceService {
             evidenceEntity.setCreatedBy(userId);
             evidenceEntity.setEvidenceTitle(title);
             evidenceEntity.setChallengeEntity(challengeEntity);
-            evidenceEntity.setImageDate(LocalDateTime.now()); // TODO : 나중에 메타데이터로 바꿔주기
+            evidenceEntity.setImageDate(dto.getImageDate()); //메타데이터로 변경
             evidenceEntity.setImagePath("/images/" + fileName);
             evidenceEntity.setUpdatedBy(userId);
 
