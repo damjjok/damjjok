@@ -47,9 +47,9 @@ function ChallengeList({ onClick }) {
                 // 반복문을 돌면서 각 요소의 status에 따라 currentGroupChallengeList와 lastChallenge 배열에 추가
                 const updatedCurrentGroupChallengeList = [];
                 const updatedLastChallenge = [];
-                if (!updatedCurrentGroupChallengeList.length) {
-                    navigate(`./empty-challenge`);
-                }
+                // if (!updatedCurrentGroupChallengeList.length) {
+                //     navigate(`./empty-challenge`);
+                // }
                 for (let i = 0; i < updatedChallengeList.length; i++) {
                     const challenge = updatedChallengeList[i];
                     if (challenge.status === "PROGRESS") {
@@ -70,7 +70,7 @@ function ChallengeList({ onClick }) {
                 setLastChallenge(updatedLastChallenge);
             } catch (error) {
                 console.error("챌린지 정보 불러오기 실패", error);
-                navigate(`./empty-challenge`);
+                // navigate(`./empty-challenge`);
             }
         };
 
