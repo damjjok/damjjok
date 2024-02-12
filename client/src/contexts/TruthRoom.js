@@ -25,3 +25,9 @@ export const showingTestimonyState = atom({
     key: "showingTestimony",
     default: {},
 });
+
+export const finalArgumentDamJJokState = atom({
+    key: "finalArgumentDamJJok", // 최후 변론 단계의 중앙에 담쪽이 화면 띄우기 위해 저장하는 담쪽이의 openvidu stream 정보
+    default: undefined,
+    dangerouslyAllowMutability: true, // 이 라인 없으면 Cannot add property 0, object is not extensible 발생, 해결법과 설명 참고: https://velog.io/@taemin4u/2023-02-12
+});
