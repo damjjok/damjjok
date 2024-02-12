@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,7 @@ public class CheerMsgController {
             responses = { @ApiResponse(responseCode = "200", description = "응원 메시지 작성 성공",
                     content = @Content(schema = @Schema(implementation = CheerMsgCreateResponseDto.class)))})
     public ResponseEntity<? super CheerMsgCreateResponseDto> createMsg(
-            @RequestBody CheerMsgCreateRequestDto requestBody){
+            @RequestBody @Valid CheerMsgCreateRequestDto requestBody){
         ResponseEntity<? super CheerMsgCreateResponseDto> response = cheerMsgService.create(requestBody);
         return response;
     }

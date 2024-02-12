@@ -44,7 +44,7 @@ public class AuthController {
             responses = { @ApiResponse(responseCode = "200", description = "토큰 발급 성공",
                     content = @Content(schema = @Schema(implementation = TokenResponseDto.class)))})
     public ResponseEntity<? super TokenResponseDto> createNewToken(
-            @RequestBody TokenRequestDto requestBody
+            @RequestBody @Valid TokenRequestDto requestBody
     ){
         ResponseEntity<? super TokenResponseDto> response = authService.createNewToken(requestBody);
         return response;
@@ -55,7 +55,7 @@ public class AuthController {
             responses = { @ApiResponse(responseCode = "200", description = "토큰 저장 성공",
                     content = @Content(schema = @Schema(implementation = FcmTokenResponseDto.class)))})
     public ResponseEntity<? super FcmTokenResponseDto> changeFcmToken(
-            @RequestBody FCMTokenRequestDto dto
+            @RequestBody @Valid FCMTokenRequestDto dto
             ){
         ResponseEntity<? super FcmTokenResponseDto> response = authService.savedFcmToken(dto);
         return response;
