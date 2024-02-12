@@ -17,6 +17,7 @@ import com.ssafy.server.exception.*;
 import com.ssafy.server.repository.*;
 import com.ssafy.server.service.ChallengeService;
 import com.ssafy.server.service.NotificationService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,13 +46,14 @@ public class ChallengeServiceImpl implements ChallengeService {
     private final NotificationService notificationService;
 
     @Override
+    @Transactional
     public ResponseEntity<? super ChallengeCreateResponseDto> create(ChallengeCreateRequestDto dto) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
 
         if(authentication == null || !(authentication.getPrincipal() instanceof CustomUserDetails)){
-            throw new CustomAuthenticationException("인증 정보가 없어요",HttpStatus.UNAUTHORIZED);
+            throw new CustomAuthenticationException("사용자 인증 다시 해주세요.");
         }
 
         int userId = customUserDetails.getUserId();
@@ -65,7 +67,7 @@ public class ChallengeServiceImpl implements ChallengeService {
         GroupEntity groupEntity = groupRepository.findByGroupId(dto.getGroupId());
 
         if(groupEntity == null){
-            throw new GroupNotFoundException(dto.getGroupId());
+            throw new GroupNotFoundException();
         }
 
         ChallengeEntity challengeEntity = new ChallengeEntity();
@@ -125,6 +127,7 @@ public class ChallengeServiceImpl implements ChallengeService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<? super ChallengeProfileImageResponseDto> profileImages() {
         List<ImageDto> list = new ArrayList<>();
 
@@ -145,12 +148,13 @@ public class ChallengeServiceImpl implements ChallengeService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<? super ChallengeListByGroupIdResponseDto> challengeList(int groupId) {
         List<ChallengeDto> list = new ArrayList<>();
 
         List<ChallengeEntity> entityList = challengeRepository.findByGroupEntityGroupId(groupId);
 
-        if(entityList.size() == 0) throw new GroupNotFoundException(groupId);
+        if(entityList.size() == 0) throw new GroupNotFoundException();
 
         entityList.stream().forEach(e -> {
             ChallengeDto dto = new ChallengeDto();
@@ -159,7 +163,7 @@ public class ChallengeServiceImpl implements ChallengeService {
             dto.setUserId(e.getUserId());
 
             UserEntity userEntity = userRepository.findByUserId(e.getUserId());
-            if(userEntity == null) throw new UserNotFoundException(e.getUserId());
+            if(userEntity == null) throw new UserNotFoundException();
 
             dto.setUserName(userEntity.getUserName());
             dto.setDuration(e.getDuration());
@@ -181,6 +185,7 @@ public class ChallengeServiceImpl implements ChallengeService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<? super ChallengeDetailResponseDto> challengeDetail(int challengeId) {
         ChallengeDto dto;
 
@@ -189,7 +194,7 @@ public class ChallengeServiceImpl implements ChallengeService {
 
         dto = new ChallengeDto(entity);
         UserEntity userEntity = userRepository.findByUserId(entity.getUserId());
-        if( userEntity == null ) throw new UserNotFoundException(entity.getUserId());
+        if( userEntity == null ) throw new UserNotFoundException();
 
         dto.setUserName(userEntity.getUserName());
 
@@ -197,6 +202,7 @@ public class ChallengeServiceImpl implements ChallengeService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<? super ChallengeMemberListResponseDto> challengeMemberList(int challengeId) {
         List<ChallengeMemeberDto> list = new ArrayList<>();
 
@@ -214,6 +220,7 @@ public class ChallengeServiceImpl implements ChallengeService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<? super ChallengeChangeStatusResponseDto> changeStatus(ChallengeChangeStatusRequestDto dto) {
 
         ChallengeEntity entity = challengeRepository.findByChallengeId(dto.getChallengeId());
@@ -227,6 +234,7 @@ public class ChallengeServiceImpl implements ChallengeService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<? super ChallengeProfileModifyResponseDto> modifyProfile(int challengeId, ChallengeProfileModifyRequestDto dto) {
 
         ChallengeEntity entity = challengeRepository.findByChallengeId(challengeId);
@@ -241,6 +249,7 @@ public class ChallengeServiceImpl implements ChallengeService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<? super ChallengeRankResponseDto> challengeRank(ChallengeRankRequestDto dto) {
         int ranking;
 
@@ -267,6 +276,7 @@ public class ChallengeServiceImpl implements ChallengeService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<? super ChallengeSavedMoneyResponseDto> challengeSavedMoney(int challengeId) {
 
         int returnMoney = 0;
