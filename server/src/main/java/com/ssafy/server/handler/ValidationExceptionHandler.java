@@ -45,4 +45,10 @@ public class ValidationExceptionHandler {
         ResponseDto responseBody = new ResponseDto(ResponseCode.BAD_REQUEST, "진행중인 챌린지가 존재합니다.");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
     }
+
+    @ExceptionHandler(RoomNotFoundException.class) //존재하지 않는 진실의 방
+    public ResponseEntity<ResponseDto> handleRoomNotFoundException(RoomNotFoundException ex) {
+        ResponseDto responseBody = new ResponseDto(ResponseCode.BAD_REQUEST, "존재하지 않는 진실의 방 Id 입니다.");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+    }
 }
