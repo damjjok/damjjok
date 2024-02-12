@@ -45,7 +45,7 @@ public class AttendanceServiceImpl implements AttendanceService {
     public ResponseEntity<? super AttendanceCreateResponseDto> create(AttendanceCreateRequestDto dto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(authentication == null || !(authentication.getPrincipal() instanceof CustomUserDetails)){
-            throw new CustomAuthenticationException("인증 정보가 없어요", HttpStatus.UNAUTHORIZED);
+            throw new CustomAuthenticationException("사용자 인증 다시 해주세요.");
         }
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
 

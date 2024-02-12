@@ -18,7 +18,7 @@ public class ScheduleCreateRequestDto {
     @Schema(description = "챌린지아이디")
     private Integer challengeId;
 
-    @NotBlank
+    @NotNull
     @Schema(description = "날짜")
     private LocalDateTime date;
 

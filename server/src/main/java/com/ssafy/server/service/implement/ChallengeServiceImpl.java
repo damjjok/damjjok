@@ -17,6 +17,7 @@ import com.ssafy.server.exception.*;
 import com.ssafy.server.repository.*;
 import com.ssafy.server.service.ChallengeService;
 import com.ssafy.server.service.NotificationService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,14 +46,16 @@ public class ChallengeServiceImpl implements ChallengeService {
     private final NotificationService notificationService;
 
     @Override
+    @Transactional
     public ResponseEntity<? super ChallengeCreateResponseDto> create(ChallengeCreateRequestDto dto) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
 
         if(authentication == null || !(authentication.getPrincipal() instanceof CustomUserDetails)){
-            throw new CustomAuthenticationException("인증 정보가 없어요",HttpStatus.UNAUTHORIZED);
+            throw new CustomAuthenticationException("사용자 인증 다시 해주세요.");
         }
+
+        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
 
         int userId = customUserDetails.getUserId();
         String damjjokName = customUserDetails.getUserName();
@@ -125,6 +128,7 @@ public class ChallengeServiceImpl implements ChallengeService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<? super ChallengeProfileImageResponseDto> profileImages() {
         List<ImageDto> list = new ArrayList<>();
 
@@ -145,12 +149,12 @@ public class ChallengeServiceImpl implements ChallengeService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<? super ChallengeListByGroupIdResponseDto> challengeList(int groupId) {
         List<ChallengeDto> list = new ArrayList<>();
 
         List<ChallengeEntity> entityList = challengeRepository.findByGroupEntityGroupId(groupId);
 
-        if(entityList.size() == 0) throw new GroupNotFoundException();
 
         entityList.stream().forEach(e -> {
             ChallengeDto dto = new ChallengeDto();
@@ -181,6 +185,7 @@ public class ChallengeServiceImpl implements ChallengeService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<? super ChallengeDetailResponseDto> challengeDetail(int challengeId) {
         ChallengeDto dto;
 
@@ -197,11 +202,11 @@ public class ChallengeServiceImpl implements ChallengeService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<? super ChallengeMemberListResponseDto> challengeMemberList(int challengeId) {
         List<ChallengeMemeberDto> list = new ArrayList<>();
 
         List<ChallengeMemberEntity> entityList = challengeMemeberRepository.findByChallengeEntityChallengeId(challengeId);
-        if(entityList.size() == 0) throw new ChallengeNotFoundException();
 
         entityList.stream().forEach(e -> {
             ChallengeMemeberDto dto = new ChallengeMemeberDto(e);
@@ -214,6 +219,7 @@ public class ChallengeServiceImpl implements ChallengeService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<? super ChallengeChangeStatusResponseDto> changeStatus(ChallengeChangeStatusRequestDto dto) {
 
         ChallengeEntity entity = challengeRepository.findByChallengeId(dto.getChallengeId());
@@ -227,6 +233,7 @@ public class ChallengeServiceImpl implements ChallengeService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<? super ChallengeProfileModifyResponseDto> modifyProfile(int challengeId, ChallengeProfileModifyRequestDto dto) {
 
         ChallengeEntity entity = challengeRepository.findByChallengeId(challengeId);
@@ -241,6 +248,7 @@ public class ChallengeServiceImpl implements ChallengeService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<? super ChallengeRankResponseDto> challengeRank(ChallengeRankRequestDto dto) {
         int ranking;
 
@@ -251,7 +259,7 @@ public class ChallengeServiceImpl implements ChallengeService {
         AtomicInteger rank = new AtomicInteger(1);
         AtomicInteger count = new AtomicInteger();
         int cur_day = (int) ChronoUnit.DAYS.between(cur.getCreatedAt().toLocalDate() , LocalDateTime.now());
-        System.out.println(cur_day);
+
         list.stream().forEach(challenge-> {
             if(challenge.getStatus().equals("PROGRESS")){
                 count.addAndGet(1);
@@ -267,6 +275,7 @@ public class ChallengeServiceImpl implements ChallengeService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<? super ChallengeSavedMoneyResponseDto> challengeSavedMoney(int challengeId) {
 
         int returnMoney = 0;

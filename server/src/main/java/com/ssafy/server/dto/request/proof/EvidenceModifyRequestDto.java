@@ -19,7 +19,7 @@ public class EvidenceModifyRequestDto {
     @Schema(description = "제목", example = "test title")
     private String title;
 
-    @NotBlank
+    @NotNull
     @Schema(description = "증거 사진", example = "image")
     private MultipartFile image;
 }
