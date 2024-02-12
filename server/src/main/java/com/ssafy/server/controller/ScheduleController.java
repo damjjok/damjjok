@@ -46,7 +46,7 @@ public class ScheduleController {
     @PostMapping
     public ResponseEntity<? super ScheduleCreateResponseDto> createSchedule(@RequestBody @Valid ScheduleCreateRequestDto requestBody) {
         ResponseEntity<? super ScheduleCreateResponseDto> response = scheduleService.createSchedule(requestBody);
-        return scheduleService.createSchedule(requestBody);
+        return response;
     }
 
 }
