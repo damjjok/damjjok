@@ -65,7 +65,7 @@ public class ChallengeServiceImpl implements ChallengeService {
         GroupEntity groupEntity = groupRepository.findByGroupId(dto.getGroupId());
 
         if(groupEntity == null){
-            throw new GroupNotFoundException(dto.getGroupId());
+            throw new GroupNotFoundException();
         }
 
         ChallengeEntity challengeEntity = new ChallengeEntity();
@@ -150,7 +150,7 @@ public class ChallengeServiceImpl implements ChallengeService {
 
         List<ChallengeEntity> entityList = challengeRepository.findByGroupEntityGroupId(groupId);
 
-        if(entityList.size() == 0) throw new GroupNotFoundException(groupId);
+        if(entityList.size() == 0) throw new GroupNotFoundException();
 
         entityList.stream().forEach(e -> {
             ChallengeDto dto = new ChallengeDto();
@@ -159,7 +159,7 @@ public class ChallengeServiceImpl implements ChallengeService {
             dto.setUserId(e.getUserId());
 
             UserEntity userEntity = userRepository.findByUserId(e.getUserId());
-            if(userEntity == null) throw new UserNotFoundException(e.getUserId());
+            if(userEntity == null) throw new UserNotFoundException();
 
             dto.setUserName(userEntity.getUserName());
             dto.setDuration(e.getDuration());
@@ -189,7 +189,7 @@ public class ChallengeServiceImpl implements ChallengeService {
 
         dto = new ChallengeDto(entity);
         UserEntity userEntity = userRepository.findByUserId(entity.getUserId());
-        if( userEntity == null ) throw new UserNotFoundException(entity.getUserId());
+        if( userEntity == null ) throw new UserNotFoundException();
 
         dto.setUserName(userEntity.getUserName());
 
