@@ -1,5 +1,6 @@
 package com.ssafy.server.service.implement;
 
+import com.ssafy.server.common.ResponseCode;
 import com.ssafy.server.dto.ResponseDto;
 import com.ssafy.server.dto.auth.CustomUserDetails;
 import com.ssafy.server.dto.request.attendance.AttedanceListRquestDto;
@@ -11,6 +12,7 @@ import com.ssafy.server.entity.ChallengeEntity;
 import com.ssafy.server.entity.UserEntity;
 import com.ssafy.server.exception.ChallengeNotFoundException;
 import com.ssafy.server.exception.CustomAuthenticationException;
+import com.ssafy.server.exception.CustomException;
 import com.ssafy.server.exception.UserNotFoundException;
 import com.ssafy.server.repository.AttendanceRepository;
 import com.ssafy.server.repository.ChallengeRepository;
@@ -19,6 +21,7 @@ import com.ssafy.server.service.AttendanceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cglib.core.Local;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -63,7 +66,9 @@ public class AttendanceServiceImpl implements AttendanceService {
         //이미 출석을 했을 때
         AttendanceEntity today = attendanceRepository.findByToday(LocalDateTime.now(), userId, challengeId);
         System.out.println(today);
-        if(today != null) return ResponseDto.validationFail();
+        if(today != null) {
+            throw new CustomException(HttpStatus.BAD_REQUEST, ResponseCode.BAD_REQUEST, "이미 출석하였습니다.");
+        }
 
         AttendanceEntity attendanceEntity = new AttendanceEntity();
         attendanceEntity.setChallengeEntity(challengeEntity);
@@ -82,7 +87,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 
         ChallengeEntity challengeEntity = challengeRepository.findByChallengeId(challengeId);
         if (challengeEntity == null) {
-            throw new UserNotFoundException();
+            throw new ChallengeNotFoundException();
         }
 
         List<AttendanceEntity> attendanceEntities = attendanceRepository.findByChallengeEntity(challengeEntity);
