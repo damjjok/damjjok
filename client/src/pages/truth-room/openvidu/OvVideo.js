@@ -1,6 +1,9 @@
+import { stepState } from "contexts/TruthRoomSocket";
 import React, { useRef, useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
 
 export default function OpenViduVideoComponent({ streamManager }) {
+    const step = useRecoilValue(stepState);
     const videoRef = useRef();
     const [roleStyle, setRoleStyle] = useState({});
 
@@ -12,7 +15,8 @@ export default function OpenViduVideoComponent({ streamManager }) {
     useEffect(() => {
         // 역할이 담쪽이일 때 노란색 테두리 적용하기 위함
         const role = getRole();
-        if (role === "Damjjok") setRoleStyle({ border: "3px solid yellow" });
+        if (role === "Damjjok" && step !== 4)
+            setRoleStyle({ border: "3px solid yellow" });
     }, [streamManager]);
 
     useEffect(() => {
