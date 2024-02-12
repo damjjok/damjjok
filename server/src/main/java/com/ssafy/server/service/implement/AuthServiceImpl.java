@@ -16,6 +16,7 @@ import com.ssafy.server.provider.JwtProvider;
 import com.ssafy.server.repository.UserRepository;
 import com.ssafy.server.service.AuthService;
 import io.jsonwebtoken.*;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -39,19 +40,17 @@ public class AuthServiceImpl implements AuthService {
     String refreshToken = "";
 
     @Override
+    @Transactional
     public ResponseEntity<? super SignUpResponseDto> signUp(SignUpRequestDto dto) {
-        try{
-            UserEntity userEntity = new UserEntity(dto);
-            userRepository.save(userEntity);
 
-        }catch(Exception exception){
-            exception.printStackTrace();
-            return ResponseDto.databaseError();
-        }
+        UserEntity userEntity = new UserEntity(dto);
+        userRepository.save(userEntity);
+
         return SignUpResponseDto.success();
     }
 
     @Override
+    @Transactional
     public ResponseEntity<? super TokenResponseDto> createNewToken(TokenRequestDto dto) {
         try{
 
@@ -86,6 +85,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<? super FcmTokenResponseDto> savedFcmToken(FCMTokenRequestDto dto) {
         try{
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
