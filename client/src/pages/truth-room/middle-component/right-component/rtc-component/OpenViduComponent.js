@@ -26,6 +26,12 @@ export default function OpenViduComponent() {
     const [finalArgumentDamJJok, setFinalArgumentFrameDamJJok] = useRecoilState(
         finalArgumentDamJJokState
     ); // 최후 변론에서 중앙 컴포넌트에 담쪽이 화면 띄워줘야 해서, recoil로 담쪽이 openvidu stream 정보 저장
+    function setAllDamJJok(damJJokStream) {
+        // 모든 담쪽이를 set하는 함수
+        const tempDamJJok = damJJokStream;
+        setDamJJok(damJJokStream); // 우측 컴포넌트에 띄울 담쪽이 정보(useState)
+        setFinalArgumentFrameDamJJok(tempDamJJok); // 최후 변론에서 중앙에 띄울 담쪽이 정보(useRecoilState)
+    }
 
     const OV = useRef(new OpenVidu());
 
@@ -48,8 +54,7 @@ export default function OpenViduComponent() {
                     JSON.parse(subscriber.stream.connection.data).clientData
                         .role === "Damjjok"
                 ) {
-                    setDamJJok(subscriber); // 우측 컴포넌트에 띄울 담쪽이 정보(useState)
-                    setFinalArgumentFrameDamJJok(subscriber); // 최후 변론에서 중앙에 띄울 담쪽이 정보(useRecoilState)
+                    setAllDamJJok(subscriber);
                 } else
                     setConnectedMemberList((connectedMemberList) => [
                         ...connectedMemberList,
@@ -110,8 +115,8 @@ export default function OpenViduComponent() {
                     setCurrentVideoDevice(currentVideoDevice);
                     if (enteringTruthRoomMemberInfo.role === "Damjjok") {
                         // 입장한 본인이 담쪽이인 경우를 위한 set 로직
-                        setDamJJok(publisher);
-                        setFinalArgumentFrameDamJJok(publisher); // 최후 변론에서 중앙에 띄울 담쪽이 정보(useRecoilState)
+                        // setAllDamJJok(publisher);
+                        setAllDamJJok(publisher);
                     }
                 } catch (error) {
                     console.log(
