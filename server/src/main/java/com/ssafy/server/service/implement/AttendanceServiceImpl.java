@@ -18,6 +18,7 @@ import com.ssafy.server.repository.AttendanceRepository;
 import com.ssafy.server.repository.ChallengeRepository;
 import com.ssafy.server.repository.UserRepository;
 import com.ssafy.server.service.AttendanceService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cglib.core.Local;
 import org.springframework.http.HttpStatus;
@@ -40,6 +41,7 @@ public class AttendanceServiceImpl implements AttendanceService {
     private final AttendanceRepository attendanceRepository;
 
     @Override
+    @Transactional
     public ResponseEntity<? super AttendanceCreateResponseDto> create(AttendanceCreateRequestDto dto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(authentication == null || !(authentication.getPrincipal() instanceof CustomUserDetails)){
@@ -80,6 +82,7 @@ public class AttendanceServiceImpl implements AttendanceService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<? super AttendanceListResponseDto> list(AttedanceListRquestDto dto) {
         List<LocalDateTime> list = new ArrayList<>();
 
