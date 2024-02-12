@@ -87,14 +87,28 @@ function StatusBar() {
 
                         {/* EditModal axios 적용해야 함 */}
                         {/* 요청 API : /api/v1/challenge/{challengeId}/profile-modify */}
-                        {challenge.userId === loginedUser.userId ? (
-                            <StatusEditModal currentChallenge={challenge} selectedAvatar={currentStatus.profilePath} />
+                        {challenge.userId === loginedUser.userId &&
+                        challenge.status === "PROGRESS" ? (
+                            <StatusEditModal
+                                currentChallenge={challenge}
+                                selectedAvatar={currentStatus.profilePath}
+                            />
                         ) : null}
                     </Flex>
                 </Wrap>
                 <div className="flex items-center">
-                    <StatusBarToast challenge={challenge} />
-                    <Box display="flex" flexDirection="column" alignItems="center" role="group" marginLeft={3}>
+                    {challenge.status === "PROGRESS" ? (
+                        <StatusBarToast challenge={challenge} />
+                    ) : null}
+
+                    <Box
+                        position="relative"
+                        display="flex"
+                        flexDirection="column"
+                        alignItems="center"
+                        role="group"
+                        marginLeft={3}
+                    >
                         <Box className="bg-damwhite rounded-full border border-damyellow">
                             <Image src={candyImg} alt="candyImg" boxSize="25px" _groupHover={{ opacity: "0.5" }} transition="opacity 0.2s" />
                             <Box position={"relative"}>

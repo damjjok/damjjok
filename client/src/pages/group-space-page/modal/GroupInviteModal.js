@@ -20,6 +20,10 @@ import {
 import SearchBar from "pages/group-list-page/search-bar/SearchBar";
 import { useClipboard } from "@chakra-ui/react";
 import { useEffect } from "react";
+import { myFriendState } from "contexts/Search";
+import { useRecoilValue, useResetRecoilState } from "recoil";
+import BasicButton from "components/button/BasicButton";
+import { joinGroup } from "apis/api/Group";
 
 // 초대코드는 임의대로?
 // API에 입력 API는 있는데, 생성 API는 없음
@@ -36,6 +40,29 @@ function GroupInviteModal({ currentGroupInfo }) {
             currentGroupInfo.invitationLink;
         setValue(inviteLink);
     }, [currentGroupInfo]);
+
+    const myfriend = useRecoilValue(myFriendState);
+    const resetFriendListAtom = useResetRecoilState(myFriendState);
+
+    useEffect(() => {
+        // console.log(myfriend); // myfriend 상태가 변경될 때마다 실행됩니다.
+    }, [myfriend]);
+
+    const handleInviteUser = async () => {
+        try {
+            const userIdList = myfriend.map((friend) => friend.userId);
+            console.log(currentGroupInfo.groupId);
+            console.log(userIdList);
+            const result = await joinGroup(
+                currentGroupInfo.groupId,
+                userIdList
+            );
+            resetFriendListAtom();
+            alert("초대가 완료되었습니다");
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
         <>
@@ -56,10 +83,20 @@ function GroupInviteModal({ currentGroupInfo }) {
                             <Box px={6}>
                                 <SearchBar />
                             </Box>
+                            <Box
+                                mb={14}
+                                display={"flex"}
+                                justifyContent={"center"}
+                            >
+                                <BasicButton
+                                    buttonName={"초대하기"}
+                                    onClick={() => handleInviteUser()}
+                                />
+                            </Box>
                             <Heading size="md" textAlign={"center"}>
                                 주변 친구를 초대하세요!
                             </Heading>
-                            <Box>
+                            <Box px={4}>
                                 <Flex
                                     my={4}
                                     justifyContent="center"
