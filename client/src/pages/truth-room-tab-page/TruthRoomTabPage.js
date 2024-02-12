@@ -17,6 +17,8 @@ function TruthRoomTabPage() {
     const [schedule, getSchedule] = useState({
         date: "",
     });
+
+    const today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
     const settingBtnClickHandler = async (date) => {
         console.log("asdjklasdjkalsdjklasdjkl");
         const result = await postSchedule(challengeId, date);
@@ -83,7 +85,6 @@ function TruthRoomTabPage() {
                         )}
                         {!schedule && user.userId == challenge.userId && (
                             <>
-                                {" "}
                                 <Text fontWeight={"700"} fontSize={"1.5rem"} color={"white"}>
                                     진실의 방 예약하기
                                 </Text>
@@ -95,9 +96,11 @@ function TruthRoomTabPage() {
                     </Flex>
                 </Box>
                 <Wrap>
-                    <Button bg={"dam.yellow"} marginTop={"10%"} size={"lg"} onClick={onOpen} borderRadius={"30px"}>
-                        진실의 방 입장하기
-                    </Button>
+                    {schedule && new Date(schedule ? schedule.date : "").toLocaleDateString() === today.toLocaleDateString() && (
+                        <Button bg={"dam.yellow"} marginTop={"10%"} size={"lg"} onClick={onOpen} borderRadius={"30px"}>
+                            진실의 방 입장하기
+                        </Button>
+                    )}
                 </Wrap>
             </Flex>
 
