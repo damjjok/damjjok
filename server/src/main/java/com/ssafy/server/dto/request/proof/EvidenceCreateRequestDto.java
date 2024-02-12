@@ -22,11 +22,11 @@ public class EvidenceCreateRequestDto {
     @Schema(description = "제목", example = "Test Tile")
     private String title;
 
-    @NotBlank
+    @NotNull
     @Schema(description = "챌린지 아이디", example = "image")
     private MultipartFile image;
 
-    @NotBlank
+    @NotNull
     @Schema(description = "메타 데이터 날짜", example = "2023-01-30T15:20:30")
     private LocalDateTime imageDate;
 }
