@@ -51,7 +51,7 @@ public class ChallengeServiceImpl implements ChallengeService {
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
 
         if(authentication == null || !(authentication.getPrincipal() instanceof CustomUserDetails)){
-            throw new CustomException(HttpStatus.UNAUTHORIZED, ResponseCode.UNAUTHORIZED, "인증 정보가 없어요 ..");
+            throw new CustomAuthenticationException("인증 정보가 없어요",HttpStatus.UNAUTHORIZED);
         }
 
         int userId = customUserDetails.getUserId();
