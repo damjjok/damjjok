@@ -92,7 +92,7 @@ public class AuthServiceImpl implements AuthService {
             CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
 
             String email = customUserDetails.getEmail();
-            System.out.println(email + "@@@@@@@");
+            //System.out.println(email + "@@@@@@@");
 
             UserEntity userEntity = userRepository.findByEmail(email);
             userEntity.setFcmToken(dto.getFcmToken());

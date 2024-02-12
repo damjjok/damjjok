@@ -1,8 +1,8 @@
 package com.ssafy.server.handler;
 
+import com.ssafy.server.common.ResponseCode;
 import com.ssafy.server.dto.ResponseDto;
-import com.ssafy.server.exception.CustomException;
-import com.ssafy.server.exception.CustomJwtException;
+import com.ssafy.server.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -23,10 +23,26 @@ public class ValidationExceptionHandler {
         return ResponseDto.jwtTokenFail();
     }
 
-    // 중복 챌린지 생성 시도
     @ExceptionHandler(CustomException.class)
-    public ResponseEntity<ResponseDto> handleDuplicateChallengeException(CustomException ex) {
+    public ResponseEntity<ResponseDto> customException(CustomException ex) {
         ResponseDto responseBody = new ResponseDto(ex.getCode(), ex.getMessage());
         return ResponseEntity.status(ex.getStatus()).body(responseBody);
+    }
+
+    @ExceptionHandler(GroupNotFoundException.class) // 존재하지 않는 그룹
+    public ResponseEntity<ResponseDto> handleGroupNotFoundException(GroupNotFoundException ex) {
+        ResponseDto responseBody = new ResponseDto(ResponseCode.NOT_FOUND, "존재하지 않는 그룹 ID 입니다.");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
+    }
+
+    @ExceptionHandler(ChallengeNotFoundException.class) // 존재하지 않는 챌린지
+    public ResponseEntity<ResponseDto> handleChallengeNotFoundException(ChallengeNotFoundException ex) {
+        ResponseDto responseBody = new ResponseDto(ResponseCode.NOT_FOUND, "존재하지 않는 챌린지 ID 입니다.");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
+    }
+    @ExceptionHandler(DuplicateChallengeException.class) // 진행중인 챌린지 있음
+    public ResponseEntity<ResponseDto> handleDuplicateChallengeException(DuplicateChallengeException ex) {
+        ResponseDto responseBody = new ResponseDto(ResponseCode.CONFLICT, "진행중인 챌린지가 존재합니다.");
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(responseBody);
     }
 }

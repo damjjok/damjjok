@@ -13,7 +13,7 @@ import com.ssafy.server.dto.request.challenge.ChallengeRankRequestDto;
 import com.ssafy.server.dto.request.notification.NotificationCreateRequestDto;
 import com.ssafy.server.dto.response.challenge.*;
 import com.ssafy.server.entity.*;
-import com.ssafy.server.exception.CustomException;
+import com.ssafy.server.exception.*;
 import com.ssafy.server.repository.*;
 import com.ssafy.server.service.ChallengeService;
 import com.ssafy.server.service.NotificationService;
@@ -46,85 +46,80 @@ public class ChallengeServiceImpl implements ChallengeService {
 
     @Override
     public ResponseEntity<? super ChallengeCreateResponseDto> create(ChallengeCreateRequestDto dto) {
-        try{
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
 
-            if(authentication == null || !(authentication.getPrincipal() instanceof CustomUserDetails)){
-                throw new CustomException(HttpStatus.UNAUTHORIZED, ResponseCode.UNAUTHORIZED, "인증 정보가 없어요 ..");
-            }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
 
-            int userId = customUserDetails.getUserId();
-            String damjjokName = customUserDetails.getUserName();
-
-            // 먼저 진행중인 챌린지가 없을경우에만 챌린지 생성 가능
-            if(challengeRepository.existsByUserIdAndStatusAndGroupEntityGroupId(userId,"PROGRESS",dto.getGroupId())){
-                throw new CustomException(HttpStatus.CONFLICT, ResponseCode.CONFLICT, "이미 진행중인 챌린지가 존재합니다.");
-            }
-
-            GroupEntity groupEntity = groupRepository.findByGroupId(dto.getGroupId());
-
-            if(groupEntity == null){
-                throw new CustomException(HttpStatus.NOT_FOUND, ResponseCode.NOT_FOUND, "존재하지 않는 그룹 ID 입니다.");
-            }
-
-            ChallengeEntity challengeEntity = new ChallengeEntity();
-            challengeEntity.setGroupEntity(groupEntity);
-            challengeEntity.setUserId(userId);
-            challengeEntity.setDuration(dto.getDuration());
-            challengeEntity.setInitialMoney(dto.getInitialMoney());
-            challengeEntity.setSavedMoney(dto.getSavedMoney());
-            challengeEntity.setSavedPeriod(dto.getSavedPeriod());
-
-            LocalDateTime challenge_endDate = LocalDateTime.now().plusDays(dto.getDuration());
-            challengeEntity.setFinalTruthRoomDate(challenge_endDate);
-            challengeEntity.setEndDate(challenge_endDate);
-
-            challengeEntity.setStatus("PROGRESS");
-            challengeEntity.setDetermination("열심히 하겠습니다!");
-            challengeEntity.setProfilePath("resources/profile/one.jpg");
-
-            ChallengeEntity savedChallengeEntity = challengeRepository.save(challengeEntity);
-
-            int value = groupEntity.getEndDate().compareTo(challenge_endDate);
-            if(value == -1) {// 그룹 종료일 변경 ( 챌린지 종료일 + 한달뒤 )
-                groupEntity.setEndDate(challenge_endDate.plusMonths(1));
-                groupRepository.save(groupEntity);
-            }
-            // 챌린지 멤버도 넣어주기 ( 담쪽, 나머지 박사님들 )
-            List<UserEntity> userList = groupMemberRepository.findUsersByGroupId(dto.getGroupId());
-            userList.stream().forEach(e -> {
-
-                ChallengeMemberId challengeMemberId = new ChallengeMemberId(savedChallengeEntity.getChallengeId(),e.getUserId());
-
-                ChallengeMemberEntity entity = new ChallengeMemberEntity();
-                entity.setId(challengeMemberId);
-                entity.setChallengeEntity(savedChallengeEntity);
-                entity.setUserEntity(e);
-                if(e.getUserId() == userId) entity.setRole("Damjjok");
-                else entity.setRole("Doctor");
-
-                // 챌린지 멤버 저장
-                challengeMemeberRepository.save(entity);
-
-                // 챌린지 멤버들에게 알림 보내기 ( 담쪽 제외 )
-                if(e.getUserId() != userId) {
-                    NotificationCreateRequestDto ncrDto = new NotificationCreateRequestDto();
-                    ncrDto.setCommonCodeId(201);
-                    ncrDto.setReceivingMemberId(e.getUserId());
-                    ncrDto.setLink("https://");
-                    ncrDto.setDamjjokName(damjjokName);
-                    ncrDto.setGroupName(groupEntity.getGroupName());
-
-                    notificationService.create(ncrDto);
-                }
-
-            });
-
-
-        }catch (Exception e){
-            return ResponseDto.databaseError();
+        if(authentication == null || !(authentication.getPrincipal() instanceof CustomUserDetails)){
+            throw new CustomException(HttpStatus.UNAUTHORIZED, ResponseCode.UNAUTHORIZED, "인증 정보가 없어요 ..");
         }
+
+        int userId = customUserDetails.getUserId();
+        String damjjokName = customUserDetails.getUserName();
+
+        // 먼저 진행중인 챌린지가 없을경우에만 챌린지 생성 가능
+        if(challengeRepository.existsByUserIdAndStatusAndGroupEntityGroupId(userId,"PROGRESS",dto.getGroupId())){
+            throw new DuplicateChallengeException();
+        }
+
+        GroupEntity groupEntity = groupRepository.findByGroupId(dto.getGroupId());
+
+        if(groupEntity == null){
+            throw new GroupNotFoundException(dto.getGroupId());
+        }
+
+        ChallengeEntity challengeEntity = new ChallengeEntity();
+        challengeEntity.setGroupEntity(groupEntity);
+        challengeEntity.setUserId(userId);
+        challengeEntity.setDuration(dto.getDuration());
+        challengeEntity.setInitialMoney(dto.getInitialMoney());
+        challengeEntity.setSavedMoney(dto.getSavedMoney());
+        challengeEntity.setSavedPeriod(dto.getSavedPeriod());
+
+        LocalDateTime challenge_endDate = LocalDateTime.now().plusDays(dto.getDuration());
+        challengeEntity.setFinalTruthRoomDate(challenge_endDate);
+        challengeEntity.setEndDate(challenge_endDate);
+
+        challengeEntity.setStatus("PROGRESS");
+        challengeEntity.setDetermination("열심히 하겠습니다!");
+        challengeEntity.setProfilePath("resources/profile/one.jpg");
+
+        ChallengeEntity savedChallengeEntity = challengeRepository.save(challengeEntity);
+
+        int value = groupEntity.getEndDate().compareTo(challenge_endDate);
+        if(value == -1) {// 그룹 종료일 변경 ( 챌린지 종료일 + 한달뒤 )
+            groupEntity.setEndDate(challenge_endDate.plusMonths(1));
+            groupRepository.save(groupEntity);
+        }
+        // 챌린지 멤버도 넣어주기 ( 담쪽, 나머지 박사님들 )
+        List<UserEntity> userList = groupMemberRepository.findUsersByGroupId(dto.getGroupId());
+        userList.stream().forEach(e -> {
+
+            ChallengeMemberId challengeMemberId = new ChallengeMemberId(savedChallengeEntity.getChallengeId(),e.getUserId());
+
+            ChallengeMemberEntity entity = new ChallengeMemberEntity();
+            entity.setId(challengeMemberId);
+            entity.setChallengeEntity(savedChallengeEntity);
+            entity.setUserEntity(e);
+            if(e.getUserId() == userId) entity.setRole("Damjjok");
+            else entity.setRole("Doctor");
+
+            // 챌린지 멤버 저장
+            challengeMemeberRepository.save(entity);
+
+            // 챌린지 멤버들에게 알림 보내기 ( 담쪽 제외 )
+            if(e.getUserId() != userId) {
+                NotificationCreateRequestDto ncrDto = new NotificationCreateRequestDto();
+                ncrDto.setCommonCodeId(201);
+                ncrDto.setReceivingMemberId(e.getUserId());
+                ncrDto.setLink("https://");
+                ncrDto.setDamjjokName(damjjokName);
+                ncrDto.setGroupName(groupEntity.getGroupName());
+
+                notificationService.create(ncrDto);
+            }
+
+        });
 
         return ChallengeCreateResponseDto.success();
     }
@@ -132,140 +127,116 @@ public class ChallengeServiceImpl implements ChallengeService {
     @Override
     public ResponseEntity<? super ChallengeProfileImageResponseDto> profileImages() {
         List<ImageDto> list = new ArrayList<>();
-        try{
 
-            for (int i = 1; i <= 4 ; i++) {
-                ImageEntity entity = imageRespository.findByImageId(i);
+        for (int i = 1; i <= 4 ; i++) {
+            ImageEntity entity = imageRespository.findByImageId(i);
 
-                if(entity == null){
-                    throw new CustomException(HttpStatus.NOT_FOUND, ResponseCode.NOT_FOUND, i + "<- 해당 id의 이미지가 없네요.디비 확인해주세요");
-                }
-
-                ImageDto dto = new ImageDto();
-                dto.setImageId(entity.getImageId());
-                dto.setImagePath(entity.getImagePath());
-                list.add(dto);
+            if(entity == null){
+                throw new CustomException(HttpStatus.NOT_FOUND, ResponseCode.NOT_FOUND, i + "<- 해당 id의 이미지가 없네요.디비 확인해주세요");
             }
 
-        }catch(Exception e){
-            return ResponseDto.databaseError();
+            ImageDto dto = new ImageDto();
+            dto.setImageId(entity.getImageId());
+            dto.setImagePath(entity.getImagePath());
+            list.add(dto);
         }
+
         return ChallengeProfileImageResponseDto.success(list);
     }
 
     @Override
     public ResponseEntity<? super ChallengeListByGroupIdResponseDto> challengeList(int groupId) {
         List<ChallengeDto> list = new ArrayList<>();
-        try{
 
-            List<ChallengeEntity> entityList = challengeRepository.findByGroupEntityGroupId(groupId);
+        List<ChallengeEntity> entityList = challengeRepository.findByGroupEntityGroupId(groupId);
 
-            if(entityList == null) throw new CustomException(HttpStatus.NOT_FOUND, ResponseCode.NOT_FOUND, "존재하지 않는 그룹 ID 입니다.");
+        if(entityList.size() == 0) throw new GroupNotFoundException(groupId);
 
-            entityList.stream().forEach(e -> {
-                ChallengeDto dto = new ChallengeDto();
-                dto.setChallengeId(e.getChallengeId());
-                dto.setGroupId(e.getGroupEntity().getGroupId());
-                dto.setUserId(e.getUserId());
+        entityList.stream().forEach(e -> {
+            ChallengeDto dto = new ChallengeDto();
+            dto.setChallengeId(e.getChallengeId());
+            dto.setGroupId(e.getGroupEntity().getGroupId());
+            dto.setUserId(e.getUserId());
 
-                UserEntity userEntity = userRepository.findByUserId(e.getUserId());
-                if(userEntity == null) throw new CustomException(HttpStatus.NOT_FOUND, ResponseCode.NOT_FOUND, "존재하지 않는 유저 ID 입니다.");
+            UserEntity userEntity = userRepository.findByUserId(e.getUserId());
+            if(userEntity == null) throw new UserNotFoundException(e.getUserId());
 
-                dto.setUserName(userEntity.getUserName());
-                dto.setDuration(e.getDuration());
-                dto.setInitialMoney(e.getInitialMoney());
-                dto.setSavedMoney(e.getSavedMoney());
-                dto.setSavedPeriod(e.getSavedPeriod());
-                dto.setFinalTruthRoomDate(e.getFinalTruthRoomDate());
-                dto.setEndDate(e.getEndDate());
-                dto.setStatus(e.getStatus());
-                dto.setDetermination(e.getDetermination());
-                dto.setProfilePath(e.getProfilePath());
-                dto.setCreatedAt(e.getCreatedAt());
-                list.add(dto);
-            });
-            //담쪽이 이름순으로 정렬
-            list.sort(Comparator.comparing(ChallengeDto::getUserName));
+            dto.setUserName(userEntity.getUserName());
+            dto.setDuration(e.getDuration());
+            dto.setInitialMoney(e.getInitialMoney());
+            dto.setSavedMoney(e.getSavedMoney());
+            dto.setSavedPeriod(e.getSavedPeriod());
+            dto.setFinalTruthRoomDate(e.getFinalTruthRoomDate());
+            dto.setEndDate(e.getEndDate());
+            dto.setStatus(e.getStatus());
+            dto.setDetermination(e.getDetermination());
+            dto.setProfilePath(e.getProfilePath());
+            dto.setCreatedAt(e.getCreatedAt());
+            list.add(dto);
+        });
+        //담쪽이 이름순으로 정렬
+        list.sort(Comparator.comparing(ChallengeDto::getUserName));
 
-        }catch (Exception e){
-            return ResponseDto.databaseError();
-        }
         return ChallengeListByGroupIdResponseDto.success(list);
     }
 
     @Override
     public ResponseEntity<? super ChallengeDetailResponseDto> challengeDetail(int challengeId) {
         ChallengeDto dto;
-        try{
 
-            ChallengeEntity entity = challengeRepository.findByChallengeId(challengeId);
-            if(entity == null) throw new CustomException(HttpStatus.NOT_FOUND, ResponseCode.NOT_FOUND, "존재하지 않는 챌린지 ID 입니다.");
+        ChallengeEntity entity = challengeRepository.findByChallengeId(challengeId);
+        if(entity == null) throw new ChallengeNotFoundException();
 
-            dto = new ChallengeDto(entity);
-            UserEntity userEntity = userRepository.findByUserId(entity.getUserId());
-            if( userEntity == null ) throw new CustomException(HttpStatus.NOT_FOUND, ResponseCode.NOT_FOUND, "존재하지 않는 유저 ID 입니다.");
+        dto = new ChallengeDto(entity);
+        UserEntity userEntity = userRepository.findByUserId(entity.getUserId());
+        if( userEntity == null ) throw new UserNotFoundException(entity.getUserId());
 
-            dto.setUserName(userEntity.getUserName());
+        dto.setUserName(userEntity.getUserName());
 
-        }catch (Exception e){
-            return ResponseDto.databaseError();
-        }
         return ChallengeDetailResponseDto.success(dto);
     }
 
     @Override
     public ResponseEntity<? super ChallengeMemberListResponseDto> challengeMemberList(int challengeId) {
         List<ChallengeMemeberDto> list = new ArrayList<>();
-        try{
 
-            List<ChallengeMemberEntity> entityList = challengeMemeberRepository.findByChallengeEntityChallengeId(challengeId);
-            if(entityList == null) throw new CustomException(HttpStatus.NOT_FOUND, ResponseCode.NOT_FOUND, "존재하지 않는 챌린지 ID 입니다.");
+        List<ChallengeMemberEntity> entityList = challengeMemeberRepository.findByChallengeEntityChallengeId(challengeId);
+        if(entityList.size() == 0) throw new ChallengeNotFoundException();
 
-            entityList.stream().forEach(e -> {
-                ChallengeMemeberDto dto = new ChallengeMemeberDto(e);
-                UserEntity userEntity = e.getUserEntity();
-                dto.setUserName(userEntity.getUserName());
-                list.add(dto);
-            });
+        entityList.stream().forEach(e -> {
+            ChallengeMemeberDto dto = new ChallengeMemeberDto(e);
+            UserEntity userEntity = e.getUserEntity();
+            dto.setUserName(userEntity.getUserName());
+            list.add(dto);
+        });
 
-        }catch (Exception e){
-            return ResponseDto.databaseError();
-        }
         return ChallengeMemberListResponseDto.success(list);
     }
 
     @Override
     public ResponseEntity<? super ChallengeChangeStatusResponseDto> changeStatus(ChallengeChangeStatusRequestDto dto) {
-        try{
 
-            ChallengeEntity entity = challengeRepository.findByChallengeId(dto.getChallengeId());
-            if(entity == null) throw new CustomException(HttpStatus.NOT_FOUND, ResponseCode.NOT_FOUND, "존재하지 않는 챌린지 ID 입니다.");
+        ChallengeEntity entity = challengeRepository.findByChallengeId(dto.getChallengeId());
+        if(entity == null) throw new ChallengeNotFoundException();
 
-            entity.setStatus(dto.getStatus());
+        entity.setStatus(dto.getStatus());
 
-            challengeRepository.save(entity);
+        challengeRepository.save(entity);
 
-        }catch (Exception e){
-            return ResponseDto.databaseError();
-        }
         return ChallengeChangeStatusResponseDto.success();
     }
 
     @Override
     public ResponseEntity<? super ChallengeProfileModifyResponseDto> modifyProfile(int challengeId, ChallengeProfileModifyRequestDto dto) {
-        try{
 
-            ChallengeEntity entity = challengeRepository.findByChallengeId(challengeId);
-            if(entity == null) throw new CustomException(HttpStatus.NOT_FOUND, ResponseCode.NOT_FOUND, "존재하지 않는 챌린지 ID 입니다.");
+        ChallengeEntity entity = challengeRepository.findByChallengeId(challengeId);
+        if(entity == null) throw new ChallengeNotFoundException();
 
-            entity.setDetermination(dto.getDetermination());
-            entity.setProfilePath(dto.getImagePath());
+        entity.setDetermination(dto.getDetermination());
+        entity.setProfilePath(dto.getImagePath());
 
-            challengeRepository.save(entity);
+        challengeRepository.save(entity);
 
-        }catch (Exception e){
-            return ResponseDto.databaseError();
-        }
         return ChallengeProfileModifyResponseDto.success();
     }
 
@@ -273,28 +244,25 @@ public class ChallengeServiceImpl implements ChallengeService {
     public ResponseEntity<? super ChallengeRankResponseDto> challengeRank(ChallengeRankRequestDto dto) {
         int ranking;
 
-        try{
-            ChallengeEntity cur = challengeRepository.findByChallengeId(dto.getChallengeId());
-            List<ChallengeEntity> list = challengeRepository.findAll();
+        ChallengeEntity cur = challengeRepository.findByChallengeId(dto.getChallengeId());
+        if(cur == null) throw new ChallengeNotFoundException();
+        List<ChallengeEntity> list = challengeRepository.findAll();
 
-            AtomicInteger rank = new AtomicInteger(1);
-            AtomicInteger count = new AtomicInteger();
-            int cur_day = (int) ChronoUnit.DAYS.between(cur.getCreatedAt().toLocalDate() , LocalDateTime.now());
-            System.out.println(cur_day);
-            list.stream().forEach(challenge-> {
-                if(challenge.getStatus().equals("PROGRESS")){
-                    count.addAndGet(1);
-                    int nxt_day = (int) ChronoUnit.DAYS.between(challenge.getCreatedAt().toLocalDate() , LocalDateTime.now());
-                    if(cur_day < nxt_day) rank.getAndIncrement();
-                    System.out.println(nxt_day);
-                }
-            });
+        AtomicInteger rank = new AtomicInteger(1);
+        AtomicInteger count = new AtomicInteger();
+        int cur_day = (int) ChronoUnit.DAYS.between(cur.getCreatedAt().toLocalDate() , LocalDateTime.now());
+        System.out.println(cur_day);
+        list.stream().forEach(challenge-> {
+            if(challenge.getStatus().equals("PROGRESS")){
+                count.addAndGet(1);
+                int nxt_day = (int) ChronoUnit.DAYS.between(challenge.getCreatedAt().toLocalDate() , LocalDateTime.now());
+                if(cur_day < nxt_day) rank.getAndIncrement();
+                System.out.println(nxt_day);
+            }
+        });
 
-            ranking = (int)(( (double)rank.get() / (double) count.get() ) * 100);
+        ranking = (int)(( (double)rank.get() / (double) count.get() ) * 100);
 
-        }catch (Exception e){
-            return ResponseDto.databaseError();
-        }
         return ChallengeRankResponseDto.success(ranking);
     }
 
@@ -304,22 +272,20 @@ public class ChallengeServiceImpl implements ChallengeService {
         int returnMoney = 0;
         int endMoney = 0;
 
-        try{
+        ChallengeEntity challengeEntity = challengeRepository.findByChallengeId(challengeId);
+        if(challengeEntity == null) throw new ChallengeNotFoundException();
 
-            ChallengeEntity challengeEntity = challengeRepository.findByChallengeId(challengeId);
-            // 계산
-            int initialMoney = challengeEntity.getInitialMoney();
-            int savedMoney = challengeEntity.getSavedMoney();
-            int period = (int) ChronoUnit.DAYS.between(challengeEntity.getCreatedAt().toLocalDate() , LocalDateTime.now());
-            int period2 = (int) ChronoUnit.DAYS.between(challengeEntity.getCreatedAt().toLocalDate() , challengeEntity.getEndDate().toLocalDate());
-            int sp = challengeEntity.getSavedPeriod();
+        // 계산
+        int initialMoney = challengeEntity.getInitialMoney();
+        int savedMoney = challengeEntity.getSavedMoney();
+        int period = (int) ChronoUnit.DAYS.between(challengeEntity.getCreatedAt().toLocalDate() , LocalDateTime.now());
+        int period2 = (int) ChronoUnit.DAYS.between(challengeEntity.getCreatedAt().toLocalDate() , challengeEntity.getEndDate().toLocalDate());
+        int sp = challengeEntity.getSavedPeriod();
 
-            returnMoney = initialMoney + savedMoney * (period/sp);
-            endMoney = initialMoney + savedMoney * (period2 / sp);
+        returnMoney = initialMoney + savedMoney * (period/sp);
+        endMoney = initialMoney + savedMoney * (period2 / sp);
 
-        }catch (Exception e){
-            return ResponseDto.databaseError();
-        }
+
         return ChallengeSavedMoneyResponseDto.success(returnMoney,endMoney);
     }
 }
