@@ -74,9 +74,6 @@ function StatusEditModal({ currentChallenge, selectedAvatar }) {
                             buttonName={"수정하기"}
                             onClick={async () => {
                                 //수정사항 반영 로직 작성
-                                console.log(currentChallenge.challengeId);
-                                console.log(currentStatus.imagePath);
-                                console.log(inputValue);
                                 await patchChallengeStatus(
                                     currentChallenge.challengeId,
                                     inputValue,

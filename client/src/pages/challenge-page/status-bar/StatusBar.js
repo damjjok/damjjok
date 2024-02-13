@@ -99,7 +99,7 @@ function StatusBar() {
         } else {
             fetchCandyData(); // fetchData 함수 호출
         }
-    }, [challenge, setCandyCount]);
+    }, [challenge, candyCount]);
 
     return (
         <Box width={isMobile ? "90vw" : "80vw"} marginY={"0.5rem"}>
