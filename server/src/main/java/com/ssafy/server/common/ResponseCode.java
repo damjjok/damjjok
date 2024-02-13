@@ -21,5 +21,6 @@ public interface ResponseCode {
     String REDIS_CONNECTION_ERROR = "RCE";
     String REDIS_COMMAND_FAILURE = "RCF";
     String REDIS_ERROR = "RE";
+    String INTERNAL_SERVER_ERROR = "ISE";
 
 }
