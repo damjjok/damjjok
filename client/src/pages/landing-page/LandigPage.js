@@ -106,10 +106,6 @@ const LandingPage = () => {
                     bottom="20px"
                     left="50%"
                     animation="bounce 2s infinite"
-                    cursor={"pointer"}
-                    onClick={() => {
-                        document.querySelector("#introduce-page").scrollIntoView({ behavior: "smooth" });
-                    }}
                     css={{
                         "@keyframes bounce": {
                             "0%, 100%": {
@@ -121,7 +117,7 @@ const LandingPage = () => {
                         },
                     }}
                 >
-                    <ArrowDownIcon color="#fdd100" boxSize="50px" />
+                    <ArrowDownIcon color="#fdd100" boxSize="5rem" />
                 </Box>
             </Box>
 
