@@ -1,5 +1,7 @@
 package com.ssafy.server.dto.response.challenge;
 
+import com.ssafy.server.common.ResponseCode;
+import com.ssafy.server.common.ResponseMessage;
 import com.ssafy.server.dto.ResponseDto;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
@@ -16,5 +18,6 @@ public class ChallengeCreateResponseDto extends ResponseDto {
         ChallengeCreateResponseDto responseBody = new ChallengeCreateResponseDto();
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
+
 
 }

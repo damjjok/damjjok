@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,7 @@ public class ProofController {
             responses = { @ApiResponse(responseCode = "200", description = "증언 생성 성공",
                     content = @Content(schema = @Schema(implementation = TestimonyCreateResponseDto.class)))})
     public ResponseEntity<? super TestimonyCreateResponseDto> createTestimony(
-            @RequestBody TestimonyCreateRequestDto requestBody){
+            @RequestBody @Valid TestimonyCreateRequestDto requestBody){
         ResponseEntity<? super TestimonyCreateResponseDto> response = testimonyService.create(requestBody);
         return response;
     }
@@ -69,7 +70,7 @@ public class ProofController {
     @Operation(summary = "증언 수정", description = "증언을 수정합니다.",
             responses = { @ApiResponse(responseCode = "200", description = "증언 수정 성공",
                     content = @Content(schema = @Schema(implementation = TestimonyModifyResponseDto.class)))})
-    public ResponseEntity<? super TestimonyModifyResponseDto> modifyTestimony(@RequestBody TestimonyModifyRequestDto requestBody){
+    public ResponseEntity<? super TestimonyModifyResponseDto> modifyTestimony(@RequestBody @Valid TestimonyModifyRequestDto requestBody){
         ResponseEntity<? super TestimonyModifyResponseDto>  response = testimonyService.modify(requestBody);
         return response;
     }
@@ -81,7 +82,7 @@ public class ProofController {
     @Operation(summary = "증거 생성 (enctype=\"multipart/form-data\")", description = "증거을 생성합니다.",
             responses = { @ApiResponse(responseCode = "200", description = "증언 생성 성공",
                     content = @Content(schema = @Schema(implementation = EvidenceCreateResponseDto.class)))})
-    public ResponseEntity<? super EvidenceCreateResponseDto> createEvidence(@ModelAttribute EvidenceCreateRequestDto requestBody){
+    public ResponseEntity<? super EvidenceCreateResponseDto> createEvidence(@ModelAttribute @Valid EvidenceCreateRequestDto requestBody){
         ResponseEntity<? super EvidenceCreateResponseDto> response = evidenceService.createEvidence(requestBody);
         return response;
     }
@@ -90,7 +91,7 @@ public class ProofController {
     @Operation(summary = "증거 수정 (enctype=\"multipart/form-data\")", description = "증언을 수정합니다.",
             responses = { @ApiResponse(responseCode = "200", description = "증언 수정 성공",
                     content = @Content(schema = @Schema(implementation = EvidenceModifyResponseDto.class)))})
-    public ResponseEntity<? super EvidenceModifyResponseDto> modifyEvidence(@ModelAttribute EvidenceModifyRequestDto requestBody){
+    public ResponseEntity<? super EvidenceModifyResponseDto> modifyEvidence(@ModelAttribute @Valid EvidenceModifyRequestDto requestBody){
         ResponseEntity<? super EvidenceModifyResponseDto> response = evidenceService.modifyEvidence(requestBody);
         return response;
     }

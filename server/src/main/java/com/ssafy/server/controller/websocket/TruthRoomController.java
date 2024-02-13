@@ -34,7 +34,6 @@ public class TruthRoomController {
         // 방에 남아 있는 멤버들의 이름 목록 가져오기
         Map<String, MemberInfoDto> remainingMembers = enterRoomService.getRoomMembers(roomId);
         //입장 목록 보내주기
-        System.out.println("gege");
         System.out.println(remainingMembers);
         System.out.println(remainingMembers.values());
         messagingTemplate.convertAndSend("/topic/member/" + roomId, remainingMembers.values());
@@ -46,7 +45,8 @@ public class TruthRoomController {
         String sessionId = headerAccessor.getSessionId();
         boolean isReady = dto.isReady();
         enterRoomService.setMemberReady(roomId, sessionId, isReady);
-        messagingTemplate.convertAndSend("/topic/readyState/" + roomId, enterRoomService.countMemberReady(roomId));
+        Map<String, MemberInfoDto> remainingMembers = enterRoomService.getRoomMembers(roomId);
+        messagingTemplate.convertAndSend("/topic/readyState/" + roomId, remainingMembers.values());
         if (enterRoomService.areAllMemberReady(roomId)) {
             //준비했을때 모든 인원이 준비라면 모두에게 true 보내주기
             messagingTemplate.convertAndSend("/topic/readyResult/" + roomId, true);
@@ -77,6 +77,8 @@ public class TruthRoomController {
         //투표 수가 담쪽이를 제외한 접속자 수가 되면 결과 보내주기
         if(voteService.checkVotingComplete(roomId)) {
             boolean result = voteService.calculateResult(roomId);
+            if (result) enterRoomService.setChallengeState(roomId,"SUCCESS");
+            else enterRoomService.setChallengeState(roomId, "FAIL");
             messagingTemplate.convertAndSend("/topic/voteResult/" + roomId, result ? "PASS" : "FAIL");
         }
     }
@@ -126,9 +128,10 @@ public class TruthRoomController {
         Integer cnt = voteService.submitFine(roomId, sessionId, fineAmount);
         // 벌금 입력 완료된 멤버 수 알려주기
         messagingTemplate.convertAndSend("/topic/fineSubmittedCount/" + roomId, cnt);
-        // 모든 멤버가 벌금 입력을 완료했다면 투표 시작하기
+
+        // 모든 멤버가 벌금 입력을 완료했다면 투표 시작하기 -> 벌금 리스트 함께 보내주기
         if(cnt == enterRoomService.getRoomMembers(roomId).size() - 1) {
-            messagingTemplate.convertAndSend("/topic/startMoenyVote/" + roomId, "START");
+            messagingTemplate.convertAndSend("/topic/startMoneyVote/" + roomId, voteService.getMoneyList(roomId));
         }
     }
 

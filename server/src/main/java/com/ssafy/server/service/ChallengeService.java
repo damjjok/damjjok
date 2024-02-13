@@ -17,4 +17,5 @@ public interface ChallengeService {
     ResponseEntity<? super ChallengeChangeStatusResponseDto> changeStatus(ChallengeChangeStatusRequestDto dto);
     ResponseEntity<? super ChallengeProfileModifyResponseDto> modifyProfile(int challengeId, ChallengeProfileModifyRequestDto dto);
     ResponseEntity<? super ChallengeRankResponseDto> challengeRank(ChallengeRankRequestDto dto);
+    ResponseEntity<? super ChallengeSavedMoneyResponseDto> challengeSavedMoney(int challengeId);
 }

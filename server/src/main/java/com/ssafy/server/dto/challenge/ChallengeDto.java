@@ -13,6 +13,7 @@ public class ChallengeDto {
     private int groupId;
     private int userId;
     private String userName; // 담쪽이
+    private int duration;
     private int initialMoney;
     private int savedMoney;
     private int savedPeriod;
@@ -30,6 +31,7 @@ public class ChallengeDto {
         this.challengeId = entity.getChallengeId();
         this.groupId = entity.getGroupEntity().getGroupId();
         this.userId = entity.getUserId();
+        this.duration = entity.getDuration();
         this.initialMoney = entity.getInitialMoney();
         this.savedMoney = entity.getSavedMoney();
         this.savedPeriod = entity.getSavedPeriod();

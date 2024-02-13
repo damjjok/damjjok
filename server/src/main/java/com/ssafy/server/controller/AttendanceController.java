@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -27,9 +28,8 @@ public class AttendanceController {
             responses = { @ApiResponse(responseCode = "200", description = "출석 성공",
                     content = @Content(schema = @Schema(implementation = AttendanceCreateResponseDto.class)))})
     public ResponseEntity<? super AttendanceCreateResponseDto> createAttendance(
-            @RequestBody AttendanceCreateRequestDto requestBody){
-        System.out.println(requestBody.toString());
-
+            @RequestBody @Valid AttendanceCreateRequestDto requestBody){
+        //System.out.println(requestBody.toString());
         ResponseEntity<? super AttendanceCreateResponseDto> response = attendanceService.create(requestBody);
         return response;
     }

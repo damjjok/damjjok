@@ -6,8 +6,7 @@ import com.ssafy.server.service.VoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -43,19 +42,6 @@ public class VoteServiceImpl implements VoteService {
     }
 
     @Override
-    public Integer submitFine(Integer roomId, String sessionId, Integer fineAmount) {
-        TruthRoomDto room = enterRoomService.getRoom(roomId);
-        int cnt = 0;
-        if (room != null) {
-            room.getFinesSubmitted().add(fineAmount);
-            //입력한 사람 수 올려주기
-            cnt = room.getSubmitCnt()+1;
-            room.setSubmitCnt(cnt);
-        }
-        return cnt;
-    }
-
-    @Override
     public boolean calculateResult(Integer roomId) {
         TruthRoomDto room = enterRoomService.getRoom(roomId);
         if (room == null || room.getPassOrFail().isEmpty()) {
@@ -76,6 +62,33 @@ public class VoteServiceImpl implements VoteService {
         return passCount > failCount;
     }
 
+    @Override
+    public Integer submitFine(Integer roomId, String sessionId, Integer fineAmount) {
+        TruthRoomDto room = enterRoomService.getRoom(roomId);
+        int cnt = 0;
+        if (room != null) {
+            room.getFineVotes().putIfAbsent(fineAmount, 0);
+            //입력한 사람 수 올려주기
+            cnt = room.getSubmitCnt()+1;
+            room.setSubmitCnt(cnt);
+        }
+        return cnt;
+    }
+
+    //투표된 벌금 리스트 주기
+    @Override
+    public List<Integer> getMoneyList(Integer roomId) {
+        TruthRoomDto room = enterRoomService.getRoom(roomId);
+        if (room != null) {
+            List<Integer> moneyList = new ArrayList<>(room.getFineVotes().keySet()); // keySet을 이용해 키 값만 추출하고, List로 변환
+            Collections.sort(moneyList); // 추출한 키 리스트를 오름차순으로 정렬
+            return moneyList;
+        } else {
+            return Collections.emptyList(); // 방이 존재하지 않는 경우, 빈 리스트 반환
+        }
+    }
+
+
     //벌금 투표 받기, 투표 한 인원 수 반환
     @Override
     public Integer voteForMoney(Integer roomId, Integer fineAmount) {
@@ -90,17 +103,31 @@ public class VoteServiceImpl implements VoteService {
         }
         return cnt;
     }
+
+
     //벌금 투표에서 가장 많이 투표된 벌금 찾기
     @Override
     public Integer getMostVotedFine(Integer roomId) {
         TruthRoomDto room = enterRoomService.getRoom(roomId);
-        Integer resultMoney = room.getFineVotes().entrySet().stream()
-                .max(Map.Entry.comparingByValue())
-                .map(Map.Entry::getKey)
-                .orElse(null); // 가장 많이 투표된 벌금 값 찾기
-        //결과 값 dto에 저장하기
-        room.setResultMoney(resultMoney);
-        return resultMoney;
+        if (room != null) {
+            // 최대 투표 수 찾기
+            int maxVotes = room.getFineVotes().values().stream()
+                    .max(Integer::compare)
+                    .orElse(0);
+
+            // 최대 투표 수를 받은 항목들 중 키 값이 가장 작은 항목 찾기
+            Integer resultMoney = room.getFineVotes().entrySet().stream()
+                    .filter(entry -> entry.getValue().equals(maxVotes))
+                    .min(Map.Entry.comparingByKey())
+                    .map(Map.Entry::getKey)
+                    .orElse(null);
+
+            // 결과 값 dto에 저장하기
+            room.setResultMoney(resultMoney);
+            return resultMoney;
+        } else {
+            return null; // 방이 존재하지 않는 경우 null 반환
+        }
     }
 
 

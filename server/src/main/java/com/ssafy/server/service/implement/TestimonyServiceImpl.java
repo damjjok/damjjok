@@ -3,22 +3,19 @@ package com.ssafy.server.service.implement;
 import com.ssafy.server.dto.ResponseDto;
 import com.ssafy.server.dto.auth.CustomUserDetails;
 import com.ssafy.server.dto.proof.TestimonyDto;
+import com.ssafy.server.dto.request.notification.NotificationCreateRequestDto;
 import com.ssafy.server.dto.request.proof.*;
 import com.ssafy.server.dto.response.proof.*;
-import com.ssafy.server.entity.ChallengeEntity;
-import com.ssafy.server.entity.EvidenceEntity;
-import com.ssafy.server.entity.TestimonyEntity;
-import com.ssafy.server.entity.UserEntity;
+import com.ssafy.server.entity.*;
 import com.ssafy.server.provider.JwtProvider;
-import com.ssafy.server.repository.ChallengeRepository;
-import com.ssafy.server.repository.EvidenceRepository;
-import com.ssafy.server.repository.TestimonyRepository;
-import com.ssafy.server.repository.UserRepository;
+import com.ssafy.server.repository.*;
+import com.ssafy.server.service.NotificationService;
 import com.ssafy.server.service.TestimonyService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -38,9 +35,11 @@ public class TestimonyServiceImpl implements TestimonyService {
 
     private final TestimonyRepository testimonyRepository;
     private final ChallengeRepository challengeRepository;
-    private final EvidenceRepository evidenceRepository;
+    private final GroupRepository groupRepository;
     private final UserRepository userRepository;
-    private final JwtProvider jwtProvider;
+    private final GroupMemberRepository groupMemberRepository;
+
+    private final NotificationService notificationService;
 
     public ResponseEntity<? super TestimonyCreateResponseDto> create(TestimonyCreateRequestDto dto){
         try {
@@ -54,8 +53,6 @@ public class TestimonyServiceImpl implements TestimonyService {
             testimonyEntity.setChallengeEntity(challengeEntity);
             testimonyEntity.setTestimonyTitle(title);
             testimonyEntity.setTestimonyContent(content);
-            testimonyEntity.setCreatedBy(0);
-            testimonyEntity.setUpdatedBy(0);
 
             // TODO : 여기 나중에 유저정보 받아와서 넣어줘야함
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -68,6 +65,21 @@ public class TestimonyServiceImpl implements TestimonyService {
 
             testimonyRepository.save(testimonyEntity);
 
+            // 챌린지 멤버한테 모두 알림 쏘기
+            int groupId = challengeEntity.getGroupEntity().getGroupId();
+            GroupEntity groupEntity = groupRepository.findByGroupId(groupId);
+
+            List<UserEntity> userEntityList = groupMemberRepository.findUsersByGroupId(groupId);
+            userEntityList.stream().forEach(user -> {
+                NotificationCreateRequestDto ncrDto = new NotificationCreateRequestDto();
+                ncrDto.setCommonCodeId(501);
+                ncrDto.setReceivingMemberId(user.getUserId());
+                ncrDto.setSenderName(user.getUserName());
+                ncrDto.setLink("https://");
+                ncrDto.setGroupName(groupEntity.getGroupName());
+
+                notificationService.create(ncrDto);
+            });
 
         }catch (Exception exception){
             exception.printStackTrace();
@@ -85,7 +97,9 @@ public class TestimonyServiceImpl implements TestimonyService {
             int challengeId = dto.getChallengeId();
 
             ChallengeEntity challengeEntity = challengeRepository.findByChallengeId(challengeId);
-            List<TestimonyEntity> entityList = testimonyRepository.findByChallengeEntity(challengeEntity);
+            // createdAt 기준으로 내림차순 정렬
+            Sort sort = Sort.by("createdAt").descending();
+            List<TestimonyEntity> entityList = testimonyRepository.findByChallengeEntity(challengeEntity, sort);
 
             entityList.stream().forEach((e) -> {
                 TestimonyDto testimonyDto = new TestimonyDto();
@@ -166,7 +180,9 @@ public class TestimonyServiceImpl implements TestimonyService {
             int challengeId = dto.getChallengeId();
 
             ChallengeEntity challengeEntity = challengeRepository.findByChallengeId(challengeId);
-            List<TestimonyEntity> entityList = testimonyRepository.findByChallengeEntity(challengeEntity);
+            // createdAt 기준으로 내림차순 정렬
+            Sort sort = Sort.by("createdAt").descending();
+            List<TestimonyEntity> entityList = testimonyRepository.findByChallengeEntity(challengeEntity, sort);
 
             entityList.stream().forEach((e) -> {
                 if(e.getCreatedAt().isBefore(challengeEntity.getFinalTruthRoomDate())) return;
@@ -184,6 +200,8 @@ public class TestimonyServiceImpl implements TestimonyService {
 
                 list.add(testimonyDto);
             });
+
+            if(list.isEmpty()) return ResponseDto.validationFail();
 
         }catch(Exception exception){
             exception.printStackTrace();

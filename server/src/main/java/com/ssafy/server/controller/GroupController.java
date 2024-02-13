@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,7 @@ public class GroupController {
     @Operation(summary = "그룹 생성", description = "그룹을 생성",
             responses = { @ApiResponse(responseCode = "200", description = "그룹 성공",
                     content = @Content(schema = @Schema(implementation = GroupCreateResponseDto.class)))})
-    public ResponseEntity<? super GroupCreateResponseDto> createGroup(@RequestBody GroupCreateRequestDto requestBody){
+    public ResponseEntity<? super GroupCreateResponseDto> createGroup(@RequestBody @Valid GroupCreateRequestDto requestBody){
         ResponseEntity<? super GroupCreateResponseDto> response = groupService.create(requestBody);
         return response;
 }
@@ -58,14 +59,12 @@ public class GroupController {
         return response;
     }
 
-    @PostMapping("/{groupId}/join")
+    @PostMapping("/join")
     @Operation(summary = "특정 그룹 가입", description = "특정 그룹 가입(초대된 사람들 한번에 가입 시킴)",
             responses = { @ApiResponse(responseCode = "200", description = "특정 그룹 가입 성공",
                     content = @Content(schema = @Schema(implementation = GroupMemberCreateResponseDto.class)))})
     public ResponseEntity<? super GroupMemberCreateResponseDto> joinGroup(
-            @PathVariable int groupId,
-            @RequestBody  GroupMemberCreateRequestDto dto) {
-        dto.setGroupId(groupId);
+            @RequestBody @Valid GroupMemberCreateRequestDto dto) {
         ResponseEntity<? super GroupMemberCreateResponseDto> response = groupService.joinGroupMember(dto);
         return response;
     }

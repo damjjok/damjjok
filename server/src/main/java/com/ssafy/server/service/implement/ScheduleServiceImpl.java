@@ -1,34 +1,46 @@
 package com.ssafy.server.service.implement;
 
 import com.ssafy.server.dto.ResponseDto;
+import com.ssafy.server.dto.auth.CustomUserDetails;
+import com.ssafy.server.dto.request.notification.NotificationCreateRequestDto;
 import com.ssafy.server.dto.request.schedule.ScheduleCreateRequestDto;
 import com.ssafy.server.dto.request.schedule.ScheduleDetailRequestDto;
 import com.ssafy.server.dto.response.schedule.ScheduleCreateResponseDto;
 import com.ssafy.server.dto.response.schedule.ScheduleDetailResponseDto;
 import com.ssafy.server.dto.schedule.ScheduleDto;
 import com.ssafy.server.entity.ChallengeEntity;
+import com.ssafy.server.entity.GroupEntity;
 import com.ssafy.server.entity.ScheduleEntity;
-import com.ssafy.server.repository.ScheduleRepository;
-import com.ssafy.server.repository.ChallengeRepository;
+import com.ssafy.server.entity.UserEntity;
+import com.ssafy.server.repository.*;
+import com.ssafy.server.service.NotificationService;
 import com.ssafy.server.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class ScheduleServiceImpl implements ScheduleService {
-    @Autowired
+
     private final ScheduleRepository scheduleRepository;
     private final ChallengeRepository challengeRepository;
+    private final EvidenceRepository evidenceRepository;
+    private final TestimonyRepository testimonyRepository;
+
+    private final GroupRepository groupRepository;
+    private final GroupMemberRepository groupMemberRepository;
+    private final NotificationService notificationService;
 
     @Override
-
     public ResponseEntity<? super Optional<ScheduleDetailResponseDto>> getSchedule(ScheduleDetailRequestDto dto) {
         try {
             int challengeId = dto.getChallengeId();
@@ -52,18 +64,29 @@ public class ScheduleServiceImpl implements ScheduleService {
     public ResponseEntity<? super ScheduleCreateResponseDto> createSchedule(ScheduleCreateRequestDto requestDto) {
 
         try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+
             // 챌린지 관련 데이터를 가져오는 부분
             int challengeId = requestDto.getChallengeId();
             ChallengeEntity challengeEntity = challengeRepository.findByChallengeId(challengeId);
             int damjjokId = challengeEntity.getUserId(); //담쪽이id
 
-            // 챌린지 종료일 3일 전보다 이후인지 확인하는 로직 (가정)
+            // 챌린지 종료일 3일 전보다 이후인지 확인하는 로직
              if (requestDto.getDate().isAfter(challengeEntity.getEndDate().minusDays(3))) {
                  return ScheduleCreateResponseDto.wrongDate();
              }
+             
+            // 마지막 진실의 방 이후로 증언이나 증거가 1개도 없다면 예외 처리
+            LocalDateTime lastTruthRoomDate = challengeEntity.getFinalTruthRoomDate();
+            boolean hasEvidenceAfterLastTruthRoom = evidenceRepository.existsByChallengeEntityAndCreatedAtAfter(challengeEntity, lastTruthRoomDate);
+            boolean hasTestimonyAfterLastTruthRoom = testimonyRepository.existsByChallengeEntityAndCreatedAtAfter(challengeEntity, lastTruthRoomDate);
+            if (!hasEvidenceAfterLastTruthRoom && !hasTestimonyAfterLastTruthRoom) {
+                return ScheduleCreateResponseDto.noProof();
+            }
 
              //담쪽이가 아닌 경우 "VF"
-             if(requestDto.getDamjjokId() != damjjokId) {
+             if(customUserDetails.getUserId() != damjjokId) {
                  return ScheduleCreateResponseDto.notDomjjok();
              }
 
@@ -76,7 +99,24 @@ public class ScheduleServiceImpl implements ScheduleService {
 
             scheduleRepository.save(newSchedule);
 
-            ScheduleCreateResponseDto responseBody = new ScheduleCreateResponseDto();
+            // 알림 보내기 - 일정을 잡았음
+            int groupId = challengeEntity.getGroupEntity().getGroupId();
+            GroupEntity groupEntity = groupRepository.findByGroupId(groupId);
+
+            List<UserEntity> userEntityList = groupMemberRepository.findUsersByGroupId(groupId);
+            userEntityList.stream()
+                    .filter(user -> user.getUserId() != damjjokId)
+                    .forEach(user -> {
+                        NotificationCreateRequestDto ncrDto = new NotificationCreateRequestDto();
+                        ncrDto.setCommonCodeId(602);
+                        ncrDto.setReceivingMemberId(user.getUserId());
+                        ncrDto.setLink("https://");
+                        ncrDto.setGroupName(groupEntity.getGroupName());
+
+                        notificationService.create(ncrDto);
+                    });
+
+            //ScheduleCreateResponseDto responseBody = new ScheduleCreateResponseDto();
             return ScheduleCreateResponseDto.success();
         }catch (Exception exception) {
             exception.printStackTrace();

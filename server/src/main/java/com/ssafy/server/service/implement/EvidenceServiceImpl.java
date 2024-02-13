@@ -1,25 +1,31 @@
 package com.ssafy.server.service.implement;
 
 import com.ssafy.server.dto.ResponseDto;
+import com.ssafy.server.dto.auth.CustomUserDetails;
 import com.ssafy.server.dto.proof.EvidenceDto;
+import com.ssafy.server.dto.request.notification.NotificationCreateRequestDto;
 import com.ssafy.server.dto.request.proof.*;
 import com.ssafy.server.dto.response.proof.*;
 import com.ssafy.server.entity.ChallengeEntity;
 import com.ssafy.server.entity.EvidenceEntity;
+import com.ssafy.server.entity.GroupEntity;
 import com.ssafy.server.entity.UserEntity;
-import com.ssafy.server.repository.ChallengeRepository;
-import com.ssafy.server.repository.EvidenceRepository;
-import com.ssafy.server.repository.UserRepository;
+import com.ssafy.server.repository.*;
 import com.ssafy.server.service.EvidenceService;
+import com.ssafy.server.service.NotificationService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.User;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,17 +36,27 @@ public class EvidenceServiceImpl implements EvidenceService {
     private final ChallengeRepository challengeRepository;
     private final EvidenceRepository evidenceRepository;
     private final UserRepository userRepository;
+
+    private final GroupRepository groupRepository;
+    private final GroupMemberRepository groupMemberRepository;
+
+    private final NotificationService notificationService;
+
     @Override
     @Transactional
     public ResponseEntity<? super EvidenceCreateResponseDto> createEvidence(EvidenceCreateRequestDto dto) {
 
         try{
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+
             MultipartFile image = dto.getImage();
             int challengeId = dto.getChallengeId();
-            int userId = dto.getUserId();
+            int userId = customUserDetails.getUserId();
+            String name = customUserDetails.getUserName();
             String title = dto.getTitle();
 
-//            String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\files";
+//           String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\files";
 
             String projectPath = "/var/www/html/images";
             String fileName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
@@ -54,11 +70,29 @@ public class EvidenceServiceImpl implements EvidenceService {
             evidenceEntity.setCreatedBy(userId);
             evidenceEntity.setEvidenceTitle(title);
             evidenceEntity.setChallengeEntity(challengeEntity);
-            evidenceEntity.setImageDate(LocalDateTime.now()); // TODO : 나중에 메타데이터로 바꿔주기
+            DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+            LocalDateTime dateTime = LocalDateTime.parse(dto.getImageDate(), formatter);
+            evidenceEntity.setImageDate(dateTime); //메타데이터로 변경
             evidenceEntity.setImagePath("/images/" + fileName);
             evidenceEntity.setUpdatedBy(userId);
 
             evidenceRepository.save(evidenceEntity);
+
+            // 챌린지 멤버한테 모두 알림 쏘기
+            int groupId = challengeEntity.getGroupEntity().getGroupId();
+            GroupEntity groupEntity = groupRepository.findByGroupId(groupId);
+
+            List<UserEntity> userEntityList = groupMemberRepository.findUsersByGroupId(groupId);
+            userEntityList.stream().forEach(user -> {
+                NotificationCreateRequestDto ncrDto = new NotificationCreateRequestDto();
+                ncrDto.setCommonCodeId(501);
+                ncrDto.setReceivingMemberId(user.getUserId());
+                ncrDto.setSenderName(name);
+                ncrDto.setLink("https://");
+                ncrDto.setGroupName(groupEntity.getGroupName());
+
+                notificationService.create(ncrDto);
+            });
 
 
         }catch(Exception exception){
@@ -72,9 +106,12 @@ public class EvidenceServiceImpl implements EvidenceService {
     @Transactional
     public ResponseEntity<? super EvidenceModifyResponseDto> modifyEvidence(EvidenceModifyRequestDto dto) {
         try{
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+
             MultipartFile image = dto.getImage();
             String title = dto.getTitle();
-            int userId = dto.getUserId();
+            int userId = customUserDetails.getUserId();
             int evidenceId = dto.getEvidenceId();
 
             EvidenceEntity evidenceEntity = evidenceRepository.findByEvidenceId(evidenceId);
@@ -157,7 +194,9 @@ public class EvidenceServiceImpl implements EvidenceService {
 
             ChallengeEntity challengeEntity = challengeRepository.findByChallengeId(challengeId);
 
-            List<EvidenceEntity> entityList = evidenceRepository.findByChallengeEntity(challengeEntity);
+            //생성 날짜 기준 내림차순
+            Sort sort = Sort.by("createdAt").descending();
+            List<EvidenceEntity> entityList = evidenceRepository.findByChallengeEntity(challengeEntity, sort);
 
             entityList.stream().forEach(e ->{
                 EvidenceDto evidenceDto = new EvidenceDto();
@@ -186,8 +225,9 @@ public class EvidenceServiceImpl implements EvidenceService {
             int challengeId = dto.getChallengeId();
 
             ChallengeEntity challengeEntity = challengeRepository.findByChallengeId(challengeId);
-
-            List<EvidenceEntity> entityList = evidenceRepository.findByChallengeEntity(challengeEntity);
+            // createdAt 기준으로 내림차순 정렬
+            Sort sort = Sort.by("createdAt").descending();
+            List<EvidenceEntity> entityList = evidenceRepository.findByChallengeEntity(challengeEntity, sort);
 
             entityList.stream().forEach(e ->{
                 if(e.getCreatedAt().isBefore(challengeEntity.getFinalTruthRoomDate())) return;
@@ -202,6 +242,8 @@ public class EvidenceServiceImpl implements EvidenceService {
 
                 list.add(evidenceDto);
             });
+
+            if(list.isEmpty()) return ResponseDto.validationFail();
 
         }catch (Exception exception){
             exception.printStackTrace();

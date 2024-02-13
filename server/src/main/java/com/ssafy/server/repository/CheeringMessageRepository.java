@@ -2,6 +2,7 @@ package com.ssafy.server.repository;
 
 import com.ssafy.server.entity.ChallengeEntity;
 import com.ssafy.server.entity.CheeringMessageEntity;
+import com.ssafy.server.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -3,15 +3,23 @@ package com.ssafy.server.service.implement;
 import com.google.firebase.auth.UserInfo;
 import com.ssafy.server.dto.websocket.MemberInfoDto;
 import com.ssafy.server.dto.websocket.TruthRoomDto;
+import com.ssafy.server.entity.ChallengeEntity;
+import com.ssafy.server.repository.ChallengeRepository;
 import com.ssafy.server.service.EnterRoomService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
+@RequiredArgsConstructor
 public class EnterRoomServiceImpl implements EnterRoomService {
+
+    private final ChallengeRepository challengeRepository;
+
     //현재 진실의 방이 진행되고 있는 방들 정보
     private final Map<Integer, TruthRoomDto> truthRooms = new ConcurrentHashMap<>();
 
@@ -31,7 +39,8 @@ public class EnterRoomServiceImpl implements EnterRoomService {
     public void addMember(Integer roomId, String sessionId, String userName, String role) {
         TruthRoomDto room = createOrGetRoom(roomId);
         Map<String, MemberInfoDto> members = room.getMembers();
-        MemberInfoDto dto = new MemberInfoDto(userName, role);
+        boolean isReady = false;
+        MemberInfoDto dto = new MemberInfoDto(userName, role,isReady);
         members.put(sessionId, dto);
         System.out.println(members);
         room.getReadyState().put(sessionId, false);
@@ -69,6 +78,8 @@ public class EnterRoomServiceImpl implements EnterRoomService {
         TruthRoomDto room = truthRooms.get(roomId);
         if (room != null && room.getReadyState().containsKey(sessionId)) {
             room.getReadyState().put(sessionId, isReady);
+            MemberInfoDto dto = room.getMembers().get(sessionId);
+            dto.setReady(isReady);
         }
     }
 
@@ -112,4 +123,14 @@ public class EnterRoomServiceImpl implements EnterRoomService {
     public void removeSessionFromRoomMap(String sessionId) {
         sessionRoomMap.remove(sessionId);
     }
+
+    @Override
+    public void setChallengeState(Integer challengeId, String status) {
+        ChallengeEntity challengeEntity = challengeRepository.findByChallengeId(challengeId);
+        challengeEntity.setStatus(status);
+        //진실의 방 종료일을 바꿔주기
+        challengeEntity.setFinalTruthRoomDate(LocalDateTime.now());
+        challengeRepository.save(challengeEntity);
+    }
+
 }

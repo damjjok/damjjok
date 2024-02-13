@@ -14,4 +14,6 @@ import java.util.*;
 public interface ChallengeRepository extends JpaRepository<ChallengeEntity, Integer> {
     ChallengeEntity findByChallengeId(Integer challengeId);
     List<ChallengeEntity> findByGroupEntityGroupId(Integer groupId);
+    boolean existsByUserIdAndStatusAndGroupEntityGroupId(Integer userId, String status, Integer groupId);
+
 }
