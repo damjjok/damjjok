@@ -83,9 +83,14 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     @Transactional
     public ResponseEntity<? super NotificationCreateResponseDto> create(NotificationCreateRequestDto dto) {
+
         // 수신인
+        // 수신인 토큰이 비어있는 경우 에러처리
         int userId = dto.getReceivingMemberId();
         UserEntity userEntity = userRepository.findByUserId(userId);
+        if (userEntity.getFcmToken() == null) {
+            throw new CustomException(HttpStatus.BAD_REQUEST, ResponseCode.BAD_REQUEST, "FCM 토큰이 없습니다");
+        }
         if (userEntity == null) {
             throw new UserNotFoundException();
         }
