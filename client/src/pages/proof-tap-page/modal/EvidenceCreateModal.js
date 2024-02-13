@@ -60,19 +60,41 @@ const EvidenceCreateModal = ({ isOpen, onClose, onSave }) => {
                 // });
 
                 setPreviewImage(reader.result); // 미리보기 이미지 상태를 업데이트
-
-                // EXIF 데이터 읽기
                 EXIF.getData(file, function () {
-                    const dateTimeOriginal = EXIF.getTag(
+                    let dateTimeOriginal = EXIF.getTag(
                         this,
                         "DateTimeOriginal",
-                    ); // 찍힌 시간 추출
+                    );
+                    console.log("EXIF DateTimeOriginal:", dateTimeOriginal); // 원본 날짜 값 로깅
+
+                    if (dateTimeOriginal) {
+                        // "YYYY:MM:DD HH:MM:SS" 형식을 "YYYY-MM-DDTHH:MM:SS"로 변환
+                        const formattedDateTime =
+                            dateTimeOriginal
+                                .replace(/^(\d{4}):(\d{2}):(\d{2})/, "$1-$2-$3")
+                                .replace(" ", "T") + ".000Z"; // UTC 시간을 나타내는 'Z'를 추가합니다.
+
+                        console.log("Formatted DateTime:", formattedDateTime); // 변환된 날짜 값 로깅
+
+                        try {
+                            const date = new Date(formattedDateTime);
+                            if (!isNaN(date)) {
+                                dateTimeOriginal = date.toISOString();
+                            } else {
+                                throw new Error("Invalid date format");
+                            }
+                        } catch (error) {
+                            console.error("Date conversion error:", error);
+                            dateTimeOriginal = new Date().toISOString(); // 에러가 발생하면 현재 날짜로 대체
+                        }
+                    } else {
+                        dateTimeOriginal = new Date().toISOString(); // dateTimeOriginal이 없으면 현재 날짜 사용
+                    }
+
                     setNewEvidence((prev) => ({
                         ...prev,
                         image: file,
-                        imageDate: dateTimeOriginal
-                            ? dateTimeOriginal
-                            : new Date(), // 찍힌 시간 상태에 추가
+                        imageDate: dateTimeOriginal,
                     }));
                 });
             };
