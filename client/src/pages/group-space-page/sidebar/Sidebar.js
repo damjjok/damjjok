@@ -46,7 +46,10 @@ function Sidebar() {
                     <IconButton
                         aria-label="Open menu"
                         icon={<HamburgerIcon />}
-                        onClick={onOpen}
+                        onClick={() => {
+                            onOpen();
+                            setDrawerIsOpen(true);
+                        }}
                         size="lg"
                     />
 
