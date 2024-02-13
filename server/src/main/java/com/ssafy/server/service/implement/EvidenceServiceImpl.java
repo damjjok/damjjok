@@ -53,6 +53,7 @@ public class EvidenceServiceImpl implements EvidenceService {
             MultipartFile image = dto.getImage();
             int challengeId = dto.getChallengeId();
             int userId = customUserDetails.getUserId();
+            String name = customUserDetails.getUserName();
             String title = dto.getTitle();
 
 //           String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\files";
@@ -86,7 +87,7 @@ public class EvidenceServiceImpl implements EvidenceService {
                 NotificationCreateRequestDto ncrDto = new NotificationCreateRequestDto();
                 ncrDto.setCommonCodeId(501);
                 ncrDto.setReceivingMemberId(user.getUserId());
-                ncrDto.setSenderName(user.getUserName());
+                ncrDto.setSenderName(name);
                 ncrDto.setLink("https://");
                 ncrDto.setGroupName(groupEntity.getGroupName());
 
