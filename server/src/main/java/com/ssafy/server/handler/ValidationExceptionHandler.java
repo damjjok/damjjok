@@ -5,6 +5,8 @@ import com.ssafy.server.dto.ResponseDto;
 import com.ssafy.server.exception.*;
 import io.lettuce.core.RedisCommandExecutionException;
 import io.lettuce.core.RedisException;
+import io.openvidu.java.client.OpenViduHttpException;
+import io.openvidu.java.client.OpenViduJavaClientException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.RedisConnectionFailureException;
@@ -90,6 +92,19 @@ public class ValidationExceptionHandler {
     @ExceptionHandler(RedisException.class)
     public ResponseEntity<Object> handleRedisException(RedisException ex) {
         ResponseDto response = new ResponseDto(ResponseCode.REDIS_ERROR, "Redis 작업 중 오류가 발생했습니다.");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+    }
+
+    // OpenVidu
+    @ExceptionHandler(OpenViduJavaClientException.class)
+    public ResponseEntity<Object> handleOpenViduJavaClientException(OpenViduJavaClientException ex) {
+        ResponseDto response = new ResponseDto("OPENVIDU_JAVA_CLIENT_ERROR", "Redis 작업 중 오류가 발생했습니다.");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+    }
+
+    @ExceptionHandler(OpenViduHttpException.class)
+    public ResponseEntity<Object> handleOpenViduHttpException(OpenViduHttpException ex) {
+        ResponseDto response = new ResponseDto("OPENVIDU_HTTP_ERROR", "Redis 작업 중 오류가 발생했습니다.");
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
 }

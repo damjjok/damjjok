@@ -256,7 +256,7 @@ public class GroupServiceImpl implements GroupService {
 
             list.add(dto);
         });
-        
+
         return GroupUserListResponseDto.success(list);
     }
 }
