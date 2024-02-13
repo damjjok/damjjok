@@ -34,6 +34,8 @@ const GlobalStyle = createGlobalStyle`
   * {
     &::-webkit-scrollbar {
       width: 4px;
+      height: 4px;
+      
     }
     &::-webkit-scrollbar-track {
       width: 6px;
@@ -124,43 +126,16 @@ function App() {
                     <Routes>
                         <Route path="/" element={<LandingPage />} />
                         <Route path="/group-list" element={<GroupListPage />} />
-                        <Route
-                            path={`/group/:groupId/*`}
-                            element={<GroupSpacePage />}
-                        >
-                            <Route
-                                path="create-challenge"
-                                element={<CreateChallengePage />}
-                            />
-                            <Route
-                                path="empty-challenge"
-                                element={<EmptyChallengePage />}
-                            />
-                            <Route
-                                path="challenge/:challengeId"
-                                element={<ChallengePage />}
-                            />
-                            <Route
-                                path="last-challenge/:challengeId"
-                                element={<LastChallengePage />}
-                            />
+                        <Route path={`/group/:groupId/*`} element={<GroupSpacePage />}>
+                            <Route path="create-challenge" element={<CreateChallengePage />} />
+                            <Route path="empty-challenge" element={<EmptyChallengePage />} />
+                            <Route path="challenge/:challengeId" element={<ChallengePage />} />
+                            <Route path="last-challenge/:challengeId" element={<LastChallengePage />} />
                         </Route>
-                        <Route
-                            path="/invitation/:code"
-                            element={<InvitationCodePage />}
-                        ></Route>
-                        <Route
-                            path="/auth/oauth-response"
-                            element={<OauthPage />}
-                        ></Route>
-                        <Route
-                            path="/truth-room/:groupId/challenge/:challengeId"
-                            element={<TruthRoom />}
-                        />
-                        <Route
-                            path="/truth-room/enter-test/:challengeId"
-                            element={<ConnectionTest />}
-                        ></Route>
+                        <Route path="/invitation/:code" element={<InvitationCodePage />}></Route>
+                        <Route path="/auth/oauth-response" element={<OauthPage />}></Route>
+                        <Route path="/truth-room/:groupId/challenge/:challengeId" element={<TruthRoom />} />
+                        <Route path="/truth-room/enter-test/:challengeId" element={<ConnectionTest />}></Route>
                     </Routes>
                 </ChakraProvider>
             </Suspense>
