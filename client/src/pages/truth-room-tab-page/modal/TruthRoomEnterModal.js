@@ -7,9 +7,18 @@ import {
     ModalOverlay,
     Text,
 } from "@chakra-ui/react";
+import {
+    challengeIdState,
+    enteringTruthRoomMemberInfoState,
+} from "contexts/TruthRoomSocket";
 import { Link } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
 
 const TruthRoomEnterModal = ({ isOpen, onClose, groupId, challengeId }) => {
+    const setEnteringTruthRoomMemberInfo = useSetRecoilState(
+        enteringTruthRoomMemberInfoState // 소켓에서 활용 될 유저의 정보( {이름, 역할} )
+    );
+
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
