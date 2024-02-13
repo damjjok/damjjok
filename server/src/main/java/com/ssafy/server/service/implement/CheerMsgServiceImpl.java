@@ -8,6 +8,9 @@ import com.ssafy.server.dto.request.cheermsg.CheerMsgListRequestDto;
 import com.ssafy.server.dto.response.cheermsg.CheerMsgCreateResponseDto;
 import com.ssafy.server.dto.response.cheermsg.CheerMsgListResponseDto;
 import com.ssafy.server.entity.*;
+import com.ssafy.server.exception.ChallengeNotFoundException;
+import com.ssafy.server.exception.CustomAuthenticationException;
+import com.ssafy.server.exception.UserNotFoundException;
 import com.ssafy.server.repository.ChallengeRepository;
 import com.ssafy.server.repository.CheeringMessageRepository;
 import com.ssafy.server.repository.UserRepository;
@@ -30,51 +33,50 @@ public class CheerMsgServiceImpl implements CheerMsgService {
 
     @Override
     public ResponseEntity<? super CheerMsgCreateResponseDto> create(CheerMsgCreateRequestDto dto) {
-        try {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
 
-            int userId = customUserDetails.getUserId();
-            int challengeId = dto.getChallengeId();
-
-            UserEntity userEntity = userRepository.findByUserId(userId);
-            ChallengeEntity challengeEntity = challengeRepository.findByChallengeId(challengeId);
-
-            CheeringMessageEntity cheeringMessageEntity = new CheeringMessageEntity();
-            cheeringMessageEntity.setContent(dto.getContent());
-            cheeringMessageEntity.setChallengeEntity(challengeEntity);
-            cheeringMessageEntity.setUserEntity(userEntity);
-
-            cheeringMessageRepository.save(cheeringMessageEntity);
-
-
-        }catch (Exception exception){
-            exception.printStackTrace();
-            return ResponseDto.databaseError();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication == null || !(authentication.getPrincipal() instanceof CustomUserDetails)){
+            throw new CustomAuthenticationException("사용자 인증 다시 해주세요.");
         }
+        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+
+        int userId = customUserDetails.getUserId();
+        int challengeId = dto.getChallengeId();
+
+        UserEntity userEntity = userRepository.findByUserId(userId);
+        if(userEntity == null) throw new UserNotFoundException();
+
+        ChallengeEntity challengeEntity = challengeRepository.findByChallengeId(challengeId);
+        if(challengeEntity == null) throw new ChallengeNotFoundException();
+
+        CheeringMessageEntity cheeringMessageEntity = new CheeringMessageEntity();
+        cheeringMessageEntity.setContent(dto.getContent());
+        cheeringMessageEntity.setChallengeEntity(challengeEntity);
+        cheeringMessageEntity.setUserEntity(userEntity);
+
+        cheeringMessageRepository.save(cheeringMessageEntity);
+
         return CheerMsgCreateResponseDto.success();
     }
 
     @Override
     public ResponseEntity<? super CheerMsgListResponseDto> list(CheerMsgListRequestDto dto) {
         List<CheerMessageDto> list = new ArrayList<>();
-        try{
-            int challengeId = dto.getChallengeId();
 
-            ChallengeEntity challengeEntity = challengeRepository.findByChallengeId(challengeId);
-            List<CheeringMessageEntity> entities = cheeringMessageRepository.findByChallengeEntity(challengeEntity);
-            entities.stream().forEach(e ->{
-                CheerMessageDto cheerMessage = new CheerMessageDto();
-                cheerMessage.setUserName(e.getUserEntity().getUserName());
-                cheerMessage.setContent(e.getContent());
-                cheerMessage.setCreatedAt(e.getCreatedAt());
-                list.add(cheerMessage);
-            });
+        int challengeId = dto.getChallengeId();
 
-        }catch (Exception exception){
-            exception.printStackTrace();
-            return ResponseDto.databaseError();
-        }
+        ChallengeEntity challengeEntity = challengeRepository.findByChallengeId(challengeId);
+        if(challengeEntity == null) throw new ChallengeNotFoundException();
+
+        List<CheeringMessageEntity> entities = cheeringMessageRepository.findByChallengeEntity(challengeEntity);
+        entities.stream().forEach(e ->{
+            CheerMessageDto cheerMessage = new CheerMessageDto();
+            cheerMessage.setUserName(e.getUserEntity().getUserName());
+            cheerMessage.setContent(e.getContent());
+            cheerMessage.setCreatedAt(e.getCreatedAt());
+            list.add(cheerMessage);
+        });
+        
         return CheerMsgListResponseDto.success(list);
     }
 }
