@@ -1,5 +1,4 @@
 import React from "react";
-import TimerComponent from "./TimerComponent";
 import { Wrapper } from "./FinalArgumentFrame.style";
 import { finalArgumentDamJJokState } from "contexts/TruthRoom";
 import { useRecoilValue } from "recoil";
@@ -10,9 +9,6 @@ function FinalArgumentFrame(props) {
 
     return (
         <Wrapper>
-            <div className="timer-container">
-                <TimerComponent />
-            </div>
             <div className="damJJok-frame">
                 <UserVideoComponent
                     streamManager={finalArgumentDamJJok}
