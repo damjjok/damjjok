@@ -45,9 +45,15 @@ public class ValidationExceptionHandler {
         ResponseDto responseBody = new ResponseDto(ResponseCode.BAD_REQUEST, "존재하지 않는 챌린지 ID 입니다.");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
     }
+
     @ExceptionHandler(DuplicateChallengeException.class) // 진행중인 챌린지 있음
     public ResponseEntity<ResponseDto> handleDuplicateChallengeException() {
         ResponseDto responseBody = new ResponseDto(ResponseCode.BAD_REQUEST, "진행중인 챌린지가 존재합니다.");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+    }
+    @ExceptionHandler(RoomNotFoundException.class) //존재하지 않는 진실의 방
+    public ResponseEntity<ResponseDto> handleRoomNotFoundException(RoomNotFoundException ex) {
+        ResponseDto responseBody = new ResponseDto(ResponseCode.BAD_REQUEST, "존재하지 않는 진실의 방 Id 입니다.");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
     }
     @ExceptionHandler(CustomAuthenticationException.class) // 인증 문제
@@ -55,7 +61,6 @@ public class ValidationExceptionHandler {
         ResponseDto responseBody = new ResponseDto(ResponseCode.UNAUTHORIZED, "사용자 인증 다시 해주세요.");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseBody);
     }
-
     // JPA 관련 예외처리
     @ExceptionHandler(DataAccessException.class)
     public ResponseEntity<ResponseDto> handleDataAccessException() {
