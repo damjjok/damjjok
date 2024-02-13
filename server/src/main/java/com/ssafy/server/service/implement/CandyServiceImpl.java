@@ -16,6 +16,7 @@ import com.ssafy.server.exception.UserNotFoundException;
 import com.ssafy.server.repository.*;
 import com.ssafy.server.service.CandyService;
 import com.ssafy.server.service.CheerMsgService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +36,7 @@ public class CandyServiceImpl implements CandyService {
     private final CheeringMessageRepository cheeringMessageRepository;
 
     @Override
+    @Transactional
     public ResponseEntity<? super CandyCreateResponseDto> create(CandyCreateRequestDto dto) {
 
         int challengeId = dto.getChallengeId();
@@ -56,6 +58,7 @@ public class CandyServiceImpl implements CandyService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<? super CandyCountResponseDto> count(CandyCountRequestDto dto) {
         int cnt = 0;
 
@@ -70,6 +73,7 @@ public class CandyServiceImpl implements CandyService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<? super BestCheeringMemberResponseDto> bestMember(BestCheeringMemberRequestDto dto) {
 
         int challengeId = dto.getChallengeId();

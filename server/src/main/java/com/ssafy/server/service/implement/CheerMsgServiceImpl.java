@@ -15,6 +15,7 @@ import com.ssafy.server.repository.ChallengeRepository;
 import com.ssafy.server.repository.CheeringMessageRepository;
 import com.ssafy.server.repository.UserRepository;
 import com.ssafy.server.service.CheerMsgService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -32,6 +33,7 @@ public class CheerMsgServiceImpl implements CheerMsgService {
     private final CheeringMessageRepository cheeringMessageRepository;
 
     @Override
+    @Transactional
     public ResponseEntity<? super CheerMsgCreateResponseDto> create(CheerMsgCreateRequestDto dto) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -60,6 +62,7 @@ public class CheerMsgServiceImpl implements CheerMsgService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<? super CheerMsgListResponseDto> list(CheerMsgListRequestDto dto) {
         List<CheerMessageDto> list = new ArrayList<>();
 
@@ -76,7 +79,7 @@ public class CheerMsgServiceImpl implements CheerMsgService {
             cheerMessage.setCreatedAt(e.getCreatedAt());
             list.add(cheerMessage);
         });
-        
+
         return CheerMsgListResponseDto.success(list);
     }
 }
