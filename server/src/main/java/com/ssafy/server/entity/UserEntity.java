@@ -26,7 +26,7 @@ public class UserEntity {
     @Column(name = "birth", nullable = false, length = 50)
     private String birth;
 
-    @Column(name = "sex", nullable = false, length = 5)
+    @Column(name = "sex", nullable = false, length = 20)
     private String sex;
 
     @Column(name = "email", nullable = false, unique = true, length = 50)
