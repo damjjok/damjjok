@@ -6,7 +6,7 @@ export const Wrapper = styled.div`
     }
     .question-container {
         margin-top: 40px;
-        margin-bottom: 40px;
+        margin-bottom: 10px;
     }
 
     .input-group {

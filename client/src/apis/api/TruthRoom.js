@@ -1,19 +1,4 @@
-import { axiosInstance } from "apis/instance/AxiosInstance";
-
-const postTest = async () => {
-    try {
-        const response = await axiosInstance.post("/test");
-        console.log(response.status);
-    } catch (error) {}
-};
-
-const getTest = async () => {
-    // 이런 식으로 쓰면 된다의 예시
-    try {
-        const response = await axiosInstance.get("/test"); // 호출해온 axiosInstance에 baseURL이 적혀있으므로 그 뒤부터 작성해주면 됨.
-        console.log(response.status);
-    } catch (error) {}
-};
+import { axiosInstance } from "util/axios/AxiosInstance";
 
 const getSessionId = async (propsSessionKey) => {
     const body = {
@@ -54,62 +39,4 @@ const closeOpenviduSession = async (propsSessionKey) => {
     }
 };
 
-const getEvidenceInTruthRoom = async (challengeId, setEvidences) => {
-    try {
-        const response = await axiosInstance.get(
-            `/v1/proof/evidence/truth-room/${challengeId}`
-        );
-        const data = await response.data;
-        if (response.status === 200) {
-            console.log(data.list);
-            setEvidences(data.list);
-        }
-    } catch (error) {
-        console.log(error);
-    }
-
-    return null;
-};
-
-const getTestimoniesInTruthRoom = async (challengeId, setTestimonies) => {
-    try {
-        const response = await axiosInstance.get(
-            `/v1/proof/testimony/truth-room/${challengeId}`
-        );
-        const data = await response.data;
-        if (response.status === 200) {
-            console.log(data.list);
-            setTestimonies(data.list);
-        }
-    } catch (error) {
-        console.log(error);
-    }
-
-    return null;
-};
-
-const getChallengeMembers = async (challengeId, setGroupMembers) => {
-    try {
-        const response = await axiosInstance.get(
-            `v1/challenge/${challengeId}/member-list`
-        );
-        const data = await response.data;
-        if (response.status === 200) {
-            console.log(data.list);
-            setGroupMembers(data.list);
-        }
-    } catch (error) {
-        console.log(error);
-    }
-
-    return null;
-};
-
-export {
-    getSessionId,
-    getOpenviduToken,
-    closeOpenviduSession,
-    getEvidenceInTruthRoom,
-    getTestimoniesInTruthRoom,
-    getChallengeMembers,
-};
+export { getSessionId, getOpenviduToken, closeOpenviduSession };

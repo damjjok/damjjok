@@ -2,8 +2,13 @@ video {
     width: auto;
     height: auto;
     float: left;
-    cursor: pointer;
+    border-radius: 20px;
 }
+
+.streamcomponent {
+    position: relative;
+}
+
 .streamcomponent div {
     position: absolute;
     background: #f8f8f8;

@@ -1,10 +1,6 @@
 import React from "react";
 import { Wrapper } from "./EvidenceFrame.style";
-import {
-    evidenceIndexState,
-    evidenceState,
-    showingEvidenceState,
-} from "contexts/TruthRoom";
+import { showingEvidenceState } from "contexts/TruthRoom";
 import { useRecoilValue } from "recoil";
 
 function EvidenceFrame() {

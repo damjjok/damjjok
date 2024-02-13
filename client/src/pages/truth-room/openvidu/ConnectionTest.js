@@ -1,48 +1,53 @@
-import React, { useContext } from "react";
 import { Button } from "@chakra-ui/react";
-import { WebSocketContext } from "contexts/WebSocketContext";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import {
-    joinMemberListState,
-    readyMemberCountState,
+    challengeIdState,
+    enteringTruthRoomMemberInfoState,
 } from "contexts/TruthRoomSocket";
-import { allUserReadyState } from "./../../../contexts/TruthRoomSocket";
+import { useNavigate, useParams } from "react-router-dom";
 
-const ConnectionButton = () => {
-    const { connect, disconnect, isConnected, enterRoom, setReady } =
-        useContext(WebSocketContext);
-    const joinMemberList = useRecoilValue(joinMemberListState);
-    const readyMemberCount = useRecoilValue(readyMemberCountState);
-    const allUserReady = useRecoilValue(allUserReadyState);
+const ConnectionTest = () => {
+    const navigate = useNavigate();
+    const [enteringTruthRoomMemberInfo, setEnteringTruthRoomMemberInfo] =
+        useRecoilState(enteringTruthRoomMemberInfoState);
+    const setChallengeId = useSetRecoilState(challengeIdState);
 
-    const testRoomId = 1;
+    const { challengeId } = useParams(); // 테스트를 위한 challengeId 받아오기(구조 분해 할당)
+    const hoo = {
+        name: "김영후",
+        role: "Damjjok",
+    };
+    const phD = {
+        name: "박사님" + (Math.floor(Math.random() * 10) + 1),
+        role: "phD",
+    };
+
+    function handleClickEnterDamjjok() {
+        // 담쪽이가 입장함을 테스트
+        setChallengeId(challengeId);
+        setEnteringTruthRoomMemberInfo(hoo);
+        navigate(`/truth-room/1/challenge/${challengeId}`);
+    }
+
+    function handleClickEnterPhD() {
+        // 박사님이 입장함을 테스트
+        setChallengeId(challengeId);
+        setEnteringTruthRoomMemberInfo(phD);
+        navigate(`/truth-room/1/challenge/${challengeId}`);
+    }
 
     return (
         <div>
             <div>
-                참여 유저 목록:{" "}
-                {joinMemberList
-                    .map((member) => `${member.name} (${member.role})`)
-                    .join(", ")}
-            </div>
-            <div>
-                준비 완료 유저 수: {readyMemberCount} / {joinMemberList.length}
-            </div>
-            {allUserReady && <div>모든 유저 준비 완료!</div>}
-            <div>
-                <Button onClick={isConnected ? disconnect : connect}>
-                    {isConnected ? "Disconnect" : "Connect"}
+                <Button onClick={() => handleClickEnterDamjjok()}>
+                    담쪽이 입장하기
                 </Button>
-                <Button
-                    onClick={() => enterRoom(testRoomId, "김영후", "담쪽이")}
-                >
-                    방 입장
+                <Button onClick={() => handleClickEnterPhD()}>
+                    박사님 입장하기
                 </Button>
-                <Button onClick={() => setReady(testRoomId)}>준비하기</Button>
-                <Button>다음 단계로 </Button>
             </div>
         </div>
     );
 };
 
-export default ConnectionButton;
+export default ConnectionTest;

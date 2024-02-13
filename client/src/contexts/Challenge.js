@@ -10,7 +10,7 @@ export const challengeState = atom({
         userName: "",
         challengeId: 0,
         groupId: 0,
-        duration: 30,
+        duration: 180,
         initialMoney: "",
         savedPeriod: "",
         savedMoney: "",
@@ -26,13 +26,48 @@ export const challengeListState = atom({
     default: [],
 });
 
-export const challengeEndDate = selector({
+export const createChallengeEndDate = selector({
     key: "challengeEndDate",
     get: ({ get }) => {
-        const challenge = get(challengeState);
-        const startDate = new Date(challenge.createdAt);
-        return new Date(
-            startDate.setDate(startDate.getDate() + challenge.duration),
-        );
+        const challenge = get(createChallengeState);
+        let today = new Date();
+        return new Date(today.setDate(today.getDate() + challenge.duration));
+    },
+});
+
+export const challengeCandyCount = atom({
+    key: "challengeCandyCount",
+    default: 0,
+});
+
+export const createChallengeState = atom({
+    key: "createChallengeState",
+    default: {
+        duration: 30,
+        initialMoney: 0,
+        savedMoney: 0,
+        savedPeriod: 0,
+    },
+});
+
+export const challengeStatusState = atom({
+    key: "challengeStatusState",
+    default: {
+        determination: "",
+        imagePath: "",
+    },
+});
+
+export const challengeCheerMessageList = atom({
+    key: "challengeCheerMessageList",
+    default: [],
+});
+
+export const challengeBestMember = atom({
+    key: "challengeBestMember",
+    default: {
+        userName: "",
+        candyCnt: 0,
+        cheerMsgCnt: 0,
     },
 });

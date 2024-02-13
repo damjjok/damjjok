@@ -1,14 +1,18 @@
 import BasicButton from "components/button/BasicButton";
-import { useSetRecoilState } from "recoil";
-import { voteState } from "contexts/TruthRoom";
-import React from "react";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { challengeIdState, isVotedState } from "contexts/TruthRoomSocket";
+import React, { useContext } from "react";
+import { WebSocketContext } from "contexts/WebSocketContext";
 
 function DoVoteComponent(props) {
-    const setIsVoted = useSetRecoilState(voteState);
+    const { passFailVote } = useContext(WebSocketContext);
+    const challengeId = useRecoilValue(challengeIdState);
+    const setIsVoted = useSetRecoilState(isVotedState);
 
     function handleClickVote(voteOption) {
-        // voteOption : 1(yes) or no(0), 나중에 소켓으로 데이터 쏠 때 필요
+        // voteOption : true or false
         console.log("어디에 투표했을까요?: " + voteOption);
+        passFailVote(challengeId, voteOption);
         setIsVoted(true);
     }
 
@@ -34,7 +38,7 @@ function DoVoteComponent(props) {
                     <BasicButton
                         buttonName={"예"}
                         variant={"smbtn"}
-                        onClick={() => handleClickVote(1)}
+                        onClick={() => handleClickVote(true)}
                     ></BasicButton>
                 </div>
 
@@ -42,7 +46,7 @@ function DoVoteComponent(props) {
                     <BasicButton
                         buttonName={"아니오"}
                         variant={"smbtn"}
-                        onClick={() => handleClickVote(0)}
+                        onClick={() => handleClickVote(false)}
                     ></BasicButton>
                 </div>
             </div>

@@ -4,25 +4,38 @@ import "./App.css";
 import { Routes, Route } from "react-router-dom";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 // import GroupHome from "./pages/groupspace/group-home/GroupHome.js";
-import { useRecoilValue } from "recoil";
-import { Suspense } from "react";
-import Landing from "./pages/landing-page/Landig.js";
-import CreateGroup from "./pages/landing-page/create-group/CreateGroup.js";
-import GroupSpaceHome from "./pages/group-space/GroupSpaceHome.js";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { Suspense, useEffect } from "react";
+import LandingPage from "./pages/landing-page/LandigPage.js";
+import GroupListPage from "./pages/group-list-page/GroupListPage.js";
+import GroupSpacePage from "./pages/group-space-page/GroupSpacePage.js";
 import TruthRoom from "pages/truth-room/TruthRoom";
-import HomeTab from "pages/group-space/group-space-main/group-tab/home-tab/HomeTab";
-import ArticleTab from "pages/group-space/group-space-main/group-tab/article-tab/ArticleTab";
-import GroupTab from "pages/group-space/group-space-main/group-tab/GroupTab";
-import CreateChallenge from "pages/group-space/group-space-main/empty-challenge/create-challenge/CreateChallenge";
-import EmptyChallenge from "pages/group-space/group-space-main/empty-challenge/EmptyChallenge";
-import LastChallenge from "pages/group-space/group-space-main/last-challenge/LastChallenge";
+import HomeTabPage from "pages/home-tab-page/HomeTabPage";
+import ProofTabPage from "pages/proof-tap-page/ProofTabPage";
+import ChallengePage from "pages/challenge-page/ChallengePage";
+import CreateChallengePage from "pages/create-challenge-page/CreateChallengePage";
+import EmptyChallengePage from "pages/empty-challenge-page/EmptyChallengePage";
+import LastChallengePage from "pages/last-challenge-page/LastChallengePage";
 import { createGlobalStyle } from "styled-components";
-import OauthPage from "pages/landing-page/oauth-page/OauthPage";
+import OauthPage from "pages/oauth-page/OauthPage";
+import "./util/firebase/firebaseConfig";
+
+import { getMessaging, onMessage } from "firebase/messaging";
+import { getNotificationList } from "apis/api/Notification";
+import { notificationListState } from "contexts/Notification";
+import firebaseApp from "./util/firebase/firebaseConfig";
+import InvitationCodePage from "pages/invitation-code-page/InvitationCodePage";
+import ConnectionTest from "pages/truth-room/openvidu/ConnectionTest";
+import GroupSpaceMain from "pages/group-space-page/group-space-main/GroupSpaceMain";
+import { currentUser } from "contexts/User";
+import useAuth from "hooks/useAuth";
 
 const GlobalStyle = createGlobalStyle`
   * {
     &::-webkit-scrollbar {
       width: 4px;
+      height: 4px;
+      
     }
     &::-webkit-scrollbar-track {
       width: 6px;
@@ -79,44 +92,50 @@ const theme = extendTheme({
 });
 
 function App() {
+    // const [notificationList, setNotificationList] = useRecoilState(
+    //     notificationListState
+    // );
+    const { user } = useAuth();
+
+    const setNotificationList = useSetRecoilState(notificationListState);
+
+    const fetchNotifications = async () => {
+        const list = await getNotificationList();
+        setNotificationList(list);
+    };
+    useEffect(() => {
+        const messaging = getMessaging(firebaseApp);
+        onMessage(messaging, (payload) => {
+            console.log("Message received. ", payload);
+            // 여기서 포그라운드 알림을 처리할 로직을 구현합니다.
+            // 예를 들어, 사용자에게 메시지를 표시하는 다이얼로그나 알림을 띄울 수 있습니다.
+            // if (Notification.permission === "granted") {
+            //     new Notification(payload.data.title, {
+            //         body: payload.data.body,
+            //         icon: "/firebase-logo.png", // 알림에 표시할 아이콘
+            //     });
+            // }
+            fetchNotifications();
+        });
+    }, []);
     return (
         <>
             <GlobalStyle />
             <Suspense>
                 <ChakraProvider theme={theme}>
                     <Routes>
-                        <Route path="/" element={<Landing />} />
-                        <Route path="/create-group" element={<CreateGroup />} />
-                        <Route
-                            path={`/group/:groupId/*`}
-                            element={<GroupSpaceHome />}
-                        >
-                            <Route
-                                path="create-challenge"
-                                element={<CreateChallenge />}
-                            />
-                            <Route
-                                path="empty-challenge"
-                                element={<EmptyChallenge />}
-                            />
-                            <Route
-                                path="challenge/:challengeId"
-                                element={<GroupTab />}
-                            />
-                            <Route
-                                path="last-challenge/:challengeId"
-                                element={<LastChallenge />}
-                            />
+                        <Route path="/" element={<LandingPage />} />
+                        <Route path="/group-list" element={<GroupListPage />} />
+                        <Route path={`/group/:groupId/*`} element={<GroupSpacePage />}>
+                            <Route path="create-challenge" element={<CreateChallengePage />} />
+                            <Route path="empty-challenge" element={<EmptyChallengePage />} />
+                            <Route path="challenge/:challengeId" element={<ChallengePage />} />
+                            <Route path="last-challenge/:challengeId" element={<LastChallengePage />} />
                         </Route>
-
-                        <Route
-                            path="/auth/oauth-response"
-                            element={<OauthPage />}
-                        ></Route>
-                        <Route
-                            path="/truth-room/:groupId/challenge/:challengeId"
-                            element={<TruthRoom />}
-                        />
+                        <Route path="/invitation/:code" element={<InvitationCodePage />}></Route>
+                        <Route path="/auth/oauth-response" element={<OauthPage />}></Route>
+                        <Route path="/truth-room/:groupId/challenge/:challengeId" element={<TruthRoom />} />
+                        <Route path="/truth-room/enter-test/:challengeId" element={<ConnectionTest />}></Route>
                     </Routes>
                 </ChakraProvider>
             </Suspense>

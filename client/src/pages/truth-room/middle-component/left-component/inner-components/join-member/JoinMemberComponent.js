@@ -1,24 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { Wrapper } from "../InnerComponent.style";
-import { groupState } from "contexts/TruthRoom";
 import SectionComponent from "./section/SectionComponent";
-import { Box, Flex, Text, Wrap } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import { ChatIcon } from "@chakra-ui/icons";
-import { useParams } from "react-router-dom";
-import { getChallengeMembers, getGroupMembers } from "apis/api/TruthRoom";
+import { joinMemberListState } from "contexts/TruthRoomSocket";
 
 function JoinMemberComponent() {
-    const { challengeId } = useParams();
-    const [members, setMembers] = useState([]);
+    const joinMemberList = useRecoilValue(joinMemberListState);
 
-    const joinMember = useRecoilValue(groupState);
     const [damJJok, setDamJJok] = useState([]);
     const [phDs, setPhDs] = useState([]);
-
-    useEffect(() => {
-        getChallengeMembers(challengeId, setMembers);
-    }, []);
 
     useEffect(() => {
         // let tempDamJJok = [];
@@ -31,9 +23,9 @@ function JoinMemberComponent() {
         // }
         // setDamJJok(tempDamJJok);
         // setPhDs(tempPhDs);
-        setDamJJok(members.filter((m) => m.role === "Damjjok"));
-        setPhDs(members.filter((m) => m.role !== "Damjjok"));
-    }, [members]);
+        setDamJJok(joinMemberList.filter((m) => m.role === "Damjjok"));
+        setPhDs(joinMemberList.filter((m) => m.role !== "Damjjok"));
+    }, [joinMemberList]);
 
     return (
         // 지금은 임시 코드입니다.

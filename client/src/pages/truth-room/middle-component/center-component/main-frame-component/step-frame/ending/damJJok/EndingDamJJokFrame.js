@@ -2,11 +2,14 @@ import React, { useState } from "react";
 import CheerStepComponent from "./step-component/CheerStepComponent";
 import ShowRemainingStepComponent from "./step-component/ShowRemainingStepComponent";
 import AskStepComponent from "./step-component/AskStepComponent";
+import { damJJokNameState } from "contexts/TruthRoom";
+import { useRecoilValue } from "recoil";
 
-function EndingDamJJokFrame({ damJJok }) {
+function EndingDamJJokFrame() {
     // 0: 응원해요!
     // 1: 잔여 적립금은 얼마예요
     // 2: 새로 도전할래요?
+    const damJJokName = useRecoilValue(damJJokNameState);
     const [endingDamJJokStep, setEndingDamJJokStep] = useState(0);
 
     function handleClickConfirm() {
@@ -17,7 +20,7 @@ function EndingDamJJokFrame({ damJJok }) {
         <div>
             {endingDamJJokStep === 0 && (
                 <CheerStepComponent
-                    damJJok={damJJok}
+                    damJJokName={damJJokName}
                     onClick={() => handleClickConfirm()}
                 />
             )}
@@ -26,7 +29,9 @@ function EndingDamJJokFrame({ damJJok }) {
                     onClick={() => handleClickConfirm()}
                 />
             )}
-            {endingDamJJokStep === 2 && <AskStepComponent damJJok={damJJok} />}
+            {endingDamJJokStep === 2 && (
+                <AskStepComponent damJJokName={damJJokName} />
+            )}
         </div>
     );
 }
