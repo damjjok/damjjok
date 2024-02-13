@@ -18,20 +18,20 @@ import {
 import BasicButton from "components/button/BasicButton";
 import React, { useState } from "react";
 import AvatarSelector from "./AvatarSelector";
-import { useRecoilState } from "recoil";
-import { challengeStatusState } from "contexts/Challenge";
-import { patchChallengeStatus } from "apis/api/Challenge";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { challengeState, challengeStatusState } from "contexts/Challenge";
+import { getChallengeInfo, patchChallengeStatus } from "apis/api/Challenge";
 import { useNavigate } from "react-router-dom";
 
 function StatusEditModal({ currentChallenge, selectedAvatar }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [currentStatus, setStatus] = useRecoilState(challengeStatusState);
     const [inputValue, setInputValue] = useState(
-        currentChallenge.determination
+        currentChallenge.determination,
     );
+    const setChallenge = useSetRecoilState(challengeState);
     const initialRef = React.useRef(null);
     const finalRef = React.useRef(null);
-    const navigate = useNavigate();
 
     return (
         <>
@@ -72,17 +72,24 @@ function StatusEditModal({ currentChallenge, selectedAvatar }) {
                     <ModalFooter>
                         <BasicButton
                             buttonName={"수정하기"}
-                            onClick={() => {
+                            onClick={async () => {
                                 //수정사항 반영 로직 작성
-                                patchChallengeStatus(
+                                await patchChallengeStatus(
                                     currentChallenge.challengeId,
                                     inputValue,
-                                    currentStatus.imagePath
+                                    currentStatus.imagePath,
                                 );
+
                                 setStatus({
                                     determination: inputValue,
+                                    imagePath: currentStatus.imagePath,
                                 });
-                                navigate(``);
+                                const updatedResponse = await getChallengeInfo(
+                                    currentChallenge.challengeId,
+                                );
+
+                                // challenge 상태를 업데이트
+                                setChallenge(updatedResponse.dto);
                                 onClose();
                             }}
                         />

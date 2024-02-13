@@ -46,32 +46,6 @@ function ChallengeList({ onClick }) {
                 const updatedChallengeList = response.list;
 
                 setCurrentChallengeList(updatedChallengeList); // currentChallengeList 업데이트
-
-                // 반복문을 돌면서 각 요소의 status에 따라 currentGroupChallengeList와 lastChallenge 배열에 추가
-                // const updatedCurrentGroupChallengeList = [];
-                // const updatedLastChallenge = [];
-                // // if (!updatedCurrentGroupChallengeList.length) {
-                // //     navigate(`./empty-challenge`);
-                // // }
-
-                // for (let i = 0; i < updatedChallengeList.length; i++) {
-                //     const challenge = updatedChallengeList[i];
-                //     if (challenge.status === "PROGRESS") {
-                //         updatedCurrentGroupChallengeList.push(challenge);
-                //     } else {
-                //         updatedLastChallenge.push(challenge);
-                //     }
-                // }
-                // if (updatedCurrentGroupChallengeList.length == 0) {
-                //     navigate(`./empty-challenge`);
-                // } else {
-                //     navigate(
-                //         `./challenge/${updatedCurrentGroupChallengeList[0].challengeId}`
-                //     );
-                // }
-
-                // setCurrentGroupChallengeList(updatedCurrentGroupChallengeList);
-                // setLastChallenge(updatedLastChallenge);
             } catch (error) {
                 console.error("챌린지 정보 불러오기 실패", error);
                 // navigate(`./empty-challenge`);
@@ -99,12 +73,33 @@ function ChallengeList({ onClick }) {
                 updatedLastChallenge.push(challenge);
             }
         }
-        if (updatedCurrentGroupChallengeList.length == 0) {
-            navigate(`./empty-challenge`);
-        } else {
-            navigate(
-                `./challenge/${updatedCurrentGroupChallengeList[0].challengeId}`
+        if (
+            updatedCurrentGroupChallengeList &&
+            updatedCurrentGroupChallengeList.length > 0
+        ) {
+            const currentMyChallenge = updatedCurrentGroupChallengeList.find(
+                (challenge) =>
+                    challenge.userId === loginedUser.userId &&
+                    challenge.status === "PROGRESS"
             );
+
+            console.log(currentMyChallenge);
+
+            if (currentMyChallenge) {
+                navigate(`./challenge/${currentMyChallenge.challengeId}`);
+            } else {
+                const randomCurrentChallenge =
+                    updatedCurrentGroupChallengeList.find(
+                        (challenge) => challenge.status === "PROGRESS"
+                    );
+                if (randomCurrentChallenge) {
+                    navigate(
+                        `./challenge/${randomCurrentChallenge.challengeId}`
+                    );
+                }
+            }
+        } else {
+            navigate("./empty-challenge");
         }
 
         setCurrentGroupChallengeList(updatedCurrentGroupChallengeList);

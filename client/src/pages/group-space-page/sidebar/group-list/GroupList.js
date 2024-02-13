@@ -1,7 +1,7 @@
 import { useRecoilValue } from "recoil";
 import { useEffect, useState } from "react";
 import Select from "react-select";
-import { Box } from "@chakra-ui/react";
+import { Box, useBreakpointValue } from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getGroupList } from "apis/api/Group";
 
@@ -31,7 +31,9 @@ function GroupList() {
             // 가져온 데이터를 groupData 상태에 저장합니다.
             setGroupListData(response.list);
 
-            const currentGroup = response.list.find((group) => group.groupId === Number(groupId));
+            const currentGroup = response.list.find(
+                (group) => group.groupId === Number(groupId),
+            );
             // 현재 그룹의 이름을 selectedGroup 상태에 설정합니다.
             setSelectedGroup({
                 key: currentGroup?.groupId,
@@ -61,6 +63,7 @@ function GroupList() {
         label: item.groupname,
     }));
     // console.log(options);
+    const isMobile = useBreakpointValue({ base: true, md: false });
 
     const customStyles = {
         control: (base, state) => ({
@@ -75,9 +78,20 @@ function GroupList() {
             },
         }),
         option: (styles, { isFocused, isSelected }) => {
+            let backgroundColor = null;
+            if (!isMobile) {
+                backgroundColor = isSelected
+                    ? "rgba(255, 209, 0, 0.8)"
+                    : !isSelected && isFocused
+                    ? "rgba(255, 209, 0, 0.5)"
+                    : null;
+            } else {
+                backgroundColor = isSelected ? "rgba(255, 209, 0, 0.8)" : null;
+            }
+
             return {
                 ...styles,
-                backgroundColor: isSelected ? "rgba(255, 209, 0, 0.8)" : isFocused ? "rgba(255, 209, 0, 0.5)" : null,
+                backgroundColor: backgroundColor,
                 color: "black",
                 cursor: "pointer",
                 "&:hover": {
