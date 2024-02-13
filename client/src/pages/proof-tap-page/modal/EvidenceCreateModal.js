@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useRecoilState } from "recoil";
+import EXIF from "exif-js";
 import { evidenceData } from "contexts/Article";
 import {
     Modal,
@@ -28,6 +29,7 @@ const EvidenceCreateModal = ({ isOpen, onClose, onSave }) => {
 
     const handleSaveClick = () => {
         setIsAlertOpen(true); // Alert 대화 상자 열기
+        console.log(newEvidence);
     };
 
     const handleConfirmSave = () => {
@@ -52,11 +54,49 @@ const EvidenceCreateModal = ({ isOpen, onClose, onSave }) => {
                 //     title: data.title,
                 // });
 
-                setNewEvidence({
-                    ...newEvidence,
-                    image: file,
-                });
+                // setNewEvidence({
+                //     ...newEvidence,
+                //     image: file,
+                // });
+
                 setPreviewImage(reader.result); // 미리보기 이미지 상태를 업데이트
+                EXIF.getData(file, function () {
+                    let dateTimeOriginal = EXIF.getTag(
+                        this,
+                        "DateTimeOriginal",
+                    );
+                    console.log("EXIF DateTimeOriginal:", dateTimeOriginal); // 원본 날짜 값 로깅
+
+                    if (dateTimeOriginal) {
+                        // "YYYY:MM:DD HH:MM:SS" 형식을 "YYYY-MM-DDTHH:MM:SS"로 변환
+                        const formattedDateTime =
+                            dateTimeOriginal
+                                .replace(/^(\d{4}):(\d{2}):(\d{2})/, "$1-$2-$3")
+                                .replace(" ", "T") + ".000Z"; // UTC 시간을 나타내는 'Z'를 추가합니다.
+
+                        console.log("Formatted DateTime:", formattedDateTime); // 변환된 날짜 값 로깅
+
+                        try {
+                            const date = new Date(formattedDateTime);
+                            if (!isNaN(date)) {
+                                dateTimeOriginal = date.toISOString();
+                            } else {
+                                throw new Error("Invalid date format");
+                            }
+                        } catch (error) {
+                            console.error("Date conversion error:", error);
+                            dateTimeOriginal = new Date().toISOString(); // 에러가 발생하면 현재 날짜로 대체
+                        }
+                    } else {
+                        dateTimeOriginal = new Date().toISOString(); // dateTimeOriginal이 없으면 현재 날짜 사용
+                    }
+
+                    setNewEvidence((prev) => ({
+                        ...prev,
+                        image: file,
+                        imageDate: dateTimeOriginal,
+                    }));
+                });
             };
             reader.readAsDataURL(file);
         }
