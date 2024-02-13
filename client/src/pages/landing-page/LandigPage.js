@@ -17,6 +17,7 @@ import { useRecoilValue } from "recoil";
 import { useEffect } from "react";
 import {} from "@chakra-ui/react";
 import logo from "assets/images/logo.png";
+import { ArrowDownIcon } from "@chakra-ui/icons";
 
 const LandingPage = () => {
     // const { isOpen, onOpen, onClose } = useDisclosure();
@@ -51,7 +52,7 @@ const LandingPage = () => {
         <Flex direction="column" align="stretch" minH="100vh">
             {/* 상단 배경 이미지 컨테이너 */}
             <Box
-                height="60vh"
+                height="100vh"
                 width="100vw"
                 backgroundImage={`url(${landingBg})`}
                 backgroundPosition="center"
@@ -116,7 +117,7 @@ const LandingPage = () => {
                         </>
                     )}
                     <Button
-                        colorScheme="yellow"
+                        bg="#ffd100"
                         size="lg"
                         onClick={LoginonOpen}
                         alignSelf="center"
@@ -124,27 +125,49 @@ const LandingPage = () => {
                     >
                         시작하기
                     </Button>
+
+                    {/* 기존 컨텐츠 */}
+
+                    {/* 화살표 애니메이션 */}
                 </Flex>
+                <Box
+                    position="absolute"
+                    bottom="20px"
+                    left="50%"
+                    animation="bounce 2s infinite"
+                    css={{
+                        "@keyframes bounce": {
+                            "0%, 100%": {
+                                transform: "translate(-50%, 0)",
+                            },
+                            "50%": {
+                                transform: "translate(-50%,-20px)",
+                            },
+                        },
+                    }}
+                >
+                    <ArrowDownIcon color="#fdd100" boxSize="50px" />
+                </Box>
             </Box>
 
             {/* 나머지 페이지 컨텐츠 */}
-            <Flex direction="column" flexGrow={1} overflowY="auto" m={0} p={0}>
+            <Flex direction="column" flexGrow={1} m={0} p={0}>
                 <Box
-                    height="40vh"
+                    height="45vh"
                     width="100vw"
                     bg="black"
                     borderBottom="8px solid"
                     borderColor="gray.800"
                 >
-                    <HStack spacing={0} height="100%" py={16} mx="15%">
+                    <HStack spacing={0} height="100%" py={16} mx="10%">
                         {/* 텍스트 영역 */}
                         <Box flex="1">
-                            <Text color="white" fontSize="5xl" fontWeight={800}>
+                            <Text color="white" fontSize="3xl" fontWeight={800}>
                                 친구와 함께 하세요
                             </Text>
                             <Text
                                 color="white"
-                                fontSize="2xl"
+                                fontSize="xl"
                                 mt={3}
                                 fontWeight={500}
                             >
@@ -167,7 +190,7 @@ const LandingPage = () => {
                     </HStack>
                 </Box>
                 <Box
-                    height="40vh"
+                    height="45vh"
                     width="100vw"
                     bg="black"
                     borderBottom="8px solid"
@@ -188,12 +211,12 @@ const LandingPage = () => {
                             />
                         </Box>
                         <Box flex="1">
-                            <Text color="white" fontSize="5xl" fontWeight={800}>
+                            <Text color="white" fontSize="3xl" fontWeight={800}>
                                 친구와 함께 하세요
                             </Text>
                             <Text
                                 color="white"
-                                fontSize="2xl"
+                                fontSize="xl"
                                 mt={3}
                                 fontWeight={500}
                             >
@@ -204,7 +227,7 @@ const LandingPage = () => {
                     </HStack>
                 </Box>
                 <Box
-                    height="40vh"
+                    height="45vh"
                     width="100vw"
                     bg="black"
                     borderBottom="8px solid"
@@ -213,12 +236,12 @@ const LandingPage = () => {
                     <HStack spacing={0} height="100%" py={16} mx="15%">
                         {/* 텍스트 영역 */}
                         <Box flex="1">
-                            <Text color="white" fontSize="5xl" fontWeight={800}>
+                            <Text color="white" fontSize="3xl" fontWeight={800}>
                                 친구와 함께 하세요
                             </Text>
                             <Text
                                 color="white"
-                                fontSize="2xl"
+                                fontSize="xl"
                                 mt={3}
                                 fontWeight={500}
                             >
@@ -241,7 +264,7 @@ const LandingPage = () => {
                     </HStack>
                 </Box>
                 <Box
-                    height="40vh"
+                    height="45vh"
                     width="100vw"
                     bg="black"
                     borderBottom="8px solid"
@@ -261,12 +284,12 @@ const LandingPage = () => {
                         </Box>
                         {/* 텍스트 영역 */}
                         <Box flex="1">
-                            <Text color="white" fontSize="5xl" fontWeight={800}>
+                            <Text color="white" fontSize="3xl" fontWeight={800}>
                                 친구와 함께 하세요
                             </Text>
                             <Text
                                 color="white"
-                                fontSize="2xl"
+                                fontSize="xl"
                                 mt={3}
                                 fontWeight={500}
                             >
