@@ -53,13 +53,13 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             // redis 에 저장 ( refreshToken, email )
             ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
             valueOperations.set(refreshToken, email);
-            response.sendRedirect("https://i10e105.p.ssafy.io//auth/oauth-response?" +
+            response.sendRedirect("http://localhost:8080/auth/oauth-response?" +
                     "accessToken=" + accessToken + "&" +
                     "refreshToken=" + refreshToken
             );
         }
         else{
-            response.sendRedirect("https://i10e105.p.ssafy.io//auth/oauth-response?" +
+            response.sendRedirect("http://localhost:8080/auth/oauth-response?" +
                     "email=" +email + "&" +
                     "name=" + encodedName
             );
