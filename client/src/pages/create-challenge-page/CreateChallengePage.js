@@ -19,18 +19,18 @@ import ChallengeCreateAlert from "./modal/ChallengeCreateAlert";
 import TitleText from "components/TitleText";
 import { useParams } from "react-router-dom";
 import { createChallengeState } from "contexts/Challenge";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { useEffect } from "react";
 
 function CreateChallengePage() {
     const { groupId } = useParams();
     const groupIdval = Number(groupId);
     const { isOpen, onClose } = useDisclosure();
-    const [challenge, setChallenge] = useRecoilState(createChallengeState);
+    const setChallenge = useSetRecoilState(createChallengeState);
     const isMobile = useBreakpointValue({ base: true, md: false });
     const initialState = {
         groupId: groupIdval,
-        duration: 0,
+        duration: 30,
         initialMoney: 0,
         savedPeriod: 0,
         savedMoney: 0,
