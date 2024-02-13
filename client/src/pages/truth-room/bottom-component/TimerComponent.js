@@ -19,7 +19,7 @@ function TimerComponent(props) {
             }, 1000);
         if (totalSeconds === 0) {
             clearInterval(id);
-            // finishFinalArgument(challengeId);
+            finishFinalArgument(challengeId);
         }
         // 컴포넌트가 언마운트되거나 카운트다운이 0에 도달하면 인터벌을 정리
         return () => clearInterval(id);

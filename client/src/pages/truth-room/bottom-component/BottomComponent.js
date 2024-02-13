@@ -9,6 +9,7 @@ import { useRecoilValue } from "recoil";
 import { Wrapper } from "./BottomComponent.style";
 import { Button } from "@chakra-ui/react";
 import { WebSocketContext } from "contexts/WebSocketContext";
+import TimerComponent from "./TimerComponent";
 
 function BottomComponent() {
     const { evidenceNextStage } = useContext(WebSocketContext);
@@ -40,6 +41,15 @@ function BottomComponent() {
                         {stepReadyCount}/{joinMemberList.length}
                     </Button>
                 )}
+            </Wrapper>
+        );
+    else if (step === 4)
+        // 최후 변론 단계 타이머 표출
+        return (
+            <Wrapper>
+                <div className="timer-container">
+                    <TimerComponent />
+                </div>
             </Wrapper>
         );
     else return <Wrapper></Wrapper>;
