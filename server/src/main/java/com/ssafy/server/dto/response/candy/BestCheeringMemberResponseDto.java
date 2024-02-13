@@ -21,8 +21,8 @@ public class BestCheeringMemberResponseDto {
         this.candyCnt = candyCnt;
         this.cheerMsgCnt = cheerMsgCnt;
     }
-    public static ResponseEntity<CandyCountResponseDto> success(int count){
-        CandyCountResponseDto responseBody = new CandyCountResponseDto(count);
+    public static ResponseEntity<BestCheeringMemberResponseDto> success(String userName, int candyCnt, int cheerMsgCnt){
+        BestCheeringMemberResponseDto responseBody = new BestCheeringMemberResponseDto(userName, candyCnt, cheerMsgCnt);
         return ResponseEntity.ok(responseBody);
     }
 
