@@ -9,12 +9,12 @@ import { Wrapper } from "./RtcComponent.style";
 import {
     challengeIdState,
     enteringTruthRoomMemberInfoState,
+    joinMemberListState,
     stepState,
 } from "contexts/TruthRoomSocket";
 import { finalArgumentDamJJokState } from "contexts/TruthRoom";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { Button } from "@chakra-ui/react";
-import BasicButton from "components/button/BasicButton";
 
 const APPLICATION_SERVER_URL = "https://i10e105.p.ssafy.io/";
 
@@ -27,6 +27,7 @@ export default function OpenViduComponent() {
     const [session, setSession] = useState(undefined);
     const [publisher, setPublisher] = useState(undefined);
     const [currentVideoDevice, setCurrentVideoDevice] = useState(null);
+    const joinMemberList = useRecoilValue(joinMemberListState); // 세션 종료 시 오픈비두 세션 끊을 때 사용할 멤버 리스트(1명일 때 closeOpenviduSession 실행)
 
     const [connectedMemberList, setConnectedMemberList] = useState([]); // 우리 서비스 기준 순서로 화면에 멤버들 띄워줄 때 사용할 리스트
     const [damJJok, setDamJJok] = useState(undefined); // 담쪽이 설정(화면 가장 위에 띄워줘야 하므로)
@@ -139,7 +140,7 @@ export default function OpenViduComponent() {
     const leaveSession = useCallback(() => {
         // Leave the session
         if (session) {
-            closeOpenviduSession(challengeId); // 지금은 테스트라 여기 뒀지만 나중에는 소켓에서 마지막 남은 사람이 나갈 때 실행됨.
+            if (joinMemberList.length === 1) closeOpenviduSession(challengeId); // 마지막 멤버 화상채팅에서 나갈 때 세션 종료
             session.disconnect();
         }
 
