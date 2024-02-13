@@ -2,11 +2,12 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { challengeState } from "../../../contexts/Challenge";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Box } from "@chakra-ui/react";
+import { Box, Text, useBreakpointValue } from "@chakra-ui/react";
 import { getAttendanceList } from "apis/api/Attendance";
 import { attendanceListState } from "contexts/Attendance";
 
 function Strick({ challenge, startedDate }) {
+    const isMobile = useBreakpointValue({ base: true, md: false });
     const { challengeId } = useParams();
     // const [attendanceList, setAttendanceList] = useState([]);
     const [attendanceData, setAttendanceData] = useState([]);
@@ -47,15 +48,16 @@ function Strick({ challenge, startedDate }) {
 
     return (
         // css 150~80일인 경우 오른쪽으로 쏠림
-        <Box display={"flex"} flexFlow={"column"}>
-            <div className="mt-4 max-w-2xl grid grid-flow-col grid-rows-5 grid-cols-39 gap-1">
+        <Box overflowX={"scroll"}>
+            <Box className="mt-4 max-w-2xl grid grid-flow-col grid-rows-5 grid-cols-39 gap-1 justify-items-center">
                 {attendanceData.map((attended, i) => (
                     <div key={i} className={`w-3 h-3 rounded ${attended ? "bg-damyellow" : "bg-damlightgray"}`} />
                 ))}
-            </div>
-            <p className="text-xs text-right">
+            </Box>
+
+            <Text className="text-sm text-right">
                 금연 시작일 : {startedDate.toLocaleDateString()} | 목표일 수 : {challenge.duration}일
-            </p>
+            </Text>
         </Box>
     );
 }
