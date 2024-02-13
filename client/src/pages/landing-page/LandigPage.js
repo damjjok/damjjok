@@ -176,16 +176,16 @@ const LandingPage = () => {
             {showButton && (
                 <Flex
                     position="fixed"
-                    top="0"
+                    bottom="50px"
                     left="0"
                     right="0"
                     justifyContent="center"
                     zIndex="banner"
-                    animation="slideUp 0.5s ease-out forwards"
+                    animation="slideDown 0.5s ease-out forwards"
                     css={{
-                        "@keyframes slideUp": {
+                        "@keyframes slideDown": {
                             "0%": { transform: "translateY(100%)" },
-                            "100%": { transform: "translateY(0)" },
+                            "100%": { transform: "translateY(0%)" },
                         },
                     }}
                 >
@@ -194,9 +194,7 @@ const LandingPage = () => {
                         bg="#ffd100"
                         buttonName={"시작하기"}
                         variant={"bigbtn"}
-                        onClick={() => {
-                            /* 로그인 모달 열기 로직 */
-                        }}
+                        onClick={LoginonOpen}
                     >
                         시작하기
                     </BasicButton>
