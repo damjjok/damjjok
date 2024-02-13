@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Button, useDisclosure, HStack, Wrap, WrapItem } from "@chakra-ui/react";
+import { Button, useDisclosure, HStack, Wrap, WrapItem, Box, useBreakpointValue } from "@chakra-ui/react";
 import CreateGroupModal from "./modal/CreateGroupModal";
 import logo from "assets/images/logo.png";
 import landingBg from "assets/images/bgimg.png";
@@ -9,6 +9,8 @@ import { getGroupList, postCreateGroup } from "apis/api/Group";
 import { useNavigate } from "react-router-dom";
 
 const GroupListPage = () => {
+    const isMobile = useBreakpointValue({ base: true, md: false });
+
     const [groupData, setGroupData] = useState([]);
     const [groupName, setGroupName] = useState(""); // 그룹 이름 상태 추가
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -64,7 +66,6 @@ const GroupListPage = () => {
                 position: "relative",
                 height: "100vh",
                 width: "100vw",
-                position: "relative",
             }}
         >
             <div
@@ -102,92 +103,65 @@ const GroupListPage = () => {
                         zIndex: 10, // 다른 요소들 위에 오도록 zIndex 값 설정
                     }}
                 />
-                {groupData.length < 1 ? (
-                    <>
-                        <p style={{ color: "white" }}>
-                            소속된 그룹이 없습니다! <br />
-                            그룹을 생성하고 멤버를 초대해 주세요!
-                        </p>
 
-                        <div>
-                            {/* <button onClick={onOpen}>+</button> */}
-
-                            <Button
-                                onClick={onOpen}
-                                size="xl" // 버튼 크기
-                                fontSize="4xl" // 글자 크기
-                                colorScheme="blue" // 버튼 색상 스킴
-                                px={10} // 좌우 패딩
-                                py={7} // 상하 패딩
-                                bg="#ffd100"
-                                width="150px"
-                                height="150px"
-                            >
-                                +
-                            </Button>
-                        </div>
-                    </>
-                ) : (
-                    <>
-                        <p
-                            style={{
-                                color: "white",
-                                marginBottom: "100px",
-                                fontSize: "70px",
-                                textAlign: "center",
-                            }}
-                        >
-                            그룹 선택하기
-                        </p>
-                        <div>
-                            <Wrap spacing={10} justify="center">
-                                {groupData.map((group, index) => (
-                                    <WrapItem key={index}>
-                                        <Button
-                                            // onClick={onOpen}
-                                            key={index}
-                                            size="xl" // 버튼 크기
-                                            fontSize="30px" // 글자 크기
-                                            colorScheme="blue" // 버튼 색상 스킴
-                                            px={2} // 좌우 패딩
-                                            py={2} // 상하 패딩
-                                            bg="#ffd100"
-                                            width="150px"
-                                            height="150px"
-                                            onClick={() => handleGroupClick(group.groupId)}
-                                            style={{
-                                                whiteSpace: "normal", // 텍스트가 필요에 따라 줄바꿈되도록 설정
-                                                overflow: "hidden", // 내용이 넘칠 경우 숨김
-                                                textOverflow: "ellipsis", // 내용이 넘칠 경우 말줄임표로 표시 (여러 줄에 대해서는 작동하지 않음)
-                                                display: "flex",
-                                                flexDirection: "column",
-                                                justifyContent: "center", // 텍스트를 버튼 중앙에 정렬
-                                                alignItems: "center", // 가로축 중앙 정렬
-                                            }}
-                                        >
-                                            {group.groupname}
-                                        </Button>
-                                    </WrapItem>
-                                ))}
-                                <WrapItem>
+                <>
+                    <p
+                        style={{
+                            color: "white",
+                            marginBottom: "4rem",
+                            fontSize: `${isMobile ? "3rem" : "5rem"}`,
+                            textAlign: "center",
+                        }}
+                    >
+                        그룹 선택하기
+                    </p>
+                    <Box height={isMobile ? "50vh" : "100%"} overflowY={"auto"}>
+                        <Wrap spacing={10} justify="center">
+                            {groupData.map((group, index) => (
+                                <WrapItem key={index}>
                                     <Button
-                                        onClick={onOpen}
+                                        // onClick={onOpen}
+                                        key={index}
                                         size="xl" // 버튼 크기
-                                        fontSize="4xl" // 글자 크기
+                                        fontSize="2rem" // 글자 크기
                                         colorScheme="blue" // 버튼 색상 스킴
-                                        px={10} // 좌우 패딩
-                                        py={7} // 상하 패딩
+                                        px={2} // 좌우 패딩
+                                        py={2} // 상하 패딩
                                         bg="#ffd100"
-                                        width="150px"
-                                        height="150px"
+                                        width="10rem"
+                                        height="10rem"
+                                        onClick={() => handleGroupClick(group.groupId)}
+                                        style={{
+                                            whiteSpace: "normal", // 텍스트가 필요에 따라 줄바꿈되도록 설정
+                                            overflow: "hidden", // 내용이 넘칠 경우 숨김
+                                            textOverflow: "ellipsis", // 내용이 넘칠 경우 말줄임표로 표시 (여러 줄에 대해서는 작동하지 않음)
+                                            display: "flex",
+                                            flexDirection: "column",
+                                            justifyContent: "center", // 텍스트를 버튼 중앙에 정렬
+                                            alignItems: "center", // 가로축 중앙 정렬
+                                        }}
                                     >
-                                        +
+                                        {group.groupname}
                                     </Button>
                                 </WrapItem>
-                            </Wrap>
-                        </div>
-                    </>
-                )}
+                            ))}
+                            <WrapItem>
+                                <Button
+                                    onClick={onOpen}
+                                    width="10rem"
+                                    height="10rem"
+                                    fontSize="4rem" // 글자 크기
+                                    colorScheme="blue" // 버튼 색상 스킴
+                                    px={10} // 좌우 패딩
+                                    py={7} // 상하 패딩
+                                    bg="#ffd100"
+                                >
+                                    +
+                                </Button>
+                            </WrapItem>
+                        </Wrap>
+                    </Box>
+                </>
 
                 <CreateGroupModal isOpen={isOpen} onClose={onClose} groupName={groupName} setGroupName={setGroupName} onGroupCreate={handleCreateGroup} />
             </div>

@@ -1,26 +1,13 @@
-import {
-    Card,
-    CardBody,
-    Stack,
-    Text,
-    useDisclosure,
-    CardHeader,
-    Box,
-} from "@chakra-ui/react";
+import { Card, CardBody, Stack, Text, useDisclosure, CardHeader, Box } from "@chakra-ui/react";
 import TestimonyDetailModal from "../modal/TestimonyDetailModal";
 
-const TestimonyItems = ({
-    testimonyTitle,
-    testimonyContent,
-    userName,
-    testimonyId,
-}) => {
+const TestimonyItems = ({ testimonyTitle, testimonyContent, userName, testimonyId }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     // 나중에 바꿔야함
     return (
         <div className="TestimonyItems">
             <Card
-                width={"15vw"}
+                width={"15rem"}
                 height={"15vh"}
                 borderWidth="1px" // 테두리 두께 설정
                 borderRadius="lg" // 테두리 둥근 처리
@@ -28,13 +15,7 @@ const TestimonyItems = ({
                 overflow="hidden" // 내용이 넘칠 경우 숨김 처리
                 onClick={onOpen}
             >
-                <CardHeader
-                    isTruncated
-                    bg="#ffd100"
-                    display="flex"
-                    justifyContent="space-between"
-                    alignItems="center"
-                >
+                <CardHeader isTruncated bg="#ffd100" display="flex" justifyContent="space-between" alignItems="center">
                     <Text fontSize="lg" fontWeight="bold" isTruncated>
                         {testimonyTitle}
                     </Text>
@@ -52,13 +33,7 @@ const TestimonyItems = ({
                 </CardBody>
             </Card>
 
-            <TestimonyDetailModal
-                isOpen={isOpen}
-                onClose={onClose}
-                title={testimonyTitle}
-                content={testimonyContent}
-                testimonyId={testimonyId}
-            />
+            <TestimonyDetailModal isOpen={isOpen} onClose={onClose} title={testimonyTitle} content={testimonyContent} testimonyId={testimonyId} />
         </div>
     );
 };

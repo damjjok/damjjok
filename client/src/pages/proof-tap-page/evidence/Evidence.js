@@ -1,12 +1,5 @@
 import { useRecoilState } from "recoil";
-import {
-    useDisclosure,
-    Button,
-    HStack,
-    Text,
-    VStack,
-    Box,
-} from "@chakra-ui/react";
+import { useDisclosure, Button, HStack, Text, VStack, Box } from "@chakra-ui/react";
 import { evidenceList } from "contexts/Article";
 import EvidenceItems from "./EvidenceItems";
 import EvidenceCreateModal from "../modal/EvidenceCreateModal";
@@ -45,7 +38,7 @@ const Evidence = () => {
                             backgroundColor="#ffd100"
                             _hover={{ bg: "#e6c000" }}
                             onClick={onOpen}
-                            width={"15vw"}
+                            width={"15rem"}
                             height={"15vh"}
                             display="flex"
                             flexDirection="column"
@@ -61,11 +54,7 @@ const Evidence = () => {
                 </HStack>
             </Box>
 
-            <EvidenceCreateModal
-                isOpen={isOpen}
-                onClose={onClose}
-                onSave={handleSaveEvidence}
-            />
+            <EvidenceCreateModal isOpen={isOpen} onClose={onClose} onSave={handleSaveEvidence} />
         </div>
     );
 };

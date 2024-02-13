@@ -14,7 +14,7 @@ const postSchedule = async (challengeId, date) => {
     try {
         const response = await axiosInstance.post(`/v1/schedule`, {
             challengeId,
-            date,
+            date: new Date(date.getTime() + 1000 * 60 * 60 * 9).toISOString(),
         });
 
         if (response.status === 200) {
