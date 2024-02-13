@@ -27,7 +27,7 @@ function StatusEditModal({ currentChallenge, selectedAvatar }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [currentStatus, setStatus] = useRecoilState(challengeStatusState);
     const [inputValue, setInputValue] = useState(
-        currentChallenge.determination
+        currentChallenge.determination,
     );
     const initialRef = React.useRef(null);
     const finalRef = React.useRef(null);
@@ -77,12 +77,12 @@ function StatusEditModal({ currentChallenge, selectedAvatar }) {
                                 patchChallengeStatus(
                                     currentChallenge.challengeId,
                                     inputValue,
-                                    currentStatus.imagePath
+                                    currentStatus.imagePath,
                                 );
                                 setStatus({
                                     determination: inputValue,
                                 });
-                                navigate(``);
+                                // navigate(``);
                                 onClose();
                             }}
                         />
