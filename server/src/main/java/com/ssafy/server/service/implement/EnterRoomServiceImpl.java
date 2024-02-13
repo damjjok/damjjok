@@ -91,7 +91,6 @@ public class EnterRoomServiceImpl implements EnterRoomService {
     }
 
     @Override
-    @Transactional
     public void deleteRoom(Integer roomId) {
         truthRooms.remove(roomId);
     }
