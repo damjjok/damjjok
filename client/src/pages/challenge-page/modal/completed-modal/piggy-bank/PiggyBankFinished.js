@@ -1,4 +1,4 @@
-import { Flex, ModalBody } from "@chakra-ui/react";
+import { Flex, Heading, ModalBody, useBreakpointValue } from "@chakra-ui/react";
 import BasicButton from "components/button/BasicButton";
 import PiggyBank from "../../../../reward-tab-page/piggy-bank/PiggyBank";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +9,7 @@ import { completeChallenge } from "apis/api/Challenge";
 function PiggyBankFinished({ nextContent, isExpired }) {
     const challenge = useRecoilValue(challengeState);
     const navigate = useNavigate();
+    const isMobile = useBreakpointValue({ base: true, md: false });
 
     const handleGroupClick = (groupId) => {
         completeChallenge(challenge.challengeId);
@@ -18,7 +19,9 @@ function PiggyBankFinished({ nextContent, isExpired }) {
         <>
             <Flex flexFlow={"column"} justifyContent={"center"} alignItems={"center"} marginY={20}>
                 {/* <StarIcon boxSize={20} color='dam.yellow'/> */}
-                <p className=" font-extrabold text-4xl text-center">금연 저금통에 이만큼 쌓였어요!</p>
+                <Heading fontSize={isMobile ? "xl" : "xx-large"}>
+                    금연 저금통에 이만큼 쌓였어요!
+                </Heading>
                 <PiggyBank />
                 {!isExpired ? <BasicButton buttonName={"챌린지 종료하기"} variant={"bigbtn"} onClick={() => handleGroupClick(challenge.groupId)} /> : <></>}
 

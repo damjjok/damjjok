@@ -9,15 +9,10 @@ export const Wrapper = styled.div`
     height: 65vh;
     padding: 20px;
 
-    .timer-container {
-        font-size: 50px;
-        font-weight: bold;
-        color: white;
-        margin-bottom: 20px;
-    }
-
     .damJJok-frame {
-        border: 1px solid black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         width: 100%;
         height: 100%;
     }

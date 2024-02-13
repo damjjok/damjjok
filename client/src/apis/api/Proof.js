@@ -3,7 +3,7 @@ import { axiosInstance } from "util/axios/AxiosInstance";
 const getEvidenceInTruthRoom = async (challengeId, setEvidences) => {
     try {
         const response = await axiosInstance.get(
-            `/v1/proof/evidence/truth-room/${challengeId}`
+            `/v1/proof/evidence/truth-room/${challengeId}`,
         );
         const data = await response.data;
         if (response.status === 200) {
@@ -20,7 +20,7 @@ const getEvidenceInTruthRoom = async (challengeId, setEvidences) => {
 const getTestimoniesInTruthRoom = async (challengeId, setTestimonies) => {
     try {
         const response = await axiosInstance.get(
-            `/v1/proof/testimony/truth-room/${challengeId}`
+            `/v1/proof/testimony/truth-room/${challengeId}`,
         );
         const data = await response.data;
         if (response.status === 200) {
@@ -40,6 +40,7 @@ const postEvidence = async (evidence) => {
         formData.append("challengeId", evidence.challengeId);
         formData.append("title", evidence.title);
         formData.append("image", evidence.image);
+        formData.append("imageDate", evidence.imageDate);
 
         const response = await axiosInstance.postForm(
             `/v1/proof/evidence`,
@@ -48,7 +49,7 @@ const postEvidence = async (evidence) => {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
-            }
+            },
         );
 
         if (response.status === 200) {
@@ -62,7 +63,7 @@ const postEvidence = async (evidence) => {
 const getEvidences = async (challengeId, setEvidences) => {
     try {
         const response = await axiosInstance.get(
-            `/v1/proof/evidence/${challengeId}`
+            `/v1/proof/evidence/${challengeId}`,
         );
 
         if (response.status === 200) {
@@ -77,7 +78,7 @@ const getEvidences = async (challengeId, setEvidences) => {
 const getEvidenceDetail = async (evidenceId, setEvidence) => {
     try {
         const response = await axiosInstance.get(
-            `/v1/proof/evidence/detail/${evidenceId}`
+            `/v1/proof/evidence/detail/${evidenceId}`,
         );
 
         if (response.status === 200) {
@@ -91,7 +92,7 @@ const getEvidenceDetail = async (evidenceId, setEvidence) => {
 const getTestimonies = async (challengeId, setTestimonies) => {
     try {
         const response = await axiosInstance.get(
-            `/v1/proof/testimony/${challengeId}`
+            `/v1/proof/testimony/${challengeId}`,
         );
         const list = await response.data.list;
         setTestimonies(list);
@@ -103,7 +104,7 @@ const getTestimonies = async (challengeId, setTestimonies) => {
 const getTestimonyDetail = async (testimonyId, setTestimony) => {
     try {
         const response = await axiosInstance.get(
-            `/v1/proof/testimony/detail/${testimonyId}`
+            `/v1/proof/testimony/detail/${testimonyId}`,
         );
         if (response.status === 200) {
             const { testimony } = await response.data;
@@ -123,7 +124,7 @@ const postTestimony = async (testimony, challengeId) => {
         };
         const response = await axiosInstance.post(
             `/v1/proof/testimony`,
-            requestBody
+            requestBody,
         );
         if (response.status === 200) {
             console.log("증언 추가 됨");

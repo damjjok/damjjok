@@ -9,17 +9,27 @@ import {
     useDisclosure,
 } from "@chakra-ui/react";
 import BasicButton from "../../../components/button/BasicButton";
-import { useNavigate } from "react-router-dom";
-import { useRecoilValue } from "recoil";
-import { createChallengeEndDate, createChallengeState } from "../../../contexts/Challenge";
+import { useNavigate, useParams } from "react-router-dom";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import {
+    challengeListState,
+    createChallengeEndDate,
+    createChallengeState,
+} from "../../../contexts/Challenge";
 import { useEffect } from "react";
-import { createChallenge } from "apis/api/Challenge";
+import { createChallenge, getChallengeList } from "apis/api/Challenge";
 
 function ChallengeCreateModal() {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const challenge = useRecoilValue(createChallengeState);
     const endDate = useRecoilValue(createChallengeEndDate);
-    const navigate = useNavigate();
+    const setCurrentChallengeList = useSetRecoilState(challengeListState);
+    const { groupId } = useParams();
+
+    const loadChallengeList = async () => {
+        const { list } = await getChallengeList(groupId);
+        setCurrentChallengeList(list);
+    };
 
     const handleClick = async () => {
         try {
@@ -47,9 +57,15 @@ function ChallengeCreateModal() {
                     <ModalCloseButton />
                     <ModalBody className="mt-16 px-8">
                         <div className="mb-8">
-                            <p className="text-2xl font-bold text-center">챌린지 생성 완료!</p>
-                            <p className="text-center">챌린지가 아래와 같이 생성되었습니다.</p>
-                            <p className="text-center">챌린지 성공을 기원합니다!</p>
+                            <p className="text-2xl font-bold text-center">
+                                챌린지 생성 완료!
+                            </p>
+                            <p className="text-center">
+                                챌린지가 아래와 같이 생성되었습니다.
+                            </p>
+                            <p className="text-center">
+                                챌린지 성공을 기원합니다!
+                            </p>
                         </div>
                         <div className="flex justify-between">
                             <p>챌린지 종료일</p>
@@ -57,13 +73,21 @@ function ChallengeCreateModal() {
                         </div>
                         <div className="flex justify-between">
                             <p>만료시 저금통 적립 금액</p>
-                            <p>{challenge.initialMoney + challenge.savedMoney * (challenge.duration / challenge.savedPeriod)} 원</p>
+                            <p>
+                                {challenge.initialMoney +
+                                    challenge.savedMoney *
+                                        (challenge.duration /
+                                            challenge.savedPeriod)}{" "}
+                                원
+                            </p>
                         </div>
                     </ModalBody>
                     <ModalFooter>
                         <BasicButton
                             className="flex justify-center"
-                            onClick={() => navigate(`/group/${challenge.groupId}/`)}
+                            onClick={() => {
+                                loadChallengeList();
+                            }}
                             buttonName={"챌린지 시작하기"}
                             variant={"bigbtn"}
                         />

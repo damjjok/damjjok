@@ -11,6 +11,7 @@ import {
     ModalOverlay,
     Text,
     VStack,
+    useBreakpointValue,
     useDisclosure,
 } from "@chakra-ui/react";
 import BasicButton from "components/button/BasicButton";
@@ -42,6 +43,7 @@ function MessageCheckModal({ nextContent, isExpired }) {
     const [isMessagesVisible, setIsMessagesVisible] = useState(false);
     const [displayCount, setDisplayCount] = useState(8); // 메시지 표시 개수 상태
     const messages = useRecoilValue(challengeCheerMessageList);
+    const isMobile = useBreakpointValue({ base: true, md: false });
 
     const handleClick = () => {
         setIsMessagesVisible(true);
@@ -50,9 +52,14 @@ function MessageCheckModal({ nextContent, isExpired }) {
     return (
         <>
             <VStack position="relative">
-                <p className=" font-extrabold text-4xl text-center py-4">
-                    내가 금연 중일 때 어떤 메시지들이 쌓여있었을까요?
-                </p>
+                <Box mb={6} textAlign={"center"}>
+                    <Heading fontSize={isMobile ? "xl" : "xx-large"}>
+                        내가 금연 중일 때
+                    </Heading>
+                    <Heading fontSize={isMobile ? "xl" : "xx-large"}>
+                        어떤 메시지들이 쌓여 있었을까요?
+                    </Heading>
+                </Box>
                 <img
                     src={postbox}
                     alt="postbox"
