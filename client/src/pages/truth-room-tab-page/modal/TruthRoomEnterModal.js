@@ -7,10 +7,7 @@ import {
     ModalOverlay,
     Text,
 } from "@chakra-ui/react";
-import {
-    challengeIdState,
-    enteringTruthRoomMemberInfoState,
-} from "contexts/TruthRoomSocket";
+import { enteringTruthRoomMemberInfoState } from "contexts/TruthRoomSocket";
 import { Link } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 
