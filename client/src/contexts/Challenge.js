@@ -43,7 +43,7 @@ export const challengeCandyCount = atom({
 export const createChallengeState = atom({
     key: "createChallengeState",
     default: {
-        duration: 0,
+        duration: 30,
         initialMoney: 0,
         savedMoney: 0,
         savedPeriod: 0,
