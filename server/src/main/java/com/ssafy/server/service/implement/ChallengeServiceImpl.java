@@ -83,7 +83,7 @@ public class ChallengeServiceImpl implements ChallengeService {
 
         challengeEntity.setStatus("PROGRESS");
         challengeEntity.setDetermination("열심히 하겠습니다!");
-        challengeEntity.setProfilePath("resources/profile/one.jpg");
+        challengeEntity.setProfilePath("avatar1.png");
 
         ChallengeEntity savedChallengeEntity = challengeRepository.save(challengeEntity);
 
