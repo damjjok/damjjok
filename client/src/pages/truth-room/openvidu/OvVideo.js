@@ -2,7 +2,7 @@ import { stepState } from "contexts/TruthRoomSocket";
 import React, { useRef, useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 
-export default function OpenViduVideoComponent({ streamManager }) {
+export default function OpenViduVideoComponent({ streamManager, styleProps }) {
     const step = useRecoilValue(stepState);
     const videoRef = useRef();
     const [roleStyle, setRoleStyle] = useState({});
@@ -25,5 +25,7 @@ export default function OpenViduVideoComponent({ streamManager }) {
         }
     }, [streamManager]);
 
-    return <video autoPlay={true} ref={videoRef} style={roleStyle} />;
+    return (
+        <video autoPlay={true} ref={videoRef} style={(roleStyle, styleProps)} />
+    );
 }
