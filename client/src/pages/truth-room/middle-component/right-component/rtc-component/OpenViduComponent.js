@@ -5,9 +5,9 @@ import "./OpenViduComponent.css";
 import UserVideoComponent from "../../../openvidu/UserVideoComponent";
 import { closeOpenviduSession } from "apis/api/TruthRoom";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { sessionKeyState } from "contexts/OpenVidu";
 import { Wrapper } from "./RtcComponent.style";
 import {
+    challengeIdState,
     enteringTruthRoomMemberInfoState,
     stepState,
 } from "contexts/TruthRoomSocket";
@@ -17,7 +17,7 @@ const APPLICATION_SERVER_URL = "https://i10e105.p.ssafy.io/";
 
 export default function OpenViduComponent() {
     const step = useRecoilValue(stepState);
-    const [sessionKey, setSessionKey] = useRecoilState(sessionKeyState);
+    const challengeId = useRecoilValue(challengeIdState); // sessionKey로 쓰일 챌린지ID
     const enteringTruthRoomMemberInfo = useRecoilValue(
         enteringTruthRoomMemberInfoState,
     );
@@ -136,7 +136,7 @@ export default function OpenViduComponent() {
     const leaveSession = useCallback(() => {
         // Leave the session
         if (session) {
-            closeOpenviduSession(sessionKey); // 지금은 테스트라 여기 뒀지만 나중에는 소켓에서 마지막 남은 사람이 나갈 때 실행됨.
+            closeOpenviduSession(challengeId); // 지금은 테스트라 여기 뒀지만 나중에는 소켓에서 마지막 남은 사람이 나갈 때 실행됨.
             session.disconnect();
         }
 
@@ -144,7 +144,6 @@ export default function OpenViduComponent() {
         OV.current = new OpenVidu();
         setSession(undefined);
         setConnectedMemberList([]);
-        setSessionKey("0");
         setPublisher(undefined);
         setDamJJok(undefined);
     }, [session]);
@@ -190,12 +189,12 @@ export default function OpenViduComponent() {
      */
     const getToken = useCallback(async () => {
         return createSession().then((sessionId) => createToken(sessionId));
-    }, [sessionKey]);
+    }, [challengeId]);
 
     const createSession = async () => {
         const response = await axios.post(
             APPLICATION_SERVER_URL + "api/v1/sessions",
-            { sessionKey: sessionKey },
+            { sessionKey: challengeId },
         );
         return response.data; // The sessionId
     };
