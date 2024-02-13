@@ -46,7 +46,7 @@ function StatusBarToast({ challenge }) {
             }
         } else {
             try {
-                postChallengeCandyCount(
+                await postChallengeCandyCount(
                     challenge.challengeId,
                     loginedUser.userId,
                 );
@@ -57,7 +57,7 @@ function StatusBarToast({ challenge }) {
                 setCandyCount(updatedCount);
                 toast({
                     title: "응원 완료!",
-                    description: `담쪽이 님을 응원했어요!`,
+                    description: `${challenge.userName} 님을 응원했어요!`,
                     status: "success",
                     duration: 9000,
                     isClosable: true,
