@@ -11,6 +11,8 @@ import com.ssafy.server.entity.CandyEntity;
 import com.ssafy.server.entity.ChallengeEntity;
 import com.ssafy.server.entity.CheeringMessageEntity;
 import com.ssafy.server.entity.UserEntity;
+import com.ssafy.server.exception.ChallengeNotFoundException;
+import com.ssafy.server.exception.UserNotFoundException;
 import com.ssafy.server.repository.*;
 import com.ssafy.server.service.CandyService;
 import com.ssafy.server.service.CheerMsgService;
@@ -34,91 +36,81 @@ public class CandyServiceImpl implements CandyService {
 
     @Override
     public ResponseEntity<? super CandyCreateResponseDto> create(CandyCreateRequestDto dto) {
-        try{
-            int challengeId = dto.getChallengeId();
-            int doctorId = dto.getUserId();
 
-            ChallengeEntity challengeEntity = challengeRepository.findByChallengeId(challengeId);
-            UserEntity userEntity = userRepository.findByUserId(doctorId);
-            CandyEntity candyEntity = new CandyEntity();
-            candyEntity.setChallengeEntity(challengeEntity);
-            candyEntity.setUserEntity(userEntity);
+        int challengeId = dto.getChallengeId();
+        int doctorId = dto.getUserId();
 
-            candyRepository.save(candyEntity);
+        ChallengeEntity challengeEntity = challengeRepository.findByChallengeId(challengeId);
+        if(challengeEntity == null) throw new ChallengeNotFoundException();
 
+        UserEntity userEntity = userRepository.findByUserId(doctorId);
+        if(userEntity == null) throw new UserNotFoundException();
 
-        }catch (Exception exception){
-            exception.printStackTrace();
-            return ResponseDto.databaseError();
-        }
+        CandyEntity candyEntity = new CandyEntity();
+        candyEntity.setChallengeEntity(challengeEntity);
+        candyEntity.setUserEntity(userEntity);
+
+        candyRepository.save(candyEntity);
+
         return CandyCreateResponseDto.success();
     }
 
     @Override
     public ResponseEntity<? super CandyCountResponseDto> count(CandyCountRequestDto dto) {
         int cnt = 0;
-        try{
-            int challengeId = dto.getChallengeId();
 
-            ChallengeEntity challengeEntity = challengeRepository.findByChallengeId(challengeId);
+        int challengeId = dto.getChallengeId();
 
-            cnt = candyRepository.countByChallengeEntity(challengeEntity);
+        ChallengeEntity challengeEntity = challengeRepository.findByChallengeId(challengeId);
+        if(challengeEntity == null) throw new ChallengeNotFoundException();
 
+        cnt = candyRepository.countByChallengeEntity(challengeEntity);
 
-        }catch (Exception exception){
-            exception.printStackTrace();
-            return ResponseDto.databaseError();
-        }
         return CandyCountResponseDto.success(cnt);
     }
 
     @Override
     public ResponseEntity<? super BestCheeringMemberResponseDto> bestMember(BestCheeringMemberRequestDto dto) {
-        try {
-            int challengeId = dto.getChallengeId();
-            ChallengeEntity challengeEntity = challengeRepository.findByChallengeId(challengeId);
 
-            // 캔디와 응원 메시지의 사용자별 집계
-            Map<UserEntity, Integer> candyCountByUser = candyRepository.findByChallengeEntity(challengeEntity)
-                    .stream()
-                    .collect(Collectors.groupingBy(CandyEntity::getUserEntity, Collectors.summingInt(e -> 1)));
+        int challengeId = dto.getChallengeId();
+        ChallengeEntity challengeEntity = challengeRepository.findByChallengeId(challengeId);
+        if(challengeEntity == null) throw new ChallengeNotFoundException();
 
-            Map<UserEntity, Integer> cheerMsgCountByUser = cheeringMessageRepository.findByChallengeEntity(challengeEntity)
-                    .stream()
-                    .collect(Collectors.groupingBy(CheeringMessageEntity::getUserEntity, Collectors.summingInt(e -> 1)));
+        // 캔디와 응원 메시지의 사용자별 집계
+        Map<UserEntity, Integer> candyCountByUser = candyRepository.findByChallengeEntity(challengeEntity)
+                .stream()
+                .collect(Collectors.groupingBy(CandyEntity::getUserEntity, Collectors.summingInt(e -> 1)));
 
-            // 사용자별로 캔디 수와 응원 메시지 수의 합계 계산 및 최대값 찾기
-            Map<UserEntity, Integer> totalSupportByUser = new HashMap<>();
+        Map<UserEntity, Integer> cheerMsgCountByUser = cheeringMessageRepository.findByChallengeEntity(challengeEntity)
+                .stream()
+                .collect(Collectors.groupingBy(CheeringMessageEntity::getUserEntity, Collectors.summingInt(e -> 1)));
 
-            // 캔디 카운트와 응원 메시지 카운트 병합
-            candyCountByUser.forEach((user, candies) -> totalSupportByUser.merge(user, candies, Integer::sum));
-            cheerMsgCountByUser.forEach((user, messages) -> totalSupportByUser.merge(user, messages, Integer::sum));
+        // 사용자별로 캔디 수와 응원 메시지 수의 합계 계산 및 최대값 찾기
+        Map<UserEntity, Integer> totalSupportByUser = new HashMap<>();
 
-            // 최대 응원 횟수와 해당 사용자 찾기
-            Map.Entry<UserEntity, Integer> bestSupporter = totalSupportByUser.entrySet().stream()
-                    .max(Map.Entry.comparingByValue())
-                    .orElse(null);
+        // 캔디 카운트와 응원 메시지 카운트 병합
+        candyCountByUser.forEach((user, candies) -> totalSupportByUser.merge(user, candies, Integer::sum));
+        cheerMsgCountByUser.forEach((user, messages) -> totalSupportByUser.merge(user, messages, Integer::sum));
 
-            if (bestSupporter == null) {
-                return ResponseEntity.ok(new BestCheeringMemberResponseDto("", 0, 0)); // 응원왕이 없는 경우
-            }
+        // 최대 응원 횟수와 해당 사용자 찾기
+        Map.Entry<UserEntity, Integer> bestSupporter = totalSupportByUser.entrySet().stream()
+                .max(Map.Entry.comparingByValue())
+                .orElse(null);
 
-            UserEntity bestUser = bestSupporter.getKey();
-            String bestUserName = bestUser.getUserName();
-            int bestSupportCount = bestSupporter.getValue();
-
-            // 캔디 카운트와 응원 메시지 카운트에서 최종 값 조회
-            int candies = candyCountByUser.getOrDefault(bestUser, 0);
-            int messages = cheerMsgCountByUser.getOrDefault(bestUser, 0);
-
-            BestCheeringMemberResponseDto responseDto = new BestCheeringMemberResponseDto(
-                    bestUserName, candies, messages);
-
-            return ResponseEntity.ok(responseDto);
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        if (bestSupporter == null) {
+            return ResponseEntity.ok(new BestCheeringMemberResponseDto("", 0, 0)); // 응원왕이 없는 경우
         }
+
+        UserEntity bestUser = bestSupporter.getKey();
+        String bestUserName = bestUser.getUserName();
+        int bestSupportCount = bestSupporter.getValue();
+
+        // 캔디 카운트와 응원 메시지 카운트에서 최종 값 조회
+        int candies = candyCountByUser.getOrDefault(bestUser, 0);
+        int messages = cheerMsgCountByUser.getOrDefault(bestUser, 0);
+
+        return BestCheeringMemberResponseDto.success(bestUserName,candies,messages);
+
     }
 
 }
