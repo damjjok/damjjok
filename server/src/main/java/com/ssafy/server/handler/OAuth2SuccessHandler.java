@@ -1,6 +1,5 @@
 package com.ssafy.server.handler;
 
-import com.ssafy.server.entity.TokenEntity;
 import com.ssafy.server.entity.UserEntity;
 import com.ssafy.server.provider.JwtProvider;
 import com.ssafy.server.repository.UserRepository;

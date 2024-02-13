@@ -27,9 +27,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
@@ -80,7 +78,7 @@ public class ChallengeServiceImpl implements ChallengeService {
         challengeEntity.setSavedPeriod(dto.getSavedPeriod());
 
         LocalDateTime challenge_endDate = LocalDateTime.now().plusDays(dto.getDuration());
-        challengeEntity.setFinalTruthRoomDate(challenge_endDate);
+        challengeEntity.setFinalTruthRoomDate(LocalDateTime.now());
         challengeEntity.setEndDate(challenge_endDate);
 
         challengeEntity.setStatus("PROGRESS");
@@ -256,20 +254,27 @@ public class ChallengeServiceImpl implements ChallengeService {
         if(cur == null) throw new ChallengeNotFoundException();
         List<ChallengeEntity> list = challengeRepository.findAll();
 
-        AtomicInteger rank = new AtomicInteger(1);
         AtomicInteger count = new AtomicInteger();
         int cur_day = (int) ChronoUnit.DAYS.between(cur.getCreatedAt().toLocalDate() , LocalDateTime.now());
 
+        Set<Integer> peroidSet = new HashSet<>();
+
         list.stream().forEach(challenge-> {
             if(challenge.getStatus().equals("PROGRESS")){
-                count.addAndGet(1);
                 int nxt_day = (int) ChronoUnit.DAYS.between(challenge.getCreatedAt().toLocalDate() , LocalDateTime.now());
-                if(cur_day < nxt_day) rank.getAndIncrement();
-                System.out.println(nxt_day);
+                peroidSet.add(nxt_day);
             }
         });
 
-        ranking = (int)(( (double)rank.get() / (double) count.get() ) * 100);
+        int rank = 0;
+        for(Integer r : peroidSet){
+            rank++;
+            if(r == cur_day){
+                break;
+            }
+        }
+
+        ranking = (int)((double)rank / peroidSet.size() * 100);
 
         return ChallengeRankResponseDto.success(ranking);
     }
