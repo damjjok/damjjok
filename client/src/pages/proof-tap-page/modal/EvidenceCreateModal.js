@@ -29,6 +29,7 @@ const EvidenceCreateModal = ({ isOpen, onClose, onSave }) => {
 
     const handleSaveClick = () => {
         setIsAlertOpen(true); // Alert 대화 상자 열기
+        console.log(newEvidence);
     };
 
     const handleConfirmSave = () => {
@@ -69,7 +70,9 @@ const EvidenceCreateModal = ({ isOpen, onClose, onSave }) => {
                     setNewEvidence((prev) => ({
                         ...prev,
                         image: file,
-                        imageDate: dateTimeOriginal, // 찍힌 시간 상태에 추가
+                        imageDate: dateTimeOriginal
+                            ? dateTimeOriginal
+                            : new Date(), // 찍힌 시간 상태에 추가
                     }));
                 });
             };
