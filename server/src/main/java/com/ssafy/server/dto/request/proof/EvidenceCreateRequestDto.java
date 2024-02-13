@@ -29,7 +29,7 @@ public class EvidenceCreateRequestDto {
     private MultipartFile image;
 
     @NotNull
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
-    @Schema(description = "메타 데이터 날짜", example = "2023-01-30T15:20:30")
-    private LocalDateTime imageDate;
+//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
+    @Schema(description = "메타 데이터 날짜", example = "2023-01-30T15:20:30.000Z")
+    private String imageDate;
 }
