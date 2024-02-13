@@ -19,10 +19,13 @@ import {
     Text,
     Wrap,
     WrapItem,
+    useDisclosure,
 } from "@chakra-ui/react";
+import { useState } from "react";
 
 const NotificationPopover = ({ alramList, isMobile, clickHandler }) => {
     const doNotReadAlramList = alramList.filter((e) => !e.readOrNot);
+    const [firstLoading, setFirstLoading] = useState(true);
     return (
         <>
             <Popover>
@@ -32,6 +35,9 @@ const NotificationPopover = ({ alramList, isMobile, clickHandler }) => {
                         backgroundColor={"#FFD100"}
                         borderRadius={"50%"}
                         width={"50%"}
+                        onClick={() => {
+                            setFirstLoading(false);
+                        }}
                         _hover={{ backgroundColor: "#3182CE" }}
                     >
                         <BellIcon></BellIcon>
@@ -52,7 +58,7 @@ const NotificationPopover = ({ alramList, isMobile, clickHandler }) => {
                     </Button>
                 </PopoverTrigger>
 
-                <PopoverContent>
+                <PopoverContent display={firstLoading ? "none" : "block"}>
                     <PopoverArrow />
                     <PopoverCloseButton />
                     <PopoverHeader>
@@ -72,14 +78,8 @@ const NotificationPopover = ({ alramList, isMobile, clickHandler }) => {
                                             <Grid
                                                 templateRows="repeat(2, 1fr)"
                                                 templateColumns="repeat(5, 1fr)"
-                                                fontWeight={
-                                                    e.readOrNot ? 300 : 700
-                                                }
-                                                color={
-                                                    e.readOrNot
-                                                        ? "dam.gray"
-                                                        : "dam.black"
-                                                }
+                                                fontWeight={e.readOrNot ? 300 : 700}
+                                                color={e.readOrNot ? "dam.gray" : "dam.black"}
                                             >
                                                 <GridItem colSpan={5}>
                                                     <Flex
@@ -87,17 +87,11 @@ const NotificationPopover = ({ alramList, isMobile, clickHandler }) => {
                                                         height="100%" // GridItem의 전체 높이를 채웁니다.
                                                         width="100%" // GridItem의 전체 너비를 채웁니다.
                                                     >
-                                                        <Text>
-                                                            {
-                                                                e.notification_message_title
-                                                            }
-                                                        </Text>
+                                                        <Text>{e.notification_message_title}</Text>
                                                     </Flex>
                                                 </GridItem>
                                                 <GridItem colSpan={5}>
-                                                    <Text>
-                                                        {e.notificationContents}
-                                                    </Text>
+                                                    <Text>{e.notificationContents}</Text>
                                                 </GridItem>
                                             </Grid>
                                         </Box>
