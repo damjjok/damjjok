@@ -33,7 +33,7 @@ function ChallengeList({ onClick }) {
     // const setChallengeState = useSetRecoilState(challengeState);
     const [currentChallengeList, setCurrentChallengeList] = useState([]);
     const [currentGroupChallengeList, setCurrentGroupChallengeList] = useState(
-        []
+        [],
     );
     const [lastChallenge, setLastChallenge] = useState([]);
 
@@ -58,12 +58,45 @@ function ChallengeList({ onClick }) {
                         updatedLastChallenge.push(challenge);
                     }
                 }
-                if (updatedCurrentGroupChallengeList.length == 0) {
-                    navigate(`./empty-challenge`);
+                // if (updatedCurrentGroupChallengeList.length === 0) {
+                //     navigate(`./empty-challenge`);
+                // } else if () {
+
+                // } else {
+                //     navigate(
+                //         `./challenge/${updatedCurrentGroupChallengeList[0].challengeId}`
+                //     );
+                // }
+                if (
+                    updatedCurrentGroupChallengeList &&
+                    updatedCurrentGroupChallengeList.length > 0
+                ) {
+                    const currentMyChallenge =
+                        updatedCurrentGroupChallengeList.find(
+                            (challenge) =>
+                                challenge.userId === loginedUser.userId &&
+                                challenge.status === "PROGRESS",
+                        );
+
+                    console.log(currentMyChallenge);
+
+                    if (currentMyChallenge) {
+                        navigate(
+                            `./challenge/${currentMyChallenge.challengeId}`,
+                        );
+                    } else {
+                        const randomCurrentChallenge =
+                            updatedCurrentGroupChallengeList.find(
+                                (challenge) => challenge.status === "PROGRESS",
+                            );
+                        if (randomCurrentChallenge) {
+                            navigate(
+                                `./challenge/${randomCurrentChallenge.challengeId}`,
+                            );
+                        }
+                    }
                 } else {
-                    navigate(
-                        `./challenge/${updatedCurrentGroupChallengeList[0].challengeId}`
-                    );
+                    navigate("./empty-challenge");
                 }
 
                 setCurrentGroupChallengeList(updatedCurrentGroupChallengeList);
@@ -123,7 +156,7 @@ function ChallengeList({ onClick }) {
                                               });
                                               navigate(
                                                   `/group/${groupId}/challenge/${challenge.challengeId}`,
-                                                  { state: { challenge } }
+                                                  { state: { challenge } },
                                               );
                                               if (onClick) onClick();
                                           }}
@@ -139,19 +172,19 @@ function ChallengeList({ onClick }) {
                                               </p>
                                               <p className="text-xs">
                                                   {new Date(
-                                                      challenge.createdAt
+                                                      challenge.createdAt,
                                                   ).toLocaleDateString()}{" "}
                                                   시작
                                               </p>
                                           </li>
                                       </Flex>
-                                  )
+                                  ),
                               )
                             : null}
                         {currentGroupChallengeList?.length > 0 &&
                             !currentGroupChallengeList.some(
                                 (challenge, index) =>
-                                    challenge.userId === loginedUser.userId
+                                    challenge.userId === loginedUser.userId,
                             ) && (
                                 <Box px={3} py={2} display={"flex"}>
                                     <Flex
@@ -160,7 +193,7 @@ function ChallengeList({ onClick }) {
                                         cursor="pointer"
                                         onClick={() => {
                                             navigate(
-                                                `/group/${groupId}/create-challenge`
+                                                `/group/${groupId}/create-challenge`,
                                             );
                                             if (onClick) onClick();
                                         }}
@@ -186,7 +219,7 @@ function ChallengeList({ onClick }) {
                                         cursor="pointer"
                                         onClick={() => {
                                             navigate(
-                                                `/group/${groupId}/create-challenge`
+                                                `/group/${groupId}/create-challenge`,
                                             );
                                             if (onClick) onClick();
                                         }}
@@ -236,7 +269,7 @@ function ChallengeList({ onClick }) {
                                         });
                                         navigate(
                                             `/group/${groupId}/last-challenge/${challenge.challengeId}`,
-                                            { state: { challenge } }
+                                            { state: { challenge } },
                                         );
                                         if (onClick) onClick();
                                     }}
@@ -261,7 +294,7 @@ function ChallengeList({ onClick }) {
                                         </p>
                                         <p className="text-xs">
                                             {new Date(
-                                                challenge.createdAt
+                                                challenge.createdAt,
                                             ).toLocaleDateString()}{" "}
                                             진행
                                         </p>
