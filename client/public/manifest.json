@@ -3,22 +3,19 @@
     "name": "담쪽이 - 함께 만드는 금연 챌린지",
     "icons": [
         {
-            "src": "./favicon.ico",
+            "src": "favicon.ico",
             "sizes": "64x64 32x32 24x24 16x16",
-            "type": "image/x-icon",
-            "purpose": "any maskable"
+            "type": "image/x-icon"
         },
         {
-            "src": "./logo192.png",
+            "src": "logo192.png",
             "type": "image/png",
-            "sizes": "192x192",
-            "purpose": "any maskable"
+            "sizes": "192x192"
         },
         {
-            "src": "./logo512.png",
+            "src": "logo512.png",
             "type": "image/png",
-            "sizes": "512x512",
-            "purpose": "any maskable"
+            "sizes": "512x512"
         }
     ],
     "start_url": "https://i10e105.p.ssafy.io/",
