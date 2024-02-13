@@ -5,6 +5,7 @@ import com.ssafy.server.common.ResponseCode;
 import com.ssafy.server.dto.websocket.MemberInfoDto;
 import com.ssafy.server.dto.websocket.TruthRoomDto;
 import com.ssafy.server.entity.ChallengeEntity;
+import com.ssafy.server.exception.ChallengeNotFoundException;
 import com.ssafy.server.exception.CustomException;
 import com.ssafy.server.exception.MembersNotFoundException;
 import com.ssafy.server.exception.RoomNotFoundException;
@@ -99,7 +100,10 @@ public class EnterRoomServiceImpl implements EnterRoomService {
     @Transactional
     public void setMemberReady(Integer roomId, String sessionId, boolean isReady) {
         TruthRoomDto room = truthRooms.get(roomId);
-        if (room != null && room.getReadyState().containsKey(sessionId)) {
+        if (room == null) {
+            throw new RoomNotFoundException();
+        }
+        if (room.getReadyState().containsKey(sessionId)) {
             room.getReadyState().put(sessionId, isReady);
             MemberInfoDto dto = room.getMembers().get(sessionId);
             dto.setReady(isReady);
@@ -120,16 +124,21 @@ public class EnterRoomServiceImpl implements EnterRoomService {
     @Transactional
     public boolean areAllMemberReady(Integer roomId) {
         TruthRoomDto room = truthRooms.get(roomId);
+        if (room == null) {
+            throw new RoomNotFoundException();
+        }
         //모두 true 이면 true 반환
-        return room != null &&
-                room.getReadyState().values().stream().allMatch(Boolean::booleanValue);
+        return room.getReadyState().values().stream().allMatch(Boolean::booleanValue);
     }
 
     @Override
     @Transactional
     public boolean isRoomEmpty(Integer roomId) {
         TruthRoomDto room = truthRooms.get(roomId);
-        return room != null && room.getMembers().isEmpty();
+        if (room == null) {
+            throw new RoomNotFoundException();
+        }
+        return room.getMembers().isEmpty();
     }
 
     @Override
@@ -157,6 +166,9 @@ public class EnterRoomServiceImpl implements EnterRoomService {
     @Transactional
     public void setChallengeState(Integer challengeId, String status) {
         ChallengeEntity challengeEntity = challengeRepository.findByChallengeId(challengeId);
+        if (challengeEntity == null) {
+            throw new ChallengeNotFoundException();
+        }
         challengeEntity.setStatus(status);
         //진실의 방 종료일을 바꿔주기
         challengeEntity.setFinalTruthRoomDate(LocalDateTime.now());
