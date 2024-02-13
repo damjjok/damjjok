@@ -23,11 +23,12 @@ import {
 import { useEffect, useState } from "react";
 import { getChallengeCandyCount } from "apis/api/Candy";
 import { getAttendanceList } from "apis/api/Attendance";
+import { getChallengeInfo } from "apis/api/Challenge";
 // import { challengeState } from "../../../../../contexts/Challenge";
 
 // profilePath 올바르게 설정될 필요성
 function StatusBar() {
-    const challenge = useRecoilValue(challengeState);
+    const [challenge, setChallenge] = useRecoilState(challengeState);
     const challengeUserId = challenge.userId;
     const loginedUser = useRecoilValue(currentUser);
     // console.log(loginedUser);
@@ -42,16 +43,39 @@ function StatusBar() {
     let today = new Date();
 
     const startedDate = new Date(challenge.createdAt);
+    const cur = new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate(),
+    );
+    const start = new Date(
+        startedDate.getFullYear(),
+        startedDate.getMonth(),
+        startedDate.getDate(),
+    );
 
     // 두 날짜 사이의 밀리초 차이를 계산합니다.
-    const diffMilliseconds = today.getTime() - startedDate.getTime();
-    const diffDays = Math.floor(diffMilliseconds / (24 * 60 * 60 * 1000));
+    const diffMilliseconds = cur - start;
+    const diffDays = Math.floor(diffMilliseconds / (24 * 60 * 60 * 1000)) + 1;
+
+    useEffect(() => {
+        const fetchChallengeData = async () => {
+            try {
+                const response = await getChallengeInfo(challenge.challengeId);
+                const updatedChallenge = response.dto;
+                setChallenge(updatedChallenge);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        fetchChallengeData();
+    }, []);
 
     useEffect(() => {
         const fetchCandyData = async () => {
             try {
                 const response = await getChallengeCandyCount(
-                    challenge.challengeId
+                    challenge.challengeId,
                 );
                 const updatedCount = response.count;
                 setCandyCount(updatedCount); // Recoil 상태에 데이터 적용
@@ -75,7 +99,7 @@ function StatusBar() {
         } else {
             fetchCandyData(); // fetchData 함수 호출
         }
-    }, [challenge, setCandyCount]);
+    }, [challenge, candyCount]);
 
     return (
         <Box width={isMobile ? "90vw" : "80vw"} marginY={"0.5rem"}>
@@ -120,7 +144,8 @@ function StatusBar() {
 
                         {/* EditModal axios 적용해야 함 */}
                         {/* 요청 API : /api/v1/challenge/{challengeId}/profile-modify */}
-                        {challenge.userId === loginedUser.userId ? (
+                        {challenge.userId === loginedUser.userId &&
+                        challenge.status === "PROGRESS" ? (
                             <StatusEditModal
                                 currentChallenge={challenge}
                                 selectedAvatar={currentStatus.profilePath}
@@ -129,8 +154,12 @@ function StatusBar() {
                     </Flex>
                 </Wrap>
                 <div className="flex items-center">
-                    <StatusBarToast challenge={challenge} />
+                    {challenge.status === "PROGRESS" ? (
+                        <StatusBarToast challenge={challenge} />
+                    ) : null}
+
                     <Box
+                        position="relative"
                         display="flex"
                         flexDirection="column"
                         alignItems="center"

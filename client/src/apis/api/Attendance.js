@@ -9,13 +9,14 @@ const postAttendance = async (challengeId) => {
         }
     } catch (error) {
         console.log(error);
+        return false;
     }
 };
 
 const getAttendanceList = async (challengeId, setAttendanceList) => {
     try {
         const response = await axiosInstance.get(
-            `/v1/attendance/${challengeId}`
+            `/v1/attendance/${challengeId}`,
         );
         const data = response.data;
 
