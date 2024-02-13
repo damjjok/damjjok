@@ -1,11 +1,4 @@
-import {
-    useDisclosure,
-    Button,
-    HStack,
-    Text,
-    VStack,
-    Box,
-} from "@chakra-ui/react";
+import { useDisclosure, Button, HStack, Text, VStack, Box, useBreakpointValue } from "@chakra-ui/react";
 import TestimonyCreateModal from "../modal/TestimonyCreateModal";
 import TestimonyItems from "./TestimonyItems";
 import { EditIcon } from "@chakra-ui/icons";
@@ -14,6 +7,7 @@ import { useParams } from "react-router-dom";
 import { getTestimonies, postTestimony } from "apis/api/Proof";
 
 const Testimony = () => {
+    const isMobile = useBreakpointValue({ base: true, md: false });
     const [testimonies, setTestimonies] = useState([]);
     const { challengeId } = useParams();
 
@@ -32,7 +26,7 @@ const Testimony = () => {
             <Text fontSize="xl" fontWeight="bold" mb={"1rem"}>
                 증언
             </Text>
-            <Box overflowX={"auto"} width={"75vw"}>
+            <Box overflowX={"auto"} width={isMobile ? "90vw" : "75vw"}>
                 <HStack spacing={4} align="stretch">
                     {testimonies.map((item, index) => (
                         <TestimonyItems key={index} {...item} />
@@ -43,7 +37,7 @@ const Testimony = () => {
                             backgroundColor="#ffd100"
                             _hover={{ bg: "#e6c000" }}
                             onClick={onOpen}
-                            width={"15vw"}
+                            width={"15rem"}
                             height={"15vh"}
                             display="flex"
                             flexDirection="column"
@@ -60,11 +54,7 @@ const Testimony = () => {
                 </HStack>
             </Box>
 
-            <TestimonyCreateModal
-                isOpen={isOpen}
-                onClose={onClose}
-                onSave={saveTestimony}
-            />
+            <TestimonyCreateModal isOpen={isOpen} onClose={onClose} onSave={saveTestimony} />
         </div>
     );
 };
