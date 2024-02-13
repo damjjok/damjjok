@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Text, Wrap, useDisclosure, useToast } from "@chakra-ui/react";
+import { Box, Button, Flex, Text, Wrap, useBreakpointValue, useDisclosure, useToast } from "@chakra-ui/react";
 import { getScheduleByChallengeId, postSchedule } from "apis/api/Schedule";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -10,6 +10,7 @@ import { challengeState } from "contexts/Challenge";
 import TruthRoomScheduleModal from "./modal/TruthRoomScheduleModal";
 
 function TruthRoomTabPage() {
+    const isMobile = useBreakpointValue({ base: true, md: false });
     const { groupId, challengeId } = useParams();
     const challenge = useRecoilValue(challengeState);
     const user = useRecoilValue(currentUser);
@@ -95,7 +96,7 @@ function TruthRoomTabPage() {
                     </Flex>
                 </Box>
                 <Wrap>
-                    {schedule && new Date(schedule ? schedule.date : "").toLocaleDateString() === today.toLocaleDateString() && (
+                    {!isMobile && schedule && new Date(schedule ? schedule.date : "").toLocaleDateString() === today.toLocaleDateString() && (
                         <Button bg={"dam.yellow"} marginTop={"10%"} size={"lg"} onClick={onOpen} borderRadius={"30px"}>
                             진실의 방 입장하기
                         </Button>
