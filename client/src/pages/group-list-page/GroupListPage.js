@@ -109,7 +109,7 @@ const GroupListPage = () => {
                         style={{
                             color: "white",
                             marginBottom: "4rem",
-                            fontSize: "4rem",
+                            fontSize: `${isMobile ? "3rem" : "5rem"}`,
                             textAlign: "center",
                         }}
                     >
