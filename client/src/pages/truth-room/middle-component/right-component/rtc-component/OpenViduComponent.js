@@ -12,6 +12,9 @@ import {
     stepState,
 } from "contexts/TruthRoomSocket";
 import { finalArgumentDamJJokState } from "contexts/TruthRoom";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import { Button } from "@chakra-ui/react";
+import BasicButton from "components/button/BasicButton";
 
 const APPLICATION_SERVER_URL = "https://i10e105.p.ssafy.io/";
 
@@ -230,34 +233,42 @@ export default function OpenViduComponent() {
                     </Wrapper>
                 </div>
                 <div id="session-header">
-                    {session === undefined ? (
-                        <div id="join">
-                            <div id="join-dialog" className="jumbotron">
-                                <form
-                                    className="form-group"
-                                    onSubmit={joinSession}
-                                >
-                                    <p className="text-center">
-                                        <input
-                                            className="btn"
-                                            name="commit"
-                                            type="submit"
-                                            value="화상 카메라 연결"
-                                        />
-                                    </p>
-                                </form>
-                            </div>
+                    <div id="join" style={{ marginTop: "10px" }}>
+                        <div id="join-dialog" className="jumbotron">
+                            {session === undefined ? (
+                                <div className="text-center">
+                                    <Button
+                                        className="btn"
+                                        onClick={joinSession}
+                                        style={{
+                                            cursor: "pointer",
+                                            borderRadius: "20px",
+                                        }}
+                                        colorScheme={"yellow"}
+                                    >
+                                        <ViewIcon boxSize={"2em"} />
+                                        &nbsp;내 화면 보여주기
+                                    </Button>
+                                </div>
+                            ) : null}
+                            {session !== undefined ? (
+                                <div className="text-center">
+                                    <Button
+                                        className="btn"
+                                        onClick={leaveSession}
+                                        style={{
+                                            cursor: "pointer",
+                                            borderRadius: "20px",
+                                        }}
+                                        colorScheme={"yellow"}
+                                    >
+                                        <ViewOffIcon boxSize={"2em"} />
+                                        &nbsp;내 화면 가리기
+                                    </Button>
+                                </div>
+                            ) : null}
                         </div>
-                    ) : null}
-                    {session !== undefined ? (
-                        <input
-                            className="btn btn-large btn-danger"
-                            type="button"
-                            id="buttonLeaveSession"
-                            onClick={leaveSession}
-                            value="Leave session"
-                        />
-                    ) : null}
+                    </div>
                 </div>
             </div>
         </div>
