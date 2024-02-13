@@ -3,6 +3,9 @@ package com.ssafy.server.service.implement;
 import com.ssafy.server.dto.request.notification.NotificationCreateRequestDto;
 import com.ssafy.server.dto.response.schedule.ScheduleDetailResponseDto;
 import com.ssafy.server.entity.*;
+import com.ssafy.server.exception.ChallengeNotFoundException;
+import com.ssafy.server.exception.GroupNotFoundException;
+import com.ssafy.server.exception.UserNotFoundException;
 import com.ssafy.server.repository.*;
 import com.ssafy.server.service.FCMAlarmService;
 import com.ssafy.server.service.NotificationService;
@@ -55,6 +58,9 @@ public class SchedulerServiceImpl implements SchedulerService {
             entityManager.merge(schedule);
             // 연관된 챌린지의 마지막 진실의 방 종료일을 오늘 날짜로 업데이트
             ChallengeEntity challengeEntity = schedule.getChallengeEntity();
+            if (challengeEntity == null) {
+                throw new ChallengeNotFoundException();
+            }
             challengeEntity.setFinalTruthRoomDate(now);
             entityManager.merge(challengeEntity);
         }
@@ -90,6 +96,9 @@ public class SchedulerServiceImpl implements SchedulerService {
                 if(user.getFcmToken() != null) {
                     NotificationCreateRequestDto dto = new NotificationCreateRequestDto();
                     GroupEntity groupEntity = groupRepository.findByGroupId(group.getGroupId());
+                    if(groupEntity == null) {
+                        throw new GroupNotFoundException();
+                    }
                     dto.setGroupName(groupEntity.getGroupName());
                     dto.setReceivingMemberId(user.getUserId());
                     dto.setCommonCodeId(304);
@@ -116,10 +125,16 @@ public class SchedulerServiceImpl implements SchedulerService {
                     if(user.getFcmToken() != null) {
                         NotificationCreateRequestDto dto = new NotificationCreateRequestDto();
                         GroupEntity groupEntity = groupRepository.findByGroupId(challenge.getGroupEntity().getGroupId());
+                        if(groupEntity == null) {
+                            throw new GroupNotFoundException();
+                        }
                         dto.setGroupName(groupEntity.getGroupName());
                         dto.setReceivingMemberId(user.getUserId());
                         dto.setCommonCodeId(303);
                         UserEntity userEntity = userRepository.findByUserId(challenge.getUserId());
+                        if (userEntity == null) {
+                            throw new UserNotFoundException();
+                        }
                         dto.setDamjjokName(userEntity.getUserName());
                         notificationService.create(dto);
                     }
@@ -135,16 +150,25 @@ public class SchedulerServiceImpl implements SchedulerService {
         challengeEntityList1.stream().forEach(challenge -> {
             if(challenge.getStatus().equals("ON")){
                 UserEntity user = userRepository.findByUserId(challenge.getUserId());
+                if (user == null) {
+                    throw new UserNotFoundException();
+                }
 
                 Period period = Period.between(challenge.getCreatedAt().toLocalDate(), challenge.getEndDate().toLocalDate());
 
                 if(user.getFcmToken() != null) {
                     NotificationCreateRequestDto dto = new NotificationCreateRequestDto();
                     GroupEntity groupEntity = groupRepository.findByGroupId(challenge.getGroupEntity().getGroupId());
+                    if (groupEntity == null) {
+                        throw new GroupNotFoundException();
+                    }
                     dto.setGroupName(groupEntity.getGroupName());
                     dto.setReceivingMemberId(user.getUserId());
                     dto.setCommonCodeId(401);
                     UserEntity userEntity = userRepository.findByUserId(challenge.getUserId());
+                    if(userEntity == null) {
+                        throw new UserNotFoundException();
+                    }
                     dto.setDamjjokName(userEntity.getUserName());
                     LocalDateTime challengeCreatedAt = challenge.getCreatedAt();
                     LocalDateTime today = LocalDateTime.now();
@@ -169,6 +193,9 @@ public class SchedulerServiceImpl implements SchedulerService {
 
         exactThreeDaysToEndChallenges.forEach(challenge -> {
             GroupEntity groupEntity = challenge.getGroupEntity();
+            if (groupEntity == null) {
+                throw new GroupNotFoundException();
+            }
             // 챌린지와 연관된 그룹의 모든 멤버에게 알림 전송
             List<UserEntity> userEntityList = groupMemberRepository.findUsersByGroupId(groupEntity.getGroupId());
             userEntityList.forEach(user -> {
@@ -222,7 +249,13 @@ public class SchedulerServiceImpl implements SchedulerService {
         todaysSchedules.forEach(schedule -> {
             ChallengeEntity challenge = schedule.getChallengeEntity();
             GroupEntity group = challenge.getGroupEntity();
+            if (group == null) {
+                throw new GroupNotFoundException();
+            }
             UserEntity createdByUser = userRepository.findByUserId(schedule.getCreatedBy());
+            if(createdByUser == null) {
+                throw new UserNotFoundException();
+            }
 
             List<UserEntity> groupMembers = groupMemberRepository.findUsersByGroupId(group.getGroupId());
             groupMembers.forEach(member -> {
@@ -253,7 +286,13 @@ public class SchedulerServiceImpl implements SchedulerService {
             if(elist.get(elist.size() - 1).getCreatedAt().isAfter(challenge.getFinalTruthRoomDate())){
 
                 GroupEntity g = groupRepository.findByGroupId(challenge.getGroupEntity().getGroupId());
+                if (g == null) {
+                    throw new GroupNotFoundException();
+                }
                 UserEntity u = userRepository.findByUserId(challenge.getUserId());
+                if(u == null) {
+                    throw new UserNotFoundException();
+                }
 
                 NotificationCreateRequestDto notificationDto = new NotificationCreateRequestDto();
                 notificationDto.setReceivingMemberId(challenge.getUserId());
