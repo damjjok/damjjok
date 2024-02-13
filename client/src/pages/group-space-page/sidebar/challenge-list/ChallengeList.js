@@ -20,8 +20,9 @@ import { useEffect, useState } from "react";
 import challengeIcon from "assets/images/currentChallengeIcon.png";
 import { useNavigate, useParams } from "react-router-dom";
 import { getChallengeList } from "apis/api/Challenge";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { currentUser, currentUserState } from "contexts/User";
+import { challengeListState } from "contexts/Challenge";
 // import { useRecoilValue } from "recoil";
 // import { challengeListState } from "../../../../context/Challenge";
 
@@ -31,7 +32,8 @@ function ChallengeList({ onClick }) {
 
     const { groupId } = useParams();
     // const setChallengeState = useSetRecoilState(challengeState);
-    const [currentChallengeList, setCurrentChallengeList] = useState([]);
+    const [currentChallengeList, setCurrentChallengeList] =
+        useRecoilState(challengeListState);
     const [currentGroupChallengeList, setCurrentGroupChallengeList] = useState(
         []
     );
@@ -42,40 +44,72 @@ function ChallengeList({ onClick }) {
             try {
                 const response = await getChallengeList(groupId);
                 const updatedChallengeList = response.list;
+
                 setCurrentChallengeList(updatedChallengeList); // currentChallengeList 업데이트
 
                 // 반복문을 돌면서 각 요소의 status에 따라 currentGroupChallengeList와 lastChallenge 배열에 추가
-                const updatedCurrentGroupChallengeList = [];
-                const updatedLastChallenge = [];
-                // if (!updatedCurrentGroupChallengeList.length) {
-                //     navigate(`./empty-challenge`);
-                // }
-                for (let i = 0; i < updatedChallengeList.length; i++) {
-                    const challenge = updatedChallengeList[i];
-                    if (challenge.status === "PROGRESS") {
-                        updatedCurrentGroupChallengeList.push(challenge);
-                    } else {
-                        updatedLastChallenge.push(challenge);
-                    }
-                }
-                if (updatedCurrentGroupChallengeList.length == 0) {
-                    navigate(`./empty-challenge`);
-                } else {
-                    navigate(
-                        `./challenge/${updatedCurrentGroupChallengeList[0].challengeId}`
-                    );
-                }
+                // const updatedCurrentGroupChallengeList = [];
+                // const updatedLastChallenge = [];
+                // // if (!updatedCurrentGroupChallengeList.length) {
+                // //     navigate(`./empty-challenge`);
+                // // }
 
-                setCurrentGroupChallengeList(updatedCurrentGroupChallengeList);
-                setLastChallenge(updatedLastChallenge);
+                // for (let i = 0; i < updatedChallengeList.length; i++) {
+                //     const challenge = updatedChallengeList[i];
+                //     if (challenge.status === "PROGRESS") {
+                //         updatedCurrentGroupChallengeList.push(challenge);
+                //     } else {
+                //         updatedLastChallenge.push(challenge);
+                //     }
+                // }
+                // if (updatedCurrentGroupChallengeList.length == 0) {
+                //     navigate(`./empty-challenge`);
+                // } else {
+                //     navigate(
+                //         `./challenge/${updatedCurrentGroupChallengeList[0].challengeId}`
+                //     );
+                // }
+
+                // setCurrentGroupChallengeList(updatedCurrentGroupChallengeList);
+                // setLastChallenge(updatedLastChallenge);
             } catch (error) {
                 console.error("챌린지 정보 불러오기 실패", error);
                 // navigate(`./empty-challenge`);
             }
         };
 
+        console.log("제발 좀 되게해주세요.");
+
         fetchData(); // fetchData 함수 호출
-    }, [groupId]);
+    }, []);
+
+    useEffect(() => {
+        if (!currentChallengeList) return;
+        const updatedCurrentGroupChallengeList = [];
+        const updatedLastChallenge = [];
+        // if (!updatedCurrentGroupChallengeList.length) {
+        //     navigate(`./empty-challenge`);
+        // }
+
+        for (let i = 0; i < currentChallengeList.length; i++) {
+            const challenge = currentChallengeList[i];
+            if (challenge.status === "PROGRESS") {
+                updatedCurrentGroupChallengeList.push(challenge);
+            } else {
+                updatedLastChallenge.push(challenge);
+            }
+        }
+        if (updatedCurrentGroupChallengeList.length == 0) {
+            navigate(`./empty-challenge`);
+        } else {
+            navigate(
+                `./challenge/${updatedCurrentGroupChallengeList[0].challengeId}`
+            );
+        }
+
+        setCurrentGroupChallengeList(updatedCurrentGroupChallengeList);
+        setLastChallenge(updatedLastChallenge);
+    }, [currentChallengeList]);
 
     // console.log(currentChallengeList);
 
