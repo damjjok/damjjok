@@ -14,7 +14,10 @@ function FinalArgumentFrame(props) {
                 <TimerComponent />
             </div>
             <div className="damJJok-frame">
-                <UserVideoComponent streamManager={finalArgumentDamJJok} />
+                <UserVideoComponent
+                    streamManager={finalArgumentDamJJok}
+                    styleProps={{ width: "1000px" }}
+                />
             </div>
         </Wrapper>
     );

@@ -94,7 +94,7 @@ export default function OpenViduComponent() {
                             videoSource: undefined,
                             publishAudio: true,
                             publishVideo: true,
-                            resolution: "1280x720",
+                            resolution: "640x360",
                             frameRate: 30,
                             insertMode: "APPEND",
                             mirror: false,
