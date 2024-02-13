@@ -8,7 +8,7 @@ import {
     Box,
     useBreakpointValue,
 } from "@chakra-ui/react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { createChallengeState } from "../../../contexts/Challenge";
 
 function ChallengeDuration() {
@@ -20,7 +20,7 @@ function ChallengeDuration() {
 
     const isMobile = useBreakpointValue({ base: true, md: false });
 
-    const [challenge, setChallenge] = useRecoilState(createChallengeState);
+    const setChallenge = useSetRecoilState(createChallengeState);
     const handleSliderChange = (value) => {
         setChallenge((oldChallenge) => ({
             ...oldChallenge,
@@ -32,7 +32,7 @@ function ChallengeDuration() {
         <Box>
             <Slider
                 onChange={handleSliderChange}
-                defaultValue={0}
+                defaultValue={30}
                 min={30}
                 max={180}
                 step={30}

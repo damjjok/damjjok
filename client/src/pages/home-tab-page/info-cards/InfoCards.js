@@ -1,6 +1,15 @@
 import getMoneyGif from "assets/gifs/getMoney.gif";
 import gradeGif from "assets/gifs/grade.gif";
-import { Box, Flex, HStack, Image, Select, Text, VStack, useBreakpointValue } from "@chakra-ui/react";
+import {
+    Box,
+    Flex,
+    HStack,
+    Image,
+    Select,
+    Text,
+    VStack,
+    useBreakpointValue,
+} from "@chakra-ui/react";
 import lv1 from "assets/gifs/lv1blood-pressure.gif";
 import lv2 from "assets/gifs/lv2blood-oxygen.gif";
 import lv3 from "assets/gifs/lv3beating-heart.gif";
@@ -82,7 +91,9 @@ function InfoCards({ diffDays, diffMilliseconds, challengeId }) {
     const isMobile = useBreakpointValue({ base: true, md: false });
 
     useEffect(() => {
-        const sortedLevelData = [...levelData].sort((a, b) => b.duration - a.duration);
+        const sortedLevelData = [...levelData].sort(
+            (a, b) => b.duration - a.duration
+        );
         const level = sortedLevelData.find((level) => {
             const durationMilliseconds = level.duration * 1000;
             return diffMilliseconds >= durationMilliseconds;
@@ -94,6 +105,7 @@ function InfoCards({ diffDays, diffMilliseconds, challengeId }) {
     }, [currentLevel, challengeId]);
 
     useEffect(() => {
+        if (!challengeId) return;
         const fetchData = async () => {
             try {
                 const response = await getChallengeRanking(challengeId);
@@ -117,14 +129,21 @@ function InfoCards({ diffDays, diffMilliseconds, challengeId }) {
             >
                 <VStack spacing={2} alignItems="center">
                     <Box w="20" h="20" className="overflow-hidden">
-                        <Image src={getMoneyGif} alt="getMoneyGif" boxSize="100%" className=" rounded-xl" />
+                        <Image
+                            src={getMoneyGif}
+                            alt="getMoneyGif"
+                            boxSize="100%"
+                            className=" rounded-xl"
+                        />
                     </Box>
                     <Box
                         h="4" // 텍스트 박스의 높이를 조절합니다.
                         // className="overflow-hidden"
                     >
                         <Flex alignItems={"center"}>
-                            <Text className="text-xs text-center font-semibold">하루</Text>
+                            <Text className="text-xs text-center font-semibold">
+                                하루
+                            </Text>
                             <Select
                                 size="xs"
                                 borderColor="dam.yellow"
@@ -137,7 +156,9 @@ function InfoCards({ diffDays, diffMilliseconds, challengeId }) {
                                 <option value="2">2</option>
                                 <option value="3">3</option>
                             </Select>
-                            <Text className="text-xs text-center font-semibold">갑 기준</Text>
+                            <Text className="text-xs text-center font-semibold">
+                                갑 기준
+                            </Text>
                         </Flex>
                     </Box>
                     <Box
@@ -158,19 +179,29 @@ function InfoCards({ diffDays, diffMilliseconds, challengeId }) {
             >
                 <VStack spacing={2} alignItems="center">
                     <Box w="30" h="20" className="overflow-visible">
-                        <Image src={gradeGif} alt="gradeGif" boxSize="100%" className=" rounded-xl" objectFit="cover" />
+                        <Image
+                            src={gradeGif}
+                            alt="gradeGif"
+                            boxSize="100%"
+                            className=" rounded-xl"
+                            objectFit="cover"
+                        />
                     </Box>
                     <Box
                         h="4" // 텍스트 박스의 높이를 조절합니다.
                         className="overflow-hidden"
                     >
-                        <Text className="text-xs text-center font-semibold">전체 챌린저 중</Text>
+                        <Text className="text-xs text-center font-semibold">
+                            전체 챌린저 중
+                        </Text>
                     </Box>
                     <Box
                         h="8" // 텍스트 박스의 높이를 조절합니다.
                         className="overflow-visible"
                     >
-                        <Text className="text-center font-semibold">상위 {currentRank}%에요!</Text>
+                        <Text className="text-center font-semibold">
+                            상위 {currentRank}%에요!
+                        </Text>
                     </Box>
                 </VStack>
             </Box>
@@ -181,19 +212,29 @@ function InfoCards({ diffDays, diffMilliseconds, challengeId }) {
             >
                 <VStack spacing={2} alignItems="center">
                     <Box w="20" h="20" className="overflow-hidden">
-                        <Image src={levelData[currentLevel - 1].img} alt="currentlvimg" boxSize="100%" className=" rounded-xl" objectFit="cover" />
+                        <Image
+                            src={levelData[currentLevel - 1].img}
+                            alt="currentlvimg"
+                            boxSize="100%"
+                            className=" rounded-xl"
+                            objectFit="cover"
+                        />
                     </Box>
                     <Box
                         h="4" // 텍스트 박스의 높이를 조절합니다.
                         className="overflow-hidden"
                     >
-                        <Text className="text-xs text-center font-semibold">{`금연 건강 레벨 ${levelData[currentLevel - 1].key}!`}</Text>
+                        <Text className="text-xs text-center font-semibold">{`금연 건강 레벨 ${
+                            levelData[currentLevel - 1].key
+                        }!`}</Text>
                     </Box>
                     <Box
                         h="8" // 텍스트 박스의 높이를 조절합니다.
                         className="overflow-visible"
                     >
-                        <Text className="text-center font-semibold">{`${levelData[currentLevel - 1].text}`}</Text>
+                        <Text className="text-center font-semibold">{`${
+                            levelData[currentLevel - 1].text
+                        }`}</Text>
                     </Box>
                 </VStack>
             </Box>

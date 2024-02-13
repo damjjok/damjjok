@@ -20,8 +20,9 @@ import { useEffect, useState } from "react";
 import challengeIcon from "assets/images/currentChallengeIcon.png";
 import { useNavigate, useParams } from "react-router-dom";
 import { getChallengeList } from "apis/api/Challenge";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { currentUser, currentUserState } from "contexts/User";
+import { challengeListState } from "contexts/Challenge";
 // import { useRecoilValue } from "recoil";
 // import { challengeListState } from "../../../../context/Challenge";
 
@@ -31,9 +32,10 @@ function ChallengeList({ onClick }) {
 
     const { groupId } = useParams();
     // const setChallengeState = useSetRecoilState(challengeState);
-    const [currentChallengeList, setCurrentChallengeList] = useState([]);
+    const [currentChallengeList, setCurrentChallengeList] =
+        useRecoilState(challengeListState);
     const [currentGroupChallengeList, setCurrentGroupChallengeList] = useState(
-        [],
+        []
     );
     const [lastChallenge, setLastChallenge] = useState([]);
 
@@ -42,73 +44,67 @@ function ChallengeList({ onClick }) {
             try {
                 const response = await getChallengeList(groupId);
                 const updatedChallengeList = response.list;
+
                 setCurrentChallengeList(updatedChallengeList); // currentChallengeList 업데이트
-
-                // 반복문을 돌면서 각 요소의 status에 따라 currentGroupChallengeList와 lastChallenge 배열에 추가
-                const updatedCurrentGroupChallengeList = [];
-                const updatedLastChallenge = [];
-                // if (!updatedCurrentGroupChallengeList.length) {
-                //     navigate(`./empty-challenge`);
-                // }
-                for (let i = 0; i < updatedChallengeList.length; i++) {
-                    const challenge = updatedChallengeList[i];
-                    if (challenge.status === "PROGRESS") {
-                        updatedCurrentGroupChallengeList.push(challenge);
-                    } else {
-                        updatedLastChallenge.push(challenge);
-                    }
-                }
-                // if (updatedCurrentGroupChallengeList.length === 0) {
-                //     navigate(`./empty-challenge`);
-                // } else if () {
-
-                // } else {
-                //     navigate(
-                //         `./challenge/${updatedCurrentGroupChallengeList[0].challengeId}`
-                //     );
-                // }
-                if (
-                    updatedCurrentGroupChallengeList &&
-                    updatedCurrentGroupChallengeList.length > 0
-                ) {
-                    const currentMyChallenge =
-                        updatedCurrentGroupChallengeList.find(
-                            (challenge) =>
-                                challenge.userId === loginedUser.userId &&
-                                challenge.status === "PROGRESS",
-                        );
-
-                    console.log(currentMyChallenge);
-
-                    if (currentMyChallenge) {
-                        navigate(
-                            `./challenge/${currentMyChallenge.challengeId}`,
-                        );
-                    } else {
-                        const randomCurrentChallenge =
-                            updatedCurrentGroupChallengeList.find(
-                                (challenge) => challenge.status === "PROGRESS",
-                            );
-                        if (randomCurrentChallenge) {
-                            navigate(
-                                `./challenge/${randomCurrentChallenge.challengeId}`,
-                            );
-                        }
-                    }
-                } else {
-                    navigate("./empty-challenge");
-                }
-
-                setCurrentGroupChallengeList(updatedCurrentGroupChallengeList);
-                setLastChallenge(updatedLastChallenge);
             } catch (error) {
                 console.error("챌린지 정보 불러오기 실패", error);
                 // navigate(`./empty-challenge`);
             }
         };
 
+        console.log("제발 좀 되게해주세요.");
+
         fetchData(); // fetchData 함수 호출
-    }, [groupId]);
+    }, []);
+
+    useEffect(() => {
+        if (!currentChallengeList) return;
+        const updatedCurrentGroupChallengeList = [];
+        const updatedLastChallenge = [];
+        // if (!updatedCurrentGroupChallengeList.length) {
+        //     navigate(`./empty-challenge`);
+        // }
+
+        for (let i = 0; i < currentChallengeList.length; i++) {
+            const challenge = currentChallengeList[i];
+            if (challenge.status === "PROGRESS") {
+                updatedCurrentGroupChallengeList.push(challenge);
+            } else {
+                updatedLastChallenge.push(challenge);
+            }
+        }
+        if (
+            updatedCurrentGroupChallengeList &&
+            updatedCurrentGroupChallengeList.length > 0
+        ) {
+            const currentMyChallenge = updatedCurrentGroupChallengeList.find(
+                (challenge) =>
+                    challenge.userId === loginedUser.userId &&
+                    challenge.status === "PROGRESS"
+            );
+
+            console.log(currentMyChallenge);
+
+            if (currentMyChallenge) {
+                navigate(`./challenge/${currentMyChallenge.challengeId}`);
+            } else {
+                const randomCurrentChallenge =
+                    updatedCurrentGroupChallengeList.find(
+                        (challenge) => challenge.status === "PROGRESS"
+                    );
+                if (randomCurrentChallenge) {
+                    navigate(
+                        `./challenge/${randomCurrentChallenge.challengeId}`
+                    );
+                }
+            }
+        } else {
+            navigate("./empty-challenge");
+        }
+
+        setCurrentGroupChallengeList(updatedCurrentGroupChallengeList);
+        setLastChallenge(updatedLastChallenge);
+    }, [currentChallengeList]);
 
     // console.log(currentChallengeList);
 
@@ -156,7 +152,7 @@ function ChallengeList({ onClick }) {
                                               });
                                               navigate(
                                                   `/group/${groupId}/challenge/${challenge.challengeId}`,
-                                                  { state: { challenge } },
+                                                  { state: { challenge } }
                                               );
                                               if (onClick) onClick();
                                           }}
@@ -172,19 +168,19 @@ function ChallengeList({ onClick }) {
                                               </p>
                                               <p className="text-xs">
                                                   {new Date(
-                                                      challenge.createdAt,
+                                                      challenge.createdAt
                                                   ).toLocaleDateString()}{" "}
                                                   시작
                                               </p>
                                           </li>
                                       </Flex>
-                                  ),
+                                  )
                               )
                             : null}
                         {currentGroupChallengeList?.length > 0 &&
                             !currentGroupChallengeList.some(
                                 (challenge, index) =>
-                                    challenge.userId === loginedUser.userId,
+                                    challenge.userId === loginedUser.userId
                             ) && (
                                 <Box px={3} py={2} display={"flex"}>
                                     <Flex
@@ -193,7 +189,7 @@ function ChallengeList({ onClick }) {
                                         cursor="pointer"
                                         onClick={() => {
                                             navigate(
-                                                `/group/${groupId}/create-challenge`,
+                                                `/group/${groupId}/create-challenge`
                                             );
                                             if (onClick) onClick();
                                         }}
@@ -219,7 +215,7 @@ function ChallengeList({ onClick }) {
                                         cursor="pointer"
                                         onClick={() => {
                                             navigate(
-                                                `/group/${groupId}/create-challenge`,
+                                                `/group/${groupId}/create-challenge`
                                             );
                                             if (onClick) onClick();
                                         }}
@@ -269,7 +265,7 @@ function ChallengeList({ onClick }) {
                                         });
                                         navigate(
                                             `/group/${groupId}/last-challenge/${challenge.challengeId}`,
-                                            { state: { challenge } },
+                                            { state: { challenge } }
                                         );
                                         if (onClick) onClick();
                                     }}
@@ -294,7 +290,7 @@ function ChallengeList({ onClick }) {
                                         </p>
                                         <p className="text-xs">
                                             {new Date(
-                                                challenge.createdAt,
+                                                challenge.createdAt
                                             ).toLocaleDateString()}{" "}
                                             진행
                                         </p>
