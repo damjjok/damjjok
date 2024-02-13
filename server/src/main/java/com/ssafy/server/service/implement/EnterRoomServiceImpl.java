@@ -1,15 +1,18 @@
 package com.ssafy.server.service.implement;
 
 import com.google.firebase.auth.UserInfo;
+import com.ssafy.server.common.ResponseCode;
 import com.ssafy.server.dto.websocket.MemberInfoDto;
 import com.ssafy.server.dto.websocket.TruthRoomDto;
 import com.ssafy.server.entity.ChallengeEntity;
+import com.ssafy.server.exception.CustomException;
 import com.ssafy.server.exception.MembersNotFoundException;
 import com.ssafy.server.exception.RoomNotFoundException;
 import com.ssafy.server.repository.ChallengeRepository;
 import com.ssafy.server.service.EnterRoomService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -77,7 +80,13 @@ public class EnterRoomServiceImpl implements EnterRoomService {
             throw new RoomNotFoundException();
         }
         //멤버 지우기
+        if(!room.getMembers().containsKey(sessionId)){
+            throw new MembersNotFoundException();
+        }
         room.getMembers().remove(sessionId);
+        if (!room.getReadyState().remove(sessionId)){
+            throw new CustomException(HttpStatus.BAD_REQUEST, ResponseCode.BAD_REQUEST, "해당 방에 준비상태가 없습니다.");
+        }
         room.getReadyState().remove(sessionId);
     }
 

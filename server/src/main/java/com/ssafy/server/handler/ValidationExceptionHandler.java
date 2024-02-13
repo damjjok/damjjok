@@ -5,6 +5,8 @@ import com.ssafy.server.dto.ResponseDto;
 import com.ssafy.server.exception.*;
 import io.lettuce.core.RedisCommandExecutionException;
 import io.lettuce.core.RedisException;
+import io.openvidu.java.client.OpenViduHttpException;
+import io.openvidu.java.client.OpenViduJavaClientException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.RedisConnectionFailureException;
@@ -64,27 +66,27 @@ public class ValidationExceptionHandler {
     // JPA 관련 예외처리
     @ExceptionHandler(DataAccessException.class)
     public ResponseEntity<ResponseDto> handleDataAccessException() {
-        ResponseDto responseBody = new ResponseDto(ResponseCode.BAD_REQUEST, "JPA 관련 에러");
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+        ResponseDto responseBody = new ResponseDto(ResponseCode.INTERNAL_SERVER_ERROR, "JPA 관련 에러");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ResponseDto> handleConstraintViolationException() {
-        ResponseDto responseBody = new ResponseDto(ResponseCode.BAD_REQUEST, "데이터베이스 제약 조건이 위반되었습니다.");
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+        ResponseDto responseBody = new ResponseDto(ResponseCode.INTERNAL_SERVER_ERROR, "데이터베이스 제약 조건이 위반되었습니다.");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
     }
 
     // Redis 관련 예외처리
     @ExceptionHandler(RedisConnectionFailureException.class)
     public ResponseEntity<Object> handleRedisConnectionFailure(RedisConnectionFailureException ex) {
         ResponseDto response = new ResponseDto(ResponseCode.REDIS_CONNECTION_ERROR, "Redis 서버에 연결할 수 없습니다.");
-        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(response);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
 
     @ExceptionHandler(RedisCommandExecutionException.class)
     public ResponseEntity<Object> handleRedisCommandExecutionException(RedisCommandExecutionException ex) {
         ResponseDto response = new ResponseDto(ResponseCode.REDIS_COMMAND_FAILURE, "Redis 명령 실행 오류가 발생했습니다.");
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
 
     @ExceptionHandler(RedisException.class)
@@ -98,4 +100,18 @@ public class ValidationExceptionHandler {
         ResponseDto response = new ResponseDto(ResponseCode.BAD_REQUEST, "해당 방에 멤버값이 없습니다.");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
+
+    // OpenVidu
+    @ExceptionHandler(OpenViduJavaClientException.class)
+    public ResponseEntity<Object> handleOpenViduJavaClientException(OpenViduJavaClientException ex) {
+        ResponseDto response = new ResponseDto("OPENVIDU_JAVA_CLIENT_ERROR", "Redis 작업 중 오류가 발생했습니다.");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+    }
+
+    @ExceptionHandler(OpenViduHttpException.class)
+    public ResponseEntity<Object> handleOpenViduHttpException(OpenViduHttpException ex) {
+        ResponseDto response = new ResponseDto("OPENVIDU_HTTP_ERROR", "Redis 작업 중 오류가 발생했습니다.");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+    }
 }
+
