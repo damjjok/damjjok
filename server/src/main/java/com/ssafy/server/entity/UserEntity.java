@@ -47,6 +47,7 @@ public class UserEntity {
         this.sex = dto.getSex();
         this.email = dto.getEmail();
         this.userName = dto.getName();
+        this.fcmToken = "";
     }
 
     public UserEntity(String email, String userName){
