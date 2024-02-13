@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,7 +55,7 @@ public class EvidenceServiceImpl implements EvidenceService {
             int userId = customUserDetails.getUserId();
             String title = dto.getTitle();
 
-//            String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\files";
+//           String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\files";
 
             String projectPath = "/var/www/html/images";
             String fileName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
@@ -68,7 +69,9 @@ public class EvidenceServiceImpl implements EvidenceService {
             evidenceEntity.setCreatedBy(userId);
             evidenceEntity.setEvidenceTitle(title);
             evidenceEntity.setChallengeEntity(challengeEntity);
-            evidenceEntity.setImageDate(dto.getImageDate()); //메타데이터로 변경
+            DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+            LocalDateTime dateTime = LocalDateTime.parse(dto.getImageDate(), formatter);
+            evidenceEntity.setImageDate(dateTime); //메타데이터로 변경
             evidenceEntity.setImagePath("/images/" + fileName);
             evidenceEntity.setUpdatedBy(userId);
 
