@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useRecoilState } from "recoil";
+import EXIF from "exif-js";
 import { evidenceData } from "contexts/Article";
 import {
     Modal,
@@ -52,11 +53,25 @@ const EvidenceCreateModal = ({ isOpen, onClose, onSave }) => {
                 //     title: data.title,
                 // });
 
-                setNewEvidence({
-                    ...newEvidence,
-                    image: file,
-                });
+                // setNewEvidence({
+                //     ...newEvidence,
+                //     image: file,
+                // });
+
                 setPreviewImage(reader.result); // 미리보기 이미지 상태를 업데이트
+
+                // EXIF 데이터 읽기
+                EXIF.getData(file, function () {
+                    const dateTimeOriginal = EXIF.getTag(
+                        this,
+                        "DateTimeOriginal",
+                    ); // 찍힌 시간 추출
+                    setNewEvidence((prev) => ({
+                        ...prev,
+                        image: file,
+                        imageDate: dateTimeOriginal, // 찍힌 시간 상태에 추가
+                    }));
+                });
             };
             reader.readAsDataURL(file);
         }
