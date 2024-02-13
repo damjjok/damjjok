@@ -8,7 +8,7 @@ import { useRecoilValue } from "recoil";
 import { useEffect, useState } from "react";
 import {} from "@chakra-ui/react";
 import logo from "assets/images/logo.png";
-import { ArrowDownIcon } from "@chakra-ui/icons";
+import { ChevronDownIcon } from "@chakra-ui/icons";
 import BasicButton from "components/button/BasicButton";
 
 const LandingPage = () => {
@@ -117,7 +117,7 @@ const LandingPage = () => {
                         },
                     }}
                 >
-                    <ArrowDownIcon color="#fdd100" boxSize="5rem" />
+                    <ChevronDownIcon color="#fdd100" boxSize="8rem" />
                 </Box>
             </Box>
 

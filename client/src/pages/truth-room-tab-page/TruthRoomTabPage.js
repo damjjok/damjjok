@@ -4,15 +4,17 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import TruthRoomEnterModal from "./modal/TruthRoomEnterModal";
 import TruthRoomTabImg from "assets/images/truth-room-tab-img.png";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { currentUser } from "contexts/User";
 import { challengeState } from "contexts/Challenge";
 import TruthRoomScheduleModal from "./modal/TruthRoomScheduleModal";
+import { challengeIdState } from "contexts/TruthRoomSocket";
 
 function TruthRoomTabPage() {
     const isMobile = useBreakpointValue({ base: true, md: false });
     const { groupId, challengeId } = useParams();
     const challenge = useRecoilValue(challengeState);
+    const setChallengeId = useSetRecoilState(challengeIdState); // 진실의 방 소켓에 쓰일 challengeId
     const user = useRecoilValue(currentUser);
     const toast = useToast();
     const [schedule, getSchedule] = useState({
@@ -47,6 +49,7 @@ function TruthRoomTabPage() {
 
     useEffect(() => {
         getScheduleByChallengeId(challengeId, getSchedule);
+        setChallengeId(challengeId); // 진실의 방 소켓에 쓰일 challengeId set
     }, [challengeId]);
 
     const { isOpen, onOpen, onClose } = useDisclosure();
