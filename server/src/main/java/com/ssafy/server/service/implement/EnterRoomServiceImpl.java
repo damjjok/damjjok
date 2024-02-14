@@ -57,6 +57,10 @@ public class EnterRoomServiceImpl implements EnterRoomService {
             //멤버 지우기
             room.getMembers().remove(sessionId);
             room.getReadyState().remove(sessionId);
+            room.getFineVotes().remove(sessionId);
+            room.getPassOrFail().remove(sessionId);
+            room.getFinalArgumentReadyState().remove(sessionId);
+            room.getEvidenceNextStage().remove(sessionId);
         }
     }
     @Override
