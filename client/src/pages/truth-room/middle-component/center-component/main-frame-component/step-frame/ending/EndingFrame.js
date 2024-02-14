@@ -8,23 +8,23 @@ import { enteringTruthRoomMemberInfoState } from "contexts/TruthRoomSocket";
 
 function EndingFrame(props) {
     const enteringTruthRoomMemberInfo = useRecoilValue(
-        enteringTruthRoomMemberInfoState
+        enteringTruthRoomMemberInfoState,
     );
     const damJJokName = useRecoilValue(damJJokNameState);
 
     if (enteringTruthRoomMemberInfo.role === "Damjjok") {
         return (
             <SmallFrameComponent
-                width={900}
-                height={600}
+                width={800}
+                height={500}
                 content={<EndingDamJJokFrame />}
             ></SmallFrameComponent>
         );
     } else {
         return (
             <SmallFrameComponent
-                width={900}
-                height={600}
+                width={800}
+                height={500}
                 content={<EndingPhDFrame damJJokName={damJJokName} />}
             ></SmallFrameComponent>
         );

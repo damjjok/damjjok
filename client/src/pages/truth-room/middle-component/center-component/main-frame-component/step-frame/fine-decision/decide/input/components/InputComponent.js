@@ -19,7 +19,7 @@ function InputComponent(props) {
             setErrorMessage(
                 "이때까지 모인 금액(" +
                     gatheredMoney +
-                    "원) 이하의 값만 벌금으로 설정할 수 있어요!"
+                    "원) 이하의 값만 벌금으로 설정할 수 있어요!",
             );
             // setInputValue(gatheredMoney);
         } else {
@@ -31,7 +31,7 @@ function InputComponent(props) {
     // 버튼 클릭 시 호출될 함수입니다.
     const handleButtonClick = (percent) => {
         // Recoil 상태의 값을 입력 필드에 설정합니다.
-        setInputValue(gatheredMoney * percent);
+        setInputValue(Math.floor(gatheredMoney * percent));
         setErrorMessage("");
     };
 
