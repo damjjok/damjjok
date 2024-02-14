@@ -111,7 +111,7 @@ const getSavedMoney = async (challengeId, setGatheredMoney) => {
         );
         if (response.status === 200) {
             console.log("saved money: " + response.data.savedMoney);
-            setGatheredMoney(response.savedMoney);
+            setGatheredMoney(response.data.savedMoney);
         }
     } catch (error) {
         console.log(error);
