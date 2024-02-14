@@ -31,10 +31,10 @@ function LastChallengePage() {
     const isExpired = "True";
     const isMobile = useBreakpointValue({ base: true, md: false });
     const [cheerMessageList, setCheerMessageList] = useRecoilState(
-        challengeCheerMessageList,
+        challengeCheerMessageList
     );
     const resetCheerMessageListAtom = useResetRecoilState(
-        challengeCheerMessageList,
+        challengeCheerMessageList
     );
 
     useEffect(() => {
@@ -64,12 +64,12 @@ function LastChallengePage() {
     const end = new Date(
         endDate.getFullYear(),
         endDate.getMonth(),
-        endDate.getDate(),
+        endDate.getDate()
     );
     const start = new Date(
         startedDate.getFullYear(),
         startedDate.getMonth(),
-        startedDate.getDate(),
+        startedDate.getDate()
     );
     const diffMilliseconds = end - start;
     const diffDays = Math.floor(diffMilliseconds / (24 * 60 * 60 * 1000)) + 1;
@@ -129,6 +129,7 @@ function LastChallengePage() {
                             diffDays={diffDays}
                             diffMilliseconds={diffMilliseconds}
                             challengeId={currentChallenge.challengeId}
+                            isExpired={isExpired}
                         />
                     </VStack>
                     {challenge.status === "SUCCESS" ? (
