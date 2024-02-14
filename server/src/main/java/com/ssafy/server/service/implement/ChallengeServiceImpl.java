@@ -223,6 +223,7 @@ public class ChallengeServiceImpl implements ChallengeService {
         ChallengeEntity entity = challengeRepository.findByChallengeId(dto.getChallengeId());
         if(entity == null) throw new ChallengeNotFoundException();
 
+        if(dto.getStatus().equals("FAIL")) entity.setEndDate(LocalDateTime.now());
         entity.setStatus(dto.getStatus());
 
         challengeRepository.save(entity);
