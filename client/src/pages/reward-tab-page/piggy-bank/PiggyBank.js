@@ -27,7 +27,7 @@ function PiggyBank(progress = 0.2) {
             </div>
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[400px] h-fit text-center py-4">
                 <p className=" font-bold">
-                    누적 금액 :
+                    누적 금액 :{" "}
                     {currentChallenge.initialMoney +
                         currentChallenge.savedMoney *
                             Math.floor(
