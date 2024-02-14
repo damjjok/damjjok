@@ -19,7 +19,10 @@ import {} from "@chakra-ui/react";
 import logo from "assets/images/logo.png";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import BasicButton from "components/button/BasicButton";
-
+import mockup1 from "assets/images/mockuppg1.png";
+import mockup2 from "assets/images/mockuppg2.png";
+import mockup3 from "assets/images/mockuppg3.png";
+import mockup4 from "assets/images/mockuppg4.png";
 const LandingPage = () => {
     // const { isOpen, onOpen, onClose } = useDisclosure();
     // 만약 api연결한다면 회원가입 버튼을 눌렀을때 같은 아이디가 db에 있는지 이메
@@ -243,7 +246,7 @@ const LandingPage = () => {
                         <Box flex="1">
                             {/* 여기에 Image 컴포넌트를 사용하거나, backgroundImage 속성을 사용할 수 있습니다. */}
                             <Image
-                                src={logo}
+                                src={mockup1}
                                 alt="설명"
                                 objectFit="cover"
                                 height="100%"
@@ -265,7 +268,7 @@ const LandingPage = () => {
                         <Box flex="1">
                             {/* 여기에 Image 컴포넌트를 사용하거나, backgroundImage 속성을 사용할 수 있습니다. */}
                             <Image
-                                src={logo}
+                                src={mockup2}
                                 alt="설명"
                                 objectFit="cover"
                                 height="100%"
@@ -320,7 +323,7 @@ const LandingPage = () => {
                         <Box flex="1">
                             {/* 여기에 Image 컴포넌트를 사용하거나, backgroundImage 속성을 사용할 수 있습니다. */}
                             <Image
-                                src={logo}
+                                src={mockup3}
                                 alt="설명"
                                 objectFit="cover"
                                 height="100%"
@@ -340,7 +343,7 @@ const LandingPage = () => {
                         <Box flex="1">
                             {/* 여기에 Image 컴포넌트를 사용하거나, backgroundImage 속성을 사용할 수 있습니다. */}
                             <Image
-                                src={logo}
+                                src={mockup4}
                                 alt="설명"
                                 objectFit="cover"
                                 height="100%"
