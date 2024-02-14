@@ -12,7 +12,7 @@ function FinalArgumentFrame(props) {
             <div className="damJJok-frame">
                 <UserVideoComponent
                     streamManager={finalArgumentDamJJok}
-                    styleProps={{ width: "800px" }}
+                    styleProps={{ width: "1000px" }}
                 />
             </div>
         </Wrapper>
