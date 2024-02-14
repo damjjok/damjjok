@@ -125,14 +125,14 @@ public class NotificationServiceImpl implements NotificationService {
 
         int commonCodeId = dto.getCommonCodeId();
 
-        if(commonCodeId == 201 || commonCodeId == 301 ||
-                commonCodeId == 303  || commonCodeId == 601 || commonCodeId == 603){
+        if(commonCodeId == 201 || commonCodeId == 301 || commonCodeId == 303  ||
+                commonCodeId == 601 || commonCodeId == 501 || commonCodeId == 602 || commonCodeId == 603){
             messageTemplate = temp
                     .replace("{damjjokName}", dto.getDamjjokName())
                     .replace("{groupName}", groupName);
         }
         else if(commonCodeId == 101 || commonCodeId == 302
-                || commonCodeId == 304 || commonCodeId == 602){
+                || commonCodeId == 304){
             messageTemplate = temp
                     .replace("{groupName}", groupName);
         }
@@ -141,11 +141,6 @@ public class NotificationServiceImpl implements NotificationService {
                     .replace("{damjjokName}", dto.getDamjjokName())
                     .replace("{groupName}", groupName)
                     .replace("{day}", day);
-        }
-        else if(commonCodeId == 501){
-            messageTemplate = temp
-                    .replace("{senderName}", senderName)
-                    .replace("{groupName}", groupName);
         }
 
         // 실제 알림 전송
