@@ -16,7 +16,7 @@ function EvidenceFrame({ evidence, onClick }) {
             </Box>
             <Box borderBottomColor={"dam.gray"} paddingBottom={2}>
                 <Image
-                    src={evidence.imagePath}
+                    src={`https://i10e105.p.ssafy.io` + evidence.imagePath}
                     alt="에러"
                     w={"10rem"}
                     h={"6rem"}
