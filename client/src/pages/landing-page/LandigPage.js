@@ -82,6 +82,14 @@ const LandingPage = () => {
                 backgroundSize="cover"
                 position="relative"
             >
+                <Box
+                    position="absolute"
+                    top="0"
+                    right="0"
+                    bottom="0"
+                    left="0"
+                    bg="blackAlpha.600" // 이 값을 조절하여 오버레이의 투명도 조절
+                ></Box>
                 <Image
                     src={logo}
                     width={isMobile ? "90px" : "150px"} // 모바일과 데스크톱에 맞는 크기 조정
@@ -90,7 +98,7 @@ const LandingPage = () => {
                     alt="Logo"
                     position="absolute" // 절대적 위치 지정
                     top="2%"
-                    left="10%"
+                    left="2%"
                 />
                 <Flex
                     direction="column"
@@ -304,15 +312,14 @@ const LandingPage = () => {
                             alignItems="center"
                         >
                             {/* 여기에 Image 컴포넌트를 사용하거나, backgroundImage 속성을 사용할 수 있습니다. */}
-                            <Image
-                                src={mockup2}
-                                alt="설명"
-                                objectFit="cover"
-                                maxHeight="100%"
-                                maxWidth="100%"
-                            />
+                            <Image src={mockup2} alt="설명" objectFit="cover" />
                         </Box>
-                        <Box flex="1">
+                        <Box
+                            flex="1"
+                            display="flex"
+                            flexDirection="column"
+                            justifyContent="center"
+                        >
                             <Text
                                 fontSize={isMobile ? "lg" : "3xl"}
                                 fontWeight={800}
@@ -352,7 +359,12 @@ const LandingPage = () => {
                         width="80vw"
                     >
                         {/* 텍스트 영역 */}
-                        <Box flex="1">
+                        <Box
+                            flex="1"
+                            display="flex"
+                            flexDirection="column"
+                            justifyContent="center"
+                        >
                             <Text
                                 fontSize={isMobile ? "lg" : "3xl"}
                                 fontWeight={800}
@@ -382,8 +394,7 @@ const LandingPage = () => {
                                 src={mockup3}
                                 alt="설명"
                                 objectFit="cover"
-                                maxH="90%"
-                                maxW="90%"
+                                p={10}
                             />
                         </Box>
                     </Flex>
@@ -417,12 +428,16 @@ const LandingPage = () => {
                                 src={mockup4}
                                 alt="설명"
                                 objectFit="cover"
-                                maxH="85%"
-                                maxW="85%"
+                                p={10}
                             />
                         </Box>
                         {/* 텍스트 영역 */}
-                        <Box flex="1">
+                        <Box
+                            flex="1"
+                            display="flex"
+                            flexDirection="column"
+                            justifyContent="center"
+                        >
                             <Text
                                 fontSize={isMobile ? "lg" : "3xl"}
                                 fontWeight={800}
