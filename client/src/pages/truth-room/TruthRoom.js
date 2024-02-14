@@ -4,16 +4,20 @@ import TopComponent from "./top-component/TopComponent";
 import MiddleComponent from "./middle-component/MiddleComponent";
 import BottomComponent from "./bottom-component/BottomComponent";
 import { enteringTruthRoomMemberInfoState } from "../../contexts/TruthRoomSocket";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { WebSocketContext } from "contexts/WebSocketContext";
 import { challengeIdState } from "contexts/TruthRoomSocket";
+import { gatheredMoneyState } from "contexts/TruthRoom";
+import { getSavedMoney } from "apis/api/Challenge";
 
 function TruthRoom() {
     const { connect, enterRoom } = useContext(WebSocketContext); // context로 선언한 소켓 사용
     const challengeId = useRecoilValue(challengeIdState);
     const enteringTruthRoomMemberInfo = useRecoilValue(
-        enteringTruthRoomMemberInfoState
+        enteringTruthRoomMemberInfoState,
     );
+    const [gatheredMoney, setGatheredMoney] =
+        useRecoilState(gatheredMoneyState);
     useEffect(() => {
         // 진실의 방 렌더링 시 소켓 연결, 방 입장 처리
         console.log(challengeId);
@@ -22,7 +26,8 @@ function TruthRoom() {
                 enterRoom(
                     challengeId,
                     enteringTruthRoomMemberInfo.name,
-                    enteringTruthRoomMemberInfo.role
+                    enteringTruthRoomMemberInfo.role,
+                    getSavedMoney(challengeId, () => setGatheredMoney()),
                 );
             })
             .catch((error) => {

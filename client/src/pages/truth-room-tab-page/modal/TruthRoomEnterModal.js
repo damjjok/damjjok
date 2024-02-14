@@ -16,7 +16,7 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 
 const TruthRoomEnterModal = ({ isOpen, onClose, groupId, challengeId }) => {
     const setEnteringTruthRoomMemberInfo = useSetRecoilState(
-        enteringTruthRoomMemberInfoState // 소켓에서 활용 될 유저의 정보( {이름, 역할} )
+        enteringTruthRoomMemberInfoState, // 소켓에서 활용 될 유저의 정보( {이름, 역할} )
     );
     const currentUserFromAccessToken = useRecoilValue(currentUser); // access token을 통해 받아온 유저 정보, 이곳에서 userName, userId 사용
     const challengeInfo = useRecoilValue(challengeState); // recoil을 통해 저장된 챌린지 정보(담쪽이의 userId 판별 용)
