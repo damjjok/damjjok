@@ -8,9 +8,8 @@ import { useRecoilValue } from "recoil";
 
 function PiggyBank(progress = 0.2) {
     const processPercentage = progress * 100;
-    const currentChallenge = useRecoilValue(challengeState)
+    const currentChallenge = useRecoilValue(challengeState);
     let today = new Date();
-
 
     const startedDate = new Date(currentChallenge.createdAt);
     // 두 날짜 사이의 밀리초 차이를 계산합니다.
@@ -31,7 +30,10 @@ function PiggyBank(progress = 0.2) {
                     누적 금액 :
                     {currentChallenge.initialMoney +
                         currentChallenge.savedMoney *
-                            Math.floor(diffDays / currentChallenge.savedPeriod)}
+                            Math.floor(
+                                diffDays / currentChallenge.savedPeriod,
+                            )}{" "}
+                    원
                 </p>
             </div>
         </div>

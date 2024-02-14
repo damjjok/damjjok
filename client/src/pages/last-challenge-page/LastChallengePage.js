@@ -43,7 +43,7 @@ function LastChallengePage() {
         };
 
         fetchData(); // fetchData 함수 호출
-    }, []);
+    }, [challenge]);
 
     // console.log(challenge);
 
@@ -51,6 +51,11 @@ function LastChallengePage() {
     const startedDate = new Date(currentChallenge.createdAt);
     const diffMilliseconds = endDate.getTime() - startedDate.getTime();
     const diffDays = Math.floor(diffMilliseconds / (24 * 60 * 60 * 1000));
+    // console.log(currentChallenge);
+    // console.log(endDate);
+    // console.log(startedDate);
+    // console.log(diffMilliseconds);
+    // console.log(diffDays);
 
     return (
         <>
