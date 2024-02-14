@@ -223,6 +223,7 @@ public class ChallengeServiceImpl implements ChallengeService {
         ChallengeEntity entity = challengeRepository.findByChallengeId(dto.getChallengeId());
         if(entity == null) throw new ChallengeNotFoundException();
 
+        if(dto.getStatus().equals("FAIL")) entity.setEndDate(LocalDateTime.now());
         entity.setStatus(dto.getStatus());
 
         challengeRepository.save(entity);
@@ -257,7 +258,7 @@ public class ChallengeServiceImpl implements ChallengeService {
         AtomicInteger count = new AtomicInteger();
         int cur_day = (int) ChronoUnit.DAYS.between(cur.getCreatedAt().toLocalDate() , LocalDateTime.now());
 
-        Set<Integer> peroidSet = new HashSet<>();
+        Set<Integer> peroidSet = new TreeSet<>();
 
         list.stream().forEach(challenge-> {
             if(challenge.getStatus().equals("PROGRESS")){
@@ -276,7 +277,7 @@ public class ChallengeServiceImpl implements ChallengeService {
 
         ranking = (int)((double)rank / peroidSet.size() * 100);
 
-        return ChallengeRankResponseDto.success(ranking);
+        return ChallengeRankResponseDto.success(100 - ranking);
     }
 
     @Override

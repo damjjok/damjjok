@@ -38,6 +38,34 @@ public class SchedulerServiceImpl implements SchedulerService {
     private final GroupRepository groupRepository;
     private final EvidenceRepository evidenceRepository;
 
+
+    @Scheduled(cron = "0 * * * * ?")
+    @Override
+    @Transactional
+    public void testCheckSchedule() {
+        LocalDateTime now = LocalDateTime.now();
+        System.out.println(now);
+
+// 오늘 날짜를 지나면서 아직 종료되지 않은 모든 일정을 찾음
+        List<ScheduleEntity> schedules = entityManager.createQuery(
+                        "SELECT s FROM ScheduleEntity s WHERE s.date < CURRENT_DATE AND s.endDate = false",
+                        ScheduleEntity.class)
+                .getResultList();
+
+        // 해당 일정들의 endDate를 true로 설정하여 종료 상태로 변경
+        for (ScheduleEntity schedule : schedules) {
+            schedule.setEndDate(true);
+            entityManager.merge(schedule);
+            // 연관된 챌린지의 마지막 진실의 방 종료일을 오늘 날짜로 업데이트
+            ChallengeEntity challengeEntity = schedule.getChallengeEntity();
+            if (challengeEntity == null) {
+                throw new ChallengeNotFoundException();
+            }
+            challengeEntity.setFinalTruthRoomDate(now);
+            entityManager.merge(challengeEntity);
+        }
+    }
+
     // 매일 자정에 실행되는 스케줄러
     @Scheduled(cron = "59 59 23 * * ?")
     @Override

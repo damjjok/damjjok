@@ -82,12 +82,15 @@ public class TestimonyServiceImpl implements TestimonyService {
             throw new GroupNotFoundException();
         }
 
+        UserEntity ddamjjokUser = userRepository.findByUserId(challengeEntity.getUserId());
+        if(ddamjjokUser == null) throw new UserNotFoundException();
+
         List<UserEntity> userEntityList = groupMemberRepository.findUsersByGroupId(groupId);
         userEntityList.stream().forEach(user -> {
             NotificationCreateRequestDto ncrDto = new NotificationCreateRequestDto();
             ncrDto.setCommonCodeId(501);
             ncrDto.setReceivingMemberId(user.getUserId());
-            ncrDto.setSenderName(user.getUserName());
+            ncrDto.setDamjjokName(ddamjjokUser.getUserName());
             ncrDto.setLink("https://");
             ncrDto.setGroupName(groupEntity.getGroupName());
 

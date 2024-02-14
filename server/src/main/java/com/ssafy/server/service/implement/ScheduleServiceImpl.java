@@ -82,6 +82,7 @@ public class ScheduleServiceImpl implements ScheduleService {
             throw new ChallengeNotFoundException();
         }
         int damjjokId = challengeEntity.getUserId(); //담쪽이id
+        String damjjokName = customUserDetails.getUserName();
 
         // 챌린지 종료일 3일 전보다 이후인지 확인하는 로직
          if (requestDto.getDate().isAfter(challengeEntity.getEndDate().minusDays(3))) {
@@ -124,6 +125,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                     NotificationCreateRequestDto ncrDto = new NotificationCreateRequestDto();
                     ncrDto.setCommonCodeId(602);
                     ncrDto.setReceivingMemberId(user.getUserId());
+                    ncrDto.setDamjjokName(damjjokName);
                     ncrDto.setLink("https://");
                     ncrDto.setGroupName(groupEntity.getGroupName());
 
