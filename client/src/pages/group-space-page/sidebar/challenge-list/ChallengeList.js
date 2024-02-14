@@ -96,7 +96,7 @@ function ChallengeList({ onClick }) {
                     );
                 if (randomCurrentChallenge) {
                     navigate(
-                        `/group/${groupId}//challenge/${randomCurrentChallenge.challengeId}`
+                        `/group/${groupId}/challenge/${randomCurrentChallenge.challengeId}`
                     );
                 }
             }
