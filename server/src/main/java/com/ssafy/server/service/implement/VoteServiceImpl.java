@@ -36,9 +36,9 @@ public class VoteServiceImpl implements VoteService {
         if (room == null) {
             throw new RoomNotFoundException();
         }
-        if (room.getPassOrFail() == null) {
-            throw new CustomException(HttpStatus.BAD_REQUEST, ResponseCode.BAD_REQUEST, "해당 방에는 투표 데이터가 없습니다.");
-        }
+//        if (room.getPassOrFail() == null) {
+//            throw new CustomException(HttpStatus.BAD_REQUEST, ResponseCode.BAD_REQUEST, "해당 방에는 투표 데이터가 없습니다.");
+//        }
         return room.getPassOrFail().size(); // 진행된 투표의 총 수 반환
     }
 
@@ -49,12 +49,12 @@ public class VoteServiceImpl implements VoteService {
         if (room == null) {
             throw new RoomNotFoundException();
         }
-        if (room.getMembers() == null){
-            throw new CustomException(HttpStatus.BAD_REQUEST, ResponseCode.BAD_REQUEST, "해당 방에는 멤버 데이터가 없습니다.");
-        }
-        if(room.getPassOrFail() == null) {
-            throw new CustomException(HttpStatus.BAD_REQUEST, ResponseCode.BAD_REQUEST, "해당 방에는 pass fail 투표 결과 데이터가 없습니다.");
-        }
+//        if (room.getMembers() == null){
+//            throw new CustomException(HttpStatus.BAD_REQUEST, ResponseCode.BAD_REQUEST, "해당 방에는 멤버 데이터가 없습니다.");
+//        }
+//        if(room.getPassOrFail() == null) {
+//            throw new CustomException(HttpStatus.BAD_REQUEST, ResponseCode.BAD_REQUEST, "해당 방에는 pass fail 투표 결과 데이터가 없습니다.");
+//        }
         //담쪽이 제외 모두가 투표를 했을 경우 true 반환
         return room.getMembers().size() - 1 == room.getPassOrFail().size();
     }
@@ -66,9 +66,9 @@ public class VoteServiceImpl implements VoteService {
         if (room == null) {
             throw new RoomNotFoundException();
         }
-        if (room.getPassOrFail().isEmpty()) {
-            throw new CustomException(HttpStatus.BAD_REQUEST, ResponseCode.BAD_REQUEST, "아무도 투표하지 않았습니다.");
-        }
+//        if (room.getPassOrFail().isEmpty()) {
+//            throw new CustomException(HttpStatus.BAD_REQUEST, ResponseCode.BAD_REQUEST, "아무도 투표하지 않았습니다.");
+//        }
         // PASS 표 수 계산
         long passCount = room.getPassOrFail().values().stream()
                 .filter(Boolean::booleanValue)
