@@ -92,15 +92,18 @@ function InfoCards({ diffDays, diffMilliseconds, challengeId }) {
 
     useEffect(() => {
         const sortedLevelData = [...levelData].sort(
-            (a, b) => b.duration - a.duration
+            (a, b) => a.duration - b.duration,
         );
         const level = sortedLevelData.find((level) => {
             const durationMilliseconds = level.duration * 1000;
-            return diffMilliseconds >= durationMilliseconds;
+            console.log("순회 밀리세컨드" + durationMilliseconds);
+            console.log("현재 밀리세컨드" + diffMilliseconds);
+            return diffMilliseconds <= durationMilliseconds;
         });
 
         if (level) {
             setCurrentLevel(level?.key);
+            // console.log(level);
         }
     }, [currentLevel, challengeId]);
 

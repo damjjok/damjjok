@@ -10,8 +10,9 @@ import Strick from "../home-tab-page/strick/Strick";
 import InfoCards from "../home-tab-page/info-cards/InfoCards";
 import { useEffect } from "react";
 import { getChallengeInfo } from "apis/api/Challenge";
-import { useRecoilState } from "recoil";
-import { challengeState } from "contexts/Challenge";
+import { useRecoilState, useResetRecoilState } from "recoil";
+import { challengeCheerMessageList, challengeState } from "contexts/Challenge";
+import { getCheerMessageList } from "apis/api/CheerMsg";
 
 function LastChallengePage() {
     const { groupId, challengeId } = useParams();
@@ -29,14 +30,25 @@ function LastChallengePage() {
         challenge.status === "SUCCESS" ? bgSucceedChallenge : bgFailedChallenge;
     const isExpired = "True";
     const isMobile = useBreakpointValue({ base: true, md: false });
+    const [cheerMessageList, setCheerMessageList] = useRecoilState(
+        challengeCheerMessageList,
+    );
+    const resetCheerMessageListAtom = useResetRecoilState(
+        challengeCheerMessageList,
+    );
 
     useEffect(() => {
         const fetchData = async () => {
+            resetCheerMessageListAtom();
             try {
                 const response = await getChallengeInfo(challengeId);
+                const messageResponse = await getCheerMessageList(challengeId);
+                setCheerMessageList(messageResponse);
+                // console.log(messageResponse);
                 const updatedChallenge = response.dto;
                 setCurrentChallenge(updatedChallenge); // Recoil 상태에 데이터 적용
-                console.log(updatedChallenge);
+                // console.log(updatedChallenge);
+                // console.log(cheerMessageList);
             } catch (error) {
                 console.error("챌린지 정보 불러오기 실패", error);
             }
@@ -49,8 +61,18 @@ function LastChallengePage() {
 
     const endDate = new Date(currentChallenge.endDate);
     const startedDate = new Date(currentChallenge.createdAt);
-    const diffMilliseconds = endDate.getTime() - startedDate.getTime();
-    const diffDays = Math.floor(diffMilliseconds / (24 * 60 * 60 * 1000));
+    const end = new Date(
+        endDate.getFullYear(),
+        endDate.getMonth(),
+        endDate.getDate(),
+    );
+    const start = new Date(
+        startedDate.getFullYear(),
+        startedDate.getMonth(),
+        startedDate.getDate(),
+    );
+    const diffMilliseconds = end - start;
+    const diffDays = Math.floor(diffMilliseconds / (24 * 60 * 60 * 1000)) + 1;
     // console.log(currentChallenge);
     // console.log(endDate);
     // console.log(startedDate);
@@ -60,7 +82,7 @@ function LastChallengePage() {
     return (
         <>
             <VStack marginBottom={15}>
-                <StatusBar />
+                <StatusBar isExpired={isExpired} />
                 <TitleText
                     fontSize="2rem"
                     img={bgImage}
