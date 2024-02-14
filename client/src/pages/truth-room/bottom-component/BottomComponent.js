@@ -32,12 +32,16 @@ function BottomComponent() {
                         width={"80px"}
                         colorScheme="yellow"
                         onClick={handleNextStepClick}
+                        boxShadow={"8px 8px rgba(0, 0, 0, 0.1);"}
                     >
                         다음으로
                     </Button>
                 )}
                 {isClickedReady && (
-                    <Button width={"80px"}>
+                    <Button
+                        width={"80px"}
+                        boxShadow={"8px 8px rgba(0, 0, 0, 0.1);"}
+                    >
                         {stepReadyCount}/{joinMemberList.length}
                     </Button>
                 )}

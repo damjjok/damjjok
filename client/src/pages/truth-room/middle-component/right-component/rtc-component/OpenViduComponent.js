@@ -22,7 +22,7 @@ export default function OpenViduComponent() {
     const step = useRecoilValue(stepState);
     const challengeId = useRecoilValue(challengeIdState); // sessionKey로 쓰일 챌린지ID
     const enteringTruthRoomMemberInfo = useRecoilValue(
-        enteringTruthRoomMemberInfoState,
+        enteringTruthRoomMemberInfoState
     );
     const [session, setSession] = useState(undefined);
     const [publisher, setPublisher] = useState(undefined);
@@ -32,7 +32,7 @@ export default function OpenViduComponent() {
     const [connectedMemberList, setConnectedMemberList] = useState([]); // 우리 서비스 기준 순서로 화면에 멤버들 띄워줄 때 사용할 리스트
     const [damJJok, setDamJJok] = useState(undefined); // 담쪽이 설정(화면 가장 위에 띄워줘야 하므로)
     const [finalArgumentDamJJok, setFinalArgumentFrameDamJJok] = useRecoilState(
-        finalArgumentDamJJokState,
+        finalArgumentDamJJokState
     ); // 최후 변론에서 중앙 컴포넌트에 담쪽이 화면 띄워줘야 해서, recoil로 담쪽이 openvidu stream 정보 저장
     function setAllDamJJok(damJJokStream) {
         // 모든 담쪽이를 set하는 함수
@@ -102,21 +102,21 @@ export default function OpenViduComponent() {
                             frameRate: 30,
                             insertMode: "APPEND",
                             mirror: false,
-                        },
+                        }
                     );
 
                     session.publish(publisher);
 
                     const devices = await OV.current.getDevices();
                     const videoDevices = devices.filter(
-                        (device) => device.kind === "videoinput",
+                        (device) => device.kind === "videoinput"
                     );
                     const currentVideoDeviceId = publisher.stream
                         .getMediaStream()
                         .getVideoTracks()[0]
                         .getSettings().deviceId;
                     const currentVideoDevice = videoDevices.find(
-                        (device) => device.deviceId === currentVideoDeviceId,
+                        (device) => device.deviceId === currentVideoDeviceId
                     );
 
                     setPublisher(publisher);
@@ -130,7 +130,7 @@ export default function OpenViduComponent() {
                     console.log(
                         "There was an error connecting to the session:",
                         error.code,
-                        error.message,
+                        error.message
                     );
                 }
             });
@@ -198,7 +198,7 @@ export default function OpenViduComponent() {
     const createSession = async () => {
         const response = await axios.post(
             APPLICATION_SERVER_URL + "api/v1/sessions",
-            { sessionKey: challengeId },
+            { sessionKey: challengeId }
         );
         return response.data; // The sessionId
     };
@@ -208,7 +208,7 @@ export default function OpenViduComponent() {
             APPLICATION_SERVER_URL +
                 "api/v1/sessions/" +
                 sessionId +
-                "/connections",
+                "/connections"
         );
         return response.data.token; // The token
     };
@@ -218,7 +218,10 @@ export default function OpenViduComponent() {
                 <div id="video-container" className="col-md-6">
                     <Wrapper>
                         {damJJok !== undefined && step !== 4 ? ( // 담쪽이 화면, 최후 변론 단계(4)에서는 담쪽이 화면 우측 프레임에서 빼와서 중앙에만 배치함
-                            <UserVideoComponent streamManager={damJJok} />
+                            <UserVideoComponent
+                                streamManager={damJJok}
+                                styleProps={{ border: "3px solid yellow" }}
+                            />
                         ) : null}
                         {publisher !== undefined && publisher !== damJJok ? ( // 본인 화면
                             <UserVideoComponent streamManager={publisher} />
@@ -226,10 +229,10 @@ export default function OpenViduComponent() {
                         {connectedMemberList.map(
                             (
                                 mem,
-                                i, // 나머지 멤버들 화면
+                                i // 나머지 멤버들 화면
                             ) => (
                                 <UserVideoComponent streamManager={mem} />
-                            ),
+                            )
                         )}
                     </Wrapper>
                 </div>
@@ -246,6 +249,9 @@ export default function OpenViduComponent() {
                                             borderRadius: "20px",
                                         }}
                                         colorScheme={"yellow"}
+                                        boxShadow={
+                                            "8px 8px rgba(0, 0, 0, 0.1);"
+                                        }
                                     >
                                         <ViewIcon boxSize={"2em"} />
                                         &nbsp;내 화면 보여주기

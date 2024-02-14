@@ -3,9 +3,23 @@ import { currentUser, currentUserState } from "../../../contexts/User";
 import candyImg from "assets/images/candylogo.png";
 import StatusBarToast from "../modal/StatusBarToast";
 import StatusEditModal from "../modal/StatusEditModal";
-import { Avatar, Box, Flex, Image, Text, VStack, Wrap, useBreakpointValue } from "@chakra-ui/react";
+import {
+    Avatar,
+    Box,
+    Flex,
+    Image,
+    Text,
+    VStack,
+    Wrap,
+    useBreakpointValue,
+} from "@chakra-ui/react";
 
-import { challengeAvatarState, challengeCandyCount, challengeState, challengeStatusState } from "contexts/Challenge";
+import {
+    challengeAvatarState,
+    challengeCandyCount,
+    challengeState,
+    challengeStatusState,
+} from "contexts/Challenge";
 import { useEffect, useState } from "react";
 import { getChallengeCandyCount } from "apis/api/Candy";
 import { getAttendanceList } from "apis/api/Attendance";
@@ -25,21 +39,34 @@ function StatusBar() {
     const [currentStatus, setStatus] = useRecoilState(challengeStatusState);
 
     const isMobile = useBreakpointValue({ base: true, md: false });
+    const profileImg = challenge.profilePath
+        ? require(`../../../assets/images/${challenge.profilePath}`)
+        : " ";
 
     let today = new Date();
 
     const startedDate = new Date(challenge.createdAt);
-    const cur = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-    const start = new Date(startedDate.getFullYear(), startedDate.getMonth(), startedDate.getDate());
+    const cur = new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate()
+    );
+    const start = new Date(
+        startedDate.getFullYear(),
+        startedDate.getMonth(),
+        startedDate.getDate()
+    );
 
     // 두 날짜 사이의 밀리초 차이를 계산합니다.
     const diffMilliseconds = cur - start;
     const diffDays = Math.floor(diffMilliseconds / (24 * 60 * 60 * 1000)) + 1;
 
     useEffect(() => {
+        if (!challenge.challengeId) return;
         const fetchChallengeData = async () => {
             try {
                 const response = await getChallengeInfo(challenge.challengeId);
+                console.log(response);
                 const updatedChallenge = response.dto;
                 setChallenge(updatedChallenge);
             } catch (error) {
@@ -50,9 +77,12 @@ function StatusBar() {
     }, []);
 
     useEffect(() => {
+        if (!challenge.challengeId) return;
         const fetchCandyData = async () => {
             try {
-                const response = await getChallengeCandyCount(challenge.challengeId);
+                const response = await getChallengeCandyCount(
+                    challenge.challengeId
+                );
                 const updatedCount = response.count;
                 setCandyCount(updatedCount); // Recoil 상태에 데이터 적용
                 // console.log(response);
@@ -79,39 +109,76 @@ function StatusBar() {
 
     return (
         <Box width={isMobile ? "90vw" : "80vw"} marginY={"0.5rem"}>
-            <Flex justifyContent={"space-between"} alignItems={"center"} bg={"dam.gray"} borderRadius={"30px"} paddingX={".5rem"} height={"40px"}>
+            <Flex
+                justifyContent={"space-between"}
+                alignItems={"center"}
+                bg={"dam.gray"}
+                borderRadius={"30px"}
+                paddingX={".5rem"}
+                height={"40px"}
+            >
                 <Wrap>
                     <Flex alignItems={"center"}>
-                        <Avatar name="challengeProfileImg" src={challenge.profilePath} size="sm" bg="dam.white" />
+                        <Avatar
+                            name="challengeProfileImg"
+                            src={profileImg}
+                            size="sm"
+                            bg="dam.white"
+                        />
                         {isMobile ? (
                             <Flex flexFlow={"column"} px={3}>
                                 <Text fontSize={"sm"} fontWeight={"bold"}>
                                     {challenge.userName} 챌린지
                                 </Text>
-                                <Text fontSize={"xx-small"}>{startedDate.toLocaleDateString()}</Text>
+                                <Text fontSize={"xx-small"}>
+                                    {startedDate.toLocaleDateString()}
+                                </Text>
                             </Flex>
                         ) : (
                             <Text fontSize={"lg"} className="px-3 font-bold">
-                                {challenge.userName} 챌린지 - {startedDate.toLocaleDateString()}
+                                {challenge.userName} 챌린지 -{" "}
+                                {startedDate.toLocaleDateString()}
                             </Text>
                         )}
 
-                        <div className="bg-damblack rounded-xl max-h-8 px-2 text-damyellow">D+{diffDays}</div>
-                        {isMobile ? null : <p className="mx-2">{challenge.determination}</p>}
+                        <div className="bg-damblack rounded-xl max-h-8 px-2 text-damyellow">
+                            D+{diffDays}
+                        </div>
+                        {isMobile ? null : (
+                            <p className="mx-2">{challenge.determination}</p>
+                        )}
 
                         {/* EditModal axios 적용해야 함 */}
                         {/* 요청 API : /api/v1/challenge/{challengeId}/profile-modify */}
-                        {challenge.userId === loginedUser.userId && challenge.status === "PROGRESS" ? (
-                            <StatusEditModal currentChallenge={challenge} selectedAvatar={currentStatus.profilePath} />
+                        {challenge.userId === loginedUser.userId &&
+                        challenge.status === "PROGRESS" ? (
+                            <StatusEditModal
+                                currentChallenge={challenge}
+                                selectedAvatar={currentStatus.profilePath}
+                            />
                         ) : null}
                     </Flex>
                 </Wrap>
                 <div className="flex items-center">
-                    {challenge.status === "PROGRESS" ? <StatusBarToast challenge={challenge} /> : null}
+                    {challenge.status === "PROGRESS" ? (
+                        <StatusBarToast challenge={challenge} />
+                    ) : null}
 
-                    <Box display="flex" flexDirection="column" alignItems="center" role="group" marginLeft={3}>
+                    <Box
+                        display="flex"
+                        flexDirection="column"
+                        alignItems="center"
+                        role="group"
+                        marginLeft={3}
+                    >
                         <Box className="bg-damwhite rounded-full border border-damyellow">
-                            <Image src={candyImg} alt="candyImg" boxSize="25px" _groupHover={{ opacity: "0.5" }} transition="opacity 0.2s" />
+                            <Image
+                                src={candyImg}
+                                alt="candyImg"
+                                boxSize="25px"
+                                _groupHover={{ opacity: "0.5" }}
+                                transition="opacity 0.2s"
+                            />
                             <Box position={"relative"}>
                                 <Flex
                                     boxSize={"25px"}
