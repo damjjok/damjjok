@@ -66,6 +66,7 @@ public class EvidenceServiceImpl implements EvidenceService {
             image.transferTo(saveFile);
 
             ChallengeEntity challengeEntity = challengeRepository.findByChallengeId(challengeId);
+
             EvidenceEntity evidenceEntity = new EvidenceEntity();
             evidenceEntity.setCreatedBy(userId);
             evidenceEntity.setEvidenceTitle(title);
@@ -82,12 +83,15 @@ public class EvidenceServiceImpl implements EvidenceService {
             int groupId = challengeEntity.getGroupEntity().getGroupId();
             GroupEntity groupEntity = groupRepository.findByGroupId(groupId);
 
+            // 담쪽이 이름
+            UserEntity damjjok_user = userRepository.findByUserId(challengeEntity.getUserId());
+
             List<UserEntity> userEntityList = groupMemberRepository.findUsersByGroupId(groupId);
             userEntityList.stream().forEach(user -> {
                 NotificationCreateRequestDto ncrDto = new NotificationCreateRequestDto();
                 ncrDto.setCommonCodeId(501);
                 ncrDto.setReceivingMemberId(user.getUserId());
-                ncrDto.setSenderName(name);
+                ncrDto.setDamjjokName(damjjok_user.getUserName());
                 ncrDto.setLink("https://");
                 ncrDto.setGroupName(groupEntity.getGroupName());
 
