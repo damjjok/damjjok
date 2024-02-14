@@ -11,15 +11,21 @@ import { challengeState } from "contexts/Challenge";
 import { enteringTruthRoomMemberInfoState } from "contexts/TruthRoomSocket";
 import { currentUser } from "contexts/User";
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
 const TruthRoomEnterModal = ({ isOpen, onClose, groupId, challengeId }) => {
+    const navigate = useNavigate();
     const setEnteringTruthRoomMemberInfo = useSetRecoilState(
         enteringTruthRoomMemberInfoState, // 소켓에서 활용 될 유저의 정보( {이름, 역할} )
     );
     const currentUserFromAccessToken = useRecoilValue(currentUser); // access token을 통해 받아온 유저 정보, 이곳에서 userName, userId 사용
     const challengeInfo = useRecoilValue(challengeState); // recoil을 통해 저장된 챌린지 정보(담쪽이의 userId 판별 용)
+
+    const enterTruthRoom = () => {
+        onClose();
+        navigate(`/truth-room/${groupId}/challenge/${challengeId}`);
+    };
 
     useEffect(() => {
         var tempEnteringUser = { name: "", role: "" }; // role -> Damjjok or phD
@@ -48,12 +54,12 @@ const TruthRoomEnterModal = ({ isOpen, onClose, groupId, challengeId }) => {
                 </ModalBody>
 
                 <Flex justifyContent={"center"}>
-                    <Button bg={"dam.yellow"} onClick={onClose} margin={"5%"}>
-                        <Link
-                            to={`/truth-room/${groupId}/challenge/${challengeId}`}
-                        >
-                            입장하기
-                        </Link>
+                    <Button
+                        bg={"dam.yellow"}
+                        onClick={enterTruthRoom}
+                        margin={"5%"}
+                    >
+                        입장하기
                     </Button>
                     <Button bg={"dam.gray"} margin={"5%"} onClick={onClose}>
                         취소
