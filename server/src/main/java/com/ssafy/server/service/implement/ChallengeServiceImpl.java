@@ -258,7 +258,7 @@ public class ChallengeServiceImpl implements ChallengeService {
         AtomicInteger count = new AtomicInteger();
         int cur_day = (int) ChronoUnit.DAYS.between(cur.getCreatedAt().toLocalDate() , LocalDateTime.now());
 
-        Set<Integer> peroidSet = new HashSet<>();
+        Set<Integer> peroidSet = new TreeSet<>();
 
         list.stream().forEach(challenge-> {
             if(challenge.getStatus().equals("PROGRESS")){
