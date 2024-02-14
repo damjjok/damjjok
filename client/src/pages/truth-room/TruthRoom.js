@@ -3,10 +3,12 @@ import { Wrapper } from "./TruthRoom.style";
 import TopComponent from "./top-component/TopComponent";
 import MiddleComponent from "./middle-component/MiddleComponent";
 import BottomComponent from "./bottom-component/BottomComponent";
-import { enteringTruthRoomMemberInfoState } from "../../contexts/TruthRoomSocket";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { WebSocketContext } from "contexts/WebSocketContext";
-import { challengeIdState } from "contexts/TruthRoomSocket";
+import {
+    challengeIdState,
+    enteringTruthRoomMemberInfoState,
+} from "contexts/TruthRoomSocket";
 import { gatheredMoneyState } from "contexts/TruthRoom";
 import { getSavedMoney } from "apis/api/Challenge";
 
