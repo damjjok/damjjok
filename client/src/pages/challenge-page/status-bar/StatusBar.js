@@ -27,7 +27,7 @@ import { getChallengeInfo } from "apis/api/Challenge";
 // import { challengeState } from "../../../../../contexts/Challenge";
 
 // profilePath 올바르게 설정될 필요성
-function StatusBar() {
+function StatusBar({ isExpired }) {
     const [challenge, setChallenge] = useRecoilState(challengeState);
     const challengeUserId = challenge.userId;
     const loginedUser = useRecoilValue(currentUser);
@@ -46,20 +46,30 @@ function StatusBar() {
     let today = new Date();
 
     const startedDate = new Date(challenge.createdAt);
+    const endDate = new Date(challenge.endDate);
     const cur = new Date(
         today.getFullYear(),
         today.getMonth(),
-        today.getDate()
+        today.getDate(),
+    );
+    const end = new Date(
+        endDate.getFullYear(),
+        endDate.getMonth(),
+        endDate.getDate(),
     );
     const start = new Date(
         startedDate.getFullYear(),
         startedDate.getMonth(),
-        startedDate.getDate()
+        startedDate.getDate(),
     );
 
     // 두 날짜 사이의 밀리초 차이를 계산합니다.
     const diffMilliseconds = cur - start;
     const diffDays = Math.floor(diffMilliseconds / (24 * 60 * 60 * 1000)) + 1;
+
+    const expiredDiffMilliseconds = end - start;
+    const expiredDiffDays =
+        Math.floor(expiredDiffMilliseconds / (24 * 60 * 60 * 1000)) + 1;
 
     useEffect(() => {
         if (!challenge.challengeId) return;
@@ -81,7 +91,7 @@ function StatusBar() {
         const fetchCandyData = async () => {
             try {
                 const response = await getChallengeCandyCount(
-                    challenge.challengeId
+                    challenge.challengeId,
                 );
                 const updatedCount = response.count;
                 setCandyCount(updatedCount); // Recoil 상태에 데이터 적용
@@ -140,10 +150,16 @@ function StatusBar() {
                                 {startedDate.toLocaleDateString()}
                             </Text>
                         )}
+                        {isExpired ? (
+                            <div className="bg-damblack rounded-xl max-h-8 px-2 text-damyellow">
+                                D+{expiredDiffDays}
+                            </div>
+                        ) : (
+                            <div className="bg-damblack rounded-xl max-h-8 px-2 text-damyellow">
+                                D+{diffDays}
+                            </div>
+                        )}
 
-                        <div className="bg-damblack rounded-xl max-h-8 px-2 text-damyellow">
-                            D+{diffDays}
-                        </div>
                         {isMobile ? null : (
                             <p className="mx-2">{challenge.determination}</p>
                         )}

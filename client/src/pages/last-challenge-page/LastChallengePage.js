@@ -82,7 +82,7 @@ function LastChallengePage() {
     return (
         <>
             <VStack marginBottom={15}>
-                <StatusBar />
+                <StatusBar isExpired={isExpired} />
                 <TitleText
                     fontSize="2rem"
                     img={bgImage}
