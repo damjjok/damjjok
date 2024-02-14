@@ -28,8 +28,8 @@ const EvidenceItems = ({
     return (
         <div className="EvidenceItmes">
             <Card
-                direction={{ base: "column", sm: "row" }}
-                w="15vw" // 너비 설정
+                direction={"row"}
+                w="15rem" // 너비 설정
                 h="15vh" // 높이 설정
                 borderWidth="1px" // 테두리 두께 설정
                 borderRadius="lg" // 테두리 둥근 처리
@@ -39,27 +39,19 @@ const EvidenceItems = ({
                 display={"flex"}
             >
                 <Image
-                    width={"7.5vw"}
+                    width={"50%"}
                     src={`https://i10e105.p.ssafy.io` + imagePath}
                     alt={title}
                     objectFit="cover"
                 />
-                <Stack justifyContent={"center"} alignItems={"center"} flex={1}>
-                    <CardHeader
-                        w={"7.5vw"}
-                        bg="#ffd100"
-                        display="flex"
-                        justifyContent="space-between"
-                        alignItems="center"
-                        width={"100%"}
-                    >
+                <Box width={"50%"}>
+                    <CardHeader bg="#ffd100" width={"100%"} p={2}>
                         <Text
                             fontSize="md"
                             fontWeight="bold"
                             isTruncated
                             flex={1}
                             textAlign={"center"}
-                            w={"3vw"}
                         >
                             {evidenceTitle}
                         </Text>
@@ -84,7 +76,7 @@ const EvidenceItems = ({
                             </Text>
                         </Stack>
                     </CardFooter>
-                </Stack>
+                </Box>
             </Card>
 
             <EvidenceDetailModal

@@ -34,7 +34,7 @@ function HomeTabPage() {
                     {currentChallenge.userName}님은 오늘 금연 {diffDays}
                     일차예요!
                 </p>
-                <Box display={"flex"} flexWrap={"wrap"} justifyContent={"center"} sx={{ transform: isMobile ? "scale(0.5)" : "none" }}>
+                <Box display={isMobile ? "block" : "flex"} flexWrap={"wrap"} justifyContent={"center"} sx={{ transform: isMobile ? "scale(1)" : "none" }}>
                     <Strick challenge={currentChallenge} startedDate={startedDate} />
                 </Box>
             </div>

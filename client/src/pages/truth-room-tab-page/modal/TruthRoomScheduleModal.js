@@ -100,7 +100,6 @@ const TruthRoomScheduleModal = ({ isOpen, onClose, handler }) => {
                                         size={"sm"}
                                         borderRadius={"30px"}
                                         onClick={() => {
-                                            console.log(1);
                                             handler(new Date(date.year, date.month - 1, date.day));
                                         }}
                                     >

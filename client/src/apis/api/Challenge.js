@@ -26,7 +26,7 @@ const createChallenge = async ({
 const getChallengeRanking = async (challengeId) => {
     try {
         const response = await axiosInstance.get(
-            `/v1/challenge/${challengeId}/ranking`
+            `/v1/challenge/${challengeId}/ranking`,
         );
         if (response.status === 200) {
             return response.data;
@@ -36,7 +36,7 @@ const getChallengeRanking = async (challengeId) => {
 const getChallengeList = async (groupId) => {
     try {
         const response = await axiosInstance.get(
-            `/v1/challenge/list/${groupId}`
+            `/v1/challenge/list/${groupId}`,
         );
         if (response.status === 200) return response.data;
         else console.log("통신 실패" + response.status);
@@ -48,7 +48,7 @@ const getChallengeList = async (groupId) => {
 const getChallengeInfo = async (challengeId) => {
     try {
         const response = await axiosInstance.get(
-            `/v1/challenge/${challengeId}/detail`
+            `/v1/challenge/${challengeId}/detail`,
         );
         if (response.status === 200) return response.data;
         else console.log("통신 실패" + response.status);
@@ -59,7 +59,7 @@ const getChallengeInfo = async (challengeId) => {
 const getChallengeMembers = async (challengeId, setGroupMembers) => {
     try {
         const response = await axiosInstance.get(
-            `v1/challenge/${challengeId}/member-list`
+            `v1/challenge/${challengeId}/member-list`,
         );
         const data = await response.data;
         if (response.status === 200) {
@@ -81,7 +81,7 @@ const patchChallengeStatus = async (challengeId, determination, imagePath) => {
         };
         const response = await axiosInstance.patch(
             `/v1/challenge/${challengeId}/profile-modify`,
-            requestBody
+            requestBody,
         );
     } catch (error) {
         console.log(error);
@@ -97,8 +97,22 @@ const completeChallenge = async (challengeId) => {
 
         const response = await axiosInstance.patch(
             "/v1/challenge/change/status",
-            requestBody
+            requestBody,
         );
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+const getSavedMoney = async (challengeId, setGatheredMoney) => {
+    try {
+        const response = await axiosInstance.get(
+            `/v1/challenge/${challengeId}/savedMoney`,
+        );
+        if (response.status === 200) {
+            console.log("saved money: " + response.data.savedMoney);
+            setGatheredMoney(response.data.savedMoney);
+        }
     } catch (error) {
         console.log(error);
     }
@@ -112,4 +126,5 @@ export {
     getChallengeMembers,
     patchChallengeStatus,
     completeChallenge,
+    getSavedMoney,
 };

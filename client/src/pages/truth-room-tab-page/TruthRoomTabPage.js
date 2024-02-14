@@ -4,6 +4,7 @@ import {
     Flex,
     Text,
     Wrap,
+    useBreakpointValue,
     useDisclosure,
     useToast,
 } from "@chakra-ui/react";
@@ -19,6 +20,7 @@ import TruthRoomScheduleModal from "./modal/TruthRoomScheduleModal";
 import { challengeIdState } from "contexts/TruthRoomSocket";
 
 function TruthRoomTabPage() {
+    const isMobile = useBreakpointValue({ base: true, md: false });
     const { groupId, challengeId } = useParams();
     const challenge = useRecoilValue(challengeState);
     const setChallengeId = useSetRecoilState(challengeIdState); // 진실의 방 소켓에 쓰일 challengeId
@@ -94,7 +96,7 @@ function TruthRoomTabPage() {
                         alignItems={"center"}
                         height={"100%"}
                     >
-                        {user.userId != challenge.userId && (
+                        {!schedule && user.userId != challenge.userId && (
                             <Text
                                 fontWeight={"700"}
                                 fontSize={"1.5rem"}
@@ -146,7 +148,8 @@ function TruthRoomTabPage() {
                     </Flex>
                 </Box>
                 <Wrap>
-                    {schedule &&
+                    {!isMobile &&
+                        schedule &&
                         new Date(
                             schedule ? schedule.date : ""
                         ).toLocaleDateString() ===

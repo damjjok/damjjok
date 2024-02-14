@@ -20,7 +20,7 @@ function RewardBox() {
                     onMouseEnter={() => setIsHovered(true)}
                     onMouseLeave={() => setIsHovered(false)}
                 >
-                    <div className="" style={{ width: "300px" }}>
+                    <div className="" style={{ width: "10rem" }}>
                         <img
                             src={postboxMain}
                             alt="postboxMain"
@@ -28,11 +28,11 @@ function RewardBox() {
                         />
                     </div>
                     <div
-                        className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[400px] h-fit text-center py-4 bg-damlightgray rounded-lg transition-opacity duration-500 ${
+                        className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[20rem] h-fit text-center py-4 bg-damlightgray rounded-lg transition-opacity duration-500 ${
                             isHovered ? "opacity-100" : "opacity-0"
                         }`}
                     >
-                        <p className=" font-bold">
+                        <p className=" text-sm font-bold">
                             리워드는 챌린지가 끝난 후 확인할 수 있습니다!
                         </p>
                     </div>
@@ -40,7 +40,7 @@ function RewardBox() {
             ) : (
                 <div className="flex flex-col items-center my-8">
                     <div className="flex justify-center my-4">
-                        <div style={{ width: "300px" }}>
+                        <div style={{ width: "10rem" }}>
                             <img src={postboxMain} alt="postboxMain" />
                         </div>
                     </div>

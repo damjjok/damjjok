@@ -30,7 +30,7 @@ function TestimonyDeatilComponent({ testimony }) {
                     }}
                     paddingBottom={0}
                 >
-                    {testimony.testimonyTitle}
+                    {testimony.testimonyTitle ? testimony.testimonyTitle : ""}
                 </CardHeader>
                 <CardBody>
                     <Box
@@ -40,14 +40,15 @@ function TestimonyDeatilComponent({ testimony }) {
                         borderColor="#ffd100"
                     >
                         <Text fontSize="xl" fontWeight="bold">
-                            제보자 : {testimony.createdBy}
+                            제보자 : {testimony.userName}
                         </Text>
                         <Text>
-                            작성 시각 :
-                            {" " +
-                                new Date(
-                                    testimony.createdAt
-                                ).toLocaleDateString()}
+                            작성 시각 :{" "}
+                            {testimony.createdAt
+                                ? new Date(
+                                      testimony.createdAt
+                                  ).toLocaleDateString()
+                                : ""}
                         </Text>
                     </Box>
                     <Box>{testimony.testimonyContent}</Box>

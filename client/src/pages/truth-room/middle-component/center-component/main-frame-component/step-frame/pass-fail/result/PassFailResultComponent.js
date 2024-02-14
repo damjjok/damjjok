@@ -66,6 +66,7 @@ function PassFailResultComponent() {
                                 ? () => handleNextClick("exit")
                                 : () => handleNextClick("next")
                         }
+                        variant={"bigbtn"}
                     ></BasicButton>
                 </div>
             )}

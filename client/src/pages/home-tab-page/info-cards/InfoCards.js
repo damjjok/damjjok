@@ -81,7 +81,7 @@ const levelData = [
 
 // const currentLevel = 1;
 
-function InfoCards({ diffDays, diffMilliseconds, challengeId }) {
+function InfoCards({ diffDays, diffMilliseconds, challengeId, isExpired }) {
     // 셀렉터 감지를 위해
     const [dailyState, setDailyState] = useState(1);
     const [currentLevel, setCurrentLevel] = useState(1);
@@ -92,15 +92,18 @@ function InfoCards({ diffDays, diffMilliseconds, challengeId }) {
 
     useEffect(() => {
         const sortedLevelData = [...levelData].sort(
-            (a, b) => b.duration - a.duration
+            (a, b) => a.duration - b.duration
         );
         const level = sortedLevelData.find((level) => {
             const durationMilliseconds = level.duration * 1000;
-            return diffMilliseconds >= durationMilliseconds;
+            // console.log("순회 밀리세컨드" + durationMilliseconds);
+            // console.log("현재 밀리세컨드" + diffMilliseconds);
+            return diffMilliseconds <= durationMilliseconds;
         });
 
         if (level) {
             setCurrentLevel(level?.key);
+            // console.log(level);
         }
     }, [currentLevel, challengeId]);
 
@@ -172,39 +175,42 @@ function InfoCards({ diffDays, diffMilliseconds, challengeId }) {
                     </Box>
                 </VStack>
             </Box>
-            <Box
-                w="60"
-                h="60"
-                className="flex flex-col items-center justify-center rounded-3xl border-4 p-8 m-4 border-damyellow transition-shadow hover:shadow-xl"
-            >
-                <VStack spacing={2} alignItems="center">
-                    <Box w="30" h="20" className="overflow-visible">
-                        <Image
-                            src={gradeGif}
-                            alt="gradeGif"
-                            boxSize="100%"
-                            className=" rounded-xl"
-                            objectFit="cover"
-                        />
-                    </Box>
-                    <Box
-                        h="4" // 텍스트 박스의 높이를 조절합니다.
-                        className="overflow-hidden"
-                    >
-                        <Text className="text-xs text-center font-semibold">
-                            전체 챌린저 중
-                        </Text>
-                    </Box>
-                    <Box
-                        h="8" // 텍스트 박스의 높이를 조절합니다.
-                        className="overflow-visible"
-                    >
-                        <Text className="text-center font-semibold">
-                            상위 {currentRank}%에요!
-                        </Text>
-                    </Box>
-                </VStack>
-            </Box>
+            {isExpired ? null : (
+                <Box
+                    w="60"
+                    h="60"
+                    className="flex flex-col items-center justify-center rounded-3xl border-4 p-8 m-4 border-damyellow transition-shadow hover:shadow-xl"
+                >
+                    <VStack spacing={2} alignItems="center">
+                        <Box w="30" h="20" className="overflow-visible">
+                            <Image
+                                src={gradeGif}
+                                alt="gradeGif"
+                                boxSize="100%"
+                                className=" rounded-xl"
+                                objectFit="cover"
+                            />
+                        </Box>
+                        <Box
+                            h="4" // 텍스트 박스의 높이를 조절합니다.
+                            className="overflow-hidden"
+                        >
+                            <Text className="text-xs text-center font-semibold">
+                                전체 챌린저 중
+                            </Text>
+                        </Box>
+                        <Box
+                            h="8" // 텍스트 박스의 높이를 조절합니다.
+                            className="overflow-visible"
+                        >
+                            <Text className="text-center font-semibold">
+                                출석 수 {currentRank}등이에요!
+                            </Text>
+                        </Box>
+                    </VStack>
+                </Box>
+            )}
+
             <Box
                 w="60"
                 h="60"

@@ -19,7 +19,10 @@ import {} from "@chakra-ui/react";
 import logo from "assets/images/logo.png";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import BasicButton from "components/button/BasicButton";
-
+import mockup1 from "assets/images/mockuppg1.png";
+import mockup2 from "assets/images/mockuppg2.png";
+import mockup3 from "assets/images/mockuppg3.png";
+import mockup4 from "assets/images/mockuppg4.png";
 const LandingPage = () => {
     // const { isOpen, onOpen, onClose } = useDisclosure();
     // 만약 api연결한다면 회원가입 버튼을 눌렀을때 같은 아이디가 db에 있는지 이메
@@ -73,13 +76,20 @@ const LandingPage = () => {
             {/* 상단 배경 이미지 컨테이너 */}
             <Box
                 height="100vh"
-                width="100vw"
                 backgroundImage={`url(${landingBg})`}
                 backgroundPosition="center"
                 backgroundRepeat="no-repeat"
                 backgroundSize="cover"
                 position="relative"
             >
+                <Box
+                    position="absolute"
+                    top="0"
+                    right="0"
+                    bottom="0"
+                    left="0"
+                    bg="blackAlpha.600" // 이 값을 조절하여 오버레이의 투명도 조절
+                ></Box>
                 <Image
                     src={logo}
                     width={isMobile ? "90px" : "150px"} // 모바일과 데스크톱에 맞는 크기 조정
@@ -88,7 +98,7 @@ const LandingPage = () => {
                     alt="Logo"
                     position="absolute" // 절대적 위치 지정
                     top="2%"
-                    left="10%"
+                    left="2%"
                 />
                 <Flex
                     direction="column"
@@ -111,7 +121,12 @@ const LandingPage = () => {
                         세상에 나쁜 흡연자는 없다!
                     </Text>
                     {isMobile ? (
-                        <Text fontSize={"sm"} textAlign="center">
+                        <Text
+                            fontSize={"lg"}
+                            textAlign="center"
+                            fontWeight={500}
+                            color="white"
+                        >
                             우리 지금부터 함께, 금연해봐요!
                         </Text>
                     ) : (
@@ -195,6 +210,9 @@ const LandingPage = () => {
                         buttonName={"시작하기"}
                         variant={"bigbtn"}
                         onClick={LoginonOpen}
+                        style={{
+                            boxShadow: "0px 8px 15px rgba(0, 0, 0, 0.7)",
+                        }}
                     >
                         시작하기
                     </BasicButton>
@@ -202,23 +220,42 @@ const LandingPage = () => {
             )}
 
             {/* 나머지 페이지 컨텐츠 */}
-            <Flex direction="column" flexGrow={1} m={0} p={0}>
+            <Flex
+                direction="column"
+                flexGrow={1}
+                m={0}
+                p={0}
+                id="introduce-page"
+            >
                 <Box
-                    height="45vh"
-                    width="100vw"
-                    bg="black"
-                    borderBottom="8px solid"
-                    borderColor="gray.800"
+                    height="60vh"
+                    bg="#ffd100"
+                    borderBottom="2px solid"
+                    borderColor="#FFFAFA"
+                    display={"flex"}
+                    justifyContent={"center"}
+                    alignItems={"center"}
                 >
-                    <HStack spacing={0} height="100%" py={16} mx="10%">
+                    <Flex
+                        direction={isMobile ? "column" : "row"}
+                        spacing={0}
+                        height="100%"
+                        py={16}
+                        mx="10%"
+                        width="80vw"
+                        justifyContent={"center"}
+                        alignItems={"center"}
+                    >
                         {/* 텍스트 영역 */}
-                        <Box flex="1">
-                            <Text color="white" fontSize="3xl" fontWeight={800}>
+                        <Box>
+                            <Text
+                                fontSize={isMobile ? "lg" : "3xl"}
+                                fontWeight={800}
+                            >
                                 주변 사람들과 함께 금연에 도전하세요.
                             </Text>
                             <Text
-                                color="white"
-                                fontSize="xl"
+                                fontSize={isMobile ? "xs" : "lg"}
                                 mt={3}
                                 fontWeight={500}
                             >
@@ -231,46 +268,66 @@ const LandingPage = () => {
                         </Box>
 
                         {/* 이미지 영역 */}
-                        <Box flex="1">
+                        <Box
+                            flex="0.7"
+                            // display="flex"
+                            // justifyContent="center"
+                            // alignItems="center"
+                        >
                             {/* 여기에 Image 컴포넌트를 사용하거나, backgroundImage 속성을 사용할 수 있습니다. */}
                             <Image
-                                src={logo}
+                                src={mockup1}
                                 alt="설명"
                                 objectFit="cover"
-                                height="100%"
-                                width="100%"
+                                maxH={isMobile ? "100%" : "70%"}
+                                maxW={isMobile ? "100%" : "70%"}
                             />
                         </Box>
-                    </HStack>
+                    </Flex>
                 </Box>
                 <Box
-                    height="45vh"
-                    width="100vw"
-                    bg="black"
-                    borderBottom="8px solid"
-                    borderColor="gray.800"
+                    height="60vh"
+                    bg="#ffd100"
+                    borderBottom="2px solid"
+                    borderColor="#FFFAFA"
+                    display={"flex"}
+                    justifyContent={"center"}
+                    alignItems={"center"}
                 >
-                    <HStack spacing={0} height="100%" py={16} mx="15%">
+                    <Flex
+                        direction={isMobile ? "column" : "row"}
+                        spacing={0}
+                        height="100%"
+                        py={16}
+                        mx="15%"
+                        width="80vw"
+                    >
                         {/* 텍스트 영역 */}
 
                         {/* 이미지 영역 */}
-                        <Box flex="1">
+                        <Box
+                            flex="1"
+                            display="flex"
+                            justifyContent="center"
+                            alignItems="center"
+                        >
                             {/* 여기에 Image 컴포넌트를 사용하거나, backgroundImage 속성을 사용할 수 있습니다. */}
-                            <Image
-                                src={logo}
-                                alt="설명"
-                                objectFit="cover"
-                                height="100%"
-                                width="100%"
-                            />
+                            <Image src={mockup2} alt="설명" objectFit="cover" />
                         </Box>
-                        <Box flex="1">
-                            <Text color="white" fontSize="3xl" fontWeight={800}>
+                        <Box
+                            flex="1"
+                            display="flex"
+                            flexDirection="column"
+                            justifyContent="center"
+                        >
+                            <Text
+                                fontSize={isMobile ? "lg" : "3xl"}
+                                fontWeight={800}
+                            >
                                 더 자유롭게, 더 재밌게 도전해보세요!
                             </Text>
                             <Text
-                                color="white"
-                                fontSize="xl"
+                                fontSize={isMobile ? "xs" : "lg"}
                                 mt={3}
                                 fontWeight={500}
                             >
@@ -282,24 +339,40 @@ const LandingPage = () => {
                                 있어요.
                             </Text>
                         </Box>
-                    </HStack>
+                    </Flex>
                 </Box>
                 <Box
-                    height="45vh"
-                    width="100vw"
-                    bg="black"
-                    borderBottom="8px solid"
-                    borderColor="gray.800"
+                    height="60vh"
+                    bg="#ffd100"
+                    borderBottom="2px solid"
+                    borderColor="#FFFAFA"
+                    display={"flex"}
+                    justifyContent={"center"}
+                    alignItems={"center"}
                 >
-                    <HStack spacing={0} height="100%" py={16} mx="15%">
+                    <Flex
+                        direction={isMobile ? "column" : "row"}
+                        spacing={0}
+                        height="100%"
+                        py={16}
+                        mx="15%"
+                        width="80vw"
+                    >
                         {/* 텍스트 영역 */}
-                        <Box flex="1">
-                            <Text color="white" fontSize="3xl" fontWeight={800}>
+                        <Box
+                            flex="1"
+                            display="flex"
+                            flexDirection="column"
+                            justifyContent="center"
+                        >
+                            <Text
+                                fontSize={isMobile ? "lg" : "3xl"}
+                                fontWeight={800}
+                            >
                                 금연 생활을 관찰하세요!
                             </Text>
                             <Text
-                                color="white"
-                                fontSize="xl"
+                                fontSize={isMobile ? "xs" : "lg"}
                                 mt={3}
                                 fontWeight={500}
                             >
@@ -310,45 +383,70 @@ const LandingPage = () => {
                         </Box>
 
                         {/* 이미지 영역 */}
-                        <Box flex="1">
+                        <Box
+                            flex="1"
+                            display="flex"
+                            justifyContent="center"
+                            alignItems="center"
+                        >
                             {/* 여기에 Image 컴포넌트를 사용하거나, backgroundImage 속성을 사용할 수 있습니다. */}
                             <Image
-                                src={logo}
+                                src={mockup3}
                                 alt="설명"
                                 objectFit="cover"
-                                height="100%"
-                                width="100%"
+                                p={10}
                             />
                         </Box>
-                    </HStack>
+                    </Flex>
                 </Box>
                 <Box
-                    height="45vh"
-                    width="100vw"
-                    bg="black"
-                    borderBottom="8px solid"
-                    borderColor="gray.800"
+                    height="60vh"
+                    bg="#ffd100"
+                    borderBottom="2px solid"
+                    borderColor="#FFFAFA"
+                    display={"flex"}
+                    justifyContent={"center"}
+                    alignItems={"center"}
                 >
-                    <HStack spacing={0} height="100%" py={16} mx="15%">
+                    <Flex
+                        direction={isMobile ? "column" : "row"}
+                        spacing={0}
+                        height="100%"
+                        py={16}
+                        mx="15%"
+                        width="80vw"
+                    >
                         {/* 이미지 영역 */}
-                        <Box flex="1">
+                        <Box
+                            flex="1"
+                            display="flex"
+                            justifyContent="center"
+                            alignItems="center"
+                        >
                             {/* 여기에 Image 컴포넌트를 사용하거나, backgroundImage 속성을 사용할 수 있습니다. */}
                             <Image
-                                src={logo}
+                                src={mockup4}
                                 alt="설명"
                                 objectFit="cover"
-                                height="100%"
-                                width="100%"
+                                maxH="100%"
+                                maxW="100%"
                             />
                         </Box>
                         {/* 텍스트 영역 */}
-                        <Box flex="1">
-                            <Text color="white" fontSize="3xl" fontWeight={800}>
+                        <Box
+                            flex="1"
+                            display="flex"
+                            flexDirection="column"
+                            justifyContent="center"
+                        >
+                            <Text
+                                fontSize={isMobile ? "lg" : "3xl"}
+                                fontWeight={800}
+                            >
                                 금연 생활을 응원하세요!
                             </Text>
                             <Text
-                                color="white"
-                                fontSize="xl"
+                                fontSize={isMobile ? "xs" : "lg"}
                                 mt={3}
                                 fontWeight={500}
                             >
@@ -357,7 +455,7 @@ const LandingPage = () => {
                                 있어요.
                             </Text>
                         </Box>
-                    </HStack>
+                    </Flex>
                 </Box>
 
                 {/* Login Modal */}

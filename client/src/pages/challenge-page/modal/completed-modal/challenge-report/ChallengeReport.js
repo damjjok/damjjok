@@ -57,7 +57,7 @@ function ChallengeReport({ nextContent }) {
                             fontWeight={"semibold"}
                             textAlign={"center"}
                         >
-                            180일 챌린지에 성공했어요!
+                            {currentChallenge.duration}일 챌린지에 성공했어요!
                         </Text>
                         <Box
                             display={"flex"}
