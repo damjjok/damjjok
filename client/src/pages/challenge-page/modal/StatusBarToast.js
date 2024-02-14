@@ -1,9 +1,6 @@
-import { useToast } from "@chakra-ui/react";
+import { Box, Tooltip, useToast } from "@chakra-ui/react";
 import { getAttendanceList, postAttendance } from "apis/api/Attendance";
-import {
-    getChallengeCandyCount,
-    postChallengeCandyCount,
-} from "apis/api/Candy";
+import { getChallengeCandyCount, postChallengeCandyCount } from "apis/api/Candy";
 import BasicButton from "components/button/BasicButton";
 import { attendanceListState } from "contexts/Attendance";
 import { challengeCandyCount } from "contexts/Challenge";
@@ -24,9 +21,7 @@ function StatusBarToast({ challenge, dropCandy }) {
     const handleButtonClick = async () => {
         // setIsClicked(true);
         if (loginedUser.userId === challenge.userId) {
-            const attendanceResponse = await postAttendance(
-                +challenge.challengeId
-            );
+            const attendanceResponse = await postAttendance(+challenge.challengeId);
             await getAttendanceList(challenge.challengeId, setAttendanceList);
             if (attendanceResponse === false) {
                 toast({
@@ -46,13 +41,8 @@ function StatusBarToast({ challenge, dropCandy }) {
             }
         } else {
             try {
-                await postChallengeCandyCount(
-                    challenge.challengeId,
-                    loginedUser.userId
-                );
-                const response = await getChallengeCandyCount(
-                    challenge.challengeId
-                );
+                await postChallengeCandyCount(challenge.challengeId, loginedUser.userId);
+                const response = await getChallengeCandyCount(challenge.challengeId);
                 const updatedCount = response.count;
                 setCandyCount(updatedCount);
                 toast({
@@ -86,16 +76,16 @@ function StatusBarToast({ challenge, dropCandy }) {
     // }, [isClicked]); // 상태가 변경될 때마다 타이머를 재설정합니다.
 
     return (
-        <BasicButton
-            onClick={handleButtonClick}
-            // isDisabled={isClicked}
-            buttonName={
-                loginedUser.userId === challenge.userId
-                    ? "출석하기"
-                    : "응원하기"
-            }
-            variant={"smbtn"}
-        ></BasicButton>
+        <Tooltip label={loginedUser.userId === challenge.userId ? "오늘도 화이팅!" : "담쪽이를 응원해 주세요!"} borderRadius={"5px"}>
+            <Box>
+                <BasicButton
+                    onClick={handleButtonClick}
+                    // isDisabled={isClicked}
+                    buttonName={loginedUser.userId === challenge.userId ? "출석하기" : "응원하기"}
+                    variant={"smbtn"}
+                ></BasicButton>
+            </Box>
+        </Tooltip>
     );
 }
 
