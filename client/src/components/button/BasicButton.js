@@ -1,9 +1,14 @@
 import { ButtonContainer } from "./BasicButton.style";
 
-const BasicButton = ({ buttonName, onClick, variant, isDisabled }) => {
+const BasicButton = ({ style, buttonName, onClick, variant, isDisabled }) => {
     return (
         <>
-            <ButtonContainer onClick={onClick} variant={variant} disabled={isDisabled}>
+            <ButtonContainer
+                style={style}
+                onClick={onClick}
+                variant={variant}
+                disabled={isDisabled}
+            >
                 <div className="text">{buttonName}</div>
             </ButtonContainer>
         </>
