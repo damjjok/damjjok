@@ -428,7 +428,8 @@ const LandingPage = () => {
                                 src={mockup4}
                                 alt="설명"
                                 objectFit="cover"
-                                p={10}
+                                maxH="100%"
+                                maxW="100%"
                             />
                         </Box>
                         {/* 텍스트 영역 */}
