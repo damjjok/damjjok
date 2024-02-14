@@ -95,6 +95,12 @@ public class ValidationExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
 
+    @ExceptionHandler(MembersNotFoundException.class)
+    public ResponseEntity<Object> handleMembersNotFoundException(MembersNotFoundException ex) {
+        ResponseDto response = new ResponseDto(ResponseCode.BAD_REQUEST, "해당 방에 멤버값이 없습니다.");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
     // OpenVidu
     @ExceptionHandler(OpenViduJavaClientException.class)
     public ResponseEntity<Object> handleOpenViduJavaClientException(OpenViduJavaClientException ex) {
@@ -108,3 +114,4 @@ public class ValidationExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
 }
+

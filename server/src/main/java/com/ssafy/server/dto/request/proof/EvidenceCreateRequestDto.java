@@ -25,7 +25,7 @@ public class EvidenceCreateRequestDto {
     private String title;
 
     @NotNull
-    @Schema(description = "챌린지 아이디", example = "image")
+    @Schema(description = "이미지", example = "image")
     private MultipartFile image;
 
     @NotNull

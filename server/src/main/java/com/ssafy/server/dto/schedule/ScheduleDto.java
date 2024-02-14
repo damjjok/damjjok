@@ -12,11 +12,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ScheduleDto {
     private Integer scheduleId;
-    @NotBlank
     private Integer challengeId;
-    @NotBlank
     private LocalDateTime date;
-    @NotBlank
     private Boolean endDate;
     private Integer createdBy;
     private LocalDateTime createdAt;
