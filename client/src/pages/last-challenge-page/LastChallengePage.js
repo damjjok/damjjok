@@ -61,8 +61,18 @@ function LastChallengePage() {
 
     const endDate = new Date(currentChallenge.endDate);
     const startedDate = new Date(currentChallenge.createdAt);
-    const diffMilliseconds = endDate.getTime() - startedDate.getTime();
-    const diffDays = Math.floor(diffMilliseconds / (24 * 60 * 60 * 1000) + 1);
+    const end = new Date(
+        endDate.getFullYear(),
+        endDate.getMonth(),
+        endDate.getDate(),
+    );
+    const start = new Date(
+        startedDate.getFullYear(),
+        startedDate.getMonth(),
+        startedDate.getDate(),
+    );
+    const diffMilliseconds = end - start;
+    const diffDays = Math.floor(diffMilliseconds / (24 * 60 * 60 * 1000)) + 1;
     // console.log(currentChallenge);
     // console.log(endDate);
     // console.log(startedDate);
