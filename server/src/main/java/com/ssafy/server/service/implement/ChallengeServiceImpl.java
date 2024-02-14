@@ -267,17 +267,15 @@ public class ChallengeServiceImpl implements ChallengeService {
             }
         });
 
-        int rank = 0;
+        int rank = peroidSet.size();
         for(Integer r : peroidSet){
-            rank++;
             if(r == cur_day){
                 break;
             }
+            rank--;
         }
 
-        ranking = (int)((double)rank / peroidSet.size() * 100);
-
-        return ChallengeRankResponseDto.success(100 - ranking);
+        return ChallengeRankResponseDto.success(rank, peroidSet.size());
     }
 
     @Override
