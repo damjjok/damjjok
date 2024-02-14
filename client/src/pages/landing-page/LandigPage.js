@@ -240,10 +240,17 @@ const LandingPage = () => {
                     >
                         {/* 텍스트 영역 */}
                         <Box>
-                            <Text fontSize="3xl" fontWeight={800}>
+                            <Text
+                                fontSize={isMobile ? "lg" : "3xl"}
+                                fontWeight={800}
+                            >
                                 주변 사람들과 함께 금연에 도전하세요.
                             </Text>
-                            <Text fontSize="lg" mt={3} fontWeight={500}>
+                            <Text
+                                fontSize={isMobile ? "xs" : "lg"}
+                                mt={3}
+                                fontWeight={500}
+                            >
                                 주변 사람들을 초대해서 함께 챌린지에
                                 도전해보세요.
                                 <br />
@@ -264,8 +271,8 @@ const LandingPage = () => {
                                 src={mockup1}
                                 alt="설명"
                                 objectFit="cover"
-                                maxH="70%"
-                                maxW="70%"
+                                maxH={isMobile ? "100%" : "70%"}
+                                maxW={isMobile ? "100%" : "70%"}
                             />
                         </Box>
                     </Flex>
@@ -279,7 +286,8 @@ const LandingPage = () => {
                     justifyContent={"center"}
                     alignItems={"center"}
                 >
-                    <HStack
+                    <Flex
+                        direction={isMobile ? "column" : "row"}
                         spacing={0}
                         height="100%"
                         py={16}
@@ -305,10 +313,17 @@ const LandingPage = () => {
                             />
                         </Box>
                         <Box flex="1">
-                            <Text fontSize="3xl" fontWeight={800}>
+                            <Text
+                                fontSize={isMobile ? "lg" : "3xl"}
+                                fontWeight={800}
+                            >
                                 더 자유롭게, 더 재밌게 도전해보세요!
                             </Text>
-                            <Text fontSize="lg" mt={3} fontWeight={500}>
+                            <Text
+                                fontSize={isMobile ? "xs" : "lg"}
+                                mt={3}
+                                fontWeight={500}
+                            >
                                 더 재미있는 챌린지를 위해, 금연 저금통을
                                 사용하세요.
                                 <br />
@@ -317,7 +332,7 @@ const LandingPage = () => {
                                 있어요.
                             </Text>
                         </Box>
-                    </HStack>
+                    </Flex>
                 </Box>
                 <Box
                     height="60vh"
@@ -328,7 +343,8 @@ const LandingPage = () => {
                     justifyContent={"center"}
                     alignItems={"center"}
                 >
-                    <HStack
+                    <Flex
+                        direction={isMobile ? "column" : "row"}
                         spacing={0}
                         height="100%"
                         py={16}
@@ -337,10 +353,17 @@ const LandingPage = () => {
                     >
                         {/* 텍스트 영역 */}
                         <Box flex="1">
-                            <Text fontSize="3xl" fontWeight={800}>
+                            <Text
+                                fontSize={isMobile ? "lg" : "3xl"}
+                                fontWeight={800}
+                            >
                                 금연 생활을 관찰하세요!
                             </Text>
-                            <Text fontSize="xl" mt={3} fontWeight={500}>
+                            <Text
+                                fontSize={isMobile ? "xs" : "lg"}
+                                mt={3}
+                                fontWeight={500}
+                            >
                                 실시간으로 글이나 사진을 제보할 수 있어요.
                                 <br /> 제보가 들어오면, 진실의 방에서 담쪽이의
                                 챌린지 결과를 정할 수 있어요.
@@ -363,7 +386,7 @@ const LandingPage = () => {
                                 maxW="90%"
                             />
                         </Box>
-                    </HStack>
+                    </Flex>
                 </Box>
                 <Box
                     height="60vh"
@@ -374,7 +397,8 @@ const LandingPage = () => {
                     justifyContent={"center"}
                     alignItems={"center"}
                 >
-                    <HStack
+                    <Flex
+                        direction={isMobile ? "column" : "row"}
                         spacing={0}
                         height="100%"
                         py={16}
@@ -399,16 +423,23 @@ const LandingPage = () => {
                         </Box>
                         {/* 텍스트 영역 */}
                         <Box flex="1">
-                            <Text fontSize="3xl" fontWeight={800}>
+                            <Text
+                                fontSize={isMobile ? "lg" : "3xl"}
+                                fontWeight={800}
+                            >
                                 금연 생활을 응원하세요!
                             </Text>
-                            <Text fontSize="xl" mt={3} fontWeight={500}>
+                            <Text
+                                fontSize={isMobile ? "xs" : "lg"}
+                                mt={3}
+                                fontWeight={500}
+                            >
                                 격려와 응원의 메시지를 보내주세요! <br />
                                 챌린지가 성공했을 때 담쪽이가 메시지를 확인할 수
                                 있어요.
                             </Text>
                         </Box>
-                    </HStack>
+                    </Flex>
                 </Box>
 
                 {/* Login Modal */}
