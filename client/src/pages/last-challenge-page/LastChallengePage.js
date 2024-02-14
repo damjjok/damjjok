@@ -14,7 +14,7 @@ import { useRecoilState } from "recoil";
 import { challengeState } from "contexts/Challenge";
 
 function LastChallengePage() {
-    // const { groupId, challengeId } = useParams();
+    const { groupId, challengeId } = useParams();
     const location = useLocation();
     const challenge = location.state.challenge;
     const [currentChallenge, setCurrentChallenge] =
@@ -33,7 +33,7 @@ function LastChallengePage() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await getChallengeInfo(challenge.challengeId);
+                const response = await getChallengeInfo(challengeId);
                 const updatedChallenge = response.dto;
                 setCurrentChallenge(updatedChallenge); // Recoil 상태에 데이터 적용
                 console.log(updatedChallenge);
@@ -43,7 +43,7 @@ function LastChallengePage() {
         };
 
         fetchData(); // fetchData 함수 호출
-    }, [challenge]);
+    }, [challengeId]);
 
     // console.log(challenge);
 
