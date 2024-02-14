@@ -64,7 +64,7 @@ function GroupSpacePage() {
                 >
                     <Sidebar />
                 </Box>
-                <Box className="w-full px-8">
+                <Box className="w-full">
                     <GroupSpaceMain />
                 </Box>
             </div>
