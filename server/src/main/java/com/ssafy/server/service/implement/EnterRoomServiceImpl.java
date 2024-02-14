@@ -113,6 +113,7 @@ public class EnterRoomServiceImpl implements EnterRoomService {
         challengeEntity.setStatus(status);
         //진실의 방 종료일을 바꿔주기
         challengeEntity.setFinalTruthRoomDate(LocalDateTime.now());
+        challengeEntity.setEndDate(LocalDateTime.now());
         challengeRepository.save(challengeEntity);
     }
 }
