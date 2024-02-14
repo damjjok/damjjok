@@ -86,7 +86,9 @@ function ChallengeList({ onClick }) {
             console.log(currentMyChallenge);
 
             if (currentMyChallenge) {
-                navigate(`./challenge/${currentMyChallenge.challengeId}`);
+                navigate(
+                    `/group/${groupId}/challenge/${currentMyChallenge.challengeId}`
+                );
             } else {
                 const randomCurrentChallenge =
                     updatedCurrentGroupChallengeList.find(
@@ -94,7 +96,7 @@ function ChallengeList({ onClick }) {
                     );
                 if (randomCurrentChallenge) {
                     navigate(
-                        `./challenge/${randomCurrentChallenge.challengeId}`
+                        `/group/${groupId}//challenge/${randomCurrentChallenge.challengeId}`
                     );
                 }
             }
