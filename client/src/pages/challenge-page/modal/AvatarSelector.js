@@ -20,15 +20,19 @@ function AvatarSelector() {
 
     return (
         <Stack direction="row" className="flex justify-center">
-            {avatars.map((avatar) => (
+            {avatars.map((avatar, index) => (
                 <Box
                     key={avatar.name}
                     bg={
-                        currentStatus.imagePath === avatar.src
+                        currentStatus.imagePath === `avatar${index + 1}.png`
                             ? "dam.yellow"
                             : ""
                     }
-                    onClick={() => setCurrentStatus({ imagePath: avatar.src })}
+                    onClick={() =>
+                        setCurrentStatus({
+                            imagePath: `avatar${index + 1}.png`,
+                        })
+                    }
                     className="rounded-full"
                 >
                     <Avatar name={avatar.name} src={avatar.src} size="xl" />

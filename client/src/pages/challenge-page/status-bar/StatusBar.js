@@ -39,6 +39,9 @@ function StatusBar() {
     const [currentStatus, setStatus] = useRecoilState(challengeStatusState);
 
     const isMobile = useBreakpointValue({ base: true, md: false });
+    const profileImg = challenge.profilePath
+        ? require(`../../../assets/images/${challenge.profilePath}`)
+        : " ";
 
     let today = new Date();
 
@@ -118,7 +121,7 @@ function StatusBar() {
                     <Flex alignItems={"center"}>
                         <Avatar
                             name="challengeProfileImg"
-                            src={challenge.profilePath}
+                            src={profileImg}
                             size="sm"
                             bg="dam.white"
                         />
