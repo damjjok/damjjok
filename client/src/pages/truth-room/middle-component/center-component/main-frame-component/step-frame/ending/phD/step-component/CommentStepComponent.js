@@ -9,7 +9,8 @@ function CommentStepComponent({ onClick }) {
         <div>
             <div style={{ margin: "100px", textAlign: "center" }}>
                 <Text as="b" fontSize={50}>
-                    {damJJokName}님의 이번 금연은 실패했어요
+                    {damJJokName}님의 이번 금연은
+                    <p /> 실패했어요
                 </Text>
             </div>
             <div style={{ margin: "100px", textAlign: "center" }}>
