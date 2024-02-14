@@ -277,7 +277,7 @@ public class ChallengeServiceImpl implements ChallengeService {
 
         ranking = (int)((double)rank / peroidSet.size() * 100);
 
-        return ChallengeRankResponseDto.success(ranking);
+        return ChallengeRankResponseDto.success(100 - ranking);
     }
 
     @Override
