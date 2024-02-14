@@ -2,6 +2,7 @@ import React from "react";
 import { Wrapper } from "./EvidenceFrame.style";
 import { showingEvidenceState } from "contexts/TruthRoom";
 import { useRecoilValue } from "recoil";
+import { Box } from "@chakra-ui/react";
 
 function EvidenceFrame() {
     const evidence = useRecoilValue(showingEvidenceState);
