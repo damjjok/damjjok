@@ -94,7 +94,6 @@ public class NotificationServiceImpl implements NotificationService {
         if (userEntity == null) {
             throw new UserNotFoundException();
         }
-        String senderName = dto.getSenderName();
         // 그룹
         String groupName = dto.getGroupName();
         // 챌린지

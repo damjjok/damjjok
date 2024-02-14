@@ -33,9 +33,6 @@ public class NotificationCreateRequestDto {
     @Schema(description = "그룹 Name", example = "영후")
     private String groupName;
 
-    @Schema(description = "제보 등록한 사람 이름", example = "다희")
-    private String senderName;
-
     @Schema(description = "날짜수" , example = "30")
     private String day;
 
