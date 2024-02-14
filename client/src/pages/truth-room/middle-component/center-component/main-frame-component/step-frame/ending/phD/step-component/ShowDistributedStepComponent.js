@@ -1,4 +1,5 @@
 import { Button, Text } from "@chakra-ui/react";
+import { currentGroupState } from "contexts/Group";
 import {
     challengeIdState,
     fineDeterminedState,
@@ -16,6 +17,7 @@ function ShowDistributedStepComponent(props) {
     const initGroupPhDCount = useRecoilValue(initGroupPhDCountState);
     const fineDetermined = useRecoilValue(fineDeterminedState);
     const challengeId = useRecoilValue(challengeIdState);
+    const currentGroup = useRecoilValue(currentGroupState);
     const navigate = useNavigate();
 
     const [isLastMember, setIsLastMember] = useState(false);
@@ -23,7 +25,7 @@ function ShowDistributedStepComponent(props) {
         if (joinMemberList.length === 1) setIsLastMember(true); // 마지막 멤버 여부 저장
         leaveRoom(challengeId, isLastMember);
 
-        navigate(`/truth-room/enter-test/${challengeId}`);
+        navigate(`/group/${currentGroup.groupId}`);
     }
 
     return (

@@ -218,7 +218,10 @@ export default function OpenViduComponent() {
                 <div id="video-container" className="col-md-6">
                     <Wrapper>
                         {damJJok !== undefined && step !== 4 ? ( // 담쪽이 화면, 최후 변론 단계(4)에서는 담쪽이 화면 우측 프레임에서 빼와서 중앙에만 배치함
-                            <UserVideoComponent streamManager={damJJok} />
+                            <UserVideoComponent
+                                streamManager={damJJok}
+                                styleProps={{ border: "3px solid yellow" }}
+                            />
                         ) : null}
                         {publisher !== undefined && publisher !== damJJok ? ( // 본인 화면
                             <UserVideoComponent streamManager={publisher} />
