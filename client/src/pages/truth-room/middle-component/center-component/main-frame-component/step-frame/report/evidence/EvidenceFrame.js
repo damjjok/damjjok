@@ -9,7 +9,7 @@ function EvidenceFrame() {
     return (
         <Wrapper>
             <img
-                src={evidence.imagePath}
+                src={`https://i10e105.p.ssafy.io` + evidence.imagePath}
                 style={{ width: "100%", height: "100%" }}
                 alt="사진이 없어용"
             />

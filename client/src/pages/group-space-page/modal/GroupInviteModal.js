@@ -24,14 +24,16 @@ import { myFriendState } from "contexts/Search";
 import { useRecoilValue, useResetRecoilState } from "recoil";
 import BasicButton from "components/button/BasicButton";
 import { joinGroup } from "apis/api/Group";
+import { currentGroupState } from "contexts/Group";
 
 // 초대코드는 임의대로?
 // API에 입력 API는 있는데, 생성 API는 없음
 
-function GroupInviteModal({ currentGroupInfo }) {
+function GroupInviteModal() {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     const { hasCopied, onCopy, setValue, value } = useClipboard("");
+    const currentGroupInfo = useRecoilValue(currentGroupState);
 
     useEffect(() => {
         if (!currentGroupInfo) return;
@@ -51,8 +53,6 @@ function GroupInviteModal({ currentGroupInfo }) {
     const handleInviteUser = async () => {
         try {
             const userIdList = myfriend.map((friend) => friend.userId);
-            console.log(currentGroupInfo.groupId);
-            console.log(userIdList);
             const result = await joinGroup(
                 currentGroupInfo.groupId,
                 userIdList

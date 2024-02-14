@@ -1,16 +1,21 @@
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { useEffect, useState } from "react";
 import Select from "react-select";
 import { Box, useBreakpointValue } from "@chakra-ui/react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getGroupList } from "apis/api/Group";
+import { getChallengeList } from "apis/api/Challenge";
+import { challengeListState } from "contexts/Challenge";
+import { currentGroupState } from "contexts/Group";
 
 //테스트를 위한 더미 데이터
 // const groupItems = ["우리끼리만든그룹", "E106", "E107"];
 
 function GroupList() {
+    const setChallengeListState = useSetRecoilState(challengeListState);
     const [groupListData, setGroupListData] = useState([]);
     const { groupId } = useParams();
+    // const [currentGroup, setCurrentGroup] = useRecoilState(currentGroupState);
     const [selectedGroup, setSelectedGroup] = useState({
         value: "",
         label: "",
@@ -32,7 +37,7 @@ function GroupList() {
             setGroupListData(response.list);
 
             const currentGroup = response.list.find(
-                (group) => group.groupId === Number(groupId),
+                (group) => group.groupId === Number(groupId)
             );
             // 현재 그룹의 이름을 selectedGroup 상태에 설정합니다.
             setSelectedGroup({
@@ -45,15 +50,12 @@ function GroupList() {
         }
     };
 
-    // 데이터 가져오기 함수 실행단계
-    useEffect(() => {
-        // 함수를 실행합니다.
-        fetchGroupData();
-    }, [groupId]); // URL 안의 그룹 ID가 바뀔 때 새로 데이터를 불러오는 걸로
-
     // 동작 함수
-    const handleGroupClick = (groupId) => {
+    const handleGroupClick = async (groupId) => {
+        console.log(groupId);
         navigate(`/group/${groupId}/`); // 해당 그룹 ID의 경로로 이동
+        const data = await getChallengeList(groupId);
+        setChallengeListState(data.list);
     };
 
     // react-select 활용을 위한 option 배열 만들기
