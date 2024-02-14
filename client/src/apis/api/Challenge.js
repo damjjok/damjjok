@@ -106,7 +106,7 @@ const completeChallenge = async (challengeId) => {
 
 const getSavedMoney = async (challengeId, setGatheredMoney) => {
     try {
-        const response = await axiosInstance.patch(
+        const response = await axiosInstance.get(
             `/v1/challenge/${challengeId}/savedMoney`,
         );
         if (response.status === 200) {
