@@ -39,7 +39,7 @@ public class SchedulerServiceImpl implements SchedulerService {
     private final EvidenceRepository evidenceRepository;
 
 
-    @Scheduled(cron = "* * * * * ?")
+    @Scheduled(cron = "0 * * * * ?")
     @Override
     @Transactional
     public void testCheckSchedule() {
