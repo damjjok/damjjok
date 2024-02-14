@@ -1,8 +1,27 @@
-import { Card, CardBody, Stack, Heading, Text, useDisclosure, Image, CardHeader, Flex, CardFooter, Box } from "@chakra-ui/react";
+import {
+    Card,
+    CardBody,
+    Stack,
+    Heading,
+    Text,
+    useDisclosure,
+    Image,
+    CardHeader,
+    Flex,
+    CardFooter,
+    Box,
+} from "@chakra-ui/react";
 
 import EvidenceDetailModal from "../modal/EvidenceDetailModal";
 
-const EvidenceItems = ({ title, imagePath, evidenceTitle, imageDate, userName, evidenceId }) => {
+const EvidenceItems = ({
+    title,
+    imagePath,
+    evidenceTitle,
+    imageDate,
+    userName,
+    evidenceId,
+}) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     // 나중에 바꿔야함
 
@@ -19,17 +38,36 @@ const EvidenceItems = ({ title, imagePath, evidenceTitle, imageDate, userName, e
                 borderColor={"dam.lightgray"}
                 display={"flex"}
             >
-                <Image width={"50%"} src={`https://i10e105.p.ssafy.io` + imagePath} alt={title} objectFit="cover" />
-                <Stack justifyContent={"center"} alignItems={"center"} flex={1}>
-                    <CardHeader w={"7.5vw"} bg="#ffd100" display="flex" justifyContent="space-between" alignItems="center" width={"100%"}>
-                        <Text fontSize="md" fontWeight="bold" isTruncated flex={1} textAlign={"center"} w={"3vw"}>
+                <Image
+                    width={"50%"}
+                    src={`https://i10e105.p.ssafy.io` + imagePath}
+                    alt={title}
+                    objectFit="cover"
+                />
+                <Box width={"50%"}>
+                    <CardHeader bg="#ffd100" width={"100%"} p={2}>
+                        <Text
+                            fontSize="md"
+                            fontWeight="bold"
+                            isTruncated
+                            flex={1}
+                            textAlign={"center"}
+                        >
                             {evidenceTitle}
                         </Text>
                     </CardHeader>
                     <CardFooter p={2} width={"100%"}>
-                        <Stack justifyContent={"center"} alignItems={"center"} width={"100%"}>
+                        <Stack
+                            justifyContent={"center"}
+                            alignItems={"center"}
+                            width={"100%"}
+                        >
                             <Box bg="black" borderRadius="lg" p={1}>
-                                <Text fontSize="xs" fontWeight="bold" color="#fdd100">
+                                <Text
+                                    fontSize="xs"
+                                    fontWeight="bold"
+                                    color="#fdd100"
+                                >
                                     {userName}
                                 </Text>
                             </Box>
@@ -38,10 +76,14 @@ const EvidenceItems = ({ title, imagePath, evidenceTitle, imageDate, userName, e
                             </Text>
                         </Stack>
                     </CardFooter>
-                </Stack>
+                </Box>
             </Card>
 
-            <EvidenceDetailModal isOpen={isOpen} onClose={onClose} evidenceId={evidenceId} />
+            <EvidenceDetailModal
+                isOpen={isOpen}
+                onClose={onClose}
+                evidenceId={evidenceId}
+            />
         </div>
     );
 };
