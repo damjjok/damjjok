@@ -31,14 +31,14 @@ public class ChallengeController {
         return response;
     }
 
-    @GetMapping("/profile-images")
-    @Operation(summary = "프로필 이미지들 반환", description = "서버에 있는 모든 프로필 이미지들 반환함",
-            responses = { @ApiResponse(responseCode = "200", description = "이미지들 반환 성공",
-                    content = @Content(schema = @Schema(implementation = ChallengeProfileImageResponseDto.class)))})
-    public ResponseEntity<? super ChallengeProfileImageResponseDto> profileImages(){
-        ResponseEntity<? super ChallengeProfileImageResponseDto> response = challengeService.profileImages();
-        return response;
-    }
+//    @GetMapping("/profile-images")
+//    @Operation(summary = "프로필 이미지들 반환", description = "서버에 있는 모든 프로필 이미지들 반환함",
+//            responses = { @ApiResponse(responseCode = "200", description = "이미지들 반환 성공",
+//                    content = @Content(schema = @Schema(implementation = ChallengeProfileImageResponseDto.class)))})
+//    public ResponseEntity<? super ChallengeProfileImageResponseDto> profileImages(){
+//        ResponseEntity<? super ChallengeProfileImageResponseDto> response = challengeService.profileImages();
+//        return response;
+//    }
 
     @GetMapping("/list/{groupId}")
     @Operation(summary = "특정 groupId의 모든 챌린지 리스트 반환", description = "특정 groupId의 모든 챌린지 리스트 반환",
