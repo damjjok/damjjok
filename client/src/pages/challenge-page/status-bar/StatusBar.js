@@ -24,6 +24,7 @@ import { useEffect, useState } from "react";
 import { getChallengeCandyCount } from "apis/api/Candy";
 import { getAttendanceList } from "apis/api/Attendance";
 import { getChallengeInfo } from "apis/api/Challenge";
+import ThrowingCandy from "../ThrowingCandy";
 // import { challengeState } from "../../../../../contexts/Challenge";
 
 // profilePath 올바르게 설정될 필요성
@@ -107,6 +108,32 @@ function StatusBar() {
         }
     }, [challenge, candyCount]);
 
+    const [candies, setCandies] = useState([]);
+    const [lastCandy, setLastCandy] = useState(Date.now());
+    useEffect(() => {
+        // 마지막으로 사탕이 떨어진 시간을 기준으로 2초 후에 실행
+        const timer = setTimeout(() => {
+            // 배열에서 첫 번째 사탕을 제거
+            setCandies([]);
+        }, 2000); // 마지막 사탕이 떨어진 후 2초를 기다림
+
+        return () => clearTimeout(timer);
+    }, [candies]); // lastDroppedTime이나 candies가 변경될 때마다 실행
+
+    const dropCandy = () => {
+        // left 값을 0에서 100% 사이의 랜덤 값으로 설정
+        const leftPosition = Math.random() * 100;
+
+        // 새로운 사탕 객체를 candies 배열에 추가
+        const newCandy = {
+            id: Date.now(), // 간단한 ID 할당
+            left: leftPosition,
+        };
+
+        setCandies([...candies, newCandy]);
+        setLastCandy(newCandy.id);
+    };
+
     return (
         <Box width={isMobile ? "90vw" : "80vw"} marginY={"0.5rem"}>
             <Flex
@@ -161,7 +188,10 @@ function StatusBar() {
                 </Wrap>
                 <div className="flex items-center">
                     {challenge.status === "PROGRESS" ? (
-                        <StatusBarToast challenge={challenge} />
+                        <StatusBarToast
+                            challenge={challenge}
+                            dropCandy={dropCandy}
+                        />
                     ) : null}
 
                     <Box
@@ -178,6 +208,7 @@ function StatusBar() {
                                 boxSize="25px"
                                 _groupHover={{ opacity: "0.5" }}
                                 transition="opacity 0.2s"
+                                onClick={() => {}}
                             />
                             <Box position={"relative"}>
                                 <Flex
@@ -202,6 +233,8 @@ function StatusBar() {
                     </Box>
                 </div>
             </Flex>
+
+            <ThrowingCandy candies={candies}></ThrowingCandy>
         </Box>
     );
 }

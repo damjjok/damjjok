@@ -14,7 +14,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 // "현재 로그인된 회원이" "오늘" "이 챌린지에" 출석, 응원 했는지 어떻게 확인하지??
 // 현재 상황 : 버튼 활성화 상태가 모든 챌린지에 공유되어 버림.
 // 컴포넌트 로드시에 초기화하자니 다른 챌린지로 갔다가 돌아오면 버튼이 초기화되어버림
-function StatusBarToast({ challenge }) {
+function StatusBarToast({ challenge, dropCandy }) {
     // const [isClicked, setIsClicked] = useState(false); // 버튼 클릭 여부 확인
     const toast = useToast();
     const loginedUser = useRecoilValue(currentUser);
@@ -25,7 +25,7 @@ function StatusBarToast({ challenge }) {
         // setIsClicked(true);
         if (loginedUser.userId === challenge.userId) {
             const attendanceResponse = await postAttendance(
-                +challenge.challengeId,
+                +challenge.challengeId
             );
             await getAttendanceList(challenge.challengeId, setAttendanceList);
             if (attendanceResponse === false) {
@@ -48,10 +48,10 @@ function StatusBarToast({ challenge }) {
             try {
                 await postChallengeCandyCount(
                     challenge.challengeId,
-                    loginedUser.userId,
+                    loginedUser.userId
                 );
                 const response = await getChallengeCandyCount(
-                    challenge.challengeId,
+                    challenge.challengeId
                 );
                 const updatedCount = response.count;
                 setCandyCount(updatedCount);
@@ -59,9 +59,10 @@ function StatusBarToast({ challenge }) {
                     title: "응원 완료!",
                     description: `${challenge.userName} 님을 응원했어요!`,
                     status: "success",
-                    duration: 9000,
+                    duration: 1000,
                     isClosable: true,
                 });
+                dropCandy();
             } catch (error) {}
         }
     };
