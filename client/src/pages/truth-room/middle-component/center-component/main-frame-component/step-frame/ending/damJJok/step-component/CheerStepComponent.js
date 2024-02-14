@@ -4,7 +4,7 @@ import React from "react";
 function CheerStepComponent({ damJJokName, onClick }) {
     return (
         <div>
-            <div style={{ margin: "100px", textAlign: "center" }}>
+            <div style={{ margin: "80px", textAlign: "center" }}>
                 <Text as="b" fontSize={40}>
                     이번에는 실패했지만 <p />
                     우리는 {damJJokName}님의 금연을 응원해요!

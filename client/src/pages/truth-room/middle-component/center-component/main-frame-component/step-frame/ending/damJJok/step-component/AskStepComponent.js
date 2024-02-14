@@ -29,7 +29,7 @@ function AskStepComponent({ damJJokName }) {
 
     return (
         <div>
-            <div style={{ marginTop: "100px", textAlign: "center" }}>
+            <div style={{ marginTop: "80px", textAlign: "center" }}>
                 <Text as="b" fontSize={40}>
                     {damJJokName}님, <p />
                     이번 챌린지에는 실패하셨지만
