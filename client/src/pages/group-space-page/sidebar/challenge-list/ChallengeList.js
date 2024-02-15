@@ -22,7 +22,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getChallengeList } from "apis/api/Challenge";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { currentUser, currentUserState } from "contexts/User";
-import { challengeListState } from "contexts/Challenge";
+import { challengeListState, challengeState } from "contexts/Challenge";
 // import { useRecoilValue } from "recoil";
 // import { challengeListState } from "../../../../context/Challenge";
 
@@ -31,7 +31,7 @@ function ChallengeList({ onClick }) {
     const navigate = useNavigate();
 
     const { groupId } = useParams();
-    // const setChallengeState = useSetRecoilState(challengeState);
+    const setChallengeState = useSetRecoilState(challengeState);
     const [currentChallengeList, setCurrentChallengeList] =
         useRecoilState(challengeListState);
     const [currentGroupChallengeList, setCurrentGroupChallengeList] = useState(
@@ -51,8 +51,6 @@ function ChallengeList({ onClick }) {
                 // navigate(`./empty-challenge`);
             }
         };
-
-        console.log("제발 좀 되게해주세요.");
 
         fetchData(); // fetchData 함수 호출
     }, []);
@@ -89,6 +87,7 @@ function ChallengeList({ onClick }) {
                 navigate(
                     `/group/${groupId}/challenge/${currentMyChallenge.challengeId}`
                 );
+                setChallengeState(currentMyChallenge);
             } else {
                 const randomCurrentChallenge =
                     updatedCurrentGroupChallengeList.find(
@@ -98,6 +97,7 @@ function ChallengeList({ onClick }) {
                     navigate(
                         `/group/${groupId}/challenge/${randomCurrentChallenge.challengeId}`
                     );
+                    setChallengeState(randomCurrentChallenge);
                 }
             }
         } else {
@@ -152,10 +152,11 @@ function ChallengeList({ onClick }) {
                                                   index,
                                                   list: "current",
                                               });
+
                                               navigate(
-                                                  `/group/${groupId}/challenge/${challenge.challengeId}`,
-                                                  { state: { challenge } }
+                                                  `/group/${groupId}/challenge/${challenge.challengeId}`
                                               );
+                                              setChallengeState(challenge);
                                               if (onClick) onClick();
                                           }}
                                       >
@@ -265,10 +266,11 @@ function ChallengeList({ onClick }) {
                                             index,
                                             list: "last",
                                         });
+
                                         navigate(
-                                            `/group/${groupId}/last-challenge/${challenge.challengeId}`,
-                                            { state: { challenge } }
+                                            `/group/${groupId}/last-challenge/${challenge.challengeId}`
                                         );
+                                        setChallengeState(challenge);
                                         if (onClick) onClick();
                                     }}
                                 >
