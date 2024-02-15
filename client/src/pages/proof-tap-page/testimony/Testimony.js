@@ -1,4 +1,12 @@
-import { useDisclosure, Button, HStack, Text, VStack, Box, useBreakpointValue } from "@chakra-ui/react";
+import {
+    useDisclosure,
+    Button,
+    HStack,
+    Text,
+    VStack,
+    Box,
+    useBreakpointValue,
+} from "@chakra-ui/react";
 import TestimonyCreateModal from "../modal/TestimonyCreateModal";
 import TestimonyItems from "./TestimonyItems";
 import { EditIcon } from "@chakra-ui/icons";
@@ -29,7 +37,7 @@ const Testimony = () => {
             <Box overflowX={"auto"} width={isMobile ? "90vw" : "75vw"}>
                 <HStack spacing={4} align="stretch">
                     {testimonies.map((item, index) => (
-                        <TestimonyItems key={index} {...item} />
+                        <TestimonyItems key={item.testimonyId} {...item} />
                     ))}
                     <Box>
                         <Button
@@ -54,7 +62,11 @@ const Testimony = () => {
                 </HStack>
             </Box>
 
-            <TestimonyCreateModal isOpen={isOpen} onClose={onClose} onSave={saveTestimony} />
+            <TestimonyCreateModal
+                isOpen={isOpen}
+                onClose={onClose}
+                onSave={saveTestimony}
+            />
         </div>
     );
 };
