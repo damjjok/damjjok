@@ -35,12 +35,12 @@ function Strick({ challenge, startedDate }) {
                 const cur = new Date(
                     new Date(e).getFullYear(),
                     new Date(e).getMonth(),
-                    new Date(e).getDate(),
+                    new Date(e).getDate()
                 );
                 const start = new Date(
                     startedDate.getFullYear(),
                     startedDate.getMonth(),
-                    startedDate.getDate(),
+                    startedDate.getDate()
                 );
 
                 const diff = cur - start;

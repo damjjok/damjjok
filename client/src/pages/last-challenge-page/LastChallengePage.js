@@ -16,18 +16,20 @@ import { getCheerMessageList } from "apis/api/CheerMsg";
 
 function LastChallengePage() {
     const { groupId, challengeId } = useParams();
-    const location = useLocation();
-    const challenge = location.state.challenge;
     const [currentChallenge, setCurrentChallenge] =
         useRecoilState(challengeState);
     const tabName =
-        challenge.status === "SUCCESS" ? "성공한 챌린지" : "실패한 챌린지";
+        currentChallenge.status === "SUCCESS"
+            ? "성공한 챌린지"
+            : "실패한 챌린지";
     const description =
-        challenge.status === "SUCCESS"
+        currentChallenge.status === "SUCCESS"
             ? "이전에 성공한 챌린지 정보를 볼 수 있어요"
             : "이전에 실패한 챌린지 정보를 볼 수 있어요";
     const bgImage =
-        challenge.status === "SUCCESS" ? bgSucceedChallenge : bgFailedChallenge;
+        currentChallenge.status === "SUCCESS"
+            ? bgSucceedChallenge
+            : bgFailedChallenge;
     const isExpired = "True";
     const isMobile = useBreakpointValue({ base: true, md: false });
     const [cheerMessageList, setCheerMessageList] = useRecoilState(
@@ -41,12 +43,12 @@ function LastChallengePage() {
         const fetchData = async () => {
             resetCheerMessageListAtom();
             try {
-                const response = await getChallengeInfo(challengeId);
+                // const response = await getChallengeInfo(challengeId);
                 const messageResponse = await getCheerMessageList(challengeId);
                 setCheerMessageList(messageResponse);
                 // console.log(messageResponse);
-                const updatedChallenge = response.dto;
-                setCurrentChallenge(updatedChallenge); // Recoil 상태에 데이터 적용
+                // const updatedChallenge = response.dto;
+                // setCurrentChallenge(updatedChallenge); // Recoil 상태에 데이터 적용
                 // console.log(updatedChallenge);
                 // console.log(cheerMessageList);
             } catch (error) {
@@ -55,7 +57,7 @@ function LastChallengePage() {
         };
 
         fetchData(); // fetchData 함수 호출
-    }, [challengeId]);
+    }, [currentChallenge]);
 
     // console.log(challenge);
 
@@ -132,7 +134,7 @@ function LastChallengePage() {
                             isExpired={isExpired}
                         />
                     </VStack>
-                    {challenge.status === "SUCCESS" ? (
+                    {currentChallenge.status === "SUCCESS" ? (
                         <VStack spacing={"30px"}>
                             <MessageCheckModal isExpired={isExpired} />
                             <PiggyBankFinished isExpired={isExpired} />
