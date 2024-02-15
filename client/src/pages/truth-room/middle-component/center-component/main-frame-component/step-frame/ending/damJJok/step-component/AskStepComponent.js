@@ -1,4 +1,5 @@
 import { Button, Text } from "@chakra-ui/react";
+import { currentGroupState } from "contexts/Group";
 import {
     challengeIdState,
     joinMemberListState,
@@ -12,6 +13,7 @@ function AskStepComponent({ damJJokName }) {
     const { leaveRoom } = useContext(WebSocketContext);
     const joinMemberList = useRecoilValue(joinMemberListState);
     const challengeId = useRecoilValue(challengeIdState);
+    const currentGroup = useRecoilValue(currentGroupState);
     const navigate = useNavigate();
 
     const [isLastMember, setIsLastMember] = useState(false);
@@ -19,15 +21,15 @@ function AskStepComponent({ damJJokName }) {
         if (joinMemberList.length === 1) setIsLastMember(true); // 마지막 멤버 여부 저장
         leaveRoom(challengeId, isLastMember);
 
-        if (mode === "YES") navigate(`/truth-room/enter-test/${challengeId}`);
+        if (mode === "YES")
+            navigate(`/group/${currentGroup.groupId}/create-challenge`);
         // 예 클릭 시 챌린지 생성으로, 아직 임시 처리
-        else if (mode === "NO")
-            navigate(`/truth-room/enter-test/${challengeId}`); // 아니오 클릭 시 바로 밖으로 나감, 아직 임시 처리
+        else if (mode === "NO") navigate(`/group/${currentGroup.groupId}`);
     }
 
     return (
         <div>
-            <div style={{ marginTop: "100px", textAlign: "center" }}>
+            <div style={{ marginTop: "80px", textAlign: "center" }}>
                 <Text as="b" fontSize={40}>
                     {damJJokName}님, <p />
                     이번 챌린지에는 실패하셨지만

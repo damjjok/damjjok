@@ -101,3 +101,22 @@
     align-items: center;
     height: 100vh; /* 전체 뷰포트 높이 */
 }
+
+.throwing-candy {
+    top: -100px; /* 시작 위치를 컨테이너 위로 설정 */
+    animation: drop 2s forwards, spin 2s infinite linear; /* 애니메이션 실행 시간과 종류 설정 */
+}
+
+@keyframes drop {
+    to {
+        top: 90%; /* 최종 위치를 컨테이너 바닥으로 설정 */
+    }
+}
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
