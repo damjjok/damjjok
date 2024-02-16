@@ -88,13 +88,12 @@ public class NotificationServiceImpl implements NotificationService {
         // 수신인 토큰이 비어있는 경우 에러처리
         int userId = dto.getReceivingMemberId();
         UserEntity userEntity = userRepository.findByUserId(userId);
-        if (userEntity.getFcmToken() == null) {
-            throw new CustomException(HttpStatus.BAD_REQUEST, ResponseCode.BAD_REQUEST, "FCM 토큰이 없습니다");
+        if (userEntity.getFcmToken().equals("")) {
+            return null;
         }
         if (userEntity == null) {
             throw new UserNotFoundException();
         }
-        String senderName = dto.getSenderName();
         // 그룹
         String groupName = dto.getGroupName();
         // 챌린지
@@ -125,14 +124,14 @@ public class NotificationServiceImpl implements NotificationService {
 
         int commonCodeId = dto.getCommonCodeId();
 
-        if(commonCodeId == 201 || commonCodeId == 301 ||
-                commonCodeId == 303  || commonCodeId == 601 || commonCodeId == 603){
+        if(commonCodeId == 201 || commonCodeId == 301 || commonCodeId == 303  ||
+                commonCodeId == 601 || commonCodeId == 501 || commonCodeId == 602 || commonCodeId == 603){
             messageTemplate = temp
                     .replace("{damjjokName}", dto.getDamjjokName())
                     .replace("{groupName}", groupName);
         }
         else if(commonCodeId == 101 || commonCodeId == 302
-                || commonCodeId == 304 || commonCodeId == 602){
+                || commonCodeId == 304){
             messageTemplate = temp
                     .replace("{groupName}", groupName);
         }
@@ -141,11 +140,6 @@ public class NotificationServiceImpl implements NotificationService {
                     .replace("{damjjokName}", dto.getDamjjokName())
                     .replace("{groupName}", groupName)
                     .replace("{day}", day);
-        }
-        else if(commonCodeId == 501){
-            messageTemplate = temp
-                    .replace("{senderName}", senderName)
-                    .replace("{groupName}", groupName);
         }
 
         // 실제 알림 전송

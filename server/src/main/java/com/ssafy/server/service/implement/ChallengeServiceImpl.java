@@ -83,7 +83,7 @@ public class ChallengeServiceImpl implements ChallengeService {
 
         challengeEntity.setStatus("PROGRESS");
         challengeEntity.setDetermination("열심히 하겠습니다!");
-        challengeEntity.setProfilePath("resources/profile/one.jpg");
+        challengeEntity.setProfilePath("avatar1.png");
 
         ChallengeEntity savedChallengeEntity = challengeRepository.save(challengeEntity);
 
@@ -223,6 +223,7 @@ public class ChallengeServiceImpl implements ChallengeService {
         ChallengeEntity entity = challengeRepository.findByChallengeId(dto.getChallengeId());
         if(entity == null) throw new ChallengeNotFoundException();
 
+        if(dto.getStatus().equals("FAIL")) entity.setEndDate(LocalDateTime.now());
         entity.setStatus(dto.getStatus());
 
         challengeRepository.save(entity);
@@ -257,7 +258,7 @@ public class ChallengeServiceImpl implements ChallengeService {
         AtomicInteger count = new AtomicInteger();
         int cur_day = (int) ChronoUnit.DAYS.between(cur.getCreatedAt().toLocalDate() , LocalDateTime.now());
 
-        Set<Integer> peroidSet = new HashSet<>();
+        Set<Integer> peroidSet = new TreeSet<>();
 
         list.stream().forEach(challenge-> {
             if(challenge.getStatus().equals("PROGRESS")){
@@ -266,17 +267,15 @@ public class ChallengeServiceImpl implements ChallengeService {
             }
         });
 
-        int rank = 0;
+        int rank = peroidSet.size();
         for(Integer r : peroidSet){
-            rank++;
             if(r == cur_day){
                 break;
             }
+            rank--;
         }
 
-        ranking = (int)((double)rank / peroidSet.size() * 100);
-
-        return ChallengeRankResponseDto.success(ranking);
+        return ChallengeRankResponseDto.success(rank, peroidSet.size());
     }
 
     @Override

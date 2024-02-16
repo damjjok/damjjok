@@ -95,16 +95,23 @@ public class ValidationExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
 
+    @ExceptionHandler(MembersNotFoundException.class)
+    public ResponseEntity<Object> handleMembersNotFoundException(MembersNotFoundException ex) {
+        ResponseDto response = new ResponseDto(ResponseCode.BAD_REQUEST, "해당 방에 멤버값이 없습니다.");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
     // OpenVidu
     @ExceptionHandler(OpenViduJavaClientException.class)
     public ResponseEntity<Object> handleOpenViduJavaClientException(OpenViduJavaClientException ex) {
-        ResponseDto response = new ResponseDto("OPENVIDU_JAVA_CLIENT_ERROR", "Redis 작업 중 오류가 발생했습니다.");
+        ResponseDto response = new ResponseDto("OPENVIDU_JAVA_CLIENT_ERROR", "OpenVidu 작업 중 오류가 발생했습니다.");
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
 
     @ExceptionHandler(OpenViduHttpException.class)
     public ResponseEntity<Object> handleOpenViduHttpException(OpenViduHttpException ex) {
-        ResponseDto response = new ResponseDto("OPENVIDU_HTTP_ERROR", "Redis 작업 중 오류가 발생했습니다.");
+        ResponseDto response = new ResponseDto("OPENVIDU_HTTP_ERROR", "OpenVidu 작업 중 오류가 발생했습니다.");
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
 }
+

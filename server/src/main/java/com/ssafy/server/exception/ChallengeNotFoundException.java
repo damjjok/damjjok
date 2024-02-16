@@ -5,5 +5,4 @@ public class ChallengeNotFoundException extends RuntimeException {
     public ChallengeNotFoundException() {
         super();
     }
-
 }
