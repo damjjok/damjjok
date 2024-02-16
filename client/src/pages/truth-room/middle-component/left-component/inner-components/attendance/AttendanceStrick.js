@@ -29,10 +29,18 @@ function AttendanceStrick() {
         const makeStrick = () => {
             let tmp = Array(currentChallenge.duration).fill(false);
             const startedDate = new Date(currentChallenge.createdAt);
-            const start = new Date(startedDate.getFullYear(), startedDate.getMonth(), startedDate.getDate());
+            const start = new Date(
+                startedDate.getFullYear(),
+                startedDate.getMonth(),
+                startedDate.getDate()
+            );
 
             attendanceList.forEach((e) => {
-                const cur = new Date(new Date(e).getFullYear(), new Date(e).getMonth(), new Date(e).getDate());
+                const cur = new Date(
+                    new Date(e).getFullYear(),
+                    new Date(e).getMonth(),
+                    new Date(e).getDate()
+                );
 
                 const diff = cur - start;
 
@@ -51,15 +59,38 @@ function AttendanceStrick() {
 
     return (
         // css 150~80일인 경우 오른쪽으로 쏠림
-        <Box className="flex flex-col over" justifyContent={"center"} alignItems={"center"}>
-            <Box className="mt-4 max-w-[10vw] grid grid-flow-row grid-rows-32 gap-3 grid-cols-5  place-items-center" overflowY={"scroll"} h={"47vh"} p={2}>
+        <Box
+            className="flex flex-col over"
+            justifyContent={"center"}
+            alignItems={"center"}
+        >
+            <Box
+                className="mt-4 max-w-[10vw] grid grid-flow-row grid-rows-32 gap-3 grid-cols-5  place-items-center"
+                overflowY={"scroll"}
+                h={"47vh"}
+                p={2}
+            >
                 {attendanceData.map((attended, i) => (
-                    <div key={i} className={`w-3 h-3 rounded ${attended ? "bg-damyellow" : "bg-damlightgray"}`}></div>
+                    <div
+                        key={i}
+                        className={`w-3 h-3 rounded ${
+                            attended ? "bg-damyellow" : "bg-damlightgray"
+                        }`}
+                    ></div>
                 ))}
             </Box>
-            <Text className="text-md text-right" color={"dam.yellow"} p={1}>
-                금연 시작일 : {currentChallenge ? new Date(currentChallenge.createdAt).toLocaleDateString() : ""}
-                <br></br> 목표일 수 : {currentChallenge ? currentChallenge.duration : ""}일<br></br>
+            <Text
+                className="text-right"
+                color={"dam.yellow"}
+                p={1}
+                fontSize={"0.7rem"}
+            >
+                금연 시작일 :{" "}
+                {currentChallenge
+                    ? new Date(currentChallenge.createdAt).toLocaleDateString()
+                    : ""}
+                <br></br> 목표일 수 :{" "}
+                {currentChallenge ? currentChallenge.duration : ""}일<br></br>
                 출석일 수 : {attendanceList.length}일
             </Text>
         </Box>
