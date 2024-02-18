@@ -65,42 +65,13 @@ function ChallengePage() {
     ];
 
     // 현재 선택된 탭의 인덱스를 상태로 추적
-    const [tabIndex, setTabIndex] = useState(0);
-
     // 1. Create the component
-
-    // 2. Create an array of data
-    const tabData = [
-        {
-            label: "홈",
-            img: bgHomeTab,
-            description: "챌린지 홈이에요! 담쪽이의 금연일지를 확인할 수 있어요.",
-        },
-        {
-            label: "제보",
-            img: bgArticleTab,
-            description: "담쪽이가 흡연하는 장면을 목격했다면 제보하세요. 진실의 방이 생성됩니다.",
-        },
-        {
-            label: "진실의 방",
-            img: bgRoomofTruth,
-            description: "담쪽이가 흡연했다는 제보가 들어온다면, 검증하세요.",
-        },
-        {
-            label: "리워드",
-            img: bgRewardTab,
-            description: "금연 챌린지에 성공하면 받게 될 선물을 미리 볼 수 있어요.",
-        },
-    ];
 
     // 3. Pass the props and chill!
     return (
         <>
             <VStack justifyContent={"center"} alignItems={"center"}>
                 <StatusBar />
-                <TitleText fontSize="2rem" img={tabData[tabIndex].img} description={tabData[tabIndex].description}>
-                    {tabData[tabIndex].label}
-                </TitleText>
                 <ChallengeTabs></ChallengeTabs>
 
                 {/* <DataTabs data={tabData} /> */}
