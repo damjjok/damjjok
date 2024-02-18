@@ -67,58 +67,27 @@ function ChallengePage() {
     // 현재 선택된 탭의 인덱스를 상태로 추적
     const [tabIndex, setTabIndex] = useState(0);
 
-    // 탭이 변경되었을 때 호출되는 함수
-    const handleTabsChange = (index) => {
-        setTabIndex(index);
-    };
-
     // 1. Create the component
-    function DataTabs({ data }) {
-        return (
-            <Box>
-                <Tabs isFitted colorScheme="yellow" onChange={handleTabsChange} index={tabIndex}>
-                    <TabList>
-                        {data.map((tab, index) => (
-                            <Tab key={index} fontSize={isMobile ? "xs" : "none"} fontWeight={"semibold"}>
-                                {tab.label}
-                            </Tab>
-                        ))}
-                    </TabList>
-                    <TabPanels>
-                        {data.map((tab, index) => (
-                            <TabPanel p={0} key={index}>
-                                <Box width={isMobile ? "90vw" : "70vw"}>{tab.content}</Box>
-                            </TabPanel>
-                        ))}
-                    </TabPanels>
-                </Tabs>
-            </Box>
-        );
-    }
 
     // 2. Create an array of data
     const tabData = [
         {
             label: "홈",
-            content: <HomeTabPage />,
             img: bgHomeTab,
             description: "챌린지 홈이에요! 담쪽이의 금연일지를 확인할 수 있어요.",
         },
         {
             label: "제보",
-            content: <ProofTabPage />,
             img: bgArticleTab,
             description: "담쪽이가 흡연하는 장면을 목격했다면 제보하세요. 진실의 방이 생성됩니다.",
         },
         {
             label: "진실의 방",
-            content: <TruthRoomTabPage />,
             img: bgRoomofTruth,
             description: "담쪽이가 흡연했다는 제보가 들어온다면, 검증하세요.",
         },
         {
             label: "리워드",
-            content: <RewardTabPage />,
             img: bgRewardTab,
             description: "금연 챌린지에 성공하면 받게 될 선물을 미리 볼 수 있어요.",
         },

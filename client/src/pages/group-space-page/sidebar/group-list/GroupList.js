@@ -23,7 +23,7 @@ function GroupList() {
     useEffect(() => {
         // 함수를 실행합니다.
         fetchGroupData();
-    }, [groupId]); // 빈 배열을 넘겨주어 컴포넌트 마운트 시에만 실행되도록 합니다.
+    }, []); // 빈 배열을 넘겨주어 컴포넌트 마운트 시에만 실행되도록 합니다.
 
     const navigate = useNavigate();
 

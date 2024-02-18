@@ -46,20 +46,19 @@ function StatusBar({ isExpired }) {
     const expiredDiffMilliseconds = end - start;
     const expiredDiffDays = Math.floor(expiredDiffMilliseconds / (24 * 60 * 60 * 1000)) + 1;
 
-    useEffect(() => {
-        if (!challenge.challengeId) return;
-        const fetchChallengeData = async () => {
-            try {
-                const response = await getChallengeInfo(challenge.challengeId);
-                console.log(response);
-                const updatedChallenge = response.dto;
-                setChallenge(updatedChallenge);
-            } catch (error) {
-                console.log(error);
-            }
-        };
-        fetchChallengeData();
-    }, []);
+    // useEffect(() => {
+    //     if (!challenge.challengeId) return;
+    //     const fetchChallengeData = async () => {
+    //         try {
+    //             const response = await getChallengeInfo(challenge.challengeId);
+    //             const updatedChallenge = response.dto;
+    //             setChallenge(updatedChallenge);
+    //         } catch (error) {
+    //             console.log(error);
+    //         }
+    //     };
+    //     fetchChallengeData();
+    // }, []);
 
     useEffect(() => {
         if (!challenge.challengeId) return;
@@ -88,7 +87,7 @@ function StatusBar({ isExpired }) {
         } else {
             fetchCandyData(); // fetchData 함수 호출
         }
-    }, [challenge, candyCount]);
+    }, [challenge]);
 
     const [candies, setCandies] = useState([]);
     useEffect(() => {
