@@ -5,7 +5,7 @@ import { Box, VStack, Wrap } from "@chakra-ui/react";
 
 function ProofTabPage() {
     return (
-        <Box height={"50vh"} mt={5}>
+        <Box height={"50vh"} mt={5} w={"100%"}>
             <Box>
                 {/* <Wrap width="100%" padding={"1rem"} borderRadius={"20px"}>
                     <TitleText fontSize="2rem" description="담쪽이가 흡연하는 장면을 목격했다면 증거를 제출해주세요!">

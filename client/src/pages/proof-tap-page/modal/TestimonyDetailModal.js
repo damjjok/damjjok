@@ -1,23 +1,8 @@
 import React, { useEffect, useState } from "react";
-import {
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalFooter,
-    ModalBody,
-    ModalCloseButton,
-    Button,
-    Box,
-    Text,
-} from "@chakra-ui/react";
+import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Button, Box, Text } from "@chakra-ui/react";
 import { getTestimonyDetail } from "apis/api/Proof";
 
-const TestimonyDetailModal = ({ isOpen, onClose, testimonyId }) => {
-    const [testimony, setTestimony] = useState({});
-    useEffect(() => {
-        getTestimonyDetail(testimonyId, setTestimony);
-    }, []);
+const TestimonyDetailModal = ({ isOpen, onClose, testimony }) => {
     // 추후에 데이터 연결되면 바꿀 예정
 
     return (
@@ -35,21 +20,11 @@ const TestimonyDetailModal = ({ isOpen, onClose, testimonyId }) => {
                     </ModalHeader>{" "}
                     <ModalCloseButton />
                     <ModalBody>
-                        <Box
-                            textAlign="right"
-                            mb={7}
-                            borderBottom="2px"
-                            borderColor="#ffd100"
-                        >
+                        <Box textAlign="right" mb={7} borderBottom="2px" borderColor="#ffd100">
                             <Text fontSize="xl" fontWeight="bold">
                                 제보자: {testimony.userName}
                             </Text>
-                            <Text>
-                                작성 시각:{" "}
-                                {new Date(
-                                    testimony.createdAt
-                                ).toLocaleDateString()}
-                            </Text>
+                            <Text>작성 시각: {new Date(testimony.createdAt).toLocaleDateString()}</Text>
                         </Box>
                         <Box>{testimony.testimonyContent}</Box> {/* 내용 */}
                     </ModalBody>

@@ -26,9 +26,7 @@ import { useNavigate } from "react-router-dom";
 function StatusEditModal({ currentChallenge, selectedAvatar }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [currentStatus, setStatus] = useRecoilState(challengeStatusState);
-    const [inputValue, setInputValue] = useState(
-        currentChallenge.determination,
-    );
+    const [inputValue, setInputValue] = useState(currentChallenge.determination);
     const setChallenge = useSetRecoilState(challengeState);
     const initialRef = React.useRef(null);
     const finalRef = React.useRef(null);
@@ -39,12 +37,7 @@ function StatusEditModal({ currentChallenge, selectedAvatar }) {
                 <EditIcon onClick={onOpen} />
             </Button>
 
-            <Modal
-                initialFocusRef={initialRef}
-                finalFocusRef={finalRef}
-                isOpen={isOpen}
-                onClose={onClose}
-            >
+            <Modal initialFocusRef={initialRef} finalFocusRef={finalRef} isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
                 <ModalContent>
                     <ModalHeader>
@@ -58,14 +51,9 @@ function StatusEditModal({ currentChallenge, selectedAvatar }) {
                         </FormControl>
 
                         <p>나의 한 마디 수정</p>
-                        <Editable
-                            defaultValue={`${currentChallenge.determination}`}
-                        >
+                        <Editable defaultValue={`${currentChallenge.determination}`}>
                             <EditablePreview />
-                            <EditableInput
-                                value={inputValue}
-                                onChange={(e) => setInputValue(e.target.value)}
-                            />
+                            <EditableInput value={inputValue} onChange={(e) => setInputValue(e.target.value)} />
                         </Editable>
                     </ModalBody>
 
@@ -74,30 +62,20 @@ function StatusEditModal({ currentChallenge, selectedAvatar }) {
                             buttonName={"수정하기"}
                             onClick={async () => {
                                 //수정사항 반영 로직 작성
-                                await patchChallengeStatus(
-                                    currentChallenge.challengeId,
-                                    inputValue,
-                                    currentStatus.imagePath,
-                                );
+                                await patchChallengeStatus(currentChallenge.challengeId, inputValue, currentStatus.imagePath);
 
                                 setStatus({
                                     determination: inputValue,
                                     imagePath: currentStatus.imagePath,
                                 });
-                                const updatedResponse = await getChallengeInfo(
-                                    currentChallenge.challengeId,
-                                );
+                                const updatedResponse = await getChallengeInfo(currentChallenge.challengeId);
 
                                 // challenge 상태를 업데이트
                                 setChallenge(updatedResponse.dto);
                                 onClose();
                             }}
                         />
-                        <BasicButton
-                            onClick={onClose}
-                            buttonName={"취소"}
-                            variant={"cancel"}
-                        />
+                        <BasicButton onClick={onClose} buttonName={"취소"} variant={"cancel"} />
                     </ModalFooter>
                 </ModalContent>
             </Modal>

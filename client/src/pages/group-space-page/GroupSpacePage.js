@@ -23,7 +23,6 @@ function GroupSpacePage() {
     };
 
     useEffect(() => {
-        console.log("111111 : ", groupId);
         fetchGroupDetail();
     }, [groupId]);
 
@@ -31,12 +30,7 @@ function GroupSpacePage() {
         <>
             <Topbar />
             <div className="flex">
-                <Box
-                    position={isMobile ? "fixed" : "static"}
-                    bottom={isMobile ? "10vw" : "auto"}
-                    left={isMobile ? "10px" : "auto"}
-                    zIndex={"docked"}
-                >
+                <Box position={isMobile ? "fixed" : "static"} bottom={isMobile ? "10vw" : "auto"} left={isMobile ? "10px" : "auto"} zIndex={"docked"}>
                     <Sidebar />
                 </Box>
                 <Box className="w-full">

@@ -15,19 +15,14 @@ const avatars = [
 ];
 
 function AvatarSelector() {
-    const [currentStatus, setCurrentStatus] =
-        useRecoilState(challengeStatusState); // 선택된 Avatar를 추적하는 상태, 상태에 avatar 키 추가되면 useState 안의 기본 값 수정해야 함
+    const [currentStatus, setCurrentStatus] = useRecoilState(challengeStatusState); // 선택된 Avatar를 추적하는 상태, 상태에 avatar 키 추가되면 useState 안의 기본 값 수정해야 함
 
     return (
         <Stack direction="row" className="flex justify-center">
             {avatars.map((avatar, index) => (
                 <Box
                     key={avatar.name}
-                    bg={
-                        currentStatus.imagePath === `avatar${index + 1}.png`
-                            ? "dam.yellow"
-                            : ""
-                    }
+                    bg={currentStatus.imagePath === `avatar${index + 1}.png` ? "dam.yellow" : ""}
                     onClick={() =>
                         setCurrentStatus({
                             imagePath: `avatar${index + 1}.png`,
