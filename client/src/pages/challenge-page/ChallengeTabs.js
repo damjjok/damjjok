@@ -1,6 +1,6 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
-import { useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Outlet, useNavigate, useParams } from "react-router-dom";
 import bgHomeTab from "assets/images/bgHomeTab.png";
 import bgArticleTab from "assets/images/bgArticleTab.jpg";
 import bgRoomofTruth from "assets/images/bgRoomofTruth.jpg";
@@ -39,6 +39,10 @@ const tabData = [
 const ChallengeTabs = () => {
     const navigate = useNavigate();
     const [currentTab, setCurrentTab] = useState(0);
+    const { challengeId } = useParams();
+    useEffect(() => {
+        setCurrentTab(0);
+    }, [challengeId]);
     return (
         <>
             <TitleText fontSize="2rem" img={tabData[currentTab].img} description={tabData[currentTab].description}>
