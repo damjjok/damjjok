@@ -32,6 +32,7 @@ public class ValidationExceptionHandler {
 
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<ResponseDto> customException(CustomException ex) {
+        ex.printStackTrace();
         ResponseDto responseBody = new ResponseDto(ex.getCode(), ex.getMessage());
         return ResponseEntity.status(ex.getStatus()).body(responseBody);
     }
