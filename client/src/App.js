@@ -111,12 +111,14 @@ function App() {
             console.log("Message received. ", payload);
             // 여기서 포그라운드 알림을 처리할 로직을 구현합니다.
             // 예를 들어, 사용자에게 메시지를 표시하는 다이얼로그나 알림을 띄울 수 있습니다.
+
             if (Notification.permission === "granted") {
                 new Notification(payload.data.title, {
                     body: payload.data.body,
                     icon: "../public/logo192.png", // 알림에 표시할 아이콘
                 });
             }
+
             fetchNotifications();
         });
     }, []);
