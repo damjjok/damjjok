@@ -10,12 +10,15 @@ import com.ssafy.server.dto.response.auth.FcmTokenResponseDto;
 import com.ssafy.server.dto.response.auth.SignUpResponseDto;
 import com.ssafy.server.dto.response.auth.TokenResponseDto;
 import com.ssafy.server.entity.UserEntity;
+import com.ssafy.server.exception.CustomAuthenticationException;
 import com.ssafy.server.exception.CustomException;
 import com.ssafy.server.exception.CustomJwtException;
+import com.ssafy.server.exception.UserNotFoundException;
 import com.ssafy.server.provider.JwtProvider;
 import com.ssafy.server.repository.UserRepository;
 import com.ssafy.server.service.AuthService;
 import io.jsonwebtoken.*;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -39,69 +42,65 @@ public class AuthServiceImpl implements AuthService {
     String refreshToken = "";
 
     @Override
+    @Transactional
     public ResponseEntity<? super SignUpResponseDto> signUp(SignUpRequestDto dto) {
-        try{
-            UserEntity userEntity = new UserEntity(dto);
-            userRepository.save(userEntity);
 
-        }catch(Exception exception){
-            exception.printStackTrace();
-            return ResponseDto.databaseError();
-        }
+        UserEntity userEntity = new UserEntity(dto);
+        userRepository.save(userEntity);
+
         return SignUpResponseDto.success();
     }
 
     @Override
+    @Transactional
     public ResponseEntity<? super TokenResponseDto> createNewToken(TokenRequestDto dto) {
-        try{
 
-            /*
-            refreshToken 으로 새로운 Token 요청
-            1. refreshToken 유효한지 검증
-            2. redis 에 refreshToken 있는지 확인
-            3. 있다면, token 들 새로 발급해줘서 던지고, redis에 refreshToken 갈아끼우기
-             */
-            ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
+        /*
+        refreshToken 으로 새로운 Token 요청
+        1. refreshToken 유효한지 검증
+        2. redis 에 refreshToken 있는지 확인
+        3. 있다면, token 들 새로 발급해줘서 던지고, redis에 refreshToken 갈아끼우기
+         */
+        ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
 
-            Jws<Claims> parsedToken = jwtProvider.validateToken(dto.getRefreshToken());
+        Jws<Claims> parsedToken = jwtProvider.validateToken(dto.getRefreshToken());
 
-            int userId = parsedToken.getBody().get("userId", Integer.class);
-            String email = parsedToken.getBody().get("email", String.class);
-            String userName = parsedToken.getBody().get("userName", String.class);
+        int userId = parsedToken.getBody().get("userId", Integer.class);
+        String email = parsedToken.getBody().get("email", String.class);
+        String userName = parsedToken.getBody().get("userName", String.class);
 
-            if(!email.equals(valueOperations.get(dto.getRefreshToken()))){
-                return TokenResponseDto.expiredAndNotExistToken();
-            }
-
-            accessToken = jwtProvider.createToken(userId, email, userName, 5, ChronoUnit.DAYS);
-            refreshToken = jwtProvider.createToken(userId, email, userName, 5, ChronoUnit.DAYS);
-
-            redisTemplate.opsForHash().delete(dto.getRefreshToken());
-            valueOperations.set(refreshToken, email);
-
-        }catch(CustomJwtException e){
-            throw new CustomException(HttpStatus.UNAUTHORIZED, ResponseCode.UNAUTHORIZED, "사용자 인증 다시 해야합니다.");
+        if(!email.equals(valueOperations.get(dto.getRefreshToken()))){
+            throw new CustomAuthenticationException("refreshToken 이 존재하지 않습니다.");
         }
+
+        accessToken = jwtProvider.createToken(userId, email, userName, 5, ChronoUnit.DAYS);
+        refreshToken = jwtProvider.createToken(userId, email, userName, 5, ChronoUnit.DAYS);
+
+        redisTemplate.delete(dto.getRefreshToken());
+        valueOperations.set(refreshToken, email);
+
         return TokenResponseDto.success(accessToken,refreshToken);
     }
 
     @Override
+    @Transactional
     public ResponseEntity<? super FcmTokenResponseDto> savedFcmToken(FCMTokenRequestDto dto) {
-        try{
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
 
-            String email = customUserDetails.getEmail();
-            System.out.println(email + "@@@@@@@");
-
-            UserEntity userEntity = userRepository.findByEmail(email);
-            userEntity.setFcmToken(dto.getFcmToken());
-
-            userRepository.save(userEntity);
-
-        }catch (Exception e){
-            return ResponseDto.databaseError();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication == null || !(authentication.getPrincipal() instanceof CustomUserDetails)){
+            throw new CustomAuthenticationException("사용자 인증 다시 해주세요.");
         }
+        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+
+        String email = customUserDetails.getEmail();
+
+        UserEntity userEntity = userRepository.findByEmail(email);
+        if(userEntity == null) throw new UserNotFoundException();
+
+        userEntity.setFcmToken(dto.getFcmToken());
+
+        userRepository.save(userEntity);
+
         return FcmTokenResponseDto.success();
     }
 }

@@ -1,5 +1,6 @@
 package com.ssafy.server.service.implement;
 
+import com.ssafy.server.common.ResponseCode;
 import com.ssafy.server.dto.ResponseDto;
 import com.ssafy.server.dto.request.openvidu.OpenViduConnectionRequestDto;
 import com.ssafy.server.dto.request.openvidu.OpenViduDisconnectionRequestDto;
@@ -7,6 +8,7 @@ import com.ssafy.server.dto.request.openvidu.OpenViduSessionInitializeRequestDto
 import com.ssafy.server.dto.response.openvidu.OpenViduConnectionResponseDto;
 import com.ssafy.server.dto.response.openvidu.OpenViduDisconnectionResponseDto;
 import com.ssafy.server.dto.response.openvidu.OpenViduSessionInitializeResponseDto;
+import com.ssafy.server.exception.CustomException;
 import com.ssafy.server.service.OpenViduService;
 import io.openvidu.java.client.*;
 import lombok.RequiredArgsConstructor;
@@ -44,9 +46,8 @@ public class OpenViduServiceImpl implements OpenViduService {
             valueOperations.set(sessionKey, newSessionId);
 
 
-        }catch(Exception exception){
-            exception.printStackTrace();
-            return ResponseDto.databaseError();
+        }catch(Exception e){
+            throw new CustomException(HttpStatus.NOT_FOUND, ResponseCode.NOT_FOUND, "initializeSession 함수에서 발생하는 에러입니다.");
         }
         return ResponseEntity.ok(newSessionId);
     }
@@ -65,9 +66,8 @@ public class OpenViduServiceImpl implements OpenViduService {
             ConnectionProperties properties = ConnectionProperties.fromJson(params).build();
             Connection connection = session.createConnection(properties);
             token = connection.getToken();
-        }catch (Exception exception){
-            exception.printStackTrace();
-            return ResponseDto.databaseError();
+        }catch(Exception e){
+            throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, ResponseCode.INTERNAL_SERVER_ERROR, "OpenVidu 관련 에러입니다.");
         }
 
         return OpenViduConnectionResponseDto.success(token);
@@ -88,9 +88,8 @@ public class OpenViduServiceImpl implements OpenViduService {
             redisTemplate.delete(sessionKey);
             session.close();
 
-        }catch (Exception exception){
-            exception.printStackTrace();
-            return ResponseDto.databaseError();
+        }catch(Exception e){
+            throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, ResponseCode.INTERNAL_SERVER_ERROR, "OpenVidu 관련 에러입니다.");
         }
 
         return OpenViduDisconnectionResponseDto.success();

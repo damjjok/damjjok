@@ -25,7 +25,13 @@ public class ScheduleCreateResponseDto extends ResponseDto {
     @Schema(description = "실패 : 담쪽이가 아닌 사람이 일정 생성")
     public static ResponseEntity<ScheduleCreateResponseDto> notDomjjok() {
         ScheduleCreateResponseDto responseBody = new ScheduleCreateResponseDto();
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(responseBody);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
     }
 
+    @Schema(description = "실패 : 마지막 진실의 방 이후로 증언이나 증거가 1개도 없음")
+    public static ResponseEntity<ScheduleCreateResponseDto> noProof() {
+        ScheduleCreateResponseDto responseBody = new ScheduleCreateResponseDto();
+        responseBody.setMessage("마지막 진실의 방 이후 증언이나 증거가 없습니다.");
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(responseBody);
+    }
 }

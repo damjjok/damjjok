@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,9 +53,10 @@ public class EvidenceServiceImpl implements EvidenceService {
             MultipartFile image = dto.getImage();
             int challengeId = dto.getChallengeId();
             int userId = customUserDetails.getUserId();
+            String name = customUserDetails.getUserName();
             String title = dto.getTitle();
 
-//            String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\files";
+//           String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\files";
 
             String projectPath = "/var/www/html/images";
             String fileName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
@@ -64,11 +66,14 @@ public class EvidenceServiceImpl implements EvidenceService {
             image.transferTo(saveFile);
 
             ChallengeEntity challengeEntity = challengeRepository.findByChallengeId(challengeId);
+
             EvidenceEntity evidenceEntity = new EvidenceEntity();
             evidenceEntity.setCreatedBy(userId);
             evidenceEntity.setEvidenceTitle(title);
             evidenceEntity.setChallengeEntity(challengeEntity);
-            evidenceEntity.setImageDate(LocalDateTime.now()); // TODO : 나중에 메타데이터로 바꿔주기
+            DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+            LocalDateTime dateTime = LocalDateTime.parse(dto.getImageDate(), formatter);
+            evidenceEntity.setImageDate(dateTime); //메타데이터로 변경
             evidenceEntity.setImagePath("/images/" + fileName);
             evidenceEntity.setUpdatedBy(userId);
 
@@ -78,12 +83,15 @@ public class EvidenceServiceImpl implements EvidenceService {
             int groupId = challengeEntity.getGroupEntity().getGroupId();
             GroupEntity groupEntity = groupRepository.findByGroupId(groupId);
 
+            // 담쪽이 이름
+            UserEntity damjjok_user = userRepository.findByUserId(challengeEntity.getUserId());
+
             List<UserEntity> userEntityList = groupMemberRepository.findUsersByGroupId(groupId);
             userEntityList.stream().forEach(user -> {
                 NotificationCreateRequestDto ncrDto = new NotificationCreateRequestDto();
                 ncrDto.setCommonCodeId(501);
                 ncrDto.setReceivingMemberId(user.getUserId());
-                ncrDto.setSenderName(user.getUserName());
+                ncrDto.setDamjjokName(damjjok_user.getUserName());
                 ncrDto.setLink("https://");
                 ncrDto.setGroupName(groupEntity.getGroupName());
 
@@ -238,6 +246,8 @@ public class EvidenceServiceImpl implements EvidenceService {
 
                 list.add(evidenceDto);
             });
+
+            if(list.isEmpty()) return ResponseDto.validationFail();
 
         }catch (Exception exception){
             exception.printStackTrace();

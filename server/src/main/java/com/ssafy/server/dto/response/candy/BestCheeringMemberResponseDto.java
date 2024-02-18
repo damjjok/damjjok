@@ -22,7 +22,8 @@ public class BestCheeringMemberResponseDto extends ResponseDto {
         this.candyCnt = candyCnt;
         this.cheerMsgCnt = cheerMsgCnt;
     }
-    public static ResponseEntity<? super BestCheeringMemberResponseDto> success(String userName, int candyCnt, int cheerMsgCnt){
+
+    public static ResponseEntity<BestCheeringMemberResponseDto> success(String userName, int candyCnt, int cheerMsgCnt){
         BestCheeringMemberResponseDto responseBody = new BestCheeringMemberResponseDto(userName, candyCnt, cheerMsgCnt);
         return ResponseEntity.ok(responseBody);
     }

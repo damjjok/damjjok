@@ -7,6 +7,9 @@ spring:
     show-sql: true
     format_sql: true
     use_sql_comments: true
+  jackson:
+    date-format: yyyy-MM-dd'T'HH:mm:ss
+    time-zone: UTC
 
 springdoc:
   packages-to-scan: com.ssafy.server.controller
