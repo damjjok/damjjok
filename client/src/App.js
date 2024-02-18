@@ -114,7 +114,7 @@ function App() {
             if (Notification.permission === "granted") {
                 new Notification(payload.data.title, {
                     body: payload.data.body,
-                    icon: "/firebase-logo.png", // 알림에 표시할 아이콘
+                    icon: "../public/logo192.png", // 알림에 표시할 아이콘
                 });
             }
             fetchNotifications();
