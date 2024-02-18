@@ -22,8 +22,8 @@ function ShowDistributedStepComponent(props) {
 
     const [isLastMember, setIsLastMember] = useState(false);
     function handleClickExit() {
-        if (joinMemberList.length === 1) setIsLastMember(true); // 마지막 멤버 여부 저장
-        leaveRoom(challengeId, isLastMember);
+        // if () setIsLastMember(true); // 마지막 멤버 여부 저장
+        leaveRoom(challengeId, joinMemberList.length === 1);
 
         navigate(`/group/${currentGroup.groupId}`);
     }
