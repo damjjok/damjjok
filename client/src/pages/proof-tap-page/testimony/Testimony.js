@@ -4,11 +4,12 @@ import TestimonyItems from "./TestimonyItems";
 import { EditIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getTestimonies, postTestimony } from "apis/api/Proof";
+import { getTestimonies, getTestimonyDetail, postTestimony } from "apis/api/Proof";
 
 const Testimony = () => {
     const isMobile = useBreakpointValue({ base: true, md: false });
     const [testimonies, setTestimonies] = useState([]);
+    const [testimony, setTestimony] = useState({});
     const { challengeId } = useParams();
 
     const saveTestimony = async (testimony) => {
@@ -20,6 +21,10 @@ const Testimony = () => {
         getTestimonies(challengeId, setTestimonies);
     }, [challengeId]);
 
+    const fetchTestimonyDetail = async (testimonyId) => {
+        await getTestimonyDetail(testimonyId, setTestimony);
+    };
+
     const { isOpen, onOpen, onClose } = useDisclosure();
     return (
         <div className="Testimony mb-5 ">
@@ -29,7 +34,7 @@ const Testimony = () => {
             <Box overflowX={"auto"}>
                 <HStack spacing={4} align="stretch">
                     {testimonies.map((item, index) => (
-                        <TestimonyItems key={item.testimonyId} {...item} />
+                        <TestimonyItems key={item.testimonyId} {...item} onClickHandler={fetchTestimonyDetail} testimony={testimony} />
                     ))}
                     <Box>
                         <Button

@@ -5,14 +5,7 @@ import EXIF from "exif-js";
 import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Button, Box, Text, Flex } from "@chakra-ui/react";
 import { getEvidenceDetail } from "apis/api/Proof";
 
-const EvidenceDetailModal = ({ isOpen, onClose, evidenceId }) => {
-    const [evidence, setEvidence] = useState({});
-    // 추후에 데이터 연결되면 바꿀 예정
-
-    useEffect(() => {
-        getEvidenceDetail(evidenceId, setEvidence);
-    }, []);
-
+const EvidenceDetailModal = ({ isOpen, onClose, evidence }) => {
     return (
         <div className="EvidenceDetailModal">
             <Modal isOpen={isOpen} onClose={onClose}>
