@@ -29,6 +29,8 @@ import ConnectionTest from "pages/truth-room/openvidu/ConnectionTest";
 import GroupSpaceMain from "pages/group-space-page/group-space-main/GroupSpaceMain";
 import { currentUser } from "contexts/User";
 import useAuth from "hooks/useAuth";
+import TruthRoomTabPage from "pages/truth-room-tab-page/TruthRoomTabPage";
+import RewardTabPage from "pages/reward-tab-page/RewardTabPage";
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -109,12 +111,12 @@ function App() {
             console.log("Message received. ", payload);
             // 여기서 포그라운드 알림을 처리할 로직을 구현합니다.
             // 예를 들어, 사용자에게 메시지를 표시하는 다이얼로그나 알림을 띄울 수 있습니다.
-            // if (Notification.permission === "granted") {
-            //     new Notification(payload.data.title, {
-            //         body: payload.data.body,
-            //         icon: "/firebase-logo.png", // 알림에 표시할 아이콘
-            //     });
-            // }
+            if (Notification.permission === "granted") {
+                new Notification(payload.data.title, {
+                    body: payload.data.body,
+                    icon: "/firebase-logo.png", // 알림에 표시할 아이콘
+                });
+            }
             fetchNotifications();
         });
     }, []);
@@ -127,9 +129,14 @@ function App() {
                         <Route path="/" element={<LandingPage />} />
                         <Route path="/group-list" element={<GroupListPage />} />
                         <Route path={`/group/:groupId/*`} element={<GroupSpacePage />}>
-                            <Route path="create-challenge" element={<CreateChallengePage />} />
+                            <Route path="create-challenge" element={<CreateChallengePage />}></Route>
                             <Route path="empty-challenge" element={<EmptyChallengePage />} />
-                            <Route path="challenge/:challengeId" element={<ChallengePage />} />
+                            <Route path="challenge/:challengeId/*" element={<ChallengePage />}>
+                                <Route path="" element={<HomeTabPage></HomeTabPage>}></Route>
+                                <Route path="proof" element={<ProofTabPage></ProofTabPage>}></Route>
+                                <Route path="truth-room" element={<TruthRoomTabPage></TruthRoomTabPage>}></Route>
+                                <Route path="reward" element={<RewardTabPage></RewardTabPage>}></Route>
+                            </Route>
                             <Route path="last-challenge/:challengeId" element={<LastChallengePage />} />
                         </Route>
                         <Route path="/invitation/:code" element={<InvitationCodePage />}></Route>

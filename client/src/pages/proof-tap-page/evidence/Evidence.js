@@ -1,12 +1,5 @@
 import { useRecoilState } from "recoil";
-import {
-    useDisclosure,
-    Button,
-    HStack,
-    Text,
-    VStack,
-    Box,
-} from "@chakra-ui/react";
+import { useDisclosure, Button, HStack, Text, VStack, Box } from "@chakra-ui/react";
 import { evidenceList } from "contexts/Article";
 import EvidenceItems from "./EvidenceItems";
 import EvidenceCreateModal from "../modal/EvidenceCreateModal";
@@ -34,7 +27,7 @@ const Evidence = () => {
                 증거
             </Text>
 
-            <Box overflowX={"auto"} width={"75vw"}>
+            <Box overflowX={"auto"}>
                 <HStack spacing={4} align="stretch">
                     {evidences.map((item, index) => (
                         <EvidenceItems key={item.evidenceId} {...item} />
@@ -61,11 +54,7 @@ const Evidence = () => {
                 </HStack>
             </Box>
 
-            <EvidenceCreateModal
-                isOpen={isOpen}
-                onClose={onClose}
-                onSave={handleSaveEvidence}
-            />
+            <EvidenceCreateModal isOpen={isOpen} onClose={onClose} onSave={handleSaveEvidence} />
         </div>
     );
 };

@@ -6,7 +6,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getGroupList } from "apis/api/Group";
 import { getChallengeList } from "apis/api/Challenge";
 import { challengeListState } from "contexts/Challenge";
-import { currentGroupState } from "contexts/Group";
 
 //테스트를 위한 더미 데이터
 // const groupItems = ["우리끼리만든그룹", "E106", "E107"];
@@ -36,9 +35,7 @@ function GroupList() {
             // 가져온 데이터를 groupData 상태에 저장합니다.
             setGroupListData(response.list);
 
-            const currentGroup = response.list.find(
-                (group) => group.groupId === Number(groupId)
-            );
+            const currentGroup = response.list.find((group) => group.groupId === Number(groupId));
             // 현재 그룹의 이름을 selectedGroup 상태에 설정합니다.
             setSelectedGroup({
                 key: currentGroup?.groupId,
@@ -82,11 +79,7 @@ function GroupList() {
         option: (styles, { isFocused, isSelected }) => {
             let backgroundColor = null;
             if (!isMobile) {
-                backgroundColor = isSelected
-                    ? "rgba(255, 209, 0, 0.8)"
-                    : !isSelected && isFocused
-                    ? "rgba(255, 209, 0, 0.5)"
-                    : null;
+                backgroundColor = isSelected ? "rgba(255, 209, 0, 0.8)" : !isSelected && isFocused ? "rgba(255, 209, 0, 0.5)" : null;
             } else {
                 backgroundColor = isSelected ? "rgba(255, 209, 0, 0.8)" : null;
             }
