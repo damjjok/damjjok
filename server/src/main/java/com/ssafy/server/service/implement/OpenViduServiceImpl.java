@@ -46,8 +46,8 @@ public class OpenViduServiceImpl implements OpenViduService {
             valueOperations.set(sessionKey, newSessionId);
 
 
-        }catch(OpenViduJavaClientException | OpenViduHttpException e){
-            throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, ResponseCode.INTERNAL_SERVER_ERROR, "OpenVidu 관련 에러입니다.");
+        }catch(Exception e){
+            throw new CustomException(HttpStatus.NOT_FOUND, ResponseCode.NOT_FOUND, "initializeSession 함수에서 발생하는 에러입니다.");
         }
         return ResponseEntity.ok(newSessionId);
     }
@@ -66,7 +66,7 @@ public class OpenViduServiceImpl implements OpenViduService {
             ConnectionProperties properties = ConnectionProperties.fromJson(params).build();
             Connection connection = session.createConnection(properties);
             token = connection.getToken();
-        }catch(OpenViduJavaClientException | OpenViduHttpException e){
+        }catch(Exception e){
             throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, ResponseCode.INTERNAL_SERVER_ERROR, "OpenVidu 관련 에러입니다.");
         }
 
@@ -88,7 +88,7 @@ public class OpenViduServiceImpl implements OpenViduService {
             redisTemplate.delete(sessionKey);
             session.close();
 
-        }catch(OpenViduJavaClientException | OpenViduHttpException e){
+        }catch(Exception e){
             throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, ResponseCode.INTERNAL_SERVER_ERROR, "OpenVidu 관련 에러입니다.");
         }
 
