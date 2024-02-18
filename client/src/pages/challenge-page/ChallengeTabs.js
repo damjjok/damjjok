@@ -14,7 +14,7 @@ const ChallengeTabs = () => {
     const [currentTab, setCurrentTab] = useState("");
     return (
         <>
-            <Box width={"100%"}>
+            <Box width={"80vw"}>
                 <Flex marginX={"10%"}>
                     {tabs.map((tab, index) => (
                         <Box
@@ -35,7 +35,7 @@ const ChallengeTabs = () => {
                     ))}
                 </Flex>
             </Box>
-            <Box w="80%">
+            <Box w="80vw">
                 <Outlet></Outlet>
             </Box>
         </>

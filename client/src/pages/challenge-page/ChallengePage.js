@@ -127,7 +127,7 @@ function ChallengePage() {
     // 3. Pass the props and chill!
     return (
         <>
-            <VStack>
+            <VStack justifyContent={"center"} alignItems={"center"}>
                 <StatusBar />
                 <TitleText fontSize="2rem" img={tabData[tabIndex].img} description={tabData[tabIndex].description}>
                     {tabData[tabIndex].label}
