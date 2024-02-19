@@ -14,10 +14,10 @@ import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 function ChallengeCompletedModal({ nextContent }) {
     const challenge = useRecoilValue(challengeState);
     const [cheerMessageList, setCheerMessageList] = useRecoilState(
-        challengeCheerMessageList
+        challengeCheerMessageList,
     );
     const resetCheerMessageListAtom = useResetRecoilState(
-        challengeCheerMessageList
+        challengeCheerMessageList,
     );
     const [bestMember, setBestMember] = useRecoilState(challengeBestMember);
     const resetBestMemberAtom = useResetRecoilState(challengeBestMember);
@@ -29,12 +29,12 @@ function ChallengeCompletedModal({ nextContent }) {
 
             try {
                 const messageResponse = await getCheerMessageList(
-                    challenge.challengeId
+                    challenge.challengeId,
                 );
                 setCheerMessageList(messageResponse);
 
                 const bestMemberResponse = await getBestMember(
-                    challenge.challengeId
+                    challenge.challengeId,
                 );
                 setBestMember(bestMemberResponse);
                 // console.log(cheerMessageList);
@@ -43,7 +43,7 @@ function ChallengeCompletedModal({ nextContent }) {
             }
         };
         fetchData();
-    }, [cheerMessageList]);
+    }, [challenge.challengeId]);
 
     return (
         <>
