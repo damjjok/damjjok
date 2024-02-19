@@ -78,6 +78,7 @@ function MessageCheckModal({ nextContent, isExpired }) {
                     <Flex flexWrap="wrap" justifyContent={"center"}>
                         <AnimatePresence>
                             {isMessagesVisible &&
+                                messages &&
                                 messages
                                     .slice(0, displayCount)
                                     .map((message, index) => (
