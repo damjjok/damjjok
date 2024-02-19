@@ -23,7 +23,7 @@ function GroupList() {
     useEffect(() => {
         // 함수를 실행합니다.
         fetchGroupData();
-    }, []); // 빈 배열을 넘겨주어 컴포넌트 마운트 시에만 실행되도록 합니다.
+    }, [groupId]); // 빈 배열을 넘겨주어 컴포넌트 마운트 시에만 실행되도록 합니다.
 
     const navigate = useNavigate();
 
@@ -35,7 +35,9 @@ function GroupList() {
             // 가져온 데이터를 groupData 상태에 저장합니다.
             setGroupListData(response.list);
 
-            const currentGroup = response.list.find((group) => group.groupId === Number(groupId));
+            const currentGroup = response.list.find(
+                (group) => group.groupId === Number(groupId),
+            );
             // 현재 그룹의 이름을 selectedGroup 상태에 설정합니다.
             setSelectedGroup({
                 key: currentGroup?.groupId,
@@ -79,7 +81,11 @@ function GroupList() {
         option: (styles, { isFocused, isSelected }) => {
             let backgroundColor = null;
             if (!isMobile) {
-                backgroundColor = isSelected ? "rgba(255, 209, 0, 0.8)" : !isSelected && isFocused ? "rgba(255, 209, 0, 0.5)" : null;
+                backgroundColor = isSelected
+                    ? "rgba(255, 209, 0, 0.8)"
+                    : !isSelected && isFocused
+                    ? "rgba(255, 209, 0, 0.5)"
+                    : null;
             } else {
                 backgroundColor = isSelected ? "rgba(255, 209, 0, 0.8)" : null;
             }
