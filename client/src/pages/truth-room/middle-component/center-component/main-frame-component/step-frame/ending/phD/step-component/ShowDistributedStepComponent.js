@@ -32,7 +32,7 @@ function ShowDistributedStepComponent(props) {
         <div>
             <div style={{ marginTop: "100px", textAlign: "center" }}>
                 <Text as="b" fontSize={50}>
-                    {fineDetermined / initGroupPhDCount}원씩이 <p />
+                    {Math.floor(fineDetermined / initGroupPhDCount)}원씩이 <p />
                     박사님들에게 나누어졌어요!
                 </Text>
             </div>
