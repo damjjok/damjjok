@@ -12,6 +12,7 @@ import {
 } from "contexts/TruthRoomSocket";
 import { WebSocketContext } from "contexts/WebSocketContext";
 import { useNavigate } from "react-router-dom";
+import { currentGroupState } from "contexts/Group";
 
 function PassFailResultComponent() {
     // result: PASS or FAIL
@@ -22,6 +23,7 @@ function PassFailResultComponent() {
     const joinMemberList = useRecoilValue(joinMemberListState);
     const result = useRecoilValue(voteResultState); // 소켓으로 받아온 투표 결과
     const stepReadyCount = useRecoilValue(stepReadyCountState); // 최후 변론으로 버튼을 누른 멤버 수 카운트
+    const currentGroup = useRecoilValue(currentGroupState);
 
     const [isClickedReady, setIsClickedReady] = useState(false); // 최후 변론으로 버튼을 눌렀는지 판별
     const [isLastMember, setIsLastMember] = useState(false);
@@ -32,7 +34,7 @@ function PassFailResultComponent() {
             // PASS 시 바로 나가기
             // if () setIsLastMember(true);
             leaveRoom(challengeId, joinMemberList.length === 1);
-            navigate(`/truth-room/enter-test/${challengeId}`); // 나가기 버튼 임시 처리
+            navigate(`/group/${currentGroup.groupId}`); // 나가기 버튼 임시 처리
         } else if (mode === "next") {
             // FAIL 시 최후 변론으로
             finalArgumentReady(challengeId);
