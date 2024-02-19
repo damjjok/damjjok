@@ -30,8 +30,8 @@ function PassFailResultComponent() {
         // mode: exit(나가기) or next(최후 변론으로)
         if (mode === "exit") {
             // PASS 시 바로 나가기
-            if (joinMemberList.length === 1) setIsLastMember(true);
-            leaveRoom(challengeId, isLastMember);
+            // if () setIsLastMember(true);
+            leaveRoom(challengeId, joinMemberList.length === 1);
             navigate(`/truth-room/enter-test/${challengeId}`); // 나가기 버튼 임시 처리
         } else if (mode === "next") {
             // FAIL 시 최후 변론으로

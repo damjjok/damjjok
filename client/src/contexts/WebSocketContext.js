@@ -339,15 +339,18 @@ export const WebSocketProvider = ({ children }) => {
     const leaveRoom = useCallback(
         (roomId, isLastMember) => {
             // 진실의 방에서 나갈 때 동작하는 함수, 마지막 나가는 멤버일 경우 오픈비두와의 세션도 끊어 줌.
-            if (isLastMember) closeOpenviduSession();
+            if (isLastMember) {
+                console.log(isLastMember);
+                closeOpenviduSession(roomId);
+            }
             // 서버에 나감을 알리고 소켓과 연결을 끊어 줌.
-
             stompClient.current.publish({
                 // 진실의 방에서 나감을 서버에 알림
                 destination: "/app/leaveRoom/" + roomId,
                 headers: {},
                 body: {},
             });
+
             // 소켓 연결 후 관련 recoil 값들 원상복구, challengeId와 enteringTruthRoomMemberInfo는 입장하기 누를 때 set되므로 여기서 초기화 x
             setStep(0);
             setJoinMemberList([]);
