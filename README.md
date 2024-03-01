@@ -49,10 +49,10 @@ git clone https://lab.ssafy.com/s10-webmobile1-sub2/S10P12E105.git
 <br>
 
 ## ✂️ 개발 환경
-![개발환경](./assets/개발환경.PNG)
+![개발환경](./assets/개발환경.png)
 
 ## 🛠️ Service Architecture
-![기술스택](./assets/기술스택.PNG)
+![기술스택](./assets/기술스택.png)
 
 <br>
 
