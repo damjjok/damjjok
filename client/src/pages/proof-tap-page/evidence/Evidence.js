@@ -1,19 +1,12 @@
 import { useRecoilState } from "recoil";
-import {
-    useDisclosure,
-    Button,
-    HStack,
-    Text,
-    VStack,
-    Box,
-} from "@chakra-ui/react";
+import { useDisclosure, Button, HStack, Text, VStack, Box } from "@chakra-ui/react";
 import { evidenceList } from "contexts/Article";
 import EvidenceItems from "./EvidenceItems";
 import EvidenceCreateModal from "../modal/EvidenceCreateModal";
 import { ViewIcon } from "@chakra-ui/icons";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getEvidences, postEvidence } from "apis/api/Proof";
+import { getEvidenceDetail, getEvidences, postEvidence } from "apis/api/Proof";
 
 const Evidence = () => {
     const [evidences, setEvidences] = useState([]);
@@ -22,6 +15,12 @@ const Evidence = () => {
     const handleSaveEvidence = async (newEvidence) => {
         await postEvidence({ ...newEvidence, challengeId });
         await getEvidences(challengeId, setEvidences);
+    };
+
+    const [evidence, setEvidence] = useState({});
+
+    const fetchEvidenceDetail = async (evidenceId) => {
+        await getEvidenceDetail(evidenceId, setEvidence);
     };
 
     useEffect(() => {
@@ -34,10 +33,10 @@ const Evidence = () => {
                 증거
             </Text>
 
-            <Box overflowX={"auto"} width={"75vw"}>
+            <Box overflowX={"auto"}>
                 <HStack spacing={4} align="stretch">
                     {evidences.map((item, index) => (
-                        <EvidenceItems key={item.evidenceId} {...item} />
+                        <EvidenceItems key={item.evidenceId} {...item} onClickHandler={fetchEvidenceDetail} evidence={evidence} />
                     ))}
                     <Box>
                         <Button
@@ -61,11 +60,7 @@ const Evidence = () => {
                 </HStack>
             </Box>
 
-            <EvidenceCreateModal
-                isOpen={isOpen}
-                onClose={onClose}
-                onSave={handleSaveEvidence}
-            />
+            <EvidenceCreateModal isOpen={isOpen} onClose={onClose} onSave={handleSaveEvidence} />
         </div>
     );
 };

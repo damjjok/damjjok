@@ -16,7 +16,8 @@ function ShowRemainingStepComponent({ onClick }) {
         <div>
             <div style={{ margin: "80px", textAlign: "center" }}>
                 <Text as="b" fontSize={40}>
-                    박사님들에게 {fineDetermined / initGroupPhDCount}
+                    박사님들에게{" "}
+                    {Math.floor(fineDetermined / initGroupPhDCount)}
                     원씩이 나누어졌고 <p />
                     잔여 적립금은 {gatheredMoney - fineDetermined}원이예요!
                 </Text>

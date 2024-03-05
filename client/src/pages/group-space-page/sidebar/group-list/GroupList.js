@@ -6,7 +6,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getGroupList } from "apis/api/Group";
 import { getChallengeList } from "apis/api/Challenge";
 import { challengeListState } from "contexts/Challenge";
-import { currentGroupState } from "contexts/Group";
 
 //테스트를 위한 더미 데이터
 // const groupItems = ["우리끼리만든그룹", "E106", "E107"];
@@ -37,7 +36,7 @@ function GroupList() {
             setGroupListData(response.list);
 
             const currentGroup = response.list.find(
-                (group) => group.groupId === Number(groupId)
+                (group) => group.groupId === Number(groupId),
             );
             // 현재 그룹의 이름을 selectedGroup 상태에 설정합니다.
             setSelectedGroup({

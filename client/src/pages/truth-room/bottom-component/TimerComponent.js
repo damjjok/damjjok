@@ -8,7 +8,7 @@ function TimerComponent(props) {
     const { finishFinalArgument } = useContext(WebSocketContext);
     const challengeId = useRecoilValue(challengeIdState);
 
-    const [totalSeconds, setTotalSeconds] = useState(20);
+    const [totalSeconds, setTotalSeconds] = useState(10);
 
     useEffect(() => {
         // 초가 0이 아닐 때만 카운트다운을 진행

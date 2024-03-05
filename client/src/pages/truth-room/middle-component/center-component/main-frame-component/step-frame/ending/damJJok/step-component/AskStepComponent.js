@@ -16,10 +16,8 @@ function AskStepComponent({ damJJokName }) {
     const currentGroup = useRecoilValue(currentGroupState);
     const navigate = useNavigate();
 
-    const [isLastMember, setIsLastMember] = useState(false);
     function handleClickExit(mode) {
-        if (joinMemberList.length === 1) setIsLastMember(true); // 마지막 멤버 여부 저장
-        leaveRoom(challengeId, isLastMember);
+        leaveRoom(challengeId, joinMemberList.length === 1);
 
         if (mode === "YES")
             navigate(`/group/${currentGroup.groupId}/create-challenge`);

@@ -1,21 +1,5 @@
-import {
-    CheckCircleIcon,
-    NotAllowedIcon,
-    PlusSquareIcon,
-    RepeatClockIcon,
-    WarningIcon,
-} from "@chakra-ui/icons";
-import {
-    Accordion,
-    AccordionItem,
-    AccordionButton,
-    AccordionPanel,
-    AccordionIcon,
-    Box,
-    Flex,
-    Circle,
-    Text,
-} from "@chakra-ui/react";
+import { CheckCircleIcon, NotAllowedIcon, PlusSquareIcon, RepeatClockIcon, WarningIcon } from "@chakra-ui/icons";
+import { Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Box, Flex, Circle, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import challengeIcon from "assets/images/currentChallengeIcon.png";
 import { useNavigate, useParams } from "react-router-dom";
@@ -32,11 +16,8 @@ function ChallengeList({ onClick }) {
 
     const { groupId } = useParams();
     const setChallengeState = useSetRecoilState(challengeState);
-    const [currentChallengeList, setCurrentChallengeList] =
-        useRecoilState(challengeListState);
-    const [currentGroupChallengeList, setCurrentGroupChallengeList] = useState(
-        []
-    );
+    const [currentChallengeList, setCurrentChallengeList] = useRecoilState(challengeListState);
+    const [currentGroupChallengeList, setCurrentGroupChallengeList] = useState([]);
     const [lastChallenge, setLastChallenge] = useState([]);
 
     useEffect(() => {
@@ -53,7 +34,7 @@ function ChallengeList({ onClick }) {
         };
 
         fetchData(); // fetchData 함수 호출
-    }, []);
+    }, [groupId]);
 
     useEffect(() => {
         if (!currentChallengeList) return;
@@ -71,32 +52,18 @@ function ChallengeList({ onClick }) {
                 updatedLastChallenge.push(challenge);
             }
         }
-        if (
-            updatedCurrentGroupChallengeList &&
-            updatedCurrentGroupChallengeList.length > 0
-        ) {
+        if (updatedCurrentGroupChallengeList && updatedCurrentGroupChallengeList.length > 0) {
             const currentMyChallenge = updatedCurrentGroupChallengeList.find(
-                (challenge) =>
-                    challenge.userId === loginedUser.userId &&
-                    challenge.status === "PROGRESS"
+                (challenge) => challenge.userId === loginedUser.userId && challenge.status === "PROGRESS"
             );
 
-            console.log(currentMyChallenge);
-
             if (currentMyChallenge) {
-                navigate(
-                    `/group/${groupId}/challenge/${currentMyChallenge.challengeId}`
-                );
+                navigate(`/group/${groupId}/challenge/${currentMyChallenge.challengeId}`);
                 setChallengeState(currentMyChallenge);
             } else {
-                const randomCurrentChallenge =
-                    updatedCurrentGroupChallengeList.find(
-                        (challenge) => challenge.status === "PROGRESS"
-                    );
+                const randomCurrentChallenge = updatedCurrentGroupChallengeList.find((challenge) => challenge.status === "PROGRESS");
                 if (randomCurrentChallenge) {
-                    navigate(
-                        `/group/${groupId}/challenge/${randomCurrentChallenge.challengeId}`
-                    );
+                    navigate(`/group/${groupId}/challenge/${randomCurrentChallenge.challengeId}`);
                     setChallengeState(randomCurrentChallenge);
                 }
             }
@@ -121,11 +88,7 @@ function ChallengeList({ onClick }) {
             <AccordionItem>
                 <AccordionButton display="flex" justifyContent="space-between">
                     <Box display="flex" alignItems="center" textAlign="left">
-                        <img
-                            src={challengeIcon}
-                            alt="challengeIcon"
-                            className="w-[20px] h-[20px] mr-2"
-                        />
+                        <img src={challengeIcon} alt="challengeIcon" className="w-[20px] h-[20px] mr-2" />
                         <p className=" text-lg font-bold">진행중인 챌린지</p>
                     </Box>
 
@@ -134,82 +97,55 @@ function ChallengeList({ onClick }) {
                 <AccordionPanel pb={4}>
                     <ul>
                         {currentGroupChallengeList?.length > 0
-                            ? currentGroupChallengeList.map(
-                                  (challenge, index) => (
-                                      <Flex
-                                          key={index}
-                                          alignItems="center"
-                                          className={`py-2 px-4 rounded-lg ${
-                                              selectedChallenge.index ===
-                                                  index &&
-                                              selectedChallenge.list ===
-                                                  "current"
-                                                  ? "bg-[rgba(255,209,0,0.5)]"
-                                                  : "hover:bg-damyellow"
-                                          } hover:cursor-pointer`}
-                                          onClick={() => {
-                                              setSelectedChallenge({
-                                                  index,
-                                                  list: "current",
-                                              });
+                            ? currentGroupChallengeList.map((challenge, index) => (
+                                  <Flex
+                                      key={index}
+                                      alignItems="center"
+                                      className={`py-2 px-4 rounded-lg ${
+                                          selectedChallenge.index === index && selectedChallenge.list === "current"
+                                              ? "bg-[rgba(255,209,0,0.5)]"
+                                              : "hover:bg-damyellow"
+                                      } hover:cursor-pointer`}
+                                      onClick={() => {
+                                          setSelectedChallenge({
+                                              index,
+                                              list: "current",
+                                          });
 
-                                              navigate(
-                                                  `/group/${groupId}/challenge/${challenge.challengeId}`
-                                              );
-                                              setChallengeState(challenge);
-                                              if (onClick) onClick();
-                                          }}
-                                      >
-                                          <Circle
-                                              size="2"
-                                              bg="green.500"
-                                              mr="2"
-                                          />
-                                          <li key={index}>
-                                              <p className=" font-semibold">
-                                                  {challenge.userName} 챌린지
-                                              </p>
-                                              <p className="text-xs">
-                                                  {new Date(
-                                                      challenge.createdAt
-                                                  ).toLocaleDateString()}{" "}
-                                                  시작
-                                              </p>
-                                          </li>
-                                      </Flex>
-                                  )
-                              )
+                                          navigate(`/group/${groupId}/challenge/${challenge.challengeId}`);
+                                          setChallengeState(challenge);
+                                          if (onClick) onClick();
+                                      }}
+                                  >
+                                      <Circle size="2" bg="green.500" mr="2" />
+                                      <li key={index}>
+                                          <p className=" font-semibold">{challenge.userName} 챌린지</p>
+                                          <p className="text-xs">{new Date(challenge.createdAt).toLocaleDateString()} 시작</p>
+                                      </li>
+                                  </Flex>
+                              ))
                             : null}
                         {currentGroupChallengeList?.length > 0 &&
-                            !currentGroupChallengeList.some(
-                                (challenge, index) =>
-                                    challenge.userId === loginedUser.userId
-                            ) && (
+                            !currentGroupChallengeList.some((challenge, index) => challenge.userId === loginedUser.userId) && (
                                 <Box px={3} py={2} display={"flex"}>
                                     <Flex
                                         alignItems="center"
                                         justifyContent={"center"}
                                         cursor="pointer"
                                         onClick={() => {
-                                            navigate(
-                                                `/group/${groupId}/create-challenge`
-                                            );
+                                            navigate(`/group/${groupId}/create-challenge`);
                                             if (onClick) onClick();
                                         }}
                                     >
                                         <PlusSquareIcon marginRight="4px" />
-                                        <Text fontSize={"xs"}>
-                                            챌린지 생성하기
-                                        </Text>
+                                        <Text fontSize={"xs"}>챌린지 생성하기</Text>
                                     </Flex>
                                 </Box>
                             )}
                         {currentGroupChallengeList?.length === 0 && (
                             <>
                                 <Box>
-                                    <p className="text-xs text-gray-400 mb-2">
-                                        활성화된 챌린지가 없습니다
-                                    </p>
+                                    <p className="text-xs text-gray-400 mb-2">활성화된 챌린지가 없습니다</p>
                                 </Box>
                                 <Box px={3} py={2} display={"flex"}>
                                     <Flex
@@ -217,16 +153,12 @@ function ChallengeList({ onClick }) {
                                         justifyContent={"center"}
                                         cursor="pointer"
                                         onClick={() => {
-                                            navigate(
-                                                `/group/${groupId}/create-challenge`
-                                            );
+                                            navigate(`/group/${groupId}/create-challenge`);
                                             if (onClick) onClick();
                                         }}
                                     >
                                         <PlusSquareIcon marginRight="4px" />
-                                        <Text fontSize={"xs"}>
-                                            챌린지 생성하기
-                                        </Text>
+                                        <Text fontSize={"xs"}>챌린지 생성하기</Text>
                                     </Flex>
                                 </Box>
                             </>
@@ -238,11 +170,7 @@ function ChallengeList({ onClick }) {
             <AccordionItem>
                 <AccordionButton display="flex" justifyContent="space-between">
                     <Box display="flex" alignItems="center" textAlign="left">
-                        <RepeatClockIcon
-                            color="dam.yellow"
-                            boxSize={5}
-                            marginRight="2"
-                        />
+                        <RepeatClockIcon color="dam.yellow" boxSize={5} marginRight="2" />
                         <p className=" text-lg font-bold">지난 챌린지</p>
                     </Box>
 
@@ -256,8 +184,7 @@ function ChallengeList({ onClick }) {
                                     key={index}
                                     alignItems="center"
                                     className={`py-2 px-4 rounded-lg ${
-                                        selectedChallenge.index === index &&
-                                        selectedChallenge.list === "last"
+                                        selectedChallenge.index === index && selectedChallenge.list === "last"
                                             ? "bg-[rgba(255,209,0,0.5)]"
                                             : "hover:bg-damyellow"
                                     } hover:cursor-pointer`}
@@ -267,44 +194,25 @@ function ChallengeList({ onClick }) {
                                             list: "last",
                                         });
 
-                                        navigate(
-                                            `/group/${groupId}/last-challenge/${challenge.challengeId}`
-                                        );
+                                        navigate(`/group/${groupId}/last-challenge/${challenge.challengeId}`);
                                         setChallengeState(challenge);
                                         if (onClick) onClick();
                                     }}
                                 >
                                     {challenge.status === "SUCCESS" ? (
-                                        <CheckCircleIcon
-                                            size="4"
-                                            color="green.500"
-                                            mr="2"
-                                        />
+                                        <CheckCircleIcon size="4" color="green.500" mr="2" />
                                     ) : (
-                                        <WarningIcon
-                                            size="4"
-                                            color="dam.gray"
-                                            mr="2"
-                                        />
+                                        <WarningIcon size="4" color="dam.gray" mr="2" />
                                     )}
 
                                     <li key={index}>
-                                        <p className=" font-semibold">
-                                            {challenge.userName} 챌린지
-                                        </p>
-                                        <p className="text-xs">
-                                            {new Date(
-                                                challenge.createdAt
-                                            ).toLocaleDateString()}{" "}
-                                            진행
-                                        </p>
+                                        <p className=" font-semibold">{challenge.userName} 챌린지</p>
+                                        <p className="text-xs">{new Date(challenge.createdAt).toLocaleDateString()} 진행</p>
                                     </li>
                                 </Flex>
                             ))
                         ) : (
-                            <p className="text-xs text-gray-400 mb-2">
-                                지난 챌린지가 없습니다
-                            </p>
+                            <p className="text-xs text-gray-400 mb-2">지난 챌린지가 없습니다</p>
                         )}
                     </ul>
                 </AccordionPanel>

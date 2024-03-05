@@ -22,8 +22,8 @@ function ShowDistributedStepComponent(props) {
 
     const [isLastMember, setIsLastMember] = useState(false);
     function handleClickExit() {
-        if (joinMemberList.length === 1) setIsLastMember(true); // 마지막 멤버 여부 저장
-        leaveRoom(challengeId, isLastMember);
+        // if () setIsLastMember(true); // 마지막 멤버 여부 저장
+        leaveRoom(challengeId, joinMemberList.length === 1);
 
         navigate(`/group/${currentGroup.groupId}`);
     }
@@ -32,7 +32,7 @@ function ShowDistributedStepComponent(props) {
         <div>
             <div style={{ marginTop: "100px", textAlign: "center" }}>
                 <Text as="b" fontSize={50}>
-                    {fineDetermined / initGroupPhDCount}원씩이 <p />
+                    {Math.floor(fineDetermined / initGroupPhDCount)}원씩이 <p />
                     박사님들에게 나누어졌어요!
                 </Text>
             </div>
