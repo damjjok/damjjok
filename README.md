@@ -10,9 +10,9 @@
 ## ✔️ Team Members
 <table>
   <tr style="width : 100%">
-    <td align="center"><img src="팀원1의이미지URL" width="120" height="120" /><br />최명성</td>
-    <td align="center"><img src="팀원2의이미지URL" width="120" height="120" /><br />손종민</td>
-    <td align="center"><img src="팀원3의이미지URL" width="120" height="120" /><br />김영후</td>
+    <td align="center"><img src="./assets/최명성.png" width="120" height="120" /><br />최명성</td>
+    <td align="center"><img src="./assets/손종민.png" width="120" height="120" /><br />손종민</td>
+    <td align="center"><img src="./assets/김영후.png" width="120" height="120" /><br />김영후</td>
     <td align="center"><img src="./assets/지호.png" width="120" height="120" /><br />문지호</td>
     <td align="center"><img src="./assets/서현.jpg" width="120" height="120" /><br />박서현</td>
     <td align="center"><img src="./assets/다희.jpg" width="120" height="120" /><br />김다희</td>
